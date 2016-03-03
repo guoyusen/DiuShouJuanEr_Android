@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="TRANSPARENT">#00FFFFFF</color>
+
+    <color name="COLOR_WHITE">#FFFFFF</color>
+    <color name="COLOR_THEME">#5C84DC</color>
+    <color name="COLOR_BLACK">#333645</color>
+
+    <!-- 背景常用颜-色 -->
+    <color name="BG_F6F6F6">#F6F6F6</color>
+
+    <!-- 线条常用颜色 -->
+    <color name="LC_E5E5E5">#E5E5E5</color>
+    <color name="LC_EAEAEA">#EAEAEA</color>
+
+    <!-- 字体常用颜色 -->
+    <color name="TC_WHITE_HINT">#AAFFFFFF</color>
+    <color name="TC_WHITE">#FFFFFF</color>
+    <color name="TC_ADADBB">#ADADBB</color>
+    <color name="TC_5C84DC">#5C84DC</color>
+    <color name="TC_F55555">#F55555</color>
+    <color name="TC_333333">#333333</color>
+    <!-- 按钮常用颜色 -->
+    <color name="BTN_GREEN1">#9DEC5B</color>
+    <color name="BTN_GREEN2">#95E058</color>
+    <color name="BTN_BLUE1">#3DBCF5</color>
+    <color name="BTN_BLUE2">#049CDB</color>
+    <color name="BTN_RED1">#FC6E51</color>
+    <color name="BTN_RED2">#E9573F</color>
+
+</resources>

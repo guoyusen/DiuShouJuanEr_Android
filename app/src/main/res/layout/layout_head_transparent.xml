@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/actionbar_height"
+    android:background="@color/TRANSPARENT">
+
+    <ImageView
+        android:layout_width="@dimen/x100"
+        android:layout_height="@dimen/y100"
+        android:padding="@dimen/x10"
+        android:src="@mipmap/btn_back"/>
+    
+    <TextView
+        style="@style/NavBtnText"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:text="@string/btn_register"/>
+
+</RelativeLayout>

@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/MatchMatch"
+    android:background="@color/BG_F6F6F6"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/menuLayoutHeader"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y400">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/bg_menu_head" />
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/menuHead"
+            android:layout_width="@dimen/x160"
+            android:layout_height="@dimen/y160"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/y70"
+            app:placeholderImage="@mipmap/shin"
+            app:roundAsCircle="true" />
+
+        <TextView
+            style="@style/TextMiddle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/menuHead"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/y10"
+            android:text="三木同学"
+            android:textColor="@color/TC_WHITE" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y70"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="@dimen/x40"
+                android:layout_height="@dimen/y40"
+                android:layout_marginLeft="@dimen/x16"
+                android:layout_marginTop="@dimen/y15"
+                android:src="@mipmap/icon_menu_autograph_quote" />
+
+            <TextView
+                style="@style/TextSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/x16"
+                android:layout_marginTop="@dimen/x20"
+                android:ellipsize="marquee"
+                android:singleLine="true"
+                android:text="就让大雨冲刷记忆中的沙,让我了无牵挂浪迹在天涯"
+                android:textColor="@color/TC_ADADBB" />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/menuLayoutFooter"
+        android:layout_below="@+id/menuLayoutHeader"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y120"
+            android:gravity="center_vertical">
+
+            <ImageView
+                style="@style/menu_item_icon"
+                android:src="@mipmap/icon_menu_user"/>
+
+            <TextView
+                style="@style/menu_item_text"
+                android:text="个人空间"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y120"
+            android:gravity="center_vertical">
+
+            <ImageView
+                style="@style/menu_item_icon"
+                android:src="@mipmap/icon_menu_favorite"/>
+
+            <TextView
+                style="@style/menu_item_text"
+                android:text="我的收藏"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y120"
+            android:gravity="center_vertical">
+
+            <ImageView
+                style="@style/menu_item_icon"
+                android:src="@mipmap/icon_menu_focus"/>
+
+            <TextView
+                style="@style/menu_item_text"
+                android:text="我的关注"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y120"
+            android:gravity="center_vertical">
+
+            <ImageView
+                style="@style/menu_item_icon"
+                android:src="@mipmap/icon_menu_folder"/>
+
+            <TextView
+                style="@style/menu_item_text"
+                android:text="我的文件"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y2"
+            android:background="@color/LC_E5E5E5"
+            android:layout_marginLeft="@dimen/x24"
+            android:layout_marginRight="@dimen/x24"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y120"
+            android:gravity="center_vertical">
+
+            <ImageView
+                style="@style/menu_item_icon"
+                android:src="@mipmap/icon_menu_notice"/>
+
+            <TextView
+                style="@style/menu_item_text"
+                android:text="系统通知"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y120"
+            android:gravity="center_vertical">
+
+            <ImageView
+                style="@style/menu_item_icon"
+                android:src="@mipmap/icon_menu_feedback"/>
+
+            <TextView
+                style="@style/menu_item_text"
+                android:text="意见反馈"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/menuLayoutFooter"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100"
+        android:layout_alignParentBottom="true"
+        android:background="@color/COLOR_BLACK"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/TextMiddle"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:gravity="center"
+            android:text="设置"
+            android:textColor="@color/TC_WHITE" />
+
+        <View
+            android:layout_width="@dimen/x2"
+            android:layout_height="@dimen/y50"
+            android:background="@color/BG_F6F6F6" />
+
+        <TextView
+            style="@style/TextMiddle"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:gravity="center"
+            android:text="退出"
+            android:textColor="@color/TC_F55555" />
+
+    </LinearLayout>
+
+
+</RelativeLayout>

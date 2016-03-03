@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/TranslucentStatus"
+    android:background="@color/COLOR_THEME">
+
+    <include
+        android:id="@+id/layout_head"
+        layout="@layout/layout_head_home"/>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/mViewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:flipInterval="30"
+        android:persistentDrawingCache="animation"
+        android:layout_below="@+id/layout_head"
+        android:background="@color/COLOR_WHITE"/>
+
+    <com.bili.diushoujuaner.view.ui.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="@dimen/x120"
+        android:layout_height="@dimen/y120"
+        android:layout_gravity="bottom|right"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/x20"
+        android:src="@mipmap/icon_recall_add"/>
+
+</RelativeLayout>
