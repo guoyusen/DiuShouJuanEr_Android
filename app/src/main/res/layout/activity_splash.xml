@@ -19,7 +19,7 @@
         android:textColor="@color/TC_WHITE"
         android:textSize="@dimen/x40"
         android:textStyle="italic"
-        android:layout_marginTop="@dimen/y150"
+        android:layout_marginTop="@dimen/y100"
         android:layout_below="@+id/ivLogo"/>
 
 </RelativeLayout>

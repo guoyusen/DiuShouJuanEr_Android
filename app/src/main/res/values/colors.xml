@@ -8,6 +8,8 @@
 
     <!-- 背景常用颜-色 -->
     <color name="BG_F6F6F6">#F6F6F6</color>
+    <color name="BG_TOAST">#99333333</color>
+    <color name="BG_WHITE">#FFFFFF</color>
 
     <!-- 线条常用颜色 -->
     <color name="LC_E5E5E5">#E5E5E5</color>
@@ -20,6 +22,7 @@
     <color name="TC_5C84DC">#5C84DC</color>
     <color name="TC_F55555">#F55555</color>
     <color name="TC_333333">#333333</color>
+    <color name="TC_222222">#222222</color>
     <!-- 按钮常用颜色 -->
     <color name="BTN_GREEN1">#9DEC5B</color>
     <color name="BTN_GREEN2">#95E058</color>

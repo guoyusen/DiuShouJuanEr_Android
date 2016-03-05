@@ -81,16 +81,39 @@
         <item name="android:paddingRight">@dimen/x30</item>
     </style>
 
+    <!-- 底部导航栏：图标，文字 -->
+    <style name="main_tab_bottom">
+        <item name="android:textSize">@dimen/x25</item>
+        <item name="android:ellipsize">marquee</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:button">@null</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:layout_weight">1.0</item>
+    </style>
+
     <style name="menu_item_icon">
         <item name="android:layout_width">@dimen/x54</item>
         <item name="android:layout_height">@dimen/y54</item>
         <item name="android:layout_marginLeft">@dimen/x16</item>
     </style>
+
     <style name="menu_item_text" parent="TextMiddle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_marginLeft">@dimen/x16</item>
         <item name="android:textColor">@color/TC_333333</item>
+    </style>
+
+    <style name="recall_item_iv">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">@dimen/y200</item>
+        <item name="android:layout_weight">1.0</item>
+        <item name="android:maxWidth">@dimen/x300</item>
+        <item name="android:scaleType">centerCrop</item>
+        <item name="android:layout_marginLeft">@dimen/x5</item>
+        <item name="android:layout_marginRight">@dimen/x5</item>
     </style>
 
 </resources>

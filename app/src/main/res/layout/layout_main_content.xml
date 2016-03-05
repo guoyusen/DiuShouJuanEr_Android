@@ -4,27 +4,55 @@
     android:background="@color/COLOR_THEME">
 
     <include
-        android:id="@+id/layout_head"
+        android:id="@+id/layoutHead"
         layout="@layout/layout_head_home"/>
 
     <android.support.v4.view.ViewPager
-        android:id="@+id/mViewPager"
+        android:id="@+id/vpMain"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:flipInterval="30"
         android:persistentDrawingCache="animation"
-        android:layout_below="@+id/layout_head"
+        android:layout_below="@+id/layoutHead"
         android:background="@color/COLOR_WHITE"/>
 
-    <com.bili.diushoujuaner.view.ui.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="@dimen/x120"
-        android:layout_height="@dimen/y120"
-        android:layout_gravity="bottom|right"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
+    <View
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y2"
+        android:background="@color/LC_EAEAEA"
+        android:layout_above="@+id/layoutNav"/>
+
+    <LinearLayout
+        android:id="@+id/layoutNav"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_margin="@dimen/x20"
-        android:src="@mipmap/icon_recall_add"/>
+        android:orientation="horizontal"
+        android:background="@color/BG_F6F6F6"
+        android:gravity="center">
+
+        <com.bili.diushoujuaner.ui.badgeview.BGABadgeRadioButton
+            android:id="@+id/btnMainHome"
+            style="@style/main_tab_bottom"
+            android:drawableTop="@drawable/nav_home_selector"
+            android:text="@string/main_nav_home"
+            android:textColor="@drawable/nav_text_selector"/>
+
+        <com.bili.diushoujuaner.ui.badgeview.BGABadgeRadioButton
+            android:id="@+id/btnMainMess"
+            style="@style/main_tab_bottom"
+            android:drawableTop="@drawable/nav_mess_selector"
+            android:text="@string/main_nav_mess"
+            android:textColor="@drawable/nav_text_selector"/>
+
+        <com.bili.diushoujuaner.ui.badgeview.BGABadgeRadioButton
+            android:id="@+id/btnMainCont"
+            style="@style/main_tab_bottom"
+            android:drawableTop="@drawable/nav_cont_selector"
+            android:text="@string/main_nav_cont"
+            android:textColor="@drawable/nav_text_selector"/>
+
+    </LinearLayout>
 
 </RelativeLayout>
