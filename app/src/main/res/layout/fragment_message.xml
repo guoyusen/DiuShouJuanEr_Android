@@ -1,7 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/MatchMatch">
 
-</LinearLayout>
+    <com.bili.diushoujuaner.ui.circlerefresh.CircleRefreshLayout
+        android:id="@+id/customCircleRefreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/BG_F6F6F6">
+
+        <com.bili.diushoujuaner.ui.CustomListViewRefresh
+            android:id="@+id/customListViewRefresh"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:dividerHeight="@dimen/y2"
+            android:divider="@color/BG_ECECEC">
+
+        </com.bili.diushoujuaner.ui.CustomListViewRefresh>
+
+    </com.bili.diushoujuaner.ui.circlerefresh.CircleRefreshLayout>
+
+</RelativeLayout>

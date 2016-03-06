@@ -19,6 +19,7 @@
         style="@style/NavTitleText"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:gravity="center"
         android:text="首页"/>
     
     <TextView
@@ -26,6 +27,7 @@
         style="@style/NavBtnText"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:gravity="center"
         android:text="更多"/>
 
 </RelativeLayout>

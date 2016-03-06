@@ -41,7 +41,7 @@ public class BGABadgeRadioButton extends RadioButton implements BGABadgeable {
 
     public BGABadgeRadioButton(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        mBadgeViewHeler = new BGABadgeViewHelper(this, context, attrs, BGABadgeViewHelper.BadgeGravity.RightBottom);
+        mBadgeViewHeler = new BGABadgeViewHelper(this, context, attrs, BGABadgeViewHelper.BadgeGravity.RightTop);
     }
 
     @Override

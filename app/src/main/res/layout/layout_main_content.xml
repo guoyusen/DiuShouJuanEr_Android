@@ -1,58 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/TranslucentStatus"
     android:background="@color/COLOR_THEME">
 
     <include
         android:id="@+id/layoutHead"
-        layout="@layout/layout_head_home"/>
+        layout="@layout/layout_head_home" />
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/vpMain"
+    <com.bili.diushoujuaner.ui.CustomViewPager
+        android:id="@+id/customViewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:flipInterval="30"
-        android:persistentDrawingCache="animation"
+        android:layout_above="@+id/radioGroup"
         android:layout_below="@+id/layoutHead"
-        android:background="@color/COLOR_WHITE"/>
+        android:background="@color/COLOR_WHITE" />
 
     <View
         android:id="@+id/line"
         android:layout_width="match_parent"
         android:layout_height="@dimen/y2"
-        android:background="@color/LC_EAEAEA"
-        android:layout_above="@+id/layoutNav"/>
+        android:layout_above="@+id/radioGroup"
+        android:background="@color/LC_EAEAEA" />
 
-    <LinearLayout
-        android:id="@+id/layoutNav"
+    <RadioGroup
+        android:id="@+id/radioGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:orientation="horizontal"
         android:background="@color/BG_F6F6F6"
-        android:gravity="center">
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
-        <com.bili.diushoujuaner.ui.badgeview.BGABadgeRadioButton
-            android:id="@+id/btnMainHome"
-            style="@style/main_tab_bottom"
-            android:drawableTop="@drawable/nav_home_selector"
-            android:text="@string/main_nav_home"
-            android:textColor="@drawable/nav_text_selector"/>
+        <RelativeLayout style="@style/main_tab_layout">
 
-        <com.bili.diushoujuaner.ui.badgeview.BGABadgeRadioButton
-            android:id="@+id/btnMainMess"
-            style="@style/main_tab_bottom"
-            android:drawableTop="@drawable/nav_mess_selector"
-            android:text="@string/main_nav_mess"
-            android:textColor="@drawable/nav_text_selector"/>
+            <com.bili.diushoujuaner.ui.badgeview.BGABadgeRadioButton
+                android:id="@+id/btnMainHome"
+                style="@style/main_tab_btn"
+                android:drawableTop="@drawable/nav_home_selector"
+                android:text="@string/main_nav_home"
+                android:textColor="@drawable/nav_text_selector"
+                app:badge_dragable="true"
+                app:badge_verticalMargin="@dimen/y5" />
 
-        <com.bili.diushoujuaner.ui.badgeview.BGABadgeRadioButton
-            android:id="@+id/btnMainCont"
-            style="@style/main_tab_bottom"
-            android:drawableTop="@drawable/nav_cont_selector"
-            android:text="@string/main_nav_cont"
-            android:textColor="@drawable/nav_text_selector"/>
+        </RelativeLayout>
 
-    </LinearLayout>
+        <RelativeLayout style="@style/main_tab_layout">
+
+            <com.bili.diushoujuaner.ui.badgeview.BGABadgeRadioButton
+                android:id="@+id/btnMainMess"
+                style="@style/main_tab_btn"
+                android:drawableTop="@drawable/nav_mess_selector"
+                android:text="@string/main_nav_mess"
+                android:textColor="@drawable/nav_text_selector"
+                app:badge_dragable="true"
+                app:badge_verticalMargin="@dimen/y5" />
+
+        </RelativeLayout>
+
+        <RelativeLayout style="@style/main_tab_layout">
+
+            <com.bili.diushoujuaner.ui.badgeview.BGABadgeRadioButton
+                android:id="@+id/btnMainCont"
+                style="@style/main_tab_btn"
+                android:drawableTop="@drawable/nav_cont_selector"
+                android:text="@string/main_nav_cont"
+                android:textColor="@drawable/nav_text_selector"
+                app:badge_dragable="true"
+                app:badge_verticalMargin="@dimen/y5" />
+        </RelativeLayout>
+    </RadioGroup>
 
 </RelativeLayout>

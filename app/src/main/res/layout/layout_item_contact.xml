@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/MatchWrap"
+    android:orientation="vertical"
+    android:background="@color/BG_WHITE">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y40"
+        android:background="@color/BG_ECECEC"
+        android:textColor="@color/TC_808080"
+        android:gravity="center|left"
+        android:paddingLeft="@dimen/x16"
+        android:text="群组"
+        android:textSize="@dimen/x30"/>
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y112"
+        android:background="@color/BG_WHITE"
+        android:layout_marginLeft="@dimen/x16"
+        android:layout_marginRight="@dimen/x16"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/ivItemHead"
+            android:layout_width="@dimen/x80"
+            android:layout_height="@dimen/y80"
+            app:placeholderImage="@mipmap/shin"
+            app:roundAsCircle="true"/>
+
+        <TextView
+            android:id="@+id/textContactName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x16"
+            style="@style/TextMiddle"
+            android:textColor="@color/TC_333333"
+            android:text="三木同学"/>
+
+    </LinearLayout>
+
+</LinearLayout>

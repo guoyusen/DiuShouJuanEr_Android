@@ -53,18 +53,15 @@
     </style>
 
     <style name="TextSmall">
-        <item name="android:gravity">center</item>
         <item name="android:textSize">@dimen/x30</item>
     </style>
 
     <style name="TextMiddle">
-        <item name="android:gravity">center</item>
-        <item name="android:textSize">@dimen/x35</item>
+        <item name="android:textSize">@dimen/x32</item>
     </style>
 
     <style name="TextBig">
-        <item name="android:gravity">center</item>
-        <item name="android:textSize">@dimen/x40</item>
+        <item name="android:textSize">@dimen/x36</item>
     </style>
     
     <style name="NavBtnText" parent="TextMiddle">
@@ -82,15 +79,23 @@
     </style>
 
     <!-- 底部导航栏：图标，文字 -->
-    <style name="main_tab_bottom">
-        <item name="android:textSize">@dimen/x25</item>
-        <item name="android:ellipsize">marquee</item>
-        <item name="android:gravity">center</item>
+    <style name="main_tab_layout">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:button">@null</item>
-        <item name="android:singleLine">true</item>
+        <item name="android:gravity">center</item>
         <item name="android:layout_weight">1.0</item>
+        <item name="android:background">@color/TRANSPARENT</item>
+    </style>
+
+    <style name="main_tab_btn">
+        <item name="android:textSize">@dimen/x25</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:button">@null</item>
+        <item name="android:paddingLeft">@dimen/x15</item>
+        <item name="android:paddingRight">@dimen/x15</item>
+        <item name="android:background">@color/TRANSPARENT</item>
     </style>
 
     <style name="menu_item_icon">
@@ -100,6 +105,7 @@
     </style>
 
     <style name="menu_item_text" parent="TextMiddle">
+        <item name="android:gravity">center</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_marginLeft">@dimen/x16</item>
@@ -112,8 +118,8 @@
         <item name="android:layout_weight">1.0</item>
         <item name="android:maxWidth">@dimen/x300</item>
         <item name="android:scaleType">centerCrop</item>
-        <item name="android:layout_marginLeft">@dimen/x5</item>
-        <item name="android:layout_marginRight">@dimen/x5</item>
+        <item name="android:layout_marginLeft">@dimen/x8</item>
+        <item name="android:layout_marginRight">@dimen/x8</item>
     </style>
 
 </resources>

@@ -75,7 +75,6 @@ public class CustomListViewRefresh extends ListView implements OnScrollListener 
 
 		setCacheColorHint(pContext.getResources().getColor(R.color.TRANSPARENT));
 		mInflater = LayoutInflater.from(pContext);
-
 		setOnScrollListener(this);
 	}
 
@@ -86,7 +85,7 @@ public class CustomListViewRefresh extends ListView implements OnScrollListener 
 	public void setCanLoadMore(boolean pCanLoadMore) {
 		mCanLoadMore = pCanLoadMore;
 		if (mCanLoadMore && getFooterViewsCount() == 0) {
-			addFooterView();
+			addFootView();
 		}
 	}
 
@@ -111,7 +110,7 @@ public class CustomListViewRefresh extends ListView implements OnScrollListener 
 	/**
 	 * 添加加载更多FootView
 	 */
-	private void addFooterView() {
+	private void addFootView() {
 		mEndRootView = mInflater.inflate(R.layout.layout_load_more_footer,
 				null);
 		mEndRootView.setVisibility(View.VISIBLE);
@@ -172,7 +171,6 @@ public class CustomListViewRefresh extends ListView implements OnScrollListener 
 		mCount = pTotalItemCount - 2;
 		if (pTotalItemCount > pVisibleItemCount) {
 			mEnoughCount = true;
-			// endingView.setVisibility(View.VISIBLE);
 		} else {
 			mEnoughCount = false;
 		}
@@ -282,7 +280,7 @@ public class CustomListViewRefresh extends ListView implements OnScrollListener 
 	 * 加载更多监听接口
 	 */
 	public interface OnLoadMoreListener {
-		public void onLoadMore();
+		void onLoadMore();
 	}
 
 	public void setOnLoadListener(OnLoadMoreListener pLoadMoreListener) {
@@ -290,7 +288,7 @@ public class CustomListViewRefresh extends ListView implements OnScrollListener 
 			mLoadMoreListener = pLoadMoreListener;
 			mCanLoadMore = true;
 			if (mCanLoadMore && getFooterViewsCount() == 0) {
-				addFooterView();
+				addFootView();
 			}
 		}
 	}

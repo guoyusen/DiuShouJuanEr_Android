@@ -12,7 +12,7 @@
         android:layout_marginRight="@dimen/x16">
 
         <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/itemHead"
+            android:id="@+id/ivItemHead"
             android:layout_width="@dimen/x80"
             android:layout_height="@dimen/y80"
             app:placeholderImage="@mipmap/shin"
@@ -20,27 +20,28 @@
             app:roundAsCircle="true"/>
 
         <TextView
-            android:id="@+id/itemUserName"
+            android:id="@+id/textItemUserName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/TextMiddle"
-            android:textColor="@color/TC_222222"
-            android:layout_toRightOf="@+id/itemHead"
+            style="@style/TextBig"
+            android:textColor="@color/TC_BLACK"
+            android:layout_toRightOf="@+id/ivItemHead"
             android:layout_margin="@dimen/x10"
             android:text="三木同学"/>
 
         <TextView
-            android:id="@+id/itemPublishTime"
+            android:id="@+id/textItemPublishTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             style="@style/TextSmall"
-            android:textColor="@color/TC_333333"
+            android:textColor="@color/TC_808080"
             android:text="02月28日09:34"
-            android:layout_toRightOf="@+id/itemHead"
-            android:layout_alignBottom="@+id/itemHead"
-            android:layout_alignLeft="@+id/itemUserName"/>
-        
+            android:layout_toRightOf="@+id/ivItemHead"
+            android:layout_alignBottom="@+id/ivItemHead"
+            android:layout_alignLeft="@+id/textItemUserName"/>
+
         <TextView
+            android:id="@+id/textGoodCount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -59,20 +60,20 @@
         android:textColor="@color/TC_222222"
         android:layout_marginLeft="@dimen/x16"
         android:layout_marginRight="@dimen/x16"
-        android:layout_marginTop="@dimen/y5"
-        android:layout_marginBottom="@dimen/y5"
+        android:layout_marginTop="@dimen/y8"
+        android:layout_marginBottom="@dimen/y8"
         android:ellipsize="end"
-        android:maxLines="5"
+        android:maxLines="4"
         android:text="@string/tmpString"/>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginLeft="@dimen/x11"
-        android:layout_marginRight="@dimen/x11"
-        android:layout_marginTop="@dimen/y5"
-        android:layout_marginBottom="@dimen/y5">
+        android:layout_marginLeft="@dimen/x8"
+        android:layout_marginRight="@dimen/x8"
+        android:layout_marginTop="@dimen/y10"
+        android:layout_marginBottom="@dimen/y10">
 
         <!--<ImageView-->
             <!--android:id="@+id/ivPicture_0"-->
@@ -97,8 +98,8 @@
             android:layout_width="wrap_content"
             android:layout_height="@dimen/y200"
             android:layout_weight="1.0"
-            android:layout_marginLeft="@dimen/x5"
-            android:layout_marginRight="@dimen/x5">
+            android:layout_marginLeft="@dimen/x8"
+            android:layout_marginRight="@dimen/x8">
 
             <ImageView
                 android:id="@+id/ivPicture_3"
@@ -113,26 +114,21 @@
                 android:layout_height="@dimen/y200"
                 android:background="@color/BG_TOAST">
 
-                <LinearLayout
+                <TextView
+                    android:id="@+id/textLeftCount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:layout_centerInParent="true">
+                    android:textSize="@dimen/x80"
+                    android:textColor="@color/TC_WHITE"
+                    android:layout_centerInParent="true"
+                    android:text="5"/>
 
-                    <TextView
-                        android:id="@+id/textLeftCount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="@dimen/x80"
-                        android:textColor="@color/TC_WHITE"
-                        android:text="5"/>
-
-                    <ImageView
-                        android:layout_width="@dimen/x70"
-                        android:layout_height="wrap_content"
-                        android:src="@mipmap/icon_arrow_right"/>
-
-                </LinearLayout>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/textLeftCount"
+                    android:src="@mipmap/icon_arrow_right"/>
 
             </RelativeLayout>
         </RelativeLayout>

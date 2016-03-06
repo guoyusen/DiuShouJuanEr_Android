@@ -64,7 +64,7 @@ public class BGAExplosionAnimator extends ValueAnimator {
         mRect = rect;
         mInvalidateRect = new Rect(mRect.left - mRect.width() * REFRESH_RATIO, mRect.top - mRect.height() * REFRESH_RATIO, mRect.right + mRect.width() * REFRESH_RATIO, mRect.bottom + mRect.height() * REFRESH_RATIO);
 
-        int partLen = 15;
+        int partLen = 20;
         mParticles = new Particle[partLen * partLen];
         Random random = new Random(System.currentTimeMillis());
         int w = bitmap.getWidth() / (partLen + 2);
