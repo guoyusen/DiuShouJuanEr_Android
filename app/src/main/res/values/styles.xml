@@ -1,46 +1,47 @@
 <resources>
 
-    <style name="WrapMatch">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">match_parent</item>
-    </style>
-
-    <style name="MatchWrap">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
-    </style>
-
-    <style name="WrapWrap">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-    </style>
-
-    <style name="MatchMatch">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
-    </style>
-
     <style name="AppTheme">
         <item name="android:windowNoTitle">true</item>
         <item name="android:background">@color/TRANSPARENT</item>
     </style>
 
-    <style name="SplashTheme">
+    <style name="FullScreenTheme">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
     </style>
 
-    <style name="TranslucentStatus" parent="MatchMatch">
-        <item name="android:clipToPadding">true</item>
+    <!-- 页面根布局使用，在布局中使用fitsSystemWindows=true属性，保证Toast不会便宜 -->
+    <style name="MatchMatch.FitWindow">
         <item name="android:fitsSystemWindows">true</item>
-        <item name="android:background">@color/COLOR_WHITE</item>
     </style>
 
-    <style name="Btn">
+    <!-- 次根布局使用，限制统一边距 -->
+    <style name="MarginHorizontal">
+        <item name="android:layout_marginLeft">@dimen/x16</item>
+        <item name="android:layout_marginRight">@dimen/x16</item>
+    </style>
+
+    <style name="TextSmall">
+        <item name="android:textSize">@dimen/x28</item>
+    </style>
+
+    <style name="TextMiddle">
+        <item name="android:textSize">@dimen/x32</item>
+    </style>
+
+    <style name="TextLarge">
+        <item name="android:textSize">@dimen/x36</item>
+    </style>
+
+    <style name="TextXLarge">
+        <item name="android:textSize">@dimen/x42</item>
+    </style>
+
+    <style name="Btn" parent="TextLarge">
         <item name="android:layout_gravity">center_horizontal</item>
         <item name="android:textColor">@color/COLOR_WHITE</item>
-        <item name="android:textSize">@dimen/x40</item>
         <item name="android:layout_height">@dimen/y100</item>
+        <item name="android:layout_width">match_parent</item>
     </style>
 
     <style name="BtnLong" parent="Btn">
@@ -52,30 +53,25 @@
         <item name="android:background">@drawable/btn_green_selector</item>
     </style>
 
-    <style name="TextSmall">
-        <item name="android:textSize">@dimen/x30</item>
-    </style>
-
-    <style name="TextMiddle">
-        <item name="android:textSize">@dimen/x32</item>
-    </style>
-
-    <style name="TextBig">
-        <item name="android:textSize">@dimen/x36</item>
-    </style>
-    
-    <style name="NavBtnText" parent="TextMiddle">
+    <style name="TextNavRight" parent="TextMiddle">
         <item name="android:textColor">@color/COLOR_WHITE</item>
         <item name="android:layout_alignParentRight">true</item>
         <item name="android:paddingLeft">@dimen/x16</item>
         <item name="android:paddingRight">@dimen/x16</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">center</item>
     </style>
 
-    <style name="NavTitleText" parent="TextBig">
+    <style name="TextNavTitle" parent="TextXLarge">
         <item name="android:textColor">@color/COLOR_WHITE</item>
         <item name="android:layout_centerInParent">true</item>
+        <item name="android:textStyle">bold</item>
         <item name="android:paddingLeft">@dimen/x30</item>
         <item name="android:paddingRight">@dimen/x30</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">center</item>
     </style>
 
     <!-- 底部导航栏：图标，文字 -->
@@ -87,8 +83,7 @@
         <item name="android:background">@color/TRANSPARENT</item>
     </style>
 
-    <style name="main_tab_btn">
-        <item name="android:textSize">@dimen/x25</item>
+    <style name="main_tab_btn" parent="TextSmall">
         <item name="android:gravity">center</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -98,6 +93,12 @@
         <item name="android:background">@color/TRANSPARENT</item>
     </style>
 
+    <style name="menu_item_layout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/y120</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
     <style name="menu_item_icon">
         <item name="android:layout_width">@dimen/x54</item>
         <item name="android:layout_height">@dimen/y54</item>
@@ -105,21 +106,27 @@
     </style>
 
     <style name="menu_item_text" parent="TextMiddle">
-        <item name="android:gravity">center</item>
-        <item name="android:layout_width">wrap_content</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:layout_marginLeft">@dimen/x16</item>
+        <item name="android:layout_marginRight">@dimen/x24</item>
         <item name="android:textColor">@color/TC_333333</item>
     </style>
 
-    <style name="recall_item_iv">
+    <style name="recall_picture_item">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">@dimen/y200</item>
         <item name="android:layout_weight">1.0</item>
-        <item name="android:maxWidth">@dimen/x300</item>
         <item name="android:scaleType">centerCrop</item>
         <item name="android:layout_marginLeft">@dimen/x8</item>
         <item name="android:layout_marginRight">@dimen/x8</item>
+    </style>
+
+    <style name="line">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/x2</item>
+        <item name="android:background">@color/LC_F6F6F6</item>
     </style>
 
 </resources>

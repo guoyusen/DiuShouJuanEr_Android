@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/TranslucentStatus"
+    style="@style/MatchMatch.FitWindow"
     android:background="@color/COLOR_THEME">
 
     <include
@@ -16,19 +16,12 @@
         android:layout_below="@+id/layoutHead"
         android:background="@color/COLOR_WHITE" />
 
-    <View
-        android:id="@+id/line"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y2"
-        android:layout_above="@+id/radioGroup"
-        android:background="@color/LC_EAEAEA" />
-
     <RadioGroup
         android:id="@+id/radioGroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/BG_F6F6F6"
+        android:background="@color/BG_ECECEC"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 

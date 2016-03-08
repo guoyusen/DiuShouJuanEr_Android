@@ -70,7 +70,7 @@ public class SideBarStar extends View {
 			paint.setColor(Color.GRAY);
 			paint.setTypeface(Typeface.DEFAULT);
 			paint.setAntiAlias(true);
-			paint.setTextSize(24f);
+			paint.setTextSize(28f);
 			// 选中的状态
 			if (i == choose) {
 				paint.setColor(Color.parseColor("#5C84DC"));

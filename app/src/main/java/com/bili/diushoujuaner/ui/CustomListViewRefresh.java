@@ -161,6 +161,13 @@ public class CustomListViewRefresh extends ListView implements OnScrollListener 
 		pChild.measure(childWidthSpec, childHeightSpec);
 	}
 
+	@Override
+	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+		int expandSpec = MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE >> 2,
+				MeasureSpec.AT_MOST);
+		super.onMeasure(widthMeasureSpec, expandSpec);
+	}
+
 	/**
 	 * 为了判断滑动到ListView底部没
 	 */

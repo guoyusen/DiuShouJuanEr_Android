@@ -2,20 +2,23 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/actionbar_height"
-    android:background="@color/TRANSPARENT">
+    android:background="@color/COLOR_THEME">
 
     <ImageButton
         android:id="@+id/back"
         android:background="@null"
         android:layout_width="@dimen/x100"
         android:layout_height="@dimen/y100"
-        android:padding="@dimen/x10"
         android:src="@mipmap/icon_nav_back"
         android:onClick="back"/>
 
     <TextView
         android:id="@+id/textNavTitle"
         style="@style/TextNavTitle"/>
+    
+    <TextView
+        android:id="@+id/textRight"
+        style="@style/TextNavRight"/>
 
     <ImageButton
         android:id="@+id/btnRight"
@@ -25,9 +28,5 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="@dimen/x16"
         android:layout_centerVertical="true"/>
-
-    <TextView
-        android:id="@+id/textRight"
-        style="@style/TextNavRight"/>
 
 </RelativeLayout>

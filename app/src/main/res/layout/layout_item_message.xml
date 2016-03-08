@@ -1,63 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/MatchWrap"
-    android:background="@color/BG_WHITE"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/y128"
+    android:background="@color/COLOR_WHITE"
+    android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:paddingTop="@dimen/y16"
-    android:paddingBottom="@dimen/y16">
+    android:paddingLeft="@dimen/x16"
+    android:paddingRight="@dimen/x16">
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/ivItemHead"
-        android:layout_width="@dimen/x120"
-        android:layout_height="@dimen/y120"
-        app:placeholderImage="@mipmap/shin"
-        android:layout_marginLeft="@dimen/x16"
+        android:layout_width="@dimen/x100"
+        android:layout_height="@dimen/y100"
         android:layout_centerVertical="true"
-        app:roundAsCircle="true"/>
+        app:placeholderImage="@mipmap/shin"
+        app:roundAsCircle="true" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/x16"
-        android:layout_marginRight="@dimen/x16">
+        android:layout_marginLeft="@dimen/x16">
 
         <TextView
             android:id="@+id/textItemName"
+            style="@style/TextLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/TextBig"
-            android:textColor="@color/TC_BLACK"
             android:layout_alignParentLeft="true"
-            android:layout_marginTop="@dimen/y10"
             android:layout_alignParentTop="true"
-            android:singleLine="true"
+            android:layout_marginTop="@dimen/y20"
             android:ellipsize="marquee"
-            android:text="三木同学"/>
+            android:singleLine="true"
+            android:text="三木同学"
+            android:textColor="@color/TC_BLACK" />
 
         <TextView
             android:id="@+id/textItemContent"
+            style="@style/TextMiddle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/TextMiddle"
-            android:singleLine="true"
-            android:ellipsize="marquee"
-            android:textColor="@color/TC_808080"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="@dimen/y10"
             android:layout_alignParentLeft="true"
-            android:text="就让大雨冲刷记忆中的沙，让我了无牵挂浪迹在天涯"/>
+            android:layout_marginBottom="@dimen/y16"
+            android:ellipsize="marquee"
+            android:singleLine="true"
+            android:text="就让大雨冲刷记忆中的沙，让我了无牵挂浪迹在天涯"
+            android:textColor="@color/TC_808080" />
 
         <TextView
             android:id="@+id/textItemTime"
+            style="@style/TextSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/textItemName"
-            style="@style/TextSmall"
-            android:textColor="@color/TC_808080"
-            android:text="20:20"
             android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"/>
+            android:layout_alignParentTop="true"
+            android:text="20:20"
+            android:textColor="@color/TC_808080" />
 
     </RelativeLayout>
 

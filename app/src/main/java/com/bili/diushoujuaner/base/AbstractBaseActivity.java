@@ -11,11 +11,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.manager.ActivityManager;
 import com.bili.diushoujuaner.manager.SystemBarTintManager;
 import com.bili.diushoujuaner.application.CustomApplication;
+
+import java.util.Date;
+
+import butterknife.ButterKnife;
 
 /**
  * Created by BiLi on 2016/2/27.
@@ -63,6 +69,10 @@ public abstract class AbstractBaseActivity extends Activity {
      */
     public abstract void onPageDestroy();
 
+    public abstract void showPageHead(String titleText, Integer iconId, String rightText);
+
+    public abstract void showPageHeadSpecial(String titleText, Integer iconId, Date rightText);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);
@@ -79,6 +89,7 @@ public abstract class AbstractBaseActivity extends Activity {
         initIntentParam(getIntent());
         beforeInitView();
         initView();
+        ButterKnife.bind(this);
         setViewStatus();
     }
 
@@ -107,6 +118,7 @@ public abstract class AbstractBaseActivity extends Activity {
     @Override
     protected void onDestroy() {
         onPageDestroy();
+        ButterKnife.unbind(this);
         super.onDestroy();
         ActivityManager.getInstance().removeActivity(this);
     }
@@ -121,23 +133,6 @@ public abstract class AbstractBaseActivity extends Activity {
     protected void onResume() {
         super.onResume();
         onPageResume();
-    }
-
-    @Override
-    public void setContentView(int layout) {
-        ViewGroup mainView = (ViewGroup) LayoutInflater.from(this).inflate(
-                layout, null);
-        setContentView(mainView);
-    }
-
-    @Override
-    public void setContentView(View view) {
-        super.setContentView(view);
-    }
-
-    @Override
-    public void setContentView(View view, ViewGroup.LayoutParams params) {
-        super.setContentView(view, params);
     }
 
     @Override

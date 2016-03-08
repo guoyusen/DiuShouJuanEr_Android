@@ -5,32 +5,52 @@
     android:layout_height="@dimen/actionbar_height"
     android:background="@color/COLOR_THEME">
 
+    <ImageButton
+        android:id="@+id/back"
+        android:background="@null"
+        android:layout_width="@dimen/x100"
+        android:layout_height="@dimen/y100"
+        android:src="@mipmap/icon_nav_back"
+        android:onClick="back"/>
+
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/ivNavHead"
         android:layout_width="@dimen/x80"
         android:layout_height="@dimen/y80"
         android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/back"
         android:layout_marginLeft="@dimen/x16"
         app:placeholderImage="@mipmap/shin"
         app:roundAsCircle="true"/>
 
     <TextView
+        android:id="@+id/textAuthor"
+        style="@style/TextMiddle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/TC_WHITE"
+        android:layout_marginLeft="@dimen/x16"
+        android:layout_toRightOf="@+id/ivNavHead"
+        android:layout_centerVertical="true"
+        android:maxLength="8"
+        android:ellipsize="marquee"
+        android:text="三木同学"/>
+
+    <TextView
         android:id="@+id/textNavTitle"
         style="@style/TextNavTitle"/>
 
+    <com.bili.diushoujuaner.ui.TimeSinceTextView
+        android:id="@+id/textRight"
+        style="@style/TextNavRight"/>
+
     <ImageButton
-        android:id="@+id/btnRecallAdd"
+        android:id="@+id/btnRight"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:src="@mipmap/icon_recall_add"
         android:background="@null"
         android:layout_alignParentRight="true"
         android:layout_marginRight="@dimen/x16"
         android:layout_centerVertical="true"/>
-    
-    <TextView
-        android:id="@+id/textContactAdd"
-        style="@style/TextNavRight"
-        android:text="添加"/>
 
 </RelativeLayout>

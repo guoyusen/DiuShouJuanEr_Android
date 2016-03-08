@@ -2,26 +2,28 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/MatchWrap"
-    android:orientation="vertical"
-    android:background="@color/BG_WHITE">
+    android:background="@color/COLOR_WHITE"
+    android:orientation="vertical">
 
     <TextView
+        android:id="@+id/textItemMark"
+        style="@style/TextLarge"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y40"
-        android:background="@color/BG_ECECEC"
-        android:textColor="@color/TC_808080"
-        android:gravity="center|left"
+        android:layout_height="wrap_content"
+        android:textColor="@color/TC_ADADBB"
+        android:paddingTop="@dimen/y2"
+        android:paddingBottom="@dimen/y2"
         android:paddingLeft="@dimen/x16"
-        android:text="群组"
-        android:textSize="@dimen/x30"/>
-    
+        android:paddingRight="@dimen/x16"
+        android:background="@color/BG_F6F6F6"
+        android:gravity="left"
+        android:text="A"/>
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y112"
-        android:background="@color/BG_WHITE"
-        android:layout_marginLeft="@dimen/x16"
-        android:layout_marginRight="@dimen/x16"
+        android:layout_height="@dimen/y128"
         android:orientation="horizontal"
+        style="@style/MarginHorizontal"
         android:gravity="center_vertical">
 
         <com.facebook.drawee.view.SimpleDraweeView
@@ -29,16 +31,16 @@
             android:layout_width="@dimen/x80"
             android:layout_height="@dimen/y80"
             app:placeholderImage="@mipmap/shin"
-            app:roundAsCircle="true"/>
+            app:roundAsCircle="true" />
 
         <TextView
             android:id="@+id/textContactName"
+            style="@style/TextMiddle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/x16"
-            style="@style/TextMiddle"
-            android:textColor="@color/TC_333333"
-            android:text="三木同学"/>
+            android:layout_marginLeft="@dimen/x42"
+            android:text="三木同学"
+            android:textColor="@color/TC_333333" />
 
     </LinearLayout>
 

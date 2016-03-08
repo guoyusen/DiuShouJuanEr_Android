@@ -1,8 +1,12 @@
 package com.bili.diushoujuaner.fragment.main;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 
 import com.bili.diushoujuaner.R;
+import com.bili.diushoujuaner.activity.RecallDetailActivity;
 import com.bili.diushoujuaner.adapter.RecallAdapter;
 import com.bili.diushoujuaner.base.BaseFragment;
 import com.bili.diushoujuaner.model.response.RecallVo;
@@ -53,6 +57,13 @@ public class HomeFragment extends BaseFragment {
         }
         recallAdapter = new RecallAdapter(getContext(), listRecall);
         customListViewRefresh.setAdapter(recallAdapter);
+
+        customListViewRefresh.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                startActivity(new Intent(getContext(), RecallDetailActivity.class));
+            }
+        });
     }
 
 }

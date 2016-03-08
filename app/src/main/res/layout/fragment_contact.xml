@@ -1,14 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/MatchMatch"
-    android:background="@color/BG_WHITE">
+    android:background="@color/COLOR_WHITE">
 
-    <com.bili.diushoujuaner.ui.CustomListViewRefresh
-        android:id="@+id/customListViewRefresh"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:divider="@color/BG_ECECEC"
-        android:dividerHeight="@dimen/y2" />
+    <ScrollView
+        android:id="@+id/scrollView"
+        style="@style/MatchMatch">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/TextLarge"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/TC_ADADBB"
+                android:paddingTop="@dimen/y2"
+                android:paddingBottom="@dimen/y2"
+                android:paddingLeft="@dimen/x16"
+                android:paddingRight="@dimen/x16"
+                android:background="@color/BG_F6F6F6"
+                android:gravity="left"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:text="☆"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y128"
+                android:orientation="horizontal"
+                style="@style/MarginHorizontal"
+                android:gravity="center_vertical">
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:layout_width="@dimen/x80"
+                    android:layout_height="@dimen/y80"
+                    app:placeholderImage="@mipmap/item_contact_new"
+                    app:roundAsCircle="true" />
+
+                <TextView
+                    style="@style/TextMiddle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/x42"
+                    android:text="新的朋友"
+                    android:textColor="@color/TC_333333" />
+
+            </LinearLayout>
+
+            <View
+                style="@style/line"
+                android:layout_marginLeft="@dimen/x16"
+                android:layout_marginRight="@dimen/x16"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y128"
+                android:orientation="horizontal"
+                style="@style/MarginHorizontal"
+                android:gravity="center_vertical">
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:layout_width="@dimen/x80"
+                    android:layout_height="@dimen/y80"
+                    app:placeholderImage="@mipmap/item_contact_party"
+                    app:roundAsCircle="true" />
+
+                <TextView
+                    style="@style/TextMiddle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/x42"
+                    android:text="群组"
+                    android:textColor="@color/TC_333333" />
+
+            </LinearLayout>
+
+            <com.bili.diushoujuaner.ui.CustomListViewRefresh
+                android:id="@+id/customListViewRefresh"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@color/LC_F6F6F6"
+                android:dividerHeight="@dimen/y2" />
+
+        </LinearLayout>
+
+    </ScrollView>
 
     <com.bili.diushoujuaner.ui.SideBarStar
         android:id="@+id/sideBar"

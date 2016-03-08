@@ -8,11 +8,16 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.view.KeyEvent;
 import android.view.View;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
+import com.bili.diushoujuaner.R;
+import com.bili.diushoujuaner.ui.TimeSinceTextView;
 import com.nanotasks.BackgroundWork;
 import com.nanotasks.Completion;
 import com.nanotasks.Tasks;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -135,5 +140,41 @@ public class BaseActivity extends AbstractBaseActivity {
 
     public void back(View view) {
         finish();
+    }
+
+    @Override
+    public void showPageHeadSpecial(String titleText, Integer iconId, Date rightText) {
+        showPageHead(titleText, iconId, null);
+
+        if(rightText == null){
+            findViewById(R.id.textRight).setVisibility(View.INVISIBLE);
+        }else{
+            findViewById(R.id.textRight).setVisibility(View.VISIBLE);
+            ((TimeSinceTextView)findViewById(R.id.textRight)).setDate(rightText);
+        }
+    }
+
+    @Override
+    public void showPageHead(String titleText, Integer iconId, String rightText) {
+        if(titleText == null){
+            findViewById(R.id.textNavTitle).setVisibility(View.INVISIBLE);
+        }else{
+            findViewById(R.id.textNavTitle).setVisibility(View.VISIBLE);
+            ((TextView)findViewById(R.id.textNavTitle)).setText(titleText);
+        }
+
+        if(iconId == null){
+            findViewById(R.id.btnRight).setVisibility(View.GONE);
+        }else{
+            findViewById(R.id.btnRight).setVisibility(View.VISIBLE);
+            ((ImageButton)findViewById(R.id.btnRight)).setImageResource(iconId);
+        }
+
+        if(rightText == null){
+            findViewById(R.id.textRight).setVisibility(View.INVISIBLE);
+        }else{
+            findViewById(R.id.textRight).setVisibility(View.VISIBLE);
+            ((TextView)findViewById(R.id.textRight)).setText(rightText);
+        }
     }
 }

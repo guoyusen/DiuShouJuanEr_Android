@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:cb="http://schemas.android.com/tools"
+    style="@style/MatchMatch.FitWindow"
+    android:background="@color/COLOR_WHITE">
+
+    <include
+        android:id="@+id/layoutHead"
+        layout="@layout/layout_head_recall_detail" />
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/layoutBottom"
+        android:layout_below="@+id/layoutHead">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.bili.diushoujuaner.ui.aligntextview.CBAlignTextView
+                android:id="@+id/textRecallDetail"
+                style="@style/TextMiddle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/x16"
+                cb:punctuationConvert="true"
+                android:textColorHighlight="@color/SELECT_HLIGHT"
+                android:textIsSelectable="true"
+                android:textColor="@color/TC_333333" />
+
+            <com.bili.diushoujuaner.ui.CustomGridView
+                android:id="@+id/customGridView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:numColumns="3"
+                android:scrollbars="none"
+                android:layout_marginLeft="@dimen/x8"
+                android:layout_marginRight="@dimen/x8"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/layoutBottom"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y112"
+        android:layout_alignParentBottom="true"
+        android:background="@color/BG_ECECEC">
+
+        <EditText
+            android:id="@+id/textComment"
+            style="@style/TextMiddle"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y80"
+            android:layout_margin="@dimen/x16"
+            android:background="@color/COLOR_WHITE"
+            android:hint="说点什么呗..."
+            android:paddingLeft="@dimen/x5"
+            android:paddingRight="@dimen/x5"
+            android:textColor="@color/TC_BLACK"
+            android:textColorHint="@color/TC_ADADBB" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/MatchMatch"
+    android:background="@color/COLOR_WHITE"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <include android:id="@+id/layoutHead"
+        layout="@layout/layout_head_custom"/>
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100"
+        android:layout_marginTop="@dimen/y16"
+        android:background="@color/BG_F6F6F6">
+
+        <ImageView
+            android:layout_width="@dimen/x60"
+            android:layout_height="@dimen/y60"
+            android:src="@mipmap/icon_search_contact"
+            android:layout_marginLeft="@dimen/x16"
+            android:layout_centerVertical="true"/>
+
+        <EditText
+            style="@style/TextMiddle"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y56"
+            android:layout_marginRight="@dimen/x120"
+            android:paddingLeft="@dimen/x5"
+            android:paddingRight="@dimen/x5"
+            android:singleLine="true"
+            android:layout_centerVertical="true"
+            android:background="@color/COLOR_WHITE"
+            android:textColor="@color/TC_333333"
+            android:layout_marginLeft="@dimen/x80"
+            android:hint="输入手机号/群号"
+            android:textColorHint="@color/TC_ADADBB"/>
+
+        <TextView
+            android:id="@+id/textSearch"
+            android:layout_width="@dimen/x120"
+            android:layout_height="@dimen/y100"
+            android:background="@color/BG_F6F6F6"
+            android:layout_alignParentRight="true"
+            android:gravity="center"
+            android:text="搜索"
+            style="@style/TextMiddle"
+            android:textColor="@color/TC_5C84DC"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

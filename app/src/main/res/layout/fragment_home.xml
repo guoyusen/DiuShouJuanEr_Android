@@ -6,14 +6,14 @@
         android:id="@+id/customCircleRefreshLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/BG_ECECEC">
+        android:background="@color/COLOR_WHITE">
 
         <com.bili.diushoujuaner.ui.CustomListViewRefresh
             android:id="@+id/customListViewRefresh"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:dividerHeight="@dimen/y20"
-            android:divider="@color/BG_ECECEC">
+            android:divider="@color/LC_F6F6F6">
 
         </com.bili.diushoujuaner.ui.CustomListViewRefresh>
 

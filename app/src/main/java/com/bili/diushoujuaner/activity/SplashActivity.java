@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 
 import com.bili.diushoujuaner.R;
+import com.bili.diushoujuaner.ui.RevealTextView;
 
 /**
  * Created by BiLi on 2016/2/29.
@@ -20,9 +21,16 @@ public class SplashActivity extends Activity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                ((RevealTextView) findViewById(R.id.textSlogon)).setAnimatedText(getResources().getString(R.string.slogon));
+            }
+        }, 800);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
                 showNextActivity();
             }
-        },2000);
+        },3000);
     }
 
     private void showNextActivity(){

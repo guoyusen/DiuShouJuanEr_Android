@@ -4,13 +4,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ScrollView;
 
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.adapter.ContactAdapter;
 import com.bili.diushoujuaner.base.BaseFragment;
 import com.bili.diushoujuaner.model.response.ContactDto;
 import com.bili.diushoujuaner.ui.CustomListViewRefresh;
-import com.bili.diushoujuaner.ui.ReboundScrollView;
 import com.bili.diushoujuaner.ui.SideBarStar;
 import com.bili.diushoujuaner.utils.ViewUtil;
 
@@ -29,6 +29,8 @@ public class ContactFragment extends BaseFragment {
     CustomListViewRefresh customListViewRefresh;
     @Bind(R.id.sideBar)
     SideBarStar sideBar;
+    @Bind(R.id.scrollView)
+    ScrollView scrollView;
 
     private ContactAdapter contactAdapter;
     private List<ContactDto> listContact;
@@ -59,11 +61,7 @@ public class ContactFragment extends BaseFragment {
         }
         contactAdapter = new ContactAdapter(getContext(), listContact);
         customListViewRefresh.setAdapter(contactAdapter);
-//        int listViewHeight = ViewUtil.getListViewHeightBasedOnChildren(customListViewRefresh);
-//        ViewGroup.LayoutParams layoutParams = customListViewRefresh.getLayoutParams();
-//        layoutParams.height = listViewHeight;
-//        customListViewRefresh.setLayoutParams(layoutParams);
-//        customListViewRefresh.invalidate();
+//        ViewUtil.getListViewHeightBasedOnChildren(customListViewRefresh);
     }
 
 }

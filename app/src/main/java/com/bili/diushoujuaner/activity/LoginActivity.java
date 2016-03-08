@@ -14,14 +14,12 @@ public class LoginActivity extends BaseActivity {
     }
 
     @Override
-    public void beforeInitView() {
-        super.beforeInitView();
-    }
-
-    @Override
     public void initView() {
-        super.initView();
         setContentView(R.layout.activity_login);
     }
 
+    @Override
+    public void setViewStatus() {
+        showPageHead(null, null, "新用户");
+    }
 }
