@@ -4,8 +4,8 @@
     style="@style/MatchMatch"
     android:background="@color/COLOR_WHITE">
 
-    <ScrollView
-        android:id="@+id/scrollView"
+    <com.bili.diushoujuaner.ui.ReboundScrollView
+        android:id="@+id/reboundScrollView"
         style="@style/MatchMatch">
 
         <LinearLayout
@@ -29,6 +29,7 @@
                 android:text="☆"/>
 
             <LinearLayout
+                android:id="@+id/layoutNewContact"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/y128"
                 android:orientation="horizontal"
@@ -36,13 +37,13 @@
                 android:gravity="center_vertical">
 
                 <com.facebook.drawee.view.SimpleDraweeView
-                    android:layout_width="@dimen/x80"
-                    android:layout_height="@dimen/y80"
+                    android:layout_width="@dimen/x100"
+                    android:layout_height="@dimen/y100"
                     app:placeholderImage="@mipmap/item_contact_new"
                     app:roundAsCircle="true" />
 
                 <TextView
-                    style="@style/TextMiddle"
+                    style="@style/TextLarge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/x42"
@@ -57,6 +58,7 @@
                 android:layout_marginRight="@dimen/x16"/>
 
             <LinearLayout
+                android:id="@+id/layoutParty"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/y128"
                 android:orientation="horizontal"
@@ -64,13 +66,13 @@
                 android:gravity="center_vertical">
 
                 <com.facebook.drawee.view.SimpleDraweeView
-                    android:layout_width="@dimen/x80"
-                    android:layout_height="@dimen/y80"
+                    android:layout_width="@dimen/x100"
+                    android:layout_height="@dimen/y100"
                     app:placeholderImage="@mipmap/item_contact_party"
                     app:roundAsCircle="true" />
 
                 <TextView
-                    style="@style/TextMiddle"
+                    style="@style/TextLarge"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/x42"
@@ -88,7 +90,7 @@
 
         </LinearLayout>
 
-    </ScrollView>
+    </com.bili.diushoujuaner.ui.ReboundScrollView>
 
     <com.bili.diushoujuaner.ui.SideBarStar
         android:id="@+id/sideBar"

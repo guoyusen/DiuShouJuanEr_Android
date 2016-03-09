@@ -4,20 +4,19 @@
     xmlns:cb="http://schemas.android.com/tools"
     style="@style/MatchWrap"
     android:background="@color/COLOR_WHITE"
-    android:orientation="vertical"
-    android:paddingTop="@dimen/y5"
-    android:paddingBottom="@dimen/y7">
+    android:paddingBottom="@dimen/y10"
+    android:orientation="vertical">
 
     <RelativeLayout
     android:layout_width="match_parent"
-    android:layout_height="@dimen/y100"
+    android:layout_height="@dimen/y128"
     android:layout_marginLeft="@dimen/x16"
     android:layout_marginRight="@dimen/x16">
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/ivItemHead"
-        android:layout_width="@dimen/x80"
-        android:layout_height="@dimen/y80"
+        android:layout_width="@dimen/x100"
+        android:layout_height="@dimen/y100"
         app:placeholderImage="@mipmap/shin"
         android:layout_centerVertical="true"
         app:roundAsCircle="true"/>
@@ -29,7 +28,8 @@
         style="@style/TextLarge"
         android:textColor="@color/TC_BLACK"
         android:layout_toRightOf="@+id/ivItemHead"
-        android:layout_margin="@dimen/x10"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_marginTop="@dimen/x16"
         android:text="三木同学"/>
 
     <TextView
@@ -126,7 +126,5 @@
         </RelativeLayout>
 
     </LinearLayout>
-
-
 
 </LinearLayout>

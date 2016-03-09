@@ -15,6 +15,17 @@
         <item name="android:fitsSystemWindows">true</item>
     </style>
 
+    <style name="MatchWrap.MarginHorizontal">
+        <item name="android:layout_marginLeft">@dimen/x16</item>
+        <item name="android:layout_marginRight">@dimen/x16</item>
+    </style>
+
+    <style name="MatchMatch.MarginHorizontal">
+        <item name="android:layout_marginLeft">@dimen/x16</item>
+        <item name="android:layout_marginRight">@dimen/x16</item>
+    </style>
+
+
     <!-- 次根布局使用，限制统一边距 -->
     <style name="MarginHorizontal">
         <item name="android:layout_marginLeft">@dimen/x16</item>
@@ -49,8 +60,17 @@
         <item name="android:layout_marginRight">@dimen/x60</item>
     </style>
 
+    <style name="BtnXLong" parent="Btn">
+        <item name="android:layout_marginLeft">@dimen/x16</item>
+        <item name="android:layout_marginRight">@dimen/x16</item>
+    </style>
+
     <style name="BtnLongGreen" parent="BtnLong">
         <item name="android:background">@drawable/btn_green_selector</item>
+    </style>
+
+    <style name="BtnXLongGreen" parent="BtnXLong">
+        <item name="android:background">@drawable/btn_blue_selector</item>
     </style>
 
     <style name="TextNavRight" parent="TextMiddle">

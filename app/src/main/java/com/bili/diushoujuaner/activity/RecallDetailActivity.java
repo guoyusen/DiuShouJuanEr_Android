@@ -1,14 +1,12 @@
 package com.bili.diushoujuaner.activity;
 
-import android.os.Bundle;
 import android.widget.EditText;
-import android.widget.GridView;
 import android.widget.TextView;
 
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.adapter.RecallDetailGalleryAdapter;
 import com.bili.diushoujuaner.base.BaseActivity;
-import com.bili.diushoujuaner.model.response.Picture;
+import com.bili.diushoujuaner.model.response.PictureDto;
 import com.bili.diushoujuaner.ui.CustomGridView;
 import com.bili.diushoujuaner.ui.aligntextview.CBAlignTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -18,7 +16,6 @@ import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 
 /**
  * Created by BiLi on 2016/3/8.
@@ -39,7 +36,7 @@ public class RecallDetailActivity extends BaseActivity {
     CustomGridView customGridView;
 
     private RecallDetailGalleryAdapter recallDetailGalleryAdapter;
-    private List<Picture> pictureList;
+    private List<PictureDto> pictureList;
 
     @Override
     public void initView() {
@@ -57,7 +54,7 @@ public class RecallDetailActivity extends BaseActivity {
         textRecallDetail.setText(getString(R.string.tmpString));
 
         for(int i=0; i<9;i++){
-            pictureList.add(new Picture());
+            pictureList.add(new PictureDto());
         }
         recallDetailGalleryAdapter = new RecallDetailGalleryAdapter(this, pictureList);
         customGridView.setAdapter(recallDetailGalleryAdapter);

@@ -30,8 +30,8 @@
     <!-- 按钮常用颜色 -->
     <color name="BTN_GREEN1">#9DEC5B</color>
     <color name="BTN_GREEN2">#95E058</color>
-    <color name="BTN_BLUE1">#3DBCF5</color>
-    <color name="BTN_BLUE2">#049CDB</color>
+    <color name="BTN_BLUE1">#5C84DC</color>
+    <color name="BTN_BLUE2">#577dcf</color>
     <color name="BTN_RED1">#FC6E51</color>
     <color name="BTN_RED2">#E9573F</color>
 

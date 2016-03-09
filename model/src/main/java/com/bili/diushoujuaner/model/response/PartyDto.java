@@ -1,9 +1,7 @@
 package com.bili.diushoujuaner.model.response;
 
 /**
- * Created by BiLi on 2016/3/8.
+ * Created by BiLi on 2016/3/9.
  */
-public class Picture {
-
-
+public class PartyDto {
 }

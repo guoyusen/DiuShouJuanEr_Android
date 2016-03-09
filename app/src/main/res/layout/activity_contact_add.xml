@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/MatchMatch"
+    style="@style/MatchMatch.FitWindow"
     android:background="@color/COLOR_WHITE"
-    android:fitsSystemWindows="true"
     android:orientation="vertical">
 
     <include android:id="@+id/layoutHead"

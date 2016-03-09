@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/y128"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/COLOR_WHITE"
+    android:gravity="center_vertical"
+    android:paddingLeft="@dimen/x16"
+    android:paddingRight="@dimen/x16"
+    android:orientation="horizontal">
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/ivItemHead"
+        android:layout_width="@dimen/x100"
+        android:layout_height="@dimen/y100"
+        app:placeholderImage="@mipmap/shin"
+        app:roundAsCircle="true" />
+
+    <TextView
+        android:id="@+id/textContactName"
+        style="@style/TextLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x42"
+        android:text="三木同学"
+        android:textColor="@color/TC_333333" />
+
+
+</LinearLayout>

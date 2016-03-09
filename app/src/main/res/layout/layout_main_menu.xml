@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/MatchMatch.FitWindow"
+    android:clickable="true"
     android:background="@mipmap/bg_menu_head">
 
     <RelativeLayout
@@ -50,6 +51,7 @@
                 android:src="@mipmap/icon_menu_autograph_quote" />
 
             <TextView
+                android:id="@+id/textAutograph"
                 style="@style/TextSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -151,6 +153,7 @@
                     android:src="@mipmap/icon_menu_feedback" />
 
                 <TextView
+                    android:id="@+id/textFeedBack"
                     style="@style/menu_item_text"
                     android:text="意见反馈" />
 

@@ -2,7 +2,6 @@ package com.bili.diushoujuaner.activity;
 
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.GravityCompat;
@@ -31,7 +30,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 
 public class MainActivity extends BaseFragmentActivity implements View.OnClickListener {
 
@@ -59,6 +57,8 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
     Button btnMenuExit;
     @Bind(R.id.textSystemNotice)
     BGABadgeTextView textSystemNotice;
+    @Bind(R.id.textAutograph)
+    TextView textAutograph;
 
     private List<Fragment> fragmentList;
     private boolean isWaitingExit = false;
@@ -84,6 +84,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
 
         menuHead.setOnClickListener(this);
         btnMenuExit.setOnClickListener(this);
+        textAutograph.setOnClickListener(this);
 
         textContactAdd.setOnClickListener(this);
         ivNavHead.setOnClickListener(this);
@@ -154,13 +155,19 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
                 drawerLayout.openDrawer(GravityCompat.START);
                 break;
             case R.id.textContactAdd:
-                startActivity(new Intent(MainActivity.this, ContactAddActivity.class));
+                startActivity(new Intent(MainActivity.this, ContactSearchActivity.class));
                 break;
             case R.id.btnMenuExit:
                 ActivityManager.getInstance().exit();
                 break;
             case R.id.menuHead:
                 startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                break;
+            case R.id.textAutograph:
+                startActivity(new Intent(MainActivity.this, ContentEditActivity.class));
+                break;
+            case R.id.textFeedBack:
+
                 break;
         }
 

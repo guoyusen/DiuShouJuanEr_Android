@@ -11,10 +11,10 @@ import java.util.List;
 /**
  * Created by BiLi on 2016/3/8.
  */
-public class RecallDetailGalleryAdapter extends CommonAdapter<PictureDto> {
+public class ContactRecentGalleryAdapter extends CommonAdapter<PictureDto> {
 
-    public RecallDetailGalleryAdapter(Context context, List<PictureDto> list){
-        super(context, list, R.layout.layout_item_gallery);
+    public ContactRecentGalleryAdapter(Context context, List<PictureDto> list){
+        super(context, list, R.layout.layout_item_contact_recent_recent_gallery);
     }
 
     @Override

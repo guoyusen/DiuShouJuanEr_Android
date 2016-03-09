@@ -28,14 +28,14 @@
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/ivItemHead"
-            android:layout_width="@dimen/x80"
-            android:layout_height="@dimen/y80"
+            android:layout_width="@dimen/x100"
+            android:layout_height="@dimen/y100"
             app:placeholderImage="@mipmap/shin"
             app:roundAsCircle="true" />
 
         <TextView
             android:id="@+id/textContactName"
-            style="@style/TextMiddle"
+            style="@style/TextLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/x42"

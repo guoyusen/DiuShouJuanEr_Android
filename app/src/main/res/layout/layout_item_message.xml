@@ -20,7 +20,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/x16">
+        android:layout_marginLeft="@dimen/x20">
 
         <TextView
             android:id="@+id/textItemName"
@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="@dimen/y20"
+            android:layout_marginTop="@dimen/y16"
             android:ellipsize="marquee"
             android:singleLine="true"
             android:text="三木同学"
@@ -37,7 +37,7 @@
 
         <TextView
             android:id="@+id/textItemContent"
-            style="@style/TextMiddle"
+            style="@style/TextSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"

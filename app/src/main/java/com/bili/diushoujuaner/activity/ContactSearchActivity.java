@@ -6,7 +6,7 @@ import com.bili.diushoujuaner.base.BaseActivity;
 /**
  * Created by BiLi on 2016/3/7.
  */
-public class ContactAddActivity extends BaseActivity {
+public class ContactSearchActivity extends BaseActivity {
 
     @Override
     public void initView() {
