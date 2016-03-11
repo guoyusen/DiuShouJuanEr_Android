@@ -14,7 +14,7 @@ import com.bili.diushoujuaner.activity.PartyActivity;
 import com.bili.diushoujuaner.adapter.ContactAdapter;
 import com.bili.diushoujuaner.base.BaseFragment;
 import com.bili.diushoujuaner.callback.IShowMainMenu;
-import com.bili.diushoujuaner.model.entities.ContactDto;
+import com.bili.diushoujuaner.utils.response.ContactDto;
 import com.bili.diushoujuaner.widget.CustomListViewRefresh;
 import com.bili.diushoujuaner.widget.ReboundScrollView;
 import com.bili.diushoujuaner.widget.SideBarStar;

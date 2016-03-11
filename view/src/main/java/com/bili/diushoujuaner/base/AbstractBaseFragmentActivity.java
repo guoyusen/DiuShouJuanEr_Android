@@ -19,8 +19,8 @@ import android.view.WindowManager;
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.application.CustomApplication;
 import com.bili.diushoujuaner.presenter.base.BasePresenter;
-import com.bili.diushoujuaner.utils.ActivityManager;
-import com.bili.diushoujuaner.utils.SystemBarTintManager;
+import com.bili.diushoujuaner.utils.manager.ActivityManager;
+import com.bili.diushoujuaner.utils.manager.SystemBarTintManager;
 
 import butterknife.ButterKnife;
 

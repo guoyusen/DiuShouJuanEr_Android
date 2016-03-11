@@ -1,25 +1,34 @@
 package com.bili.diushoujuaner.activity;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 
 import com.bili.diushoujuaner.R;
-import com.bili.diushoujuaner.model.entities.UserDto;
-import com.bili.diushoujuaner.utils.UserInfoPreference;
+import com.bili.diushoujuaner.base.BaseActivity;
+import com.bili.diushoujuaner.presenter.presenter.SplashActivityPresenter;
+import com.bili.diushoujuaner.presenter.viewinterface.SplashActivityView;
+import com.bili.diushoujuaner.utils.Constant;
 import com.bili.diushoujuaner.widget.RevealTextView;
 
 /**
  * Created by BiLi on 2016/2/29.
  */
-public class SplashActivity extends Activity {
+public class SplashActivity extends BaseActivity implements SplashActivityView {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public void tintStatusColor() {
+        super.tintStatusColor();
+        tintManager.setStatusBarTintResource(R.color.TRANSPARENT);
+    }
+
+    @Override
+    public void initView() {
         setContentView(R.layout.activity_splash);
+    }
+
+    @Override
+    public void setViewStatus() {
+        basePresenter = new SplashActivityPresenter(this, getApplicationContext());
 
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -31,18 +40,22 @@ public class SplashActivity extends Activity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                showNextActivity();
+                getPresenterByClass(SplashActivityPresenter.class).getNextActivity();
             }
-        },3000);
+        }, 3000);
     }
 
-    private void showNextActivity(){
-        UserDto userDto = UserInfoPreference.getInstance().getUserInfo();
-        if(userDto.getAccessToken().length() <= 0){
-            startActivity(new Intent(SplashActivity.this, LoginActivity.class));
-        }else{
-            startActivity(new Intent(SplashActivity.this, MainActivity.class));
+    @Override
+    public void showNextActivity(int showType) {
+        switch (showType){
+            case Constant.SHOW_TYPE_LOGIN:
+                startActivity(new Intent(SplashActivity.this, LoginActivity.class));
+                break;
+            case Constant.SHOW_TYPE_MAIN:
+                startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                break;
         }
         finish();
     }
+
 }

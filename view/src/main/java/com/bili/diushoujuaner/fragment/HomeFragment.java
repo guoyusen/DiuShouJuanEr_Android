@@ -13,7 +13,7 @@ import com.bili.diushoujuaner.activity.RecallDetailActivity;
 import com.bili.diushoujuaner.adapter.RecallAdapter;
 import com.bili.diushoujuaner.base.BaseFragment;
 import com.bili.diushoujuaner.callback.IShowMainMenu;
-import com.bili.diushoujuaner.model.entities.RecallVo;
+import com.bili.diushoujuaner.utils.response.RecallVo;
 import com.bili.diushoujuaner.presenter.presenter.HomeFragmentPresenter;
 import com.bili.diushoujuaner.presenter.viewinterface.HomeFragmentView;
 import com.bili.diushoujuaner.widget.CustomListViewRefresh;
@@ -78,7 +78,7 @@ public class HomeFragment extends BaseFragment implements WaveSwipeRefreshLayout
         waveSwipeRefreshLayout.setWaveColor(Color.parseColor("#5C84DC"));
         waveSwipeRefreshLayout.setOnRefreshListener(this);
 
-        basePresenter = new HomeFragmentPresenter(this);
+        basePresenter = new HomeFragmentPresenter(this, getActivity().getApplication().getApplicationContext());
         getPresenterByClass(HomeFragmentPresenter.class).loadRecallList();
 
     }

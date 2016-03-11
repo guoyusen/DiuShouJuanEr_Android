@@ -18,7 +18,7 @@ import com.bili.diushoujuaner.callback.IShowMainMenu;
 import com.bili.diushoujuaner.fragment.ContactFragment;
 import com.bili.diushoujuaner.fragment.HomeFragment;
 import com.bili.diushoujuaner.fragment.MessageFragment;
-import com.bili.diushoujuaner.utils.ActivityManager;
+import com.bili.diushoujuaner.utils.manager.ActivityManager;
 import com.bili.diushoujuaner.widget.CustomViewPager;
 import com.bili.diushoujuaner.widget.badgeview.BGABadgeRadioButton;
 import com.bili.diushoujuaner.widget.badgeview.BGABadgeTextView;

@@ -1,9 +1,9 @@
-package com.bili.diushoujuaner.utils;
+package com.bili.diushoujuaner.model.preference;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.bili.diushoujuaner.model.entities.AccessTokenDto;
+import com.bili.diushoujuaner.utils.response.AccessTokenDto;
 
 /**
  * Created by BiLi on 2016/3/10.
@@ -14,13 +14,14 @@ public class AccessTokenPreference {
     private static Context mContext;
     private static AccessTokenPreference accessTokenPreference;
 
-    public AccessTokenPreference(Context context){
+    public static void initialize(Context context){
         mContext = context;
+        accessTokenPreference = new AccessTokenPreference();
     }
 
     public static synchronized AccessTokenPreference getInstance(){
         if(accessTokenPreference == null){
-            accessTokenPreference = new AccessTokenPreference(mContext);
+            throw new NullPointerException("AccessTokenPreference was not initialized!");
         }
         return accessTokenPreference;
     }

@@ -9,8 +9,6 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bili.diushoujuaner.R;
-
 public class CustomProgress extends Dialog {
 
 
@@ -24,7 +22,7 @@ public class CustomProgress extends Dialog {
 
     public static synchronized CustomProgress getInstance(Context context) {
         if (dialog == null) {
-            dialog = new CustomProgress(context, R.style.Custom_Progress);
+            dialog = new CustomProgress(context, com.bili.diushoujuaner.utils.R.style.Custom_Progress);
         }
         return dialog;
     }
@@ -38,7 +36,7 @@ public class CustomProgress extends Dialog {
      * 当窗口焦点改变时调用
      */
     public void onWindowFocusChanged(boolean hasFocus) {
-        ImageView imageView = (ImageView) findViewById(R.id.spinnerImageView);
+        ImageView imageView = (ImageView) findViewById(com.bili.diushoujuaner.utils.R.id.spinnerImageView);
         // 获取ImageView上的动画背景
         AnimationDrawable spinner = (AnimationDrawable) imageView.getBackground();
         // 开始动画
@@ -52,8 +50,8 @@ public class CustomProgress extends Dialog {
      */
     public void setMessage(CharSequence message) {
         if (message != null && message.length() > 0) {
-            findViewById(R.id.message).setVisibility(View.VISIBLE);
-            TextView txt = (TextView) findViewById(R.id.message);
+            findViewById(com.bili.diushoujuaner.utils.R.id.message).setVisibility(View.VISIBLE);
+            TextView txt = (TextView) findViewById(com.bili.diushoujuaner.utils.R.id.message);
             txt.setText(message);
             txt.invalidate();
         }
@@ -75,11 +73,11 @@ public class CustomProgress extends Dialog {
      */
     public void show(CharSequence message, boolean cancelable, OnCancelListener cancelListener) {
         dialog.setTitle("");
-        dialog.setContentView(R.layout.progress_custom);
+        dialog.setContentView(com.bili.diushoujuaner.utils.R.layout.progress_custom);
         if (message == null || message.length() == 0) {
-            dialog.findViewById(R.id.message).setVisibility(View.GONE);
+            dialog.findViewById(com.bili.diushoujuaner.utils.R.id.message).setVisibility(View.GONE);
         } else {
-            TextView txt = (TextView) dialog.findViewById(R.id.message);
+            TextView txt = (TextView) dialog.findViewById(com.bili.diushoujuaner.utils.R.id.message);
             txt.setText(message);
         }
         // 按返回键是否取消

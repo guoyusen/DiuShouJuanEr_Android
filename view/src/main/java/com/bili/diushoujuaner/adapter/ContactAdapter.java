@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.adapter.viewholder.ViewHolder;
-import com.bili.diushoujuaner.model.entities.ContactDto;
+import com.bili.diushoujuaner.utils.response.ContactDto;
 
 import java.util.List;
 

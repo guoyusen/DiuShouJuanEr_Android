@@ -1,9 +1,9 @@
-package com.bili.diushoujuaner.utils;
+package com.bili.diushoujuaner.model.preference;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.bili.diushoujuaner.model.entities.UserDto;
+import com.bili.diushoujuaner.utils.response.UserDto;
 
 /**
  * Created by BiLi on 2016/3/10.
@@ -14,13 +14,14 @@ public class UserInfoPreference {
     private static Context mContext;
     private static UserInfoPreference userInfoPreference;
 
-    public UserInfoPreference(Context context){
+    public static void  initialize(Context context){
         mContext = context;
+        userInfoPreference = new UserInfoPreference();
     }
 
     public static synchronized UserInfoPreference getInstance(){
         if(userInfoPreference == null){
-            userInfoPreference = new UserInfoPreference(mContext);
+            throw new NullPointerException("UserInfoPreference was not initialized!");
         }
         return userInfoPreference;
     }

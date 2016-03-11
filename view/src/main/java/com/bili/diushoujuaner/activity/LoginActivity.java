@@ -2,7 +2,6 @@ package com.bili.diushoujuaner.activity;
 
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -46,16 +45,16 @@ public class LoginActivity extends BaseActivity implements LoginActivityView, Vi
         showPageHead(null, null, "新用户");
 
         btnLogin.setOnClickListener(this);
-        basePresenter = new LoginActivityPresenter(this);
+        basePresenter = new LoginActivityPresenter(this, getApplicationContext());
     }
 
     @Override
-    public void LoginSuccess() {
+    public void loginSuccess() {
         startActivity(new Intent(this, MainActivity.class));
     }
 
     @Override
-    public void LoginFail(String errorMsg) {
+    public void loginFail(String errorMsg) {
         CustomToast.getInstance().showWarning(context, errorMsg);
     }
 

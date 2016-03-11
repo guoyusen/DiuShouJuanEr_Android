@@ -1,4 +1,4 @@
-package com.bili.diushoujuaner.utils;
+package com.bili.diushoujuaner.utils.manager;
 
 import android.app.Activity;
 import android.app.Application;

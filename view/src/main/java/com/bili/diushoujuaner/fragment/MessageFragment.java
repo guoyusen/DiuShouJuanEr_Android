@@ -12,7 +12,7 @@ import com.bili.diushoujuaner.activity.ChattingActivity;
 import com.bili.diushoujuaner.adapter.MessageAdapter;
 import com.bili.diushoujuaner.base.BaseFragment;
 import com.bili.diushoujuaner.callback.IShowMainMenu;
-import com.bili.diushoujuaner.model.entities.MessageDto;
+import com.bili.diushoujuaner.utils.response.MessageDto;
 import com.bili.diushoujuaner.widget.CustomListViewRefresh;
 import com.bili.diushoujuaner.widget.waveswipe.WaveSwipeRefreshLayout;
 import com.facebook.drawee.view.SimpleDraweeView;

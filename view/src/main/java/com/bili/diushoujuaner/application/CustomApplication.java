@@ -2,8 +2,11 @@ package com.bili.diushoujuaner.application;
 
 import android.app.Application;
 
-import com.bili.diushoujuaner.utils.ACache;
-import com.bili.diushoujuaner.utils.UserInfoPreference;
+import com.bili.diushoujuaner.model.api.HttpEngine;
+import com.bili.diushoujuaner.model.api.api.ApiAction;
+import com.bili.diushoujuaner.model.cache.ACache;
+import com.bili.diushoujuaner.model.preference.AccessTokenPreference;
+import com.bili.diushoujuaner.model.preference.UserInfoPreference;
 import com.facebook.drawee.backends.pipeline.Fresco;
 
 /**
@@ -12,8 +15,6 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 public class CustomApplication extends Application {
 
     private static CustomApplication instance;
-    private ACache aCache;
-    private UserInfoPreference userInfoPreference;
 
     public static CustomApplication getInstance() {
         return instance;
@@ -23,13 +24,19 @@ public class CustomApplication extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
+        initHtpp();//初始化网络请求
         initAcache();//初始化缓存模块
         initImageLoader(); // 初始化图片加载器
         initPrefs(); // 初始化SharedPreference
     }
 
+    private void initHtpp(){
+        HttpEngine.initialize(this);
+        ApiAction.initialize(this);
+    }
+
     private void initAcache(){
-        aCache = ACache.get(this);
+        ACache.initialize(this);
     }
 
     private void initImageLoader() {
@@ -37,6 +44,7 @@ public class CustomApplication extends Application {
     }
 
     private void initPrefs() {
-        userInfoPreference = new UserInfoPreference(this);
+        UserInfoPreference.initialize(this);
+        AccessTokenPreference.initialize(this);
     }
 }

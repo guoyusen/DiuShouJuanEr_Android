@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.bili.diushoujuaner.utils;
+package com.bili.diushoujuaner.utils.manager;
 
 import android.annotation.SuppressLint;
 import android.annotation.TargetApi;

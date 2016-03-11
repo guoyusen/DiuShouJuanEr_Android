@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.bili.diushoujuaner.utils;
+package com.bili.diushoujuaner.model.cache;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -61,6 +61,18 @@ public class ACache {
 	private static final int MAX_COUNT = Integer.MAX_VALUE; // 不限制存放数据的数量
 	private static Map<String, ACache> mInstanceMap = new HashMap<String, ACache>();
 	private ACacheManager mCache;
+	private static ACache instance;
+
+	public static void initialize(Context context){
+		instance = ACache.get(context);
+	}
+
+	public static ACache getInstance(){
+		if(instance == null){
+			throw new NullPointerException("ACache was not initialized!");
+		}
+		return instance;
+	}
 
 	public static ACache get(Context ctx) {
 		return get(ctx, "ACache");

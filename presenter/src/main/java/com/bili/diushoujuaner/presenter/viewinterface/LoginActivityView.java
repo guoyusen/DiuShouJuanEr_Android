@@ -1,14 +1,14 @@
 package com.bili.diushoujuaner.presenter.viewinterface;
 
-import com.bili.diushoujuaner.presenter.base.IBaseView;
+import com.bili.diushoujuaner.presenter.base.IBaseLoadingView;
 
 /**
  * Created by BiLi on 2016/3/10.
  */
-public interface LoginActivityView extends IBaseView{
+public interface LoginActivityView extends IBaseLoadingView{
 
-    void LoginSuccess();
+    void loginSuccess();
 
-    void LoginFail(String errorMsg);
+    void loginFail(String errorMsg);
 
 }

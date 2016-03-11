@@ -7,8 +7,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bili.diushoujuaner.R;
-
 public class CustomToast {
 
     private static CustomToast instance;
@@ -29,8 +27,8 @@ public class CustomToast {
         int offsetX = 0;
         int offsetY = 0;
         toast.setGravity(Gravity.FILL_HORIZONTAL|Gravity.TOP, offsetX, offsetY);
-        LinearLayout ll = (LinearLayout) LayoutInflater.from(context).inflate(R.layout.layout_toast_validate_failed, null);
-        TextView tip = (TextView) ll.findViewById(R.id.tip);
+        LinearLayout ll = (LinearLayout) LayoutInflater.from(context).inflate(com.bili.diushoujuaner.utils.R.layout.layout_toast_validate_failed, null);
+        TextView tip = (TextView) ll.findViewById(com.bili.diushoujuaner.utils.R.id.tip);
         tip.setText(msg);
         toast.setView(ll);
         toast.show();
@@ -41,8 +39,8 @@ public class CustomToast {
         int offsetX = 0;
         int offsetY = 0;
         toast.setGravity(Gravity.FILL_HORIZONTAL|Gravity.TOP, offsetX, offsetY);
-        LinearLayout ll = (LinearLayout) LayoutInflater.from(context).inflate(R.layout.layout_toast_validate_warning, null);
-        TextView tip = (TextView) ll.findViewById(R.id.tip);
+        LinearLayout ll = (LinearLayout) LayoutInflater.from(context).inflate(com.bili.diushoujuaner.utils.R.layout.layout_toast_validate_warning, null);
+        TextView tip = (TextView) ll.findViewById(com.bili.diushoujuaner.utils.R.id.tip);
         tip.setText(msg);
         toast.setView(ll);
         toast.show();
@@ -53,8 +51,8 @@ public class CustomToast {
         int offsetX = 0;
         int offsetY = 0;
         toast.setGravity(Gravity.FILL_HORIZONTAL|Gravity.TOP, offsetX, offsetY);
-        LinearLayout ll = (LinearLayout) LayoutInflater.from(context).inflate(R.layout.layout_toast_validate_success, null);
-        TextView tip = (TextView) ll.findViewById(R.id.tip);
+        LinearLayout ll = (LinearLayout) LayoutInflater.from(context).inflate(com.bili.diushoujuaner.utils.R.layout.layout_toast_validate_success, null);
+        TextView tip = (TextView) ll.findViewById(com.bili.diushoujuaner.utils.R.id.tip);
         tip.setText(msg);
         toast.setView(ll);
         toast.show();

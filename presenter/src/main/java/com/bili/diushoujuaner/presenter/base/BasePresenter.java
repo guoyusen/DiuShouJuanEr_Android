@@ -1,18 +1,20 @@
 package com.bili.diushoujuaner.presenter.base;
 
+import android.content.Context;
+
 /**
  * Created by BiLi on 2016/3/10.
  */
-public class BasePresenter implements IBasePresenter<IBaseView> {
+public class BasePresenter {
 
     protected IBaseView baseView;
+    protected Context context;
 
-    @Override
-    public void attachView(IBaseView view) {
-        this.baseView = view;
+    public BasePresenter(IBaseView baseView, Context context){
+        this.baseView = baseView;
+        this.context = context;
     }
 
-    @Override
     public void detachView() {
         this.baseView = null;
     }

@@ -5,7 +5,7 @@ import android.widget.TextView;
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.adapter.PartyAdapter;
 import com.bili.diushoujuaner.base.BaseActivity;
-import com.bili.diushoujuaner.model.entities.PartyDto;
+import com.bili.diushoujuaner.utils.response.PartyDto;
 import com.bili.diushoujuaner.widget.CustomListViewRefresh;
 
 import java.util.ArrayList;

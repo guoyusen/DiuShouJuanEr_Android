@@ -3,7 +3,7 @@ package com.bili.diushoujuaner.activity;
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.adapter.ContactRecentGalleryAdapter;
 import com.bili.diushoujuaner.base.BaseActivity;
-import com.bili.diushoujuaner.model.entities.PictureDto;
+import com.bili.diushoujuaner.utils.response.PictureDto;
 import com.bili.diushoujuaner.widget.CustomGridView;
 
 import java.util.ArrayList;

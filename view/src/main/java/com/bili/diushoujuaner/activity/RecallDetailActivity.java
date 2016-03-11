@@ -6,7 +6,7 @@ import android.widget.TextView;
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.adapter.RecallDetailGalleryAdapter;
 import com.bili.diushoujuaner.base.BaseActivity;
-import com.bili.diushoujuaner.model.entities.PictureDto;
+import com.bili.diushoujuaner.utils.response.PictureDto;
 import com.bili.diushoujuaner.widget.CustomGridView;
 import com.bili.diushoujuaner.widget.aligntextview.CBAlignTextView;
 import com.facebook.drawee.view.SimpleDraweeView;

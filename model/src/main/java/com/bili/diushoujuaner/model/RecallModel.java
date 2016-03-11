@@ -1,7 +1,7 @@
 package com.bili.diushoujuaner.model;
 
-import com.bili.diushoujuaner.model.callback.IDataCallback;
-import com.bili.diushoujuaner.model.entities.RecallVo;
+import com.bili.diushoujuaner.utils.response.RecallVo;
+import com.bili.diushoujuaner.model.callback.ActionCallbackListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,13 +20,13 @@ public class RecallModel {
         return recallModel;
     }
 
-    public void getRecallList(IDataCallback<List<RecallVo>> iDataCallback){
+    public void getRecallList(ActionCallbackListener<List<RecallVo>> actionCallbackListener){
 
         List<RecallVo> list = new ArrayList<>();
         for(int i=0;i<9;i++){
             list.add(new RecallVo());
         }
-        iDataCallback.onSuccess(list);
+        actionCallbackListener.onSuccess(list);
 
     }
 

@@ -6,19 +6,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.ImageButton;
-import android.widget.TextView;
 
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.application.CustomApplication;
 import com.bili.diushoujuaner.presenter.base.BasePresenter;
-import com.bili.diushoujuaner.utils.ActivityManager;
-import com.bili.diushoujuaner.utils.SystemBarTintManager;
+import com.bili.diushoujuaner.utils.manager.ActivityManager;
+import com.bili.diushoujuaner.utils.manager.SystemBarTintManager;
 
 import java.util.Date;
 
@@ -122,7 +117,9 @@ public abstract class AbstractBaseActivity extends Activity {
         onPageDestroy();
         ButterKnife.unbind(this);
         super.onDestroy();
-        basePresenter.detachView();
+        if(basePresenter != null){
+            basePresenter.detachView();
+        }
         ActivityManager.getInstance().removeActivity(this);
     }
 
