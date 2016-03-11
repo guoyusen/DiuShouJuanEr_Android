@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:cb="http://schemas.android.com/tools"
+    style="@style/MatchMatch.FitWindow"
+    android:background="@color/COLOR_WHITE">
+
+    <include
+        android:id="@+id/layoutHead"
+        layout="@layout/include_head_recall_detail" />
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/layoutBottom"
+        android:layout_below="@+id/layoutHead">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/y200">
+
+            <com.bili.diushoujuaner.widget.aligntextview.CBAlignTextView
+                android:id="@+id/textRecallDetail"
+                style="@style/TextMiddle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/x16"
+                cb:punctuationConvert="true"
+                android:textColorHighlight="@color/SELECT_HLIGHT"
+                android:textIsSelectable="true"
+                android:textColor="@color/TC_333333" />
+
+            <com.bili.diushoujuaner.widget.CustomGridView
+                android:id="@+id/customGridView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:numColumns="3"
+                android:scrollbars="none"
+                android:layout_marginLeft="@dimen/x8"
+                android:layout_marginRight="@dimen/x8"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/y200"
+                    style="@style/TextXLarge"
+                    android:textColor="@color/TC_808080"
+                    android:gravity="center"
+                    android:text="评论展示区"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/layoutBottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:padding="@dimen/x16"
+        android:background="@color/BG_ECECEC">
+
+        <EditText
+            android:id="@+id/textComment"
+            style="@style/TextMiddle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/y80"
+            android:layout_marginRight="@dimen/x124"
+            android:background="@drawable/common_rectangle_solid_white"
+            android:hint="说点什么呗..."
+            android:maxLines="6"
+            android:paddingLeft="@dimen/x5"
+            android:paddingRight="@dimen/x5"
+            android:textColor="@color/TC_BLACK"
+            android:textColorHint="@color/TC_ADADBB" />
+
+        <Button
+            android:id="@+id/btnSend"
+            android:layout_width="@dimen/y100"
+            android:layout_height="@dimen/y80"
+            android:layout_alignParentRight="true"
+            android:layout_alignBottom="@+id/textComment"
+            android:text="发送"
+            android:textColor="@color/TC_WHITE"
+            style="@style/TextMiddle"
+            android:background="@drawable/common_rectangle_solid_blue_normal"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

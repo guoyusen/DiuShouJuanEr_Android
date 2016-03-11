@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:cb="http://schemas.android.com/tools"
+    style="@style/MatchWrap"
+    android:background="@color/COLOR_WHITE"
+    android:paddingBottom="@dimen/y10"
+    android:orientation="vertical">
+
+    <RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/y128"
+    android:layout_marginLeft="@dimen/x16"
+    android:layout_marginRight="@dimen/x16">
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/ivItemHead"
+        android:layout_width="@dimen/x100"
+        android:layout_height="@dimen/y100"
+        app:placeholderImage="@mipmap/shin"
+        android:layout_centerVertical="true"
+        app:roundAsCircle="true"/>
+
+    <TextView
+        android:id="@+id/textItemUserName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/TextLarge"
+        android:textColor="@color/TC_BLACK"
+        android:layout_toRightOf="@+id/ivItemHead"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_marginTop="@dimen/x16"
+        android:text="三木同学"/>
+
+    <TextView
+        android:id="@+id/textItemPublishTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/TextSmall"
+        android:textColor="@color/TC_808080"
+        android:text="02月28日09:34"
+        android:layout_toRightOf="@+id/ivItemHead"
+        android:layout_alignBottom="@+id/ivItemHead"
+        android:layout_alignLeft="@+id/textItemUserName"/>
+
+</RelativeLayout>
+
+    <com.bili.diushoujuaner.widget.aligntextview.AlignTextView
+        android:id="@+id/textItemContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/TextMiddle"
+        android:textColor="@color/TC_333333"
+        android:layout_marginLeft="@dimen/x16"
+        android:layout_marginRight="@dimen/x16"
+        android:layout_marginTop="@dimen/y8"
+        android:layout_marginBottom="@dimen/y8"
+        android:ellipsize="marquee"
+        cb:align="left"
+        android:maxLines="7"
+        android:text="@string/tmpString"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="@dimen/x8">
+
+        <ImageView
+            android:id="@+id/ivPicture_0"
+            android:layout_width="@dimen/x300"
+            android:layout_height="@dimen/y200"
+            android:src="@mipmap/bg_menu_head"
+            android:scaleType="centerCrop"
+            android:visibility="gone"/>
+
+        <ImageView
+            android:id="@+id/ivPicture_1"
+            style="@style/recall_picture_item"
+            android:maxWidth="@dimen/x300"
+            android:src="@mipmap/bg_menu_head"/>
+
+        <ImageView
+            android:id="@+id/ivPicture_2"
+            style="@style/recall_picture_item"
+            android:src="@mipmap/bg_menu_head"/>
+
+        <RelativeLayout
+            android:id="@+id/layoutPicture"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/y200"
+            android:layout_weight="1.0"
+            android:layout_marginLeft="@dimen/x8"
+            android:layout_marginRight="@dimen/x8">
+
+            <ImageView
+                android:id="@+id/ivPicture_3"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/y200"
+                android:scaleType="centerCrop"
+                android:maxWidth="@dimen/x150"
+                android:src="@mipmap/bg_menu_head"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y200"
+                android:background="@color/BG_TOAST">
+
+                <TextView
+                    android:id="@+id/textLeftCount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/x80"
+                    android:textColor="@color/TC_WHITE"
+                    android:layout_centerInParent="true"
+                    android:text="5"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/textLeftCount"
+                    android:src="@mipmap/icon_arrow_right"/>
+
+            </RelativeLayout>
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</LinearLayout>
