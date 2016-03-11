@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center_horizontal">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/toast_bg"
+        android:paddingTop="@dimen/y30"
+        android:paddingBottom="@dimen/y30"
+        android:paddingLeft="@dimen/x70"
+        android:paddingRight="@dimen/x70"
+        android:gravity="center"
+        android:orientation="vertical" >
+
+        <com.bili.diushoujuaner.widget.MaterialCircleView
+            android:layout_centerHorizontal="true"
+            android:layout_width="@dimen/x40"
+            android:layout_height="@dimen/x40"
+            app:circleColor="@color/COLOR_WHITE"
+            app:circleWidth="@dimen/x4"/>
+
+        <TextView
+            android:id="@+id/message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y20"
+            style="@style/TextMiddle"
+            android:text="登录中..."
+            android:textColor="@color/TC_WHITE" />
+
+    </LinearLayout>
+
+</LinearLayout>

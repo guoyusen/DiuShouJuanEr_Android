@@ -36,6 +36,17 @@
         android:ellipsize="marquee"
         android:text="三木同学"/>
 
+    <com.bili.diushoujuaner.widget.MaterialCircleView
+        android:id="@+id/defaultCircle"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/textNavTitle"
+        android:layout_marginRight="@dimen/x15"
+        android:layout_width="@dimen/x40"
+        android:layout_height="@dimen/x40"
+        app:circleColor="@color/COLOR_WHITE"
+        android:visibility="gone"
+        app:circleWidth="@dimen/x4"/>
+
     <TextView
         android:id="@+id/textNavTitle"
         style="@style/TextNavTitle"/>

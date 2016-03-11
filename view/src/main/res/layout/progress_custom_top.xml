@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
@@ -11,15 +12,16 @@
         android:background="@drawable/toast_bg"
         android:layout_marginLeft="@dimen/x16"
         android:layout_marginRight="@dimen/x16"
-        android:layout_marginTop="@dimen/y100"
+        android:layout_marginTop="@dimen/y120"
         android:gravity="center"
         android:orientation="horizontal" >
 
-        <ImageView
-            android:id="@+id/spinnerImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@anim/spinner" />
+        <com.bili.diushoujuaner.widget.MaterialCircleView
+            android:layout_centerHorizontal="true"
+            android:layout_width="@dimen/x40"
+            android:layout_height="@dimen/x40"
+            app:circleColor="@color/COLOR_WHITE"
+            app:circleWidth="@dimen/x4"/>
 
         <TextView
             android:id="@+id/message"

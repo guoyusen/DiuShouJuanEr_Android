@@ -5,4 +5,10 @@ package com.bili.diushoujuaner.presenter.base;
  */
 public interface IBaseView {
 
+    void showLoading(int loadingType);
+
+    void hideLoading(int loadingType);
+
+    void showWarning(String message);
+
 }

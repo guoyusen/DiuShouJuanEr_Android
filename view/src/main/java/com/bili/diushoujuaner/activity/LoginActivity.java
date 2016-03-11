@@ -54,18 +54,18 @@ public class LoginActivity extends BaseActivity implements LoginActivityView, Vi
     }
 
     @Override
-    public void loginFail(String errorMsg) {
-        CustomToast.getInstance().showWarning(context, errorMsg);
+    public void showWarning(String message) {
+        super.showWarning(message);
     }
 
     @Override
-    public void showLoading() {
-        CustomProgress.getInstance(context).show(getResources().getString(R.string.loging_status), true, null);
+    public void showLoading(int loadingType) {
+        super.showLoading(loadingType);
     }
 
     @Override
-    public void hideLoading() {
-        CustomProgress.getInstance(context).dismiss();
+    public void hideLoading(int loadingType) {
+        super.hideLoading(loadingType);
     }
 
     @Override

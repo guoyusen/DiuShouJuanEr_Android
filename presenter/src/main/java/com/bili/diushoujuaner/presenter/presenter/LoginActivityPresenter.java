@@ -5,6 +5,7 @@ import android.text.TextUtils;
 
 import com.bili.diushoujuaner.model.api.ApiRespon;
 import com.bili.diushoujuaner.presenter.base.IBaseView;
+import com.bili.diushoujuaner.utils.Constant;
 import com.bili.diushoujuaner.utils.response.AccessTokenDto;
 import com.bili.diushoujuaner.utils.resquest.UserAccountDto;
 import com.bili.diushoujuaner.model.AccessTokenModel;
@@ -26,7 +27,7 @@ public class LoginActivityPresenter extends BasePresenter {
         if(!validate(mobile, psd)){
             return;
         }
-        getViewByClass(LoginActivityView.class).showLoading();
+        getViewByClass(LoginActivityView.class).showLoading(Constant.LOADING_TOP);
 
         UserAccountDto userAccountDto = new UserAccountDto();
         userAccountDto.setMobile(mobile);
@@ -34,28 +35,31 @@ public class LoginActivityPresenter extends BasePresenter {
         AccessTokenModel.getInstance(context).getUserLogin(userAccountDto, new ActionCallbackListener<ApiRespon<AccessTokenDto>>() {
             @Override
             public void onSuccess(ApiRespon<AccessTokenDto> result) {
-                getViewByClass(LoginActivityView.class).hideLoading();
-                getViewByClass(LoginActivityView.class).loginSuccess();
+                if(showMessage(result.getRetCode(), result.getMessage())){
+                    getViewByClass(LoginActivityView.class).loginSuccess();
+                }
+                getViewByClass(LoginActivityView.class).hideLoading(Constant.LOADING_TOP);
             }
 
             @Override
             public void onFailure(int errorCode) {
-
+                getViewByClass(LoginActivityView.class).hideLoading(Constant.LOADING_TOP);
+                showError(errorCode);
             }
         });
     }
 
     private boolean validate(String mobile, String psd) {
         if (TextUtils.isEmpty(mobile)) {
-            getViewByClass(LoginActivityView.class).loginFail("请输入手机号");
+            getViewByClass(LoginActivityView.class).showWarning("请输入手机号");
             return false;
         }
         if (!(Common.isMobile(mobile))) {
-            getViewByClass(LoginActivityView.class).loginFail("请输入正确的手机号码");
+            getViewByClass(LoginActivityView.class).showWarning("请输入正确的手机号码");
             return false;
         }
         if (TextUtils.isEmpty(psd)) {
-            getViewByClass(LoginActivityView.class).loginFail("请输入登录密码");
+            getViewByClass(LoginActivityView.class).showWarning("请输入登录密码");
             return false;
         }
         return true;

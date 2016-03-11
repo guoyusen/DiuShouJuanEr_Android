@@ -66,6 +66,21 @@ public abstract class AbstractBaseActivity extends Activity {
      */
     public abstract void onPageDestroy();
 
+    /**
+     * == 显示加载框
+     */
+    public abstract void showLoading(int loadingType);
+
+    /**
+     * == 隐藏加载框
+     */
+    public abstract void hideLoading(int loadingType);
+
+    /**
+     * == 显示警告信息
+     */
+    public abstract void showWarning(String message);
+
     public abstract void showPageHead(String titleText, Integer iconId, String rightText);
 
     public abstract void showPageHeadSpecial(String titleText, Integer iconId, Date rightText);

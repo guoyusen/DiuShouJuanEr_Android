@@ -58,4 +58,15 @@ public class SplashActivity extends BaseActivity implements SplashActivityView {
         finish();
     }
 
+    @Override
+    public void showLoading(int loadingType) {
+    }
+
+    @Override
+    public void hideLoading(int loadingType) {
+    }
+
+    @Override
+    public void showWarning(String message) {
+    }
 }

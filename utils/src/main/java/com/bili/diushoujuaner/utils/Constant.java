@@ -10,4 +10,9 @@ public interface Constant {
 
     int CUSTOM_ERROR_CODE = -1;
 
+    int LOADING_NONE = -1;
+    int LOADING_DEFAULT = 0;
+    int LOADING_TOP = 1;
+    int LOADING_CENTER = 2;
+
 }

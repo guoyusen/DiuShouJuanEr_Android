@@ -3,6 +3,7 @@ package com.bili.diushoujuaner.presenter.presenter;
 import android.content.Context;
 
 import com.bili.diushoujuaner.presenter.base.IBaseView;
+import com.bili.diushoujuaner.utils.Constant;
 import com.bili.diushoujuaner.utils.response.RecallVo;
 import com.bili.diushoujuaner.model.RecallModel;
 import com.bili.diushoujuaner.model.callback.ActionCallbackListener;
@@ -21,7 +22,7 @@ public class HomeFragmentPresenter extends BasePresenter {
     }
 
     public void loadRecallList(){
-        getViewByClass(HomeFragmentView.class).showLoading();
+        getViewByClass(HomeFragmentView.class).showLoading(Constant.LOADING_TOP);
         RecallModel.getInstance().getRecallList(new ActionCallbackListener<List<RecallVo>>() {
             @Override
             public void onSuccess(List<RecallVo> recallVoList) {
@@ -37,7 +38,7 @@ public class HomeFragmentPresenter extends BasePresenter {
     }
 
     public void loadMoreRecallList(){
-        getViewByClass(HomeFragmentView.class).showLoading();
+        getViewByClass(HomeFragmentView.class).showLoading(Constant.LOADING_NONE);
     }
 
 }

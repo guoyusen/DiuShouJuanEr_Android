@@ -22,4 +22,32 @@ public class BasePresenter {
     protected <T> T getViewByClass(Class<T> t){
         return (T)baseView;
     }
+
+    protected void showError(int errorCode) {
+        switch (errorCode) {
+            case 401:
+                baseView.showWarning("错误代码 E-H 401");
+            case 403:
+                baseView.showWarning("错误代码 E-H 403");
+                break;
+            case 500:
+                baseView.showWarning("服务器维护中...");
+                break;
+            case 100:
+                baseView.showWarning("网不好，好捉急...");
+                break;
+            default:
+                break;
+        }
+    }
+
+    public boolean showMessage(String retCode, String message) {
+        switch (retCode) {
+            case "fail":
+                baseView.showWarning(message);
+                return false;
+            default:
+                return true;
+        }
+    }
 }

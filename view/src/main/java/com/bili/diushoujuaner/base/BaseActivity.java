@@ -12,6 +12,9 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.bili.diushoujuaner.R;
+import com.bili.diushoujuaner.utils.Constant;
+import com.bili.diushoujuaner.widget.CustomProgress;
+import com.bili.diushoujuaner.widget.CustomToast;
 import com.bili.diushoujuaner.widget.TimeSinceTextView;
 import com.nanotasks.BackgroundWork;
 import com.nanotasks.Completion;
@@ -176,5 +179,40 @@ public class BaseActivity extends AbstractBaseActivity {
             findViewById(R.id.textRight).setVisibility(View.VISIBLE);
             ((TextView)findViewById(R.id.textRight)).setText(rightText);
         }
+    }
+
+    @Override
+    public void showLoading(int loadingType) {
+        switch (loadingType){
+            case Constant.LOADING_CENTER:
+                CustomProgress.getInstance(context).showCenter(getResources().getString(R.string.loging_status), true, null);
+                break;
+            case Constant.LOADING_TOP:
+                CustomProgress.getInstance(context).showTop(getResources().getString(R.string.loging_status), true, null);
+                break;
+            case Constant.LOADING_DEFAULT:
+
+                break;
+            default:break;
+        }
+    }
+
+    @Override
+    public void hideLoading(int loadingType) {
+        switch (loadingType){
+            case Constant.LOADING_CENTER:
+            case Constant.LOADING_TOP:
+                CustomProgress.getInstance(context).dismiss();
+                break;
+            case Constant.LOADING_DEFAULT:
+
+                break;
+            default:break;
+        }
+    }
+
+    @Override
+    public void showWarning(String message) {
+        CustomToast.getInstance().showWarning(context, message);
     }
 }

@@ -117,12 +117,17 @@ public class HomeFragment extends BaseFragment implements WaveSwipeRefreshLayout
     }
 
     @Override
-    public void showLoading() {
-        Log.d("guoyusen","显示加载框");
+    public void showLoading(int loadingType) {
+
     }
 
     @Override
-    public void hideLoading() {
-        Log.d("guoyusen","关闭加载框");
+    public void hideLoading(int loadingType) {
+
+    }
+
+    @Override
+    public void showWarning(String message) {
+
     }
 }

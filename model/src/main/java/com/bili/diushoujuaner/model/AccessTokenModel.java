@@ -41,7 +41,7 @@ public class AccessTokenModel {
     public void getAccessToken(final ActionCallbackListener<AccessTokenDto> actionCallbackListener){
         AccessTokenPreference accessTokenPreference = AccessTokenPreference.getInstance();
         AccessTokenDto accessTokenDto = accessTokenPreference.getAccessToken();
-        if(accessTokenDto == null){
+        if(accessTokenDto != null){
             actionCallbackListener.onSuccess(accessTokenDto);
         }else{
             actionCallbackListener.onFailure(Constant.CUSTOM_ERROR_CODE);
