@@ -1,9 +1,9 @@
-package com.bili.diushoujuaner.model.api.api;
+package com.bili.diushoujuaner.model.apihelper.api;
 
 import android.content.Context;
 
-import com.bili.diushoujuaner.model.api.DataLoader;
-import com.bili.diushoujuaner.model.api.callback.ApiCallbackListener;
+import com.bili.diushoujuaner.model.apihelper.DataLoader;
+import com.bili.diushoujuaner.model.apihelper.callback.ApiCallbackListener;
 import com.bili.diushoujuaner.utils.resquest.UserAccountDto;
 import com.bili.diushoujuaner.utils.Common;
 

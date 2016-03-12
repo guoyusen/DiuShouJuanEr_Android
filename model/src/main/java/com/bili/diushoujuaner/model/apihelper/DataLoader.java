@@ -1,13 +1,15 @@
-package com.bili.diushoujuaner.model.api;
+package com.bili.diushoujuaner.model.apihelper;
 
 import android.content.Context;
+import android.util.Log;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.bili.diushoujuaner.model.api.callback.ApiCallbackListener;
-import com.bili.diushoujuaner.model.preference.AccessTokenPreference;
+import com.bili.diushoujuaner.model.apihelper.callback.ApiCallbackListener;
+import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,6 +30,7 @@ public class DataLoader {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
+                Log.d("guoyusen",response);
                 apiCallbackListener.onSuccess(response);
             }
         }, new Response.ErrorListener() {
@@ -52,7 +55,7 @@ public class DataLoader {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<>();
                 headers.put("Device-Type", "Client/Android");
-                headers.put("AccessToken", AccessTokenPreference.getInstance().getAccessToken().getAccessToken());
+                headers.put("AccessToken", CustomSessionPreference.getInstance().getAccessToken().getAccessToken());
                 return headers;
             }
 
@@ -61,6 +64,7 @@ public class DataLoader {
                 return map;
             }
         };
+        stringRequest.setShouldCache(false);
         HttpEngine.getInstance().addToRequestQueue(stringRequest);
     }
 

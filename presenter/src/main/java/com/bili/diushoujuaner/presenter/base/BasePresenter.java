@@ -12,7 +12,7 @@ public class BasePresenter {
 
     public BasePresenter(IBaseView baseView, Context context){
         this.baseView = baseView;
-        this.context = context;
+        this.context = context.getApplicationContext();
     }
 
     public void detachView() {

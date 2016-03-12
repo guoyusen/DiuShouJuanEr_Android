@@ -15,4 +15,6 @@ public interface Constant {
     int LOADING_TOP = 1;
     int LOADING_CENTER = 2;
 
+    String DATABASE_NAME = "diushoujuaner_db";
+
 }

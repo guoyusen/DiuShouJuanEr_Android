@@ -1,4 +1,4 @@
-package com.bili.diushoujuaner.model.api.callback;
+package com.bili.diushoujuaner.model.apihelper.callback;
 
 /**
  * Created by BiLi on 2016/3/11.

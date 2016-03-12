@@ -1,5 +1,14 @@
 package com.bili.diushoujuaner.utils;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.wifi.WifiManager;
+import android.telephony.TelephonyManager;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
+
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,21 +49,157 @@ public class Common {
                     Object o = f.get(obj);
                     reMap.put(fields[i].getName(), o.toString());
                 } catch (NoSuchFieldException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 } catch (IllegalArgumentException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 } catch (IllegalAccessException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             }
         } catch (SecurityException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return reMap;
+    }
+
+    public static boolean isCorrectName(String str) {
+        String regEx = "^[a-zA-Z0-9_\\u4e00-\\u9fa5]+$";
+        Pattern p = Pattern.compile(regEx);
+        Matcher m = p.matcher(str);
+        return m.matches();
+    }
+
+    /**
+     * 编辑框获得焦点时去掉提示文字
+     */
+    public static View.OnFocusChangeListener onFocusAutoClearHintListener = new View.OnFocusChangeListener() {
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            EditText textView = (EditText) v;
+            String hint;
+            if (hasFocus) {
+                hint = textView.getHint().toString();
+                textView.setTag(hint);
+                textView.setHint("");
+            } else {
+                hint = textView.getTag().toString();
+                textView.setHint(hint);
+            }
+        }
+    };
+
+    public static boolean isWiFiActive(Context context) {
+        WifiManager wm = null;
+        try {
+            wm = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (wm == null || wm.isWifiEnabled() == false) return false;
+
+        return true;
+    }
+
+    /**
+     * 获取应用版本号
+     *
+     * @param context
+     * @return
+     */
+    public static int getVersionCode(Context context) {
+        int versionCode = 0;
+        try {
+            String pkName = context.getPackageName();
+            versionCode = context.getPackageManager()
+                    .getPackageInfo(pkName, 0).versionCode;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return versionCode;
+    }
+
+
+    /**
+     * 获取应用版本信息
+     *
+     * @param context
+     * @return
+     */
+    public static String getVersionName(Context context) {
+        try {
+            String pkName = context.getPackageName();
+            String versionName = context.getPackageManager().getPackageInfo(
+                    pkName, 0).versionName;
+            return versionName;
+        } catch (Exception e) {
+        }
+        return null;
+    }
+
+
+    /**
+     * 获取手机的设备号（imei）
+     *
+     * @return
+     */
+    public static String getDeviceId(Context context) {
+        TelephonyManager mphonemanger = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+        String imei = "";
+        if (mphonemanger != null) {
+            imei = mphonemanger.getDeviceId();
+        }
+        return imei;
+    }
+
+    /**
+     * 检测网络状态
+     *
+     * @param context
+     * @return
+     */
+    public static boolean checkNetworkStatus(Context context) {
+        boolean resp = false;
+        final ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetInfo = connMgr.getActiveNetworkInfo();
+        if (activeNetInfo != null && activeNetInfo.isAvailable()) {
+            resp = true;
+        }
+        return resp;
+    }
+
+    /**
+     * 关闭虚拟键盘
+     *
+     * @param context
+     * @param view
+     */
+    public static void hideSoftInputFromWindow(Context context, View view) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    /**
+     * 判断字符串是否为空
+     * @param str
+     * @return
+     */
+    public static boolean isEmpty(String str) {
+        return str == null || str.length() == 0;
+    }
+
+    /**
+     * html的转义字符转换成正常的字符串
+     *
+     * @param html
+     * @return
+     */
+    public static String htmlEscapeCharsToString(String html) {
+        if (isEmpty(html)) {
+            return html;
+        } else {
+            return html.replaceAll("&lt;", "<").replaceAll("&gt;", ">").replaceAll("&amp;", "&").replaceAll("&quot;","\"");
+        }
     }
 
 }

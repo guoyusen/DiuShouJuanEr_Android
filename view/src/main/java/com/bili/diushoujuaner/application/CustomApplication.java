@@ -2,11 +2,11 @@ package com.bili.diushoujuaner.application;
 
 import android.app.Application;
 
-import com.bili.diushoujuaner.model.api.HttpEngine;
-import com.bili.diushoujuaner.model.api.api.ApiAction;
-import com.bili.diushoujuaner.model.cache.ACache;
-import com.bili.diushoujuaner.model.preference.AccessTokenPreference;
-import com.bili.diushoujuaner.model.preference.UserInfoPreference;
+import com.bili.diushoujuaner.model.apihelper.HttpEngine;
+import com.bili.diushoujuaner.model.apihelper.api.ApiAction;
+import com.bili.diushoujuaner.model.cachehelper.ACache;
+import com.bili.diushoujuaner.model.databasehelper.DBManager;
+import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
 import com.facebook.drawee.backends.pipeline.Fresco;
 
 /**
@@ -24,10 +24,11 @@ public class CustomApplication extends Application {
     public void onCreate() {
         super.onCreate();
         instance = this;
-        initHtpp();//初始化网络请求
-        initAcache();//初始化缓存模块
+        initHtpp();// 初始化网络请求
         initImageLoader(); // 初始化图片加载器
+        initAcache();// 初始化缓存模块
         initPrefs(); // 初始化SharedPreference
+        initDatabase();// 初始化DBManager
     }
 
     private void initHtpp(){
@@ -44,7 +45,10 @@ public class CustomApplication extends Application {
     }
 
     private void initPrefs() {
-        UserInfoPreference.initialize(this);
-        AccessTokenPreference.initialize(this);
+        CustomSessionPreference.initialize(this);
+    }
+
+    private void initDatabase(){
+        DBManager.initialize(this);
     }
 }

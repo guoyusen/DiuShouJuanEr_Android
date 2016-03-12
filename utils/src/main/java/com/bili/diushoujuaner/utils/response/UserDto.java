@@ -27,14 +27,14 @@ public class UserDto {
 
     private String smallNick;
 
-    private String accessToken;
+    private String registTime;
 
-    public String getAccessToken() {
-        return accessToken;
+    public String getRegistTime() {
+        return registTime;
     }
 
-    public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
+    public void setRegistTime(String registTime) {
+        this.registTime = registTime;
     }
 
     public Long getUserNo() {

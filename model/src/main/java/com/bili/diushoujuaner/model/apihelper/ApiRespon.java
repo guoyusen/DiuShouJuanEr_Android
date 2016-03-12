@@ -1,4 +1,4 @@
-package com.bili.diushoujuaner.model.api;
+package com.bili.diushoujuaner.model.apihelper;
 
 import java.io.Serializable;
 
@@ -6,6 +6,7 @@ import java.io.Serializable;
  * Created by BiLi on 2016/3/11.
  */
 public class ApiRespon<T>  implements Serializable {
+
 
     private String message;
     private String retCode;

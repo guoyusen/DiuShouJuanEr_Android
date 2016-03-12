@@ -1,4 +1,4 @@
-package com.bili.diushoujuaner.model;
+package com.bili.diushoujuaner.model.action;
 
 import com.bili.diushoujuaner.utils.response.RecallVo;
 import com.bili.diushoujuaner.model.callback.ActionCallbackListener;
@@ -9,15 +9,15 @@ import java.util.List;
 /**
  * Created by BiLi on 2016/3/10.
  */
-public class RecallModel {
+public class RecallAction {
 
-    private static RecallModel recallModel;
+    private static RecallAction recallAction;
 
-    public static RecallModel getInstance(){
-        if(recallModel == null){
-            recallModel = new RecallModel();
+    public static RecallAction getInstance(){
+        if(recallAction == null){
+            recallAction = new RecallAction();
         }
-        return recallModel;
+        return recallAction;
     }
 
     public void getRecallList(ActionCallbackListener<List<RecallVo>> actionCallbackListener){

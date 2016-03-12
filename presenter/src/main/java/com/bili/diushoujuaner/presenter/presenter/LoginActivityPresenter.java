@@ -3,12 +3,13 @@ package com.bili.diushoujuaner.presenter.presenter;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.bili.diushoujuaner.model.api.ApiRespon;
+import com.bili.diushoujuaner.model.apihelper.ApiRespon;
+import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
 import com.bili.diushoujuaner.presenter.base.IBaseView;
 import com.bili.diushoujuaner.utils.Constant;
-import com.bili.diushoujuaner.utils.response.AccessTokenDto;
+import com.bili.diushoujuaner.utils.response.CustomSession;
 import com.bili.diushoujuaner.utils.resquest.UserAccountDto;
-import com.bili.diushoujuaner.model.AccessTokenModel;
+import com.bili.diushoujuaner.model.action.CustomSessionAction;
 import com.bili.diushoujuaner.model.callback.ActionCallbackListener;
 import com.bili.diushoujuaner.presenter.base.BasePresenter;
 import com.bili.diushoujuaner.presenter.viewinterface.LoginActivityView;
@@ -32,10 +33,11 @@ public class LoginActivityPresenter extends BasePresenter {
         UserAccountDto userAccountDto = new UserAccountDto();
         userAccountDto.setMobile(mobile);
         userAccountDto.setPassword(psd);
-        AccessTokenModel.getInstance(context).getUserLogin(userAccountDto, new ActionCallbackListener<ApiRespon<AccessTokenDto>>() {
+        CustomSessionAction.getInstance(context).getUserLogin(userAccountDto, new ActionCallbackListener<ApiRespon<CustomSession>>() {
             @Override
-            public void onSuccess(ApiRespon<AccessTokenDto> result) {
+            public void onSuccess(ApiRespon<CustomSession> result) {
                 if(showMessage(result.getRetCode(), result.getMessage())){
+                    CustomSessionPreference.getInstance().saveAccessToken(result.getData());
                     getViewByClass(LoginActivityView.class).loginSuccess();
                 }
                 getViewByClass(LoginActivityView.class).hideLoading(Constant.LOADING_TOP);

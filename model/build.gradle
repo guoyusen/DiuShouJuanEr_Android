@@ -28,4 +28,5 @@ dependencies {
     compile 'com.squareup.okio:okio:1.6.0'
     compile 'com.google.code.gson:gson:2.6.2'
     compile 'com.fabiendevos:nanotasks:1.1.0'
+    compile 'de.greenrobot:greendao:2.1.0'
 }

@@ -1,6 +1,6 @@
-package com.bili.diushoujuaner.model.api.api;
+package com.bili.diushoujuaner.model.apihelper.api;
 
-import com.bili.diushoujuaner.model.api.callback.ApiCallbackListener;
+import com.bili.diushoujuaner.model.apihelper.callback.ApiCallbackListener;
 import com.bili.diushoujuaner.utils.resquest.UserAccountDto;
 
 /**
