@@ -1,9 +1,9 @@
-package com.bili.diushoujuaner.utils.resquest;
+package com.bili.diushoujuaner.utils.request;
 
 /**
  * Created by BiLi on 2016/3/11.
  */
-public class UserAccountDto {
+public class UserAccountReq {
 
     private String mobile;
     private String password;

@@ -3,6 +3,7 @@ package com.bili.diushoujuaner.model.preferhelper;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.bili.diushoujuaner.utils.Common;
 import com.bili.diushoujuaner.utils.response.CustomSession;
 
 /**
@@ -26,26 +27,34 @@ public class CustomSessionPreference {
         return customSessionPreference;
     }
 
-    public void saveAccessToken(CustomSession customSession){
+    public void saveCustomSession(CustomSession customSession){
         SharedPreferences preferences = mContext.getSharedPreferences(FILENAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
-        if (customSession.getAccessToken() != null && !(customSession.getAccessToken() == "")) {
+        if (!Common.isEmpty(customSession.getAccessToken())) {
             editor.putString("accessToken", customSession.getAccessToken());
+        }
+        if (!Common.isEmpty(customSession.getLastTime())) {
+            editor.putString("lastTime", customSession.getLastTime());
+        }
+        if (customSession.getUserNo() != null) {
+            editor.putLong("userNo", customSession.getUserNo());
         }
         editor.apply();
     }
 
-    public CustomSession getAccessToken(){
+    public CustomSession getCustomSession(){
         SharedPreferences preferences = mContext.getSharedPreferences(FILENAME, Context.MODE_PRIVATE);
         CustomSession customSession = new CustomSession();
 
         customSession.setAccessToken(preferences.getString("accessToken", ""));
+        customSession.setLastTime(preferences.getString("lastTime", ""));
+        customSession.setUserNo(preferences.getLong("userNo", 0));
 
         return customSession;
     }
 
     public boolean isLogined(){
-        CustomSession customSession = getAccessToken();
+        CustomSession customSession = getCustomSession();
         if(customSession == null || customSession.getAccessToken().trim().length() <= 0){
             return false;
         }

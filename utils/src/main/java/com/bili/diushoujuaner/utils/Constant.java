@@ -17,4 +17,6 @@ public interface Constant {
 
     String DATABASE_NAME = "diushoujuaner_db";
 
+    String HOST_ADDRESS = "http://192.168.137.1:8080/diushoujuaner/";
+
 }

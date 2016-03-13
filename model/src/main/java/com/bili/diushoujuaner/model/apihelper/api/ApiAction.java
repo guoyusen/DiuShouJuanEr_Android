@@ -2,9 +2,10 @@ package com.bili.diushoujuaner.model.apihelper.api;
 
 import android.content.Context;
 
+import com.android.volley.Request;
 import com.bili.diushoujuaner.model.apihelper.DataLoader;
 import com.bili.diushoujuaner.model.apihelper.callback.ApiCallbackListener;
-import com.bili.diushoujuaner.utils.resquest.UserAccountDto;
+import com.bili.diushoujuaner.utils.request.UserAccountReq;
 import com.bili.diushoujuaner.utils.Common;
 
 /**
@@ -30,7 +31,12 @@ public class ApiAction implements Api {
     }
 
     @Override
-    public void getUserLogin(UserAccountDto userAccountDto, ApiCallbackListener apiCallbackListener) {
-        dataLoader.processJsonObjectRequest(Api.userLogin, Common.ConvertObjToMap(userAccountDto),apiCallbackListener);
+    public void getUserLogin(UserAccountReq userAccountReq, ApiCallbackListener apiCallbackListener) {
+        dataLoader.processStringRequest(Request.Method.POST, Api.getUserLogin, Common.ConvertObjToMap(userAccountReq), apiCallbackListener);
+    }
+
+    @Override
+    public void getUserInfo(ApiCallbackListener apiCallbackListener) {
+        dataLoader.processStringRequest(Request.Method.GET, Api.getUserInfo, null, apiCallbackListener);
     }
 }

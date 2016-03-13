@@ -12,6 +12,7 @@ import android.widget.EditText;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,6 +20,10 @@ import java.util.regex.Pattern;
  * Created by BiLi on 2016/3/10.
  */
 public class Common {
+
+    public static String changeObjToString(Object object){
+        return object + "";
+    }
 
     /**
      * 手机号验证
@@ -34,6 +39,10 @@ public class Common {
         m = p.matcher(str.replaceAll(" ", ""));
         b = m.matches();
         return b;
+    }
+
+    public static String getCompleteUrl(String url){
+        return Constant.HOST_ADDRESS + url;
     }
 
     public static Map<String, String> ConvertObjToMap(Object obj) {

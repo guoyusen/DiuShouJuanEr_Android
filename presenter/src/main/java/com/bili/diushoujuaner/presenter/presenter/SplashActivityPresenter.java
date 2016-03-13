@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.bili.diushoujuaner.model.action.CustomSessionAction;
 import com.bili.diushoujuaner.model.callback.ActionCallbackListener;
+import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
 import com.bili.diushoujuaner.presenter.base.IBaseView;
 import com.bili.diushoujuaner.presenter.base.BasePresenter;
 import com.bili.diushoujuaner.presenter.viewinterface.SplashActivityView;
@@ -19,21 +20,11 @@ public class SplashActivityPresenter extends BasePresenter {
     }
 
     public void getNextActivity(){
-        CustomSessionAction.getInstance(context).getAccessToken(new ActionCallbackListener<Boolean>() {
-            @Override
-            public void onSuccess(Boolean isLogined) {
-                if(!isLogined){
-                    getViewByClass(SplashActivityView.class).showNextActivity(Constant.SHOW_TYPE_LOGIN);
-                }else{
-                    getViewByClass(SplashActivityView.class).showNextActivity(Constant.SHOW_TYPE_MAIN);
-                }
-            }
-
-            @Override
-            public void onFailure(int errorCode) {
-
-            }
-        });
+        if(!CustomSessionPreference.getInstance().isLogined()){
+            getViewByClass(SplashActivityView.class).showNextActivity(Constant.SHOW_TYPE_LOGIN);
+        }else{
+            getViewByClass(SplashActivityView.class).showNextActivity(Constant.SHOW_TYPE_MAIN);
+        }
     }
 
 }

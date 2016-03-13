@@ -34,6 +34,7 @@ public class CustomGenerator {
         user.addStringProperty("location");
         user.addStringProperty("picPath");
         user.addStringProperty("smallNick");
+        user.addStringProperty("registTime");
     }
 
     /**

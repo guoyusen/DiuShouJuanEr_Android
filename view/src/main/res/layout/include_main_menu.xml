@@ -27,6 +27,7 @@
             app:roundAsCircle="true" />
 
         <TextView
+            android:id="@+id/textUserName"
             style="@style/TextLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

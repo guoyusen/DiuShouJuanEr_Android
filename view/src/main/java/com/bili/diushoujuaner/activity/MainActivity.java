@@ -18,6 +18,11 @@ import com.bili.diushoujuaner.callback.IShowMainMenu;
 import com.bili.diushoujuaner.fragment.ContactFragment;
 import com.bili.diushoujuaner.fragment.HomeFragment;
 import com.bili.diushoujuaner.fragment.MessageFragment;
+import com.bili.diushoujuaner.model.databasehelper.dao.User;
+import com.bili.diushoujuaner.presenter.presenter.MainActivityPresenter;
+import com.bili.diushoujuaner.presenter.viewinterface.MainActivityView;
+import com.bili.diushoujuaner.utils.Common;
+import com.bili.diushoujuaner.utils.Imageloader;
 import com.bili.diushoujuaner.utils.manager.ActivityManager;
 import com.bili.diushoujuaner.widget.CustomViewPager;
 import com.bili.diushoujuaner.widget.badgeview.BGABadgeRadioButton;
@@ -31,7 +36,7 @@ import java.util.TimerTask;
 
 import butterknife.Bind;
 
-public class MainActivity extends BaseFragmentActivity implements View.OnClickListener, IShowMainMenu {
+public class MainActivity extends BaseFragmentActivity implements View.OnClickListener, IShowMainMenu, MainActivityView {
 
     @Bind(R.id.customViewPager)
     CustomViewPager customViewPager;
@@ -51,6 +56,8 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
     BGABadgeTextView textSystemNotice;
     @Bind(R.id.textAutograph)
     TextView textAutograph;
+    @Bind(R.id.textUserName)
+    TextView textUserName;
 
     private List<Fragment> fragmentList;
     private boolean isWaitingExit = false;
@@ -113,6 +120,9 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
         btnMainMess.showTextBadge("5");
         btnMainHome.showTextBadge("5");
         textSystemNotice.showTextBadge("2");
+
+        basePresenter = new MainActivityPresenter(this, getApplicationContext());
+        getPresenterByClass(MainActivityPresenter.class).getUserInfo();
     }
 
     @Override
@@ -181,4 +191,22 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
         return true;
     }
 
+    @Override
+    public void getUserInfo(User user) {
+        Imageloader.getInstance().displayDraweeView(Common.getCompleteUrl(user.getPicPath()),menuHead);
+        textAutograph.setText(user.getAutograph());
+        textUserName.setText(user.getNickName());
+    }
+
+    @Override
+    public void showLoading(int loadingType) {
+    }
+
+    @Override
+    public void hideLoading(int loadingType) {
+    }
+
+    @Override
+    public void showWarning(String message) {
+    }
 }

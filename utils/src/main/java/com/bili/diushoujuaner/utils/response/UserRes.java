@@ -1,32 +1,23 @@
 package com.bili.diushoujuaner.utils.response;
 
+import java.util.Date;
+
 /**
  * Created by BiLi on 2016/3/10.
  */
-public class UserDto {
+public class UserRes {
 
     private Long userNo;
-
     private String realName;
-
     private String nickName;
-
     private String mobile;
-
     private String autograph;
-
     private Integer gender;
-
     private String birthday;
-
     private String homeTown;
-
     private String location;
-
     private String picPath;
-
     private String smallNick;
-
     private String registTime;
 
     public String getRegistTime() {

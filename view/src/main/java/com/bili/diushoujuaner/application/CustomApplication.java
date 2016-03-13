@@ -8,6 +8,7 @@ import com.bili.diushoujuaner.model.cachehelper.ACache;
 import com.bili.diushoujuaner.model.databasehelper.DBManager;
 import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
 import com.facebook.drawee.backends.pipeline.Fresco;
+import com.orhanobut.logger.Logger;
 
 /**
  * Created by BiLi on 2016/2/27.
@@ -29,6 +30,11 @@ public class CustomApplication extends Application {
         initAcache();// 初始化缓存模块
         initPrefs(); // 初始化SharedPreference
         initDatabase();// 初始化DBManager
+        initLogger();
+    }
+
+    private void initLogger(){
+        Logger.init("guoyusen");
     }
 
     private void initHtpp(){

@@ -8,7 +8,7 @@ import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
 import com.bili.diushoujuaner.presenter.base.IBaseView;
 import com.bili.diushoujuaner.utils.Constant;
 import com.bili.diushoujuaner.utils.response.CustomSession;
-import com.bili.diushoujuaner.utils.resquest.UserAccountDto;
+import com.bili.diushoujuaner.utils.request.UserAccountReq;
 import com.bili.diushoujuaner.model.action.CustomSessionAction;
 import com.bili.diushoujuaner.model.callback.ActionCallbackListener;
 import com.bili.diushoujuaner.presenter.base.BasePresenter;
@@ -30,14 +30,14 @@ public class LoginActivityPresenter extends BasePresenter {
         }
         getViewByClass(LoginActivityView.class).showLoading(Constant.LOADING_TOP);
 
-        UserAccountDto userAccountDto = new UserAccountDto();
-        userAccountDto.setMobile(mobile);
-        userAccountDto.setPassword(psd);
-        CustomSessionAction.getInstance(context).getUserLogin(userAccountDto, new ActionCallbackListener<ApiRespon<CustomSession>>() {
+        UserAccountReq userAccountReq = new UserAccountReq();
+        userAccountReq.setMobile(mobile);
+        userAccountReq.setPassword(psd);
+        CustomSessionAction.getInstance(context).getUserLogin(userAccountReq, new ActionCallbackListener<ApiRespon<CustomSession>>() {
             @Override
             public void onSuccess(ApiRespon<CustomSession> result) {
                 if(showMessage(result.getRetCode(), result.getMessage())){
-                    CustomSessionPreference.getInstance().saveAccessToken(result.getData());
+                    CustomSessionPreference.getInstance().saveCustomSession(result.getData());
                     getViewByClass(LoginActivityView.class).loginSuccess();
                 }
                 getViewByClass(LoginActivityView.class).hideLoading(Constant.LOADING_TOP);

@@ -10,6 +10,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.bili.diushoujuaner.model.apihelper.callback.ApiCallbackListener;
 import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
+import com.orhanobut.logger.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,11 +27,11 @@ public class DataLoader {
         this.context = context;
     }
 
-    public void processJsonObjectRequest(String url, final Map<String, String> map, final ApiCallbackListener apiCallbackListener) {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+    public void processStringRequest(int method, String url, final Map<String, String> map, final ApiCallbackListener apiCallbackListener) {
+        StringRequest stringRequest = new StringRequest(method, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.d("guoyusen",response);
+                Logger.json(response);
                 apiCallbackListener.onSuccess(response);
             }
         }, new Response.ErrorListener() {
@@ -55,7 +56,7 @@ public class DataLoader {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<>();
                 headers.put("Device-Type", "Client/Android");
-                headers.put("AccessToken", CustomSessionPreference.getInstance().getAccessToken().getAccessToken());
+                headers.put("AccessToken", CustomSessionPreference.getInstance().getCustomSession().getAccessToken());
                 return headers;
             }
 
