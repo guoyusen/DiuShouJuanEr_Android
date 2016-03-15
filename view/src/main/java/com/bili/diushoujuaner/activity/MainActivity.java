@@ -123,6 +123,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
 
         basePresenter = new MainActivityPresenter(this, getApplicationContext());
         getPresenterByClass(MainActivityPresenter.class).getUserInfo();
+
     }
 
     @Override

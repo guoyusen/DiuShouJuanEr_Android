@@ -11,9 +11,12 @@ public interface Api {
 
     String getUserLogin = Constant.HOST_ADDRESS + "1.0/users/login";
     String getUserInfo = Constant.HOST_ADDRESS + "1.0/users/info";
+    String getContacts = Constant.HOST_ADDRESS + "1.0/contacts";
 
     void getUserLogin(UserAccountReq userAccountReq, ApiCallbackListener apiCallbackListener);
 
     void getUserInfo(ApiCallbackListener apiCallbackListener);
+
+    void getContacts(ApiCallbackListener apiCallbackListener);
 
 }

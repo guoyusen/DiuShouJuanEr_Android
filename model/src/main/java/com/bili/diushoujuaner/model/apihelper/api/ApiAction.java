@@ -14,12 +14,10 @@ import com.bili.diushoujuaner.utils.Common;
 public class ApiAction implements Api {
 
     private static DataLoader dataLoader;
-    private static Context mContext;
     private static ApiAction apiAction;
 
-    public static void initialize(Context context) {
-        mContext = context;
-        dataLoader = new DataLoader(context);
+    public static void initialize() {
+        dataLoader = new DataLoader();
         apiAction = new ApiAction();
     }
 
@@ -38,5 +36,10 @@ public class ApiAction implements Api {
     @Override
     public void getUserInfo(ApiCallbackListener apiCallbackListener) {
         dataLoader.processStringRequest(Request.Method.GET, Api.getUserInfo, null, apiCallbackListener);
+    }
+
+    @Override
+    public void getContacts(ApiCallbackListener apiCallbackListener) {
+        dataLoader.processStringRequest(Request.Method.GET, Api.getContacts, null, apiCallbackListener);
     }
 }

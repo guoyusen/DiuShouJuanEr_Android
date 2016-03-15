@@ -43,4 +43,8 @@ public class HttpEngine {
         this.requestQueue.getCache().clear();
     }
 
+    public void cancleAllTask(Object tag){
+        this.requestQueue.cancelAll(tag);
+    }
+
 }

@@ -54,7 +54,7 @@
                         android:background="@null"
                         android:maxLength="11"
                         android:inputType="number"
-                        android:text="18817800148"
+                        android:text="18817800144"
                         android:textSize="@dimen/x35"
                         android:textStyle="bold"/>
 

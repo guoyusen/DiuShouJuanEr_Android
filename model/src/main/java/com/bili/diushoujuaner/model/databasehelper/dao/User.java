@@ -156,4 +156,22 @@ public class User {
         this.registTime = registTime;
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", userNo=" + userNo +
+                ", realName='" + realName + '\'' +
+                ", nickName='" + nickName + '\'' +
+                ", mobile='" + mobile + '\'' +
+                ", autograph='" + autograph + '\'' +
+                ", gender=" + gender +
+                ", birthday='" + birthday + '\'' +
+                ", homeTown='" + homeTown + '\'' +
+                ", location='" + location + '\'' +
+                ", picPath='" + picPath + '\'' +
+                ", smallNick='" + smallNick + '\'' +
+                ", registTime='" + registTime + '\'' +
+                '}';
+    }
 }

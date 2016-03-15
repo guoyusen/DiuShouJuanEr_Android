@@ -191,7 +191,9 @@ public class BaseActivity extends AbstractBaseActivity {
                 CustomProgress.getInstance(context).showTop(getResources().getString(R.string.loging_status), true, null);
                 break;
             case Constant.LOADING_DEFAULT:
-
+                if(findViewById(R.id.defaultCircle) != null){
+                    findViewById(R.id.defaultCircle).setVisibility(View.VISIBLE);
+                }
                 break;
             default:break;
         }
@@ -205,7 +207,9 @@ public class BaseActivity extends AbstractBaseActivity {
                 CustomProgress.getInstance(context).dismiss();
                 break;
             case Constant.LOADING_DEFAULT:
-
+                if(findViewById(R.id.defaultCircle) != null){
+                    findViewById(R.id.defaultCircle).setVisibility(View.GONE);
+                }
                 break;
             default:break;
         }

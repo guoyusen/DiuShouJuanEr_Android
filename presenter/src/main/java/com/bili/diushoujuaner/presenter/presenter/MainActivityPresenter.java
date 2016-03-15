@@ -7,6 +7,7 @@ import com.bili.diushoujuaner.model.apihelper.ApiRespon;
 import com.bili.diushoujuaner.model.callback.ActionCallbackListener;
 import com.bili.diushoujuaner.model.databasehelper.DBManager;
 import com.bili.diushoujuaner.model.databasehelper.DataTypeUtil;
+import com.bili.diushoujuaner.model.databasehelper.dao.User;
 import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
 import com.bili.diushoujuaner.presenter.base.BasePresenter;
 import com.bili.diushoujuaner.presenter.base.IBaseView;
@@ -31,7 +32,7 @@ public class MainActivityPresenter extends BasePresenter {
                 public void onSuccess(ApiRespon<UserRes> result) {
                     if(showMessage(result.getRetCode(), result.getMessage())){
                         DBManager.getInstance().saveUser(result.getData());
-                        getViewByClass(MainActivityView.class).getUserInfo(DataTypeUtil.changeUserResToUser(result.getData()));
+                        getViewByClass(MainActivityView.class).getUserInfo(getUserFromDb());
                     }
                 }
 
@@ -41,8 +42,12 @@ public class MainActivityPresenter extends BasePresenter {
                 }
             });
         }else{
-            CustomSession customSession = CustomSessionPreference.getInstance().getCustomSession();
-            getViewByClass(MainActivityView.class).getUserInfo(DBManager.getInstance().getUser(customSession.getUserNo()));
+            getViewByClass(MainActivityView.class).getUserInfo(getUserFromDb());
         }
+    }
+
+    private User getUserFromDb(){
+        CustomSession customSession = CustomSessionPreference.getInstance().getCustomSession();
+        return DBManager.getInstance().getUser(customSession.getUserNo());
     }
 }

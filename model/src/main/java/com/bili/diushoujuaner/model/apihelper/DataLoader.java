@@ -20,14 +20,12 @@ import java.util.Map;
  */
 public class DataLoader {
 
-    private Context context;
     public static final String TAG = "DataLoader";
 
-    public DataLoader(Context context) {
-        this.context = context;
+    public DataLoader() {
     }
 
-    public void processStringRequest(int method, String url, final Map<String, String> map, final ApiCallbackListener apiCallbackListener) {
+    public void processStringRequest(int method, String url, final Map<String, String> params, final ApiCallbackListener apiCallbackListener) {
         StringRequest stringRequest = new StringRequest(method, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -50,6 +48,7 @@ public class DataLoader {
                         apiCallbackListener.onFailure(100);
                         break;
                 }
+                HttpEngine.getInstance().cancleAllTask(TAG);
             }
         }) {
             @Override
@@ -62,9 +61,10 @@ public class DataLoader {
 
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
-                return map;
+                return params;
             }
         };
+        stringRequest.setTag(TAG);
         stringRequest.setShouldCache(false);
         HttpEngine.getInstance().addToRequestQueue(stringRequest);
     }

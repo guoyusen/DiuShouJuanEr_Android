@@ -7,7 +7,10 @@ import com.bili.diushoujuaner.model.databasehelper.dao.DaoSession;
 import com.bili.diushoujuaner.model.databasehelper.dao.User;
 import com.bili.diushoujuaner.model.databasehelper.dao.UserDao;
 import com.bili.diushoujuaner.utils.Constant;
+import com.bili.diushoujuaner.utils.GsonParser;
 import com.bili.diushoujuaner.utils.response.UserRes;
+import com.google.gson.Gson;
+import com.orhanobut.logger.Logger;
 
 import java.util.List;
 
@@ -71,6 +74,8 @@ public class DBManager {
                 daoSession.getUserDao().insertOrReplace(DataTypeUtil.updateUserByUser(item,user));
             }
         }
+        List<User> tmpList = daoSession.getUserDao().loadAll();
+        Logger.json(GsonParser.getInstance().toJson(tmpList));
     }
 
     public User getUser(long userNo){

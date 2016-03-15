@@ -77,7 +77,7 @@ public class HomeFragment extends BaseFragment implements WaveSwipeRefreshLayout
         waveSwipeRefreshLayout.setWaveColor(Color.parseColor("#5C84DC"));
         waveSwipeRefreshLayout.setOnRefreshListener(this);
 
-        basePresenter = new HomeFragmentPresenter(this, getActivity().getApplication().getApplicationContext());
+        basePresenter = new HomeFragmentPresenter(this, getContext());
         getPresenterByClass(HomeFragmentPresenter.class).loadRecallList();
 
     }

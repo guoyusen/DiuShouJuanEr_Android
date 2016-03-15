@@ -39,7 +39,7 @@ public class CustomApplication extends Application {
 
     private void initHtpp(){
         HttpEngine.initialize(this);
-        ApiAction.initialize(this);
+        ApiAction.initialize();
     }
 
     private void initAcache(){

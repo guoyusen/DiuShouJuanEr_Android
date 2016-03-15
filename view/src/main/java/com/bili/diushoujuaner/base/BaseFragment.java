@@ -12,6 +12,10 @@ import android.widget.TextView;
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.application.CustomApplication;
 import com.bili.diushoujuaner.presenter.base.BasePresenter;
+import com.bili.diushoujuaner.utils.Constant;
+import com.bili.diushoujuaner.widget.CustomProgress;
+import com.bili.diushoujuaner.widget.CustomToast;
+import com.bili.diushoujuaner.widget.MaterialCircleView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -31,6 +35,7 @@ public class BaseFragment extends Fragment {
     protected Context context;
     public CustomApplication customApplication;
     protected BasePresenter basePresenter;
+    private View defaultCircle;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -44,8 +49,13 @@ public class BaseFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(getLayout(), container, false);
         ButterKnife.bind(this, view);
+        initCircleLoder(view);
         setViewStatus();
         return view;
+    }
+
+    private void initCircleLoder(View view){
+        defaultCircle = view.findViewById(R.id.defaultCircle);
     }
 
     public void beforeInitView(){
@@ -56,6 +66,7 @@ public class BaseFragment extends Fragment {
     }
 
     public void setViewStatus() {
+
     }
 
     public void showPageHead(String titleText, Integer iconId, String rightText) {
@@ -90,5 +101,41 @@ public class BaseFragment extends Fragment {
 
     protected <T> T getPresenterByClass(Class<T> t){
         return (T)basePresenter;
+    }
+
+    protected void showLoading(int loadingType) {
+        switch (loadingType){
+            case Constant.LOADING_CENTER:
+                CustomProgress.getInstance(context).showCenter(getResources().getString(R.string.loging_status), true, null);
+                break;
+            case Constant.LOADING_TOP:
+                CustomProgress.getInstance(context).showTop(getResources().getString(R.string.loging_status), true, null);
+                break;
+            case Constant.LOADING_DEFAULT:
+                if(defaultCircle != null){
+                    defaultCircle.setVisibility(View.VISIBLE);
+                }
+                break;
+            default:break;
+        }
+    }
+
+    protected void hideLoading(int loadingType) {
+        switch (loadingType){
+            case Constant.LOADING_CENTER:
+            case Constant.LOADING_TOP:
+                CustomProgress.getInstance(context).dismiss();
+                break;
+            case Constant.LOADING_DEFAULT:
+                if(defaultCircle != null){
+                    defaultCircle.setVisibility(View.GONE);
+                }
+                break;
+            default:break;
+        }
+    }
+
+    protected void showWarning(String message) {
+        CustomToast.getInstance().showWarning(context, message);
     }
 }
