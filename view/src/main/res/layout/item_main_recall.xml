@@ -4,126 +4,149 @@
     xmlns:cb="http://schemas.android.com/tools"
     style="@style/MatchWrap"
     android:background="@color/COLOR_WHITE"
-    android:paddingBottom="@dimen/y10"
     android:orientation="vertical">
 
     <RelativeLayout
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/y128"
-    android:layout_marginLeft="@dimen/x16"
-    android:layout_marginRight="@dimen/x16">
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y128"
+        android:layout_marginLeft="@dimen/x24"
+        android:layout_marginRight="@dimen/x24">
 
-    <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/ivItemHead"
-        android:layout_width="@dimen/x100"
-        android:layout_height="@dimen/y100"
-        app:placeholderImage="@mipmap/shin"
-        android:layout_centerVertical="true"
-        app:roundAsCircle="true"/>
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/ivItemHead"
+            android:layout_width="@dimen/x100"
+            android:layout_height="@dimen/y100"
+            android:layout_centerVertical="true"
+            app:placeholderImage="@mipmap/shin"
+            app:roundAsCircle="true" />
 
-    <TextView
-        android:id="@+id/textItemUserName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/TextLarge"
-        android:textColor="@color/TC_BLACK"
-        android:layout_toRightOf="@+id/ivItemHead"
-        android:layout_marginLeft="@dimen/x20"
-        android:layout_marginTop="@dimen/x16"
-        android:text="三木同学"/>
+        <TextView
+            android:id="@+id/textItemUserName"
+            style="@style/TextLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x24"
+            android:layout_marginTop="@dimen/x16"
+            android:layout_toRightOf="@+id/ivItemHead"
+            android:text="三木同学"
+            android:textColor="@color/TC_BLACK" />
 
-    <TextView
-        android:id="@+id/textItemPublishTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/TextSmall"
-        android:textColor="@color/TC_808080"
-        android:text="02月28日09:34"
-        android:layout_toRightOf="@+id/ivItemHead"
-        android:layout_alignBottom="@+id/ivItemHead"
-        android:layout_alignLeft="@+id/textItemUserName"/>
+        <TextView
+            android:id="@+id/textItemPublishTime"
+            style="@style/TextSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/textItemUserName"
+            android:layout_below="@+id/textItemUserName"
+            android:layout_marginTop="@dimen/y6"
+            android:layout_toRightOf="@+id/ivItemHead"
+            android:text="02月28日09:34"
+            android:textColor="@color/TC_808080" />
 
-</RelativeLayout>
+    </RelativeLayout>
 
     <com.bili.diushoujuaner.widget.aligntextview.AlignTextView
         android:id="@+id/textItemContent"
+        style="@style/TextMiddle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        style="@style/TextMiddle"
-        android:textColor="@color/TC_333333"
-        android:layout_marginLeft="@dimen/x16"
-        android:layout_marginRight="@dimen/x16"
-        android:layout_marginTop="@dimen/y8"
         android:layout_marginBottom="@dimen/y8"
+        android:layout_marginLeft="@dimen/x24"
+        android:layout_marginRight="@dimen/x24"
+        android:layout_marginTop="@dimen/y8"
         android:ellipsize="marquee"
-        cb:align="left"
-        android:maxLines="7"
-        android:text="@string/tmpString"/>
+        android:maxLines="4"
+        android:text="@string/tmpString"
+        android:textColor="@color/TC_333333"
+        cb:align="left" />
+
+    <RelativeLayout
+        android:id="@+id/layoutItemPic"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y380"
+        android:layout_marginTop="@dimen/y10">
+
+        <ImageView
+            android:id="@+id/ivItemPic"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/bg_menu_head" />
+
+        <TextView
+            android:id="@+id/txtItemPicCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/text_pic_count_bg"
+            android:textColor="@color/TC_WHITE"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="@dimen/x24"
+            android:layout_marginBottom="@dimen/x32"
+            android:gravity="center"
+            android:text="6"
+            style="@style/TextSmall"/>
+
+    </RelativeLayout>
+
+    <View
+        style="@style/line"/>
 
     <LinearLayout
+        style="@style/MarginHorizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="@dimen/x8">
+        android:layout_height="@dimen/y80"
+        android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/ivPicture_0"
-            android:layout_width="@dimen/x300"
-            android:layout_height="@dimen/y200"
-            android:src="@mipmap/bg_menu_head"
-            android:scaleType="centerCrop"
-            android:visibility="gone"/>
-
-        <ImageView
-            android:id="@+id/ivPicture_1"
-            style="@style/recall_picture_item"
-            android:maxWidth="@dimen/x300"
-            android:src="@mipmap/bg_menu_head"/>
-
-        <ImageView
-            android:id="@+id/ivPicture_2"
-            style="@style/recall_picture_item"
-            android:src="@mipmap/bg_menu_head"/>
-
-        <RelativeLayout
-            android:id="@+id/layoutPicture"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/y200"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_weight="1.0"
-            android:layout_marginLeft="@dimen/x8"
-            android:layout_marginRight="@dimen/x8">
+            android:gravity="center"
+            android:orientation="horizontal">
 
             <ImageView
-                android:id="@+id/ivPicture_3"
+                android:layout_width="@dimen/x36"
+                android:layout_height="@dimen/y36"
+                android:src="@mipmap/icon_comment"/>
+
+            <TextView
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/y200"
-                android:scaleType="centerCrop"
-                android:maxWidth="@dimen/x150"
-                android:src="@mipmap/bg_menu_head"/>
+                android:layout_height="wrap_content"
+                android:textColor="@color/TC_BFBFBF"
+                android:layout_marginLeft="@dimen/x10"
+                style="@style/TextMiddle"
+                android:text="9"/>
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/y200"
-                android:background="@color/BG_TOAST">
+        </LinearLayout>
 
-                <TextView
-                    android:id="@+id/textLeftCount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/x80"
-                    android:textColor="@color/TC_WHITE"
-                    android:layout_centerInParent="true"
-                    android:text="5"/>
+        <View
+            android:layout_width="@dimen/x2"
+            android:layout_height="@dimen/y50"
+            android:layout_gravity="center_vertical"
+            android:background="@color/BG_ECECEC" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toRightOf="@+id/textLeftCount"
-                    android:src="@mipmap/icon_arrow_right"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1.0"
+            android:orientation="horizontal"
+            android:gravity="center">
 
-            </RelativeLayout>
-        </RelativeLayout>
+            <ImageView
+                android:layout_width="@dimen/x36"
+                android:layout_height="@dimen/y36"
+                android:src="@mipmap/icon_good_press"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/TC_5C84DC"
+                android:layout_marginLeft="@dimen/x10"
+                style="@style/TextMiddle"
+                android:text="9"/>
+
+        </LinearLayout>
 
     </LinearLayout>
 

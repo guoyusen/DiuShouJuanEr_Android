@@ -12,7 +12,7 @@ public class Chat {
     private long toNo;
     private String content;
     /** Not-null value. */
-    private java.util.Date time;
+    private String time;
     private int msgType;
     private int conType;
 
@@ -23,7 +23,7 @@ public class Chat {
         this.id = id;
     }
 
-    public Chat(Long id, long ownerNo, long fromNo, long toNo, String content, java.util.Date time, int msgType, int conType) {
+    public Chat(Long id, long ownerNo, long fromNo, long toNo, String content, String time, int msgType, int conType) {
         this.id = id;
         this.ownerNo = ownerNo;
         this.fromNo = fromNo;
@@ -75,12 +75,12 @@ public class Chat {
     }
 
     /** Not-null value. */
-    public java.util.Date getTime() {
+    public String getTime() {
         return time;
     }
 
     /** Not-null value; ensure this value is available before it is saved to the database. */
-    public void setTime(java.util.Date time) {
+    public void setTime(String time) {
         this.time = time;
     }
 

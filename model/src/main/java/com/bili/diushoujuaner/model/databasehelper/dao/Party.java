@@ -10,12 +10,11 @@ public class Party {
     private long partyNo;
     /** Not-null value. */
     private String partyName;
-    /** Not-null value. */
-    private String ownerNo;
+    private long ownerNo;
     /** Not-null value. */
     private String information;
     /** Not-null value. */
-    private java.util.Date registerTime;
+    private String registerTime;
     /** Not-null value. */
     private String picPath;
 
@@ -26,7 +25,7 @@ public class Party {
         this.id = id;
     }
 
-    public Party(Long id, long partyNo, String partyName, String ownerNo, String information, java.util.Date registerTime, String picPath) {
+    public Party(Long id, long partyNo, String partyName, long ownerNo, String information, String registerTime, String picPath) {
         this.id = id;
         this.partyNo = partyNo;
         this.partyName = partyName;
@@ -62,13 +61,11 @@ public class Party {
         this.partyName = partyName;
     }
 
-    /** Not-null value. */
-    public String getOwnerNo() {
+    public long getOwnerNo() {
         return ownerNo;
     }
 
-    /** Not-null value; ensure this value is available before it is saved to the database. */
-    public void setOwnerNo(String ownerNo) {
+    public void setOwnerNo(long ownerNo) {
         this.ownerNo = ownerNo;
     }
 
@@ -83,12 +80,12 @@ public class Party {
     }
 
     /** Not-null value. */
-    public java.util.Date getRegisterTime() {
+    public String getRegisterTime() {
         return registerTime;
     }
 
     /** Not-null value; ensure this value is available before it is saved to the database. */
-    public void setRegisterTime(java.util.Date registerTime) {
+    public void setRegisterTime(String registerTime) {
         this.registerTime = registerTime;
     }
 

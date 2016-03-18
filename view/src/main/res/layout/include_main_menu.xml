@@ -27,7 +27,7 @@
             app:roundAsCircle="true" />
 
         <TextView
-            android:id="@+id/textUserName"
+            android:id="@+id/txtUserName"
             style="@style/TextLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -47,16 +47,16 @@
             <ImageView
                 android:layout_width="@dimen/x40"
                 android:layout_height="@dimen/y40"
-                android:layout_marginLeft="@dimen/x16"
+                android:layout_marginLeft="@dimen/x24"
                 android:layout_marginTop="@dimen/y15"
                 android:src="@mipmap/icon_menu_autograph_quote" />
 
             <TextView
-                android:id="@+id/textAutograph"
+                android:id="@+id/txtAutograph"
                 style="@style/TextSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/x16"
+                android:layout_marginRight="@dimen/x24"
                 android:layout_marginTop="@dimen/x20"
                 android:ellipsize="marquee"
                 android:singleLine="true"
@@ -140,7 +140,7 @@
                     android:src="@mipmap/icon_menu_notice" />
 
                 <com.bili.diushoujuaner.widget.badgeview.BGABadgeTextView
-                    android:id="@+id/textSystemNotice"
+                    android:id="@+id/txtSystemNotice"
                     style="@style/menu_item_text"
                     app:badge_dragable="true"
                     android:text="系统通知" />

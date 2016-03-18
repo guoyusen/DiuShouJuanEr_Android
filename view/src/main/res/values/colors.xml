@@ -23,7 +23,9 @@
     <color name="TC_BLACK">#000000</color>
     <color name="TC_ADADBB">#ADADBB</color><!-- nav按钮normal使用 -->
     <color name="TC_5C84DC">#5C84DC</color><!-- nav按钮press使用 -->
+    <color name="TC_FF4081">#ff4081</color>
     <color name="TC_F55555">#F55555</color>
+    <color name="TC_BFBFBF">#BFBFBF</color>
     <color name="TC_333333">#333333</color>
     <color name="TC_808080">#808080</color><!-- 聊天信息列表使用 -->
 
@@ -34,5 +36,14 @@
     <color name="BTN_BLUE2">#577dcf</color>
     <color name="BTN_RED1">#FC6E51</color>
     <color name="BTN_RED2">#E9573F</color>
+
+
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+
+    <color name="colorInactive">#747474</color>
+    <color name="colorActiveSmall">#FFFFFF</color>
+    <color name="colorInactiveSmall">#50FFFFFF</color>
 
 </resources>

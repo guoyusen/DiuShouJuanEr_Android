@@ -26,9 +26,9 @@ public class PartyDao extends AbstractDao<Party, Long> {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property PartyNo = new Property(1, long.class, "partyNo", false, "PARTY_NO");
         public final static Property PartyName = new Property(2, String.class, "partyName", false, "PARTY_NAME");
-        public final static Property OwnerNo = new Property(3, String.class, "ownerNo", false, "OWNER_NO");
+        public final static Property OwnerNo = new Property(3, long.class, "ownerNo", false, "OWNER_NO");
         public final static Property Information = new Property(4, String.class, "information", false, "INFORMATION");
-        public final static Property RegisterTime = new Property(5, java.util.Date.class, "registerTime", false, "REGISTER_TIME");
+        public final static Property RegisterTime = new Property(5, String.class, "registerTime", false, "REGISTER_TIME");
         public final static Property PicPath = new Property(6, String.class, "picPath", false, "PIC_PATH");
     };
 
@@ -48,9 +48,9 @@ public class PartyDao extends AbstractDao<Party, Long> {
                 "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
                 "\"PARTY_NO\" INTEGER NOT NULL ," + // 1: partyNo
                 "\"PARTY_NAME\" TEXT NOT NULL ," + // 2: partyName
-                "\"OWNER_NO\" TEXT NOT NULL ," + // 3: ownerNo
+                "\"OWNER_NO\" INTEGER NOT NULL ," + // 3: ownerNo
                 "\"INFORMATION\" TEXT NOT NULL ," + // 4: information
-                "\"REGISTER_TIME\" INTEGER NOT NULL ," + // 5: registerTime
+                "\"REGISTER_TIME\" TEXT NOT NULL ," + // 5: registerTime
                 "\"PIC_PATH\" TEXT NOT NULL );"); // 6: picPath
     }
 
@@ -71,9 +71,9 @@ public class PartyDao extends AbstractDao<Party, Long> {
         }
         stmt.bindLong(2, entity.getPartyNo());
         stmt.bindString(3, entity.getPartyName());
-        stmt.bindString(4, entity.getOwnerNo());
+        stmt.bindLong(4, entity.getOwnerNo());
         stmt.bindString(5, entity.getInformation());
-        stmt.bindLong(6, entity.getRegisterTime().getTime());
+        stmt.bindString(6, entity.getRegisterTime());
         stmt.bindString(7, entity.getPicPath());
     }
 
@@ -90,9 +90,9 @@ public class PartyDao extends AbstractDao<Party, Long> {
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
             cursor.getLong(offset + 1), // partyNo
             cursor.getString(offset + 2), // partyName
-            cursor.getString(offset + 3), // ownerNo
+            cursor.getLong(offset + 3), // ownerNo
             cursor.getString(offset + 4), // information
-            new java.util.Date(cursor.getLong(offset + 5)), // registerTime
+            cursor.getString(offset + 5), // registerTime
             cursor.getString(offset + 6) // picPath
         );
         return entity;
@@ -104,9 +104,9 @@ public class PartyDao extends AbstractDao<Party, Long> {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setPartyNo(cursor.getLong(offset + 1));
         entity.setPartyName(cursor.getString(offset + 2));
-        entity.setOwnerNo(cursor.getString(offset + 3));
+        entity.setOwnerNo(cursor.getLong(offset + 3));
         entity.setInformation(cursor.getString(offset + 4));
-        entity.setRegisterTime(new java.util.Date(cursor.getLong(offset + 5)));
+        entity.setRegisterTime(cursor.getString(offset + 5));
         entity.setPicPath(cursor.getString(offset + 6));
      }
     

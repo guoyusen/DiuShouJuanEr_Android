@@ -22,32 +22,28 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <TextView
-                    style="@style/TextLarge"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/BG_F6F6F6"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"
-                    android:gravity="left"
-                    android:paddingBottom="@dimen/y2"
-                    android:paddingLeft="@dimen/x16"
-                    android:paddingRight="@dimen/x16"
-                    android:paddingTop="@dimen/y2"
-                    android:text="☆"
-                    android:textColor="@color/TC_ADADBB" />
-
-                <LinearLayout
+                <RelativeLayout
                     android:id="@+id/layoutNewContact"
-                    style="@style/MarginHorizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/y128"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:layout_height="@dimen/y128">
+
+                    <TextView
+                        android:textSize="@dimen/x55"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/x24"
+                        android:focusable="true"
+                        android:focusableInTouchMode="true"
+                        android:textColor="@color/TC_FF4081"
+                        android:text="★"/>
 
                     <com.facebook.drawee.view.SimpleDraweeView
                         android:layout_width="@dimen/x100"
                         android:layout_height="@dimen/y100"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="@dimen/x24"
                         app:placeholderImage="@mipmap/item_contact_new"
                         app:roundAsCircle="true" />
 
@@ -55,28 +51,24 @@
                         style="@style/TextLarge"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/x42"
+                        android:layout_marginLeft="@dimen/x120"
+                        android:layout_centerVertical="true"
                         android:text="新的朋友"
                         android:textColor="@color/TC_333333" />
 
-                </LinearLayout>
+                </RelativeLayout>
 
-                <View
-                    style="@style/line"
-                    android:layout_marginLeft="@dimen/x16"
-                    android:layout_marginRight="@dimen/x16" />
-
-                <LinearLayout
+                <RelativeLayout
                     android:id="@+id/layoutParty"
-                    style="@style/MarginHorizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/y128"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:layout_height="@dimen/y128">
 
                     <com.facebook.drawee.view.SimpleDraweeView
                         android:layout_width="@dimen/x100"
                         android:layout_height="@dimen/y100"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="@dimen/x24"
                         app:placeholderImage="@mipmap/item_contact_party"
                         app:roundAsCircle="true" />
 
@@ -84,11 +76,17 @@
                         style="@style/TextLarge"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/x42"
+                        android:layout_marginLeft="@dimen/x120"
+                        android:layout_centerVertical="true"
                         android:text="群组"
                         android:textColor="@color/TC_333333" />
 
-                </LinearLayout>
+                </RelativeLayout>
+
+                <View
+                    style="@style/line"
+                    android:layout_marginLeft="@dimen/x16"
+                    android:layout_marginRight="@dimen/x16" />
 
                 <com.bili.diushoujuaner.widget.CustomListViewRefresh
                     android:id="@+id/customListViewRefresh"
@@ -100,14 +98,6 @@
             </LinearLayout>
 
         </com.bili.diushoujuaner.widget.ReboundScrollView>
-
-        <com.bili.diushoujuaner.widget.SideBarStar
-            android:id="@+id/sideBar"
-            android:layout_width="@dimen/x40"
-            android:layout_height="match_parent"
-            android:layout_gravity="right"
-            android:layout_marginBottom="@dimen/y20"
-            android:layout_marginTop="@dimen/y20" />
 
     </FrameLayout>
 

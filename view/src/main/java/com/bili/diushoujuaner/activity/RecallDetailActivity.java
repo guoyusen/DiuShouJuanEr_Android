@@ -24,10 +24,10 @@ public class RecallDetailActivity extends BaseActivity {
 
     @Bind(R.id.ivNavHead)
     SimpleDraweeView ivNavHead;
-    @Bind(R.id.textAuthor)
-    TextView textAuthor;
-    @Bind(R.id.textRight)
-    TextView textRight;
+    @Bind(R.id.txtAuthor)
+    TextView txtAuthor;
+    @Bind(R.id.txtRight)
+    TextView txtRight;
     @Bind(R.id.textRecallDetail)
     CBAlignTextView textRecallDetail;
     @Bind(R.id.textComment)

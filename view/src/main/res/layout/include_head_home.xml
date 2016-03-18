@@ -10,14 +10,14 @@
         android:layout_width="@dimen/x80"
         android:layout_height="@dimen/y80"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/x16"
+        android:layout_marginLeft="@dimen/x24"
         app:placeholderImage="@mipmap/shin"
         app:roundAsCircle="true"/>
 
     <com.bili.diushoujuaner.widget.MaterialCircleView
         android:id="@+id/defaultCircle"
         android:layout_centerVertical="true"
-        android:layout_toLeftOf="@+id/textNavTitle"
+        android:layout_toLeftOf="@+id/txtNavTitle"
         android:layout_marginRight="@dimen/x15"
         android:layout_width="@dimen/x40"
         android:layout_height="@dimen/x40"
@@ -26,7 +26,7 @@
         app:circleWidth="@dimen/x4"/>
 
     <TextView
-        android:id="@+id/textNavTitle"
+        android:id="@+id/txtNavTitle"
         style="@style/TextNavTitle"/>
 
     <ImageButton
@@ -36,11 +36,11 @@
         android:src="@mipmap/icon_recall_add"
         android:background="@null"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/x16"
+        android:layout_marginRight="@dimen/x24"
         android:layout_centerVertical="true"/>
     
     <TextView
-        android:id="@+id/textRight"
+        android:id="@+id/txtRight"
         style="@style/TextNavRight"
         android:text="添加"/>
 

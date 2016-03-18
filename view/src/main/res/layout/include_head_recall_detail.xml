@@ -24,7 +24,7 @@
         app:roundAsCircle="true"/>
 
     <TextView
-        android:id="@+id/textAuthor"
+        android:id="@+id/txtAuthor"
         style="@style/TextMiddle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
     <com.bili.diushoujuaner.widget.MaterialCircleView
         android:id="@+id/defaultCircle"
         android:layout_centerVertical="true"
-        android:layout_toLeftOf="@+id/textNavTitle"
+        android:layout_toLeftOf="@+id/txtNavTitle"
         android:layout_marginRight="@dimen/x15"
         android:layout_width="@dimen/x40"
         android:layout_height="@dimen/x40"
@@ -48,11 +48,11 @@
         app:circleWidth="@dimen/x4"/>
 
     <TextView
-        android:id="@+id/textNavTitle"
+        android:id="@+id/txtNavTitle"
         style="@style/TextNavTitle"/>
 
     <com.bili.diushoujuaner.widget.TimeSinceTextView
-        android:id="@+id/textRight"
+        android:id="@+id/txtRight"
         style="@style/TextNavRight"/>
 
     <ImageButton
@@ -61,7 +61,7 @@
         android:layout_height="match_parent"
         android:background="@null"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="@dimen/x16"
+        android:layout_marginRight="@dimen/x24"
         android:layout_centerVertical="true"/>
 
 </RelativeLayout>

@@ -18,16 +18,16 @@ import butterknife.Bind;
 
 public class LoginActivity extends BaseActivity implements LoginActivityView, View.OnClickListener {
 
-    @Bind(R.id.textRight)
-    TextView textRight;
+    @Bind(R.id.txtRight)
+    TextView txtRight;
     @Bind(R.id.btnLogin)
     Button btnLogin;
-    @Bind(R.id.textForgetPsd)
-    TextView textForgetPsd;
-    @Bind(R.id.textMobile)
-    EditText textMobile;
-    @Bind(R.id.textPassword)
-    EditText textPassword;
+    @Bind(R.id.txtForgetPsd)
+    TextView txtForgetPsd;
+    @Bind(R.id.edtMobile)
+    EditText edtMobile;
+    @Bind(R.id.edtPassword)
+    EditText edtPassword;
 
     @Override
     public void tintStatusColor() {
@@ -72,7 +72,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityView, Vi
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnLogin:
-                getPresenterByClass(LoginActivityPresenter.class).getUserLogin(textMobile.getText().toString().trim(), textPassword.getText().toString().trim());
+                getPresenterByClass(LoginActivityPresenter.class).getUserLogin(edtMobile.getText().toString().trim(), edtPassword.getText().toString().trim());
                 break;
         }
     }

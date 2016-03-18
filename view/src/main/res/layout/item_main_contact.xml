@@ -1,47 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/MatchWrap"
-    android:background="@color/COLOR_WHITE"
-    android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/y128"
+    android:background="@color/COLOR_WHITE">
+
+
 
     <TextView
         android:id="@+id/textItemMark"
-        style="@style/TextLarge"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/TC_ADADBB"
-        android:paddingTop="@dimen/y2"
-        android:paddingBottom="@dimen/y2"
-        android:paddingLeft="@dimen/x16"
-        android:paddingRight="@dimen/x16"
-        android:background="@color/BG_F6F6F6"
-        android:gravity="left"
-        android:text="A"/>
+        android:layout_marginLeft="@dimen/x24"
+        android:layout_centerVertical="true"
+        android:text="A"
+        android:textColor="@color/TC_FF4081"
+        android:textSize="@dimen/x55" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y128"
-        android:orientation="horizontal"
-        style="@style/MarginHorizontal"
-        android:gravity="center_vertical">
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/ivItemHead"
+        android:layout_width="@dimen/x100"
+        android:layout_height="@dimen/y100"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/x24"
+        app:placeholderImage="@mipmap/shin"
+        app:roundAsCircle="true" />
 
-        <com.facebook.drawee.view.SimpleDraweeView
-            android:id="@+id/ivItemHead"
-            android:layout_width="@dimen/x100"
-            android:layout_height="@dimen/y100"
-            app:placeholderImage="@mipmap/shin"
-            app:roundAsCircle="true" />
+    <TextView
+        android:id="@+id/textContactName"
+        style="@style/TextLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x120"
+        android:layout_centerVertical="true"
+        android:text="三木同学"
+        android:textColor="@color/TC_333333" />
 
-        <TextView
-            android:id="@+id/textContactName"
-            style="@style/TextLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/x42"
-            android:text="三木同学"
-            android:textColor="@color/TC_333333" />
-
-    </LinearLayout>
-
-</LinearLayout>
+</RelativeLayout>

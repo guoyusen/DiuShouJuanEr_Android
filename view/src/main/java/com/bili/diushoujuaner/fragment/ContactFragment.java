@@ -2,11 +2,9 @@ package com.bili.diushoujuaner.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bili.diushoujuaner.R;
@@ -16,21 +14,18 @@ import com.bili.diushoujuaner.activity.PartyActivity;
 import com.bili.diushoujuaner.adapter.ContactAdapter;
 import com.bili.diushoujuaner.base.BaseFragment;
 import com.bili.diushoujuaner.callback.IShowMainMenu;
-import com.bili.diushoujuaner.model.databasehelper.dao.Friend;
 import com.bili.diushoujuaner.presenter.presenter.ContactFragmentPresenter;
 import com.bili.diushoujuaner.presenter.viewinterface.ContactFragmentView;
+import com.bili.diushoujuaner.utils.entity.FriendVo;
 import com.bili.diushoujuaner.utils.response.ContactDto;
 import com.bili.diushoujuaner.widget.CustomListViewRefresh;
-import com.bili.diushoujuaner.widget.MaterialCircleView;
 import com.bili.diushoujuaner.widget.ReboundScrollView;
-import com.bili.diushoujuaner.widget.SideBarStar;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 
 /**
  * Created by BiLi on 2016/3/2.
@@ -39,21 +34,19 @@ public class ContactFragment extends BaseFragment implements View.OnClickListene
 
     @Bind(R.id.customListViewRefresh)
     CustomListViewRefresh customListViewRefresh;
-    @Bind(R.id.sideBar)
-    SideBarStar sideBar;
     @Bind(R.id.reboundScrollView)
     ReboundScrollView reboundScrollView;
     @Bind(R.id.layoutNewContact)
-    LinearLayout layoutNewContact;
+    RelativeLayout layoutNewContact;
     @Bind(R.id.layoutParty)
-    LinearLayout layoutParty;
-    @Bind(R.id.textRight)
-    TextView textRight;
+    RelativeLayout layoutParty;
+    @Bind(R.id.txtRight)
+    TextView txtRight;
     @Bind(R.id.ivNavHead)
     SimpleDraweeView ivNavHead;
 
     private ContactAdapter contactAdapter;
-    private List<ContactDto> listContact;
+    private List<FriendVo> friendVoList;
     private IShowMainMenu showMainMenu;
 
     public static ContactFragment instantiation(int position) {
@@ -71,7 +64,7 @@ public class ContactFragment extends BaseFragment implements View.OnClickListene
 
     @Override
     public void beforeInitView() {
-        listContact = new ArrayList<>();
+        friendVoList = new ArrayList<>();
     }
 
     @Override
@@ -79,10 +72,7 @@ public class ContactFragment extends BaseFragment implements View.OnClickListene
         showPageHead("联系人", null, "添加");
         ivNavHead.setOnClickListener(this);
 
-        for (int i = 0; i < 10; i++) {
-            listContact.add(new ContactDto());
-        }
-        contactAdapter = new ContactAdapter(getContext(), listContact);
+        contactAdapter = new ContactAdapter(getContext(), friendVoList);
         customListViewRefresh.setAdapter(contactAdapter);
         customListViewRefresh.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -92,7 +82,7 @@ public class ContactFragment extends BaseFragment implements View.OnClickListene
         });
 
         layoutParty.setOnClickListener(this);
-        textRight.setOnClickListener(this);
+        txtRight.setOnClickListener(this);
 
         basePresenter = new ContactFragmentPresenter(this, getContext());
         getPresenterByClass(ContactFragmentPresenter.class).getContacts();
@@ -108,7 +98,7 @@ public class ContactFragment extends BaseFragment implements View.OnClickListene
             case R.id.layoutParty:
                 startActivity(new Intent(getContext(), PartyActivity.class));
                 break;
-            case R.id.textRight:
+            case R.id.txtRight:
                 startActivity(new Intent(getContext(), ContactSearchActivity.class));
                 break;
             case R.id.ivNavHead:
@@ -118,8 +108,8 @@ public class ContactFragment extends BaseFragment implements View.OnClickListene
     }
 
     @Override
-    public void getContactList(List<Friend> friendList) {
-
+    public void showContactList(List<FriendVo> friendVoList) {
+        contactAdapter.refresh(friendVoList);
     }
 
     @Override

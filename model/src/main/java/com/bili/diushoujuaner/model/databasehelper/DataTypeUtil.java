@@ -1,6 +1,8 @@
 package com.bili.diushoujuaner.model.databasehelper;
 
+import com.bili.diushoujuaner.model.databasehelper.dao.Friend;
 import com.bili.diushoujuaner.model.databasehelper.dao.User;
+import com.bili.diushoujuaner.utils.Common;
 import com.bili.diushoujuaner.utils.response.UserRes;
 
 /**
@@ -27,18 +29,24 @@ public class DataTypeUtil {
     }
 
     public static User updateUserByUser(User older, User newer){
-        older.setMobile(newer.getMobile());
-        older.setAutograph(newer.getAutograph());
-        older.setBirthday(newer.getBirthday());
-        older.setHomeTown(newer.getHomeTown());
-        older.setLocation(newer.getLocation());
-        older.setNickName(newer.getNickName());
+        older.setMobile(Common.isEmpty(newer.getMobile()) ? older.getMobile() : newer.getMobile());
+        older.setAutograph(Common.isEmpty(newer.getAutograph()) ? older.getAutograph() : newer.getAutograph());
+        older.setBirthday(Common.isEmpty(newer.getBirthday()) ? older.getBirthday() : newer.getBirthday());
+        older.setHomeTown(Common.isEmpty(newer.getHomeTown()) ? older.getHomeTown() : newer.getHomeTown());
+        older.setLocation(Common.isEmpty(newer.getLocation()) ? older.getLocation() : newer.getLocation());
+        older.setNickName(Common.isEmpty(newer.getNickName()) ? older.getNickName() : newer.getNickName());
+        older.setPicPath(Common.isEmpty(newer.getPicPath()) ? older.getPicPath() : newer.getPicPath());
+        older.setRealName(Common.isEmpty(newer.getRealName()) ? older.getRealName() : newer.getRealName());
+        older.setSmallNick(Common.isEmpty(newer.getSmallNick()) ? older.getSmallNick() : newer.getSmallNick());
+        older.setRegistTime(Common.isEmpty(newer.getRegistTime()) ? older.getRegistTime() : newer.getRegistTime());
         older.setGender(newer.getGender());
-        older.setPicPath(newer.getPicPath());
-        older.setRealName(newer.getRealName());
-        older.setSmallNick(newer.getSmallNick());
-        older.setUserNo(newer.getUserNo());
-        older.setRegistTime(newer.getRegistTime());
+
+        return older;
+    }
+
+    public static Friend updateFriendByFriend(Friend older, Friend newer){
+        older.setRemark(Common.isEmpty(newer.getRemark())? older.getRemark():newer.getRemark());
+
         return older;
     }
 

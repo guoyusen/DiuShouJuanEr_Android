@@ -12,7 +12,7 @@ public class Member {
     /** Not-null value. */
     private String nickName;
     /** Not-null value. */
-    private java.util.Date addTime;
+    private String addTime;
     private int type;
 
     public Member() {
@@ -22,7 +22,7 @@ public class Member {
         this.id = id;
     }
 
-    public Member(Long id, long partyNo, long userNo, String nickName, java.util.Date addTime, int type) {
+    public Member(Long id, long partyNo, long userNo, String nickName, String addTime, int type) {
         this.id = id;
         this.partyNo = partyNo;
         this.userNo = userNo;
@@ -66,12 +66,12 @@ public class Member {
     }
 
     /** Not-null value. */
-    public java.util.Date getAddTime() {
+    public String getAddTime() {
         return addTime;
     }
 
     /** Not-null value; ensure this value is available before it is saved to the database. */
-    public void setAddTime(java.util.Date addTime) {
+    public void setAddTime(String addTime) {
         this.addTime = addTime;
     }
 

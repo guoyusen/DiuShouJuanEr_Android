@@ -2,6 +2,8 @@ package com.bili.diushoujuaner.activity;
 
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.GravityCompat;
@@ -27,6 +29,9 @@ import com.bili.diushoujuaner.utils.manager.ActivityManager;
 import com.bili.diushoujuaner.widget.CustomViewPager;
 import com.bili.diushoujuaner.widget.badgeview.BGABadgeRadioButton;
 import com.bili.diushoujuaner.widget.badgeview.BGABadgeTextView;
+import com.bili.diushoujuaner.widget.badgeview.BGABottomNavigation;
+import com.bili.diushoujuaner.widget.badgeview.BGABottomNavigationItem;
+import com.bili.diushoujuaner.widget.badgeview.BGABottomNavigationItemView;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
@@ -35,35 +40,41 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 
-public class MainActivity extends BaseFragmentActivity implements View.OnClickListener, IShowMainMenu, MainActivityView {
+public class MainActivity extends BaseFragmentActivity implements View.OnClickListener, IShowMainMenu, MainActivityView, BGABottomNavigation.IViewInitFinishListener {
 
     @Bind(R.id.customViewPager)
     CustomViewPager customViewPager;
     @Bind(R.id.menuHead)
     SimpleDraweeView menuHead;
-    @Bind(R.id.btnMainHome)
-    BGABadgeRadioButton btnMainHome;
-    @Bind(R.id.btnMainMess)
-    BGABadgeRadioButton btnMainMess;
-    @Bind(R.id.btnMainCont)
-    BGABadgeRadioButton btnMainCont;
     @Bind(R.id.drawerLayout)
     DrawerLayout drawerLayout;
     @Bind(R.id.btnMenuExit)
     Button btnMenuExit;
-    @Bind(R.id.textSystemNotice)
-    BGABadgeTextView textSystemNotice;
-    @Bind(R.id.textAutograph)
-    TextView textAutograph;
-    @Bind(R.id.textUserName)
-    TextView textUserName;
+    @Bind(R.id.txtSystemNotice)
+    BGABadgeTextView txtSystemNotice;
+    @Bind(R.id.txtAutograph)
+    TextView txtAutograph;
+    @Bind(R.id.txtUserName)
+    TextView txtUserName;
+    @Bind(R.id.bottomNavigation)
+    BGABottomNavigation bottomNavigation;
+
+    private boolean isWaitingExit = false;
 
     private List<Fragment> fragmentList;
-    private boolean isWaitingExit = false;
     private HomeFragment homeFragment;
     private MessageFragment messageFragment;
     private ContactFragment contactFragment;
+
+    private BGABottomNavigationItemView navHome;
+    private BGABottomNavigationItemView navMess;
+    private BGABottomNavigationItemView navCont;
+
+    private int badgeHomeCount = 0;
+    private int badgeMessCount = 0;
+    private int badgeContCount = 0;
 
     @Override
     public void tintStatusColor() {
@@ -83,13 +94,26 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
 
     @Override
     public void setViewStatus() {
-        menuHead.setOnClickListener(this);
-        btnMenuExit.setOnClickListener(this);
-        textAutograph.setOnClickListener(this);
-        btnMainHome.setOnClickListener(this);
-        btnMainMess.setOnClickListener(this);
-        btnMainCont.setOnClickListener(this);
+        initOnClickListner();
+        initFragment();
+        initBottomButton();
 
+        txtSystemNotice.showTextBadge("2");
+
+        basePresenter = new MainActivityPresenter(this, getApplicationContext());
+        getPresenterByClass(MainActivityPresenter.class).getUserInfo();
+    }
+
+    @Override
+    public void initFinished() {
+        navHome = bottomNavigation.getBGAButtonItemView(0);
+        navMess = bottomNavigation.getBGAButtonItemView(1);
+        navCont = bottomNavigation.getBGAButtonItemView(2);
+
+        navHome.showTextBadge("1");
+    }
+
+    private void initFragment(){
         homeFragment = HomeFragment.instantiation(0);
         messageFragment = MessageFragment.instantiation(1);
         contactFragment = ContactFragment.instantiation(2);
@@ -106,7 +130,6 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
             public Fragment getItem(int position) {
                 return fragmentList.get(position);
             }
-
             @Override
             public int getCount() {
                 return fragmentList.size();
@@ -114,40 +137,39 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
         };
         customViewPager.setAdapter(fragmentPagerAdapter);
         customViewPager.setOffscreenPageLimit(3);
+    }
 
-        btnMainHome.performClick();
+    private void initOnClickListner(){
+        menuHead.setOnClickListener(this);
+        btnMenuExit.setOnClickListener(this);
+        txtAutograph.setOnClickListener(this);
+    }
 
-        btnMainMess.showTextBadge("5");
-        btnMainHome.showTextBadge("5");
-        textSystemNotice.showTextBadge("2");
+    private void initBottomButton(){
+        BGABottomNavigationItem itemHome = new BGABottomNavigationItem(getResources().getString(R.string.main_nav_home),R.mipmap.nav_home_normal, Color.parseColor("#5C84DC"));
+        BGABottomNavigationItem itemMess = new BGABottomNavigationItem(getResources().getString(R.string.main_nav_mess),R.mipmap.nav_mess_normal, Color.parseColor("#5C84DC"));
+        BGABottomNavigationItem itemCont = new BGABottomNavigationItem(getResources().getString(R.string.main_nav_cont),R.mipmap.nav_cont_normal, Color.parseColor("#5C84DC"));
 
-        basePresenter = new MainActivityPresenter(this, getApplicationContext());
-        getPresenterByClass(MainActivityPresenter.class).getUserInfo();
+        ArrayList<BGABottomNavigationItem> items = new ArrayList<>();
+        items.add(itemHome);
+        items.add(itemMess);
+        items.add(itemCont);
 
+        bottomNavigation.addItems(items);
+        bottomNavigation.setAccentColor(Color.parseColor("#5C84DC"));
+        bottomNavigation.setInactiveColor(Color.parseColor("#858585"));
+        bottomNavigation.setiViewInitFinishListener(this);
+        bottomNavigation.setAHBottomNavigationListener(new BGABottomNavigation.AHBottomNavigationListener() {
+            @Override
+            public void onTabSelected(int position) {
+                customViewPager.setCurrentItem(position, false);
+            }
+        });
     }
 
     @Override
     public void onClick(View v) {
-
         switch (v.getId()) {
-            case R.id.btnMainHome:
-                customViewPager.setCurrentItem(0, false);
-                btnMainHome.setChecked(true);
-                btnMainMess.setChecked(false);
-                btnMainCont.setChecked(false);
-                break;
-            case R.id.btnMainMess:
-                customViewPager.setCurrentItem(1, false);
-                btnMainHome.setChecked(false);
-                btnMainMess.setChecked(true);
-                btnMainCont.setChecked(false);
-                break;
-            case R.id.btnMainCont:
-                customViewPager.setCurrentItem(2, false);
-                btnMainHome.setChecked(false);
-                btnMainMess.setChecked(false);
-                btnMainCont.setChecked(true);
-                break;
             case R.id.btnMenuExit:
                 ActivityManager.getInstance().exit();
                 break;
@@ -194,9 +216,9 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
 
     @Override
     public void getUserInfo(User user) {
-        Imageloader.getInstance().displayDraweeView(Common.getCompleteUrl(user.getPicPath()),menuHead);
-        textAutograph.setText(user.getAutograph());
-        textUserName.setText(user.getNickName());
+        Imageloader.getInstance().displayDraweeView(Common.getCompleteUrl(user.getPicPath()), menuHead);
+        txtAutograph.setText(user.getAutograph());
+        txtUserName.setText(user.getNickName());
     }
 
     @Override
@@ -210,4 +232,5 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
     @Override
     public void showWarning(String message) {
     }
+
 }

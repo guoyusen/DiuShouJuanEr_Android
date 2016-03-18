@@ -10,12 +10,11 @@ public class ContactDto {
     private String displayName;
     private String picPath;
     private int type;
-    private String sortLetter;
     private String startTime;
     // friend
     private String nickName;
     private String autograph;
-    private short gender;
+    private Integer gender;
     private String homeTown;
     private String smallNick;
     // party
@@ -46,12 +45,6 @@ public class ContactDto {
     public void setType(int type) {
         this.type = type;
     }
-    public String getSortLetter() {
-        return sortLetter;
-    }
-    public void setSortLetter(String sortLetter) {
-        this.sortLetter = sortLetter;
-    }
     public String getStartTime() {
         return startTime;
     }
@@ -70,10 +63,10 @@ public class ContactDto {
     public void setAutograph(String autograph) {
         this.autograph = autograph;
     }
-    public short getGender() {
+    public Integer getGender() {
         return gender;
     }
-    public void setGender(short gender) {
+    public void setGender(Integer gender) {
         this.gender = gender;
     }
     public String getHomeTown() {

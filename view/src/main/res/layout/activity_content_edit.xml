@@ -12,8 +12,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/y16"
         android:background="@color/BG_F6F6F6"
-        android:paddingLeft="@dimen/x16"
-        android:paddingRight="@dimen/x16"
+        android:paddingLeft="@dimen/x24"
+        android:paddingRight="@dimen/x24"
         android:paddingTop="@dimen/y22"
         android:paddingBottom="@dimen/y22">
 
@@ -22,7 +22,7 @@
             style="@style/TextMiddle"
             android:layout_width="match_parent"
             android:layout_height="@dimen/y240"
-            android:padding="@dimen/x5"
+            android:padding="@dimen/x10"
             android:gravity="left"
             android:singleLine="true"
             android:layout_centerVertical="true"

@@ -14,10 +14,11 @@
         android:background="@color/BG_F6F6F6">
 
         <ImageView
+            android:id="@+id/ivSearch"
             android:layout_width="@dimen/x60"
             android:layout_height="@dimen/y60"
             android:src="@mipmap/icon_search_contact"
-            android:layout_marginLeft="@dimen/x16"
+            android:layout_marginLeft="@dimen/x24"
             android:layout_centerVertical="true"/>
 
         <EditText
@@ -25,13 +26,14 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/y56"
             android:layout_marginRight="@dimen/x120"
+            android:layout_toRightOf="@+id/ivSearch"
             android:paddingLeft="@dimen/x5"
             android:paddingRight="@dimen/x5"
             android:singleLine="true"
             android:layout_centerVertical="true"
             android:background="@color/COLOR_WHITE"
             android:textColor="@color/TC_333333"
-            android:layout_marginLeft="@dimen/x80"
+            android:layout_marginLeft="@dimen/x10"
             android:hint="输入手机号/群号"
             android:textColorHint="@color/TC_ADADBB"/>
 

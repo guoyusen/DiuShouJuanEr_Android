@@ -1,7 +1,7 @@
 package com.bili.diushoujuaner.presenter.viewinterface;
 
-import com.bili.diushoujuaner.model.databasehelper.dao.Friend;
 import com.bili.diushoujuaner.presenter.base.IBaseView;
+import com.bili.diushoujuaner.utils.entity.FriendVo;
 
 import java.util.List;
 
@@ -10,6 +10,6 @@ import java.util.List;
  */
 public interface ContactFragmentView extends IBaseView {
 
-    void getContactList(List<Friend> friendList);
+    void showContactList(List<FriendVo> friendVoList);
 
 }

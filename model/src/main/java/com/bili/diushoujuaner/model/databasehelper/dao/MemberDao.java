@@ -27,7 +27,7 @@ public class MemberDao extends AbstractDao<Member, Long> {
         public final static Property PartyNo = new Property(1, long.class, "partyNo", false, "PARTY_NO");
         public final static Property UserNo = new Property(2, long.class, "userNo", false, "USER_NO");
         public final static Property NickName = new Property(3, String.class, "nickName", false, "NICK_NAME");
-        public final static Property AddTime = new Property(4, java.util.Date.class, "addTime", false, "ADD_TIME");
+        public final static Property AddTime = new Property(4, String.class, "addTime", false, "ADD_TIME");
         public final static Property Type = new Property(5, int.class, "type", false, "TYPE");
     };
 
@@ -48,7 +48,7 @@ public class MemberDao extends AbstractDao<Member, Long> {
                 "\"PARTY_NO\" INTEGER NOT NULL ," + // 1: partyNo
                 "\"USER_NO\" INTEGER NOT NULL ," + // 2: userNo
                 "\"NICK_NAME\" TEXT NOT NULL ," + // 3: nickName
-                "\"ADD_TIME\" INTEGER NOT NULL ," + // 4: addTime
+                "\"ADD_TIME\" TEXT NOT NULL ," + // 4: addTime
                 "\"TYPE\" INTEGER NOT NULL );"); // 5: type
         // Add Indexes
         db.execSQL("CREATE INDEX " + constraint + "IDX_MEMBER_PARTY_NO ON MEMBER" +
@@ -73,7 +73,7 @@ public class MemberDao extends AbstractDao<Member, Long> {
         stmt.bindLong(2, entity.getPartyNo());
         stmt.bindLong(3, entity.getUserNo());
         stmt.bindString(4, entity.getNickName());
-        stmt.bindLong(5, entity.getAddTime().getTime());
+        stmt.bindString(5, entity.getAddTime());
         stmt.bindLong(6, entity.getType());
     }
 
@@ -91,7 +91,7 @@ public class MemberDao extends AbstractDao<Member, Long> {
             cursor.getLong(offset + 1), // partyNo
             cursor.getLong(offset + 2), // userNo
             cursor.getString(offset + 3), // nickName
-            new java.util.Date(cursor.getLong(offset + 4)), // addTime
+            cursor.getString(offset + 4), // addTime
             cursor.getInt(offset + 5) // type
         );
         return entity;
@@ -104,7 +104,7 @@ public class MemberDao extends AbstractDao<Member, Long> {
         entity.setPartyNo(cursor.getLong(offset + 1));
         entity.setUserNo(cursor.getLong(offset + 2));
         entity.setNickName(cursor.getString(offset + 3));
-        entity.setAddTime(new java.util.Date(cursor.getLong(offset + 4)));
+        entity.setAddTime(cursor.getString(offset + 4));
         entity.setType(cursor.getInt(offset + 5));
      }
     

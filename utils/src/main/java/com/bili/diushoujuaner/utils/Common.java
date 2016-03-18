@@ -1,6 +1,7 @@
 package com.bili.diushoujuaner.utils;
 
 import android.content.Context;
+import android.content.pm.ApplicationInfo;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
@@ -25,6 +26,23 @@ public class Common {
         return object + "";
     }
 
+
+    public static boolean isApkDebugable(Context context){
+        try {
+            ApplicationInfo info= context.getApplicationInfo();
+            return (info.flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
+        } catch (Exception e) {
+
+        }
+        return false;
+    }
+
+    public static long getLongValue(Long value){
+        if(value == null){
+            return 0;
+        }
+        return value.longValue();
+    }
     /**
      * 手机号验证
      *

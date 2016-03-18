@@ -44,7 +44,7 @@
                         android:src="@mipmap/icon_login_user"/>
 
                     <EditText
-                        android:id="@+id/textMobile"
+                        android:id="@+id/edtMobile"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="@dimen/x10"
@@ -75,7 +75,7 @@
                         android:src="@mipmap/icon_login__lock"/>
 
                     <EditText
-                        android:id="@+id/textPassword"
+                        android:id="@+id/edtPassword"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginLeft="@dimen/x10"
@@ -99,7 +99,7 @@
                 android:text="@string/btn_login"/>
 
             <TextView
-                android:id="@+id/textForgetPsd"
+                android:id="@+id/txtForgetPsd"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/TC_WHITE"

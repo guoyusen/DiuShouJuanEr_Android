@@ -8,11 +8,8 @@ public class User {
 
     private Long id;
     private long userNo;
-    /** Not-null value. */
     private String realName;
-    /** Not-null value. */
     private String nickName;
-    /** Not-null value. */
     private String mobile;
     private String autograph;
     private Integer gender;
@@ -22,6 +19,7 @@ public class User {
     private String picPath;
     private String smallNick;
     private String registTime;
+    private String updateTime;
 
     public User() {
     }
@@ -30,7 +28,7 @@ public class User {
         this.id = id;
     }
 
-    public User(Long id, long userNo, String realName, String nickName, String mobile, String autograph, Integer gender, String birthday, String homeTown, String location, String picPath, String smallNick, String registTime) {
+    public User(Long id, long userNo, String realName, String nickName, String mobile, String autograph, Integer gender, String birthday, String homeTown, String location, String picPath, String smallNick, String registTime, String updateTime) {
         this.id = id;
         this.userNo = userNo;
         this.realName = realName;
@@ -44,6 +42,7 @@ public class User {
         this.picPath = picPath;
         this.smallNick = smallNick;
         this.registTime = registTime;
+        this.updateTime = updateTime;
     }
 
     public Long getId() {
@@ -62,32 +61,26 @@ public class User {
         this.userNo = userNo;
     }
 
-    /** Not-null value. */
     public String getRealName() {
         return realName;
     }
 
-    /** Not-null value; ensure this value is available before it is saved to the database. */
     public void setRealName(String realName) {
         this.realName = realName;
     }
 
-    /** Not-null value. */
     public String getNickName() {
         return nickName;
     }
 
-    /** Not-null value; ensure this value is available before it is saved to the database. */
     public void setNickName(String nickName) {
         this.nickName = nickName;
     }
 
-    /** Not-null value. */
     public String getMobile() {
         return mobile;
     }
 
-    /** Not-null value; ensure this value is available before it is saved to the database. */
     public void setMobile(String mobile) {
         this.mobile = mobile;
     }
@@ -156,22 +149,12 @@ public class User {
         this.registTime = registTime;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", userNo=" + userNo +
-                ", realName='" + realName + '\'' +
-                ", nickName='" + nickName + '\'' +
-                ", mobile='" + mobile + '\'' +
-                ", autograph='" + autograph + '\'' +
-                ", gender=" + gender +
-                ", birthday='" + birthday + '\'' +
-                ", homeTown='" + homeTown + '\'' +
-                ", location='" + location + '\'' +
-                ", picPath='" + picPath + '\'' +
-                ", smallNick='" + smallNick + '\'' +
-                ", registTime='" + registTime + '\'' +
-                '}';
+    public String getUpdateTime() {
+        return updateTime;
     }
+
+    public void setUpdateTime(String updateTime) {
+        this.updateTime = updateTime;
+    }
+
 }

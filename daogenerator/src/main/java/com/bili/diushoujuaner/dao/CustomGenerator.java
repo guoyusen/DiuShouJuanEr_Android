@@ -13,8 +13,16 @@ public class CustomGenerator {
         addParty(schema);
         addMember(schema);
         addChat(schema);
+        addUpdateMark(schema);
 
         new DaoGenerator().generateAll(schema, "../diushoujuaner/model/src/main/java");
+    }
+
+    private static void addUpdateMark(Schema schema){
+        Entity updateMark = schema.addEntity("UpdateMark");
+        updateMark.addIdProperty().autoincrement().primaryKey();
+        updateMark.addIntProperty("tableNo").notNull();
+        updateMark.addStringProperty("updateTime");
     }
 
     /**
@@ -24,9 +32,9 @@ public class CustomGenerator {
         Entity user = schema.addEntity("User");
         user.addIdProperty().autoincrement().primaryKey();
         user.addLongProperty("userNo").notNull();
-        user.addStringProperty("realName").notNull();
-        user.addStringProperty("nickName").notNull();
-        user.addStringProperty("mobile").notNull();
+        user.addStringProperty("realName");
+        user.addStringProperty("nickName");
+        user.addStringProperty("mobile");
         user.addStringProperty("autograph");
         user.addIntProperty("gender");
         user.addStringProperty("birthday");
@@ -35,6 +43,7 @@ public class CustomGenerator {
         user.addStringProperty("picPath");
         user.addStringProperty("smallNick");
         user.addStringProperty("registTime");
+        user.addStringProperty("updateTime");
     }
 
     /**
@@ -56,9 +65,9 @@ public class CustomGenerator {
         party.addIdProperty().autoincrement().primaryKey();
         party.addLongProperty("partyNo").notNull();
         party.addStringProperty("partyName").notNull();
-        party.addStringProperty("ownerNo").notNull();
+        party.addLongProperty("ownerNo").notNull();
         party.addStringProperty("information").notNull();
-        party.addDateProperty("registerTime").notNull();
+        party.addStringProperty("registerTime").notNull();
         party.addStringProperty("picPath").notNull();
 
     }
@@ -69,7 +78,7 @@ public class CustomGenerator {
         member.addLongProperty("partyNo").notNull().index();
         member.addLongProperty("userNo").notNull();
         member.addStringProperty("nickName").notNull();
-        member.addDateProperty("addTime").notNull();
+        member.addStringProperty("addTime").notNull();
         member.addIntProperty("type").notNull();
     }
 
@@ -80,7 +89,7 @@ public class CustomGenerator {
         chat.addLongProperty("fromNo").notNull();
         chat.addLongProperty("toNo").notNull();
         chat.addStringProperty("content");
-        chat.addDateProperty("time").notNull();
+        chat.addStringProperty("time").notNull();
         chat.addIntProperty("msgType").notNull();
         chat.addIntProperty("conType").notNull();
     }

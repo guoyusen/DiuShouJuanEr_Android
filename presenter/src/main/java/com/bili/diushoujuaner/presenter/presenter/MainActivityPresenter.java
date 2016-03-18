@@ -26,6 +26,7 @@ public class MainActivityPresenter extends BasePresenter {
     }
 
     public void getUserInfo(){
+        getViewByClass(MainActivityView.class).getUserInfo(getUserFromDb());
         if(Common.checkNetworkStatus(context)){
             UserInfoAction.getInstance(context).getUserInfo(new ActionCallbackListener<ApiRespon<UserRes>>() {
                 @Override
@@ -41,8 +42,6 @@ public class MainActivityPresenter extends BasePresenter {
                     showError(errorCode);
                 }
             });
-        }else{
-            getViewByClass(MainActivityView.class).getUserInfo(getUserFromDb());
         }
     }
 

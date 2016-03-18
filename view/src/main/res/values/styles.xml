@@ -16,20 +16,20 @@
     </style>
 
     <style name="MatchWrap.MarginHorizontal">
-        <item name="android:layout_marginLeft">@dimen/x16</item>
-        <item name="android:layout_marginRight">@dimen/x16</item>
+        <item name="android:layout_marginLeft">@dimen/x24</item>
+        <item name="android:layout_marginRight">@dimen/x24</item>
     </style>
 
     <style name="MatchMatch.MarginHorizontal">
-        <item name="android:layout_marginLeft">@dimen/x16</item>
-        <item name="android:layout_marginRight">@dimen/x16</item>
+        <item name="android:layout_marginLeft">@dimen/x24</item>
+        <item name="android:layout_marginRight">@dimen/x24</item>
     </style>
 
 
     <!-- 次根布局使用，限制统一边距 -->
     <style name="MarginHorizontal">
-        <item name="android:layout_marginLeft">@dimen/x16</item>
-        <item name="android:layout_marginRight">@dimen/x16</item>
+        <item name="android:layout_marginLeft">@dimen/x24</item>
+        <item name="android:layout_marginRight">@dimen/x24</item>
     </style>
 
     <style name="TextSmall">
@@ -61,8 +61,8 @@
     </style>
 
     <style name="BtnXLong" parent="Btn">
-        <item name="android:layout_marginLeft">@dimen/x16</item>
-        <item name="android:layout_marginRight">@dimen/x16</item>
+        <item name="android:layout_marginLeft">@dimen/x24</item>
+        <item name="android:layout_marginRight">@dimen/x24</item>
     </style>
 
     <style name="BtnLongGreen" parent="BtnLong">
@@ -76,8 +76,8 @@
     <style name="TextNavRight" parent="TextMiddle">
         <item name="android:textColor">@color/COLOR_WHITE</item>
         <item name="android:layout_alignParentRight">true</item>
-        <item name="android:paddingLeft">@dimen/x16</item>
-        <item name="android:paddingRight">@dimen/x16</item>
+        <item name="android:paddingLeft">@dimen/x24</item>
+        <item name="android:paddingRight">@dimen/x24</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:gravity">center</item>
@@ -122,25 +122,16 @@
     <style name="menu_item_icon">
         <item name="android:layout_width">@dimen/x54</item>
         <item name="android:layout_height">@dimen/y54</item>
-        <item name="android:layout_marginLeft">@dimen/x16</item>
+        <item name="android:layout_marginLeft">@dimen/x24</item>
     </style>
 
     <style name="menu_item_text" parent="TextMiddle">
         <item name="android:gravity">center_vertical</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:layout_marginLeft">@dimen/x16</item>
+        <item name="android:layout_marginLeft">@dimen/x40</item>
         <item name="android:layout_marginRight">@dimen/x24</item>
         <item name="android:textColor">@color/TC_333333</item>
-    </style>
-
-    <style name="recall_picture_item">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">@dimen/y200</item>
-        <item name="android:layout_weight">1.0</item>
-        <item name="android:scaleType">centerCrop</item>
-        <item name="android:layout_marginLeft">@dimen/x8</item>
-        <item name="android:layout_marginRight">@dimen/x8</item>
     </style>
 
     <style name="line">

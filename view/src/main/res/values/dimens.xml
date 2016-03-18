@@ -11,4 +11,33 @@
     <dimen name="fab_scroll_threshold">4dp</dimen>
     <dimen name="fab_elevation_lollipop">8dp</dimen>
     <dimen name="fab_press_translation_z">6dp</dimen>
+
+    <!-- bottom_navigation -->
+    <dimen name="bottom_navigation_elevation">8dp</dimen>
+
+    <dimen name="bottom_navigation_min_width">104dp</dimen>
+    <dimen name="bottom_navigation_max_width">168dp</dimen>
+    <dimen name="bottom_navigation_height">56dp</dimen>
+    <dimen name="bottom_navigation_icon">24dp</dimen>
+
+    <dimen name="bottom_navigation_padding_top_active">6dp</dimen>
+    <dimen name="bottom_navigation_padding_top_inactive">8dp</dimen>
+    <dimen name="bottom_navigation_padding_bottom">7dp</dimen>
+    <dimen name="bottom_navigation_padding_left">12dp</dimen>
+    <dimen name="bottom_navigation_padding_right">12dp</dimen>
+
+    <dimen name="bottom_navigation_text_size_active">14sp</dimen>
+    <dimen name="bottom_navigation_text_size_inactive">12sp</dimen>
+
+    <!-- Small -->
+    <dimen name="bottom_navigation_small_active_min_width">96dp</dimen>
+    <dimen name="bottom_navigation_small_active_max_width">168dp</dimen>
+    <dimen name="bottom_navigation_small_inactive_min_width">64dp</dimen>
+    <dimen name="bottom_navigation_small_inactive_max_width">96dp</dimen>
+
+    <dimen name="bottom_navigation_small_padding_top_active">6dp</dimen>
+    <dimen name="bottom_navigation_small_padding_top">16dp</dimen>
+    <dimen name="bottom_navigation_small_padding_bottom">16dp</dimen>
+
+    <dimen name="bottom_navigation_small_selected_width_difference">10dp</dimen>
 </resources>

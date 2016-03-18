@@ -13,10 +13,23 @@ public interface Api {
     String getUserInfo = Constant.HOST_ADDRESS + "1.0/users/info";
     String getContacts = Constant.HOST_ADDRESS + "1.0/contacts";
 
+    /**
+     * 用户登录
+     * @param userAccountReq
+     * @param apiCallbackListener
+     */
     void getUserLogin(UserAccountReq userAccountReq, ApiCallbackListener apiCallbackListener);
 
+    /**
+     * 获取用户的个人信息
+     * @param apiCallbackListener
+     */
     void getUserInfo(ApiCallbackListener apiCallbackListener);
 
+    /**
+     * 获取用户的通讯录
+     * @param apiCallbackListener
+     */
     void getContacts(ApiCallbackListener apiCallbackListener);
 
 }

@@ -20,6 +20,7 @@
         android:layout_centerHorizontal="true"
         android:textSize="@dimen/x28"
         android:gravity="center"
+        android:visibility="invisible"
         android:text="@string/p2refresh_head_load_more"
         android:textColor="@color/TC_808080" >
     </TextView>

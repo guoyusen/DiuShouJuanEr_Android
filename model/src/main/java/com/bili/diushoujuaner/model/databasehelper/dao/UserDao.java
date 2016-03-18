@@ -36,6 +36,7 @@ public class UserDao extends AbstractDao<User, Long> {
         public final static Property PicPath = new Property(10, String.class, "picPath", false, "PIC_PATH");
         public final static Property SmallNick = new Property(11, String.class, "smallNick", false, "SMALL_NICK");
         public final static Property RegistTime = new Property(12, String.class, "registTime", false, "REGIST_TIME");
+        public final static Property UpdateTime = new Property(13, String.class, "updateTime", false, "UPDATE_TIME");
     };
 
 
@@ -53,9 +54,9 @@ public class UserDao extends AbstractDao<User, Long> {
         db.execSQL("CREATE TABLE " + constraint + "\"USER\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
                 "\"USER_NO\" INTEGER NOT NULL ," + // 1: userNo
-                "\"REAL_NAME\" TEXT NOT NULL ," + // 2: realName
-                "\"NICK_NAME\" TEXT NOT NULL ," + // 3: nickName
-                "\"MOBILE\" TEXT NOT NULL ," + // 4: mobile
+                "\"REAL_NAME\" TEXT," + // 2: realName
+                "\"NICK_NAME\" TEXT," + // 3: nickName
+                "\"MOBILE\" TEXT," + // 4: mobile
                 "\"AUTOGRAPH\" TEXT," + // 5: autograph
                 "\"GENDER\" INTEGER," + // 6: gender
                 "\"BIRTHDAY\" TEXT," + // 7: birthday
@@ -63,7 +64,8 @@ public class UserDao extends AbstractDao<User, Long> {
                 "\"LOCATION\" TEXT," + // 9: location
                 "\"PIC_PATH\" TEXT," + // 10: picPath
                 "\"SMALL_NICK\" TEXT," + // 11: smallNick
-                "\"REGIST_TIME\" TEXT);"); // 12: registTime
+                "\"REGIST_TIME\" TEXT," + // 12: registTime
+                "\"UPDATE_TIME\" TEXT);"); // 13: updateTime
     }
 
     /** Drops the underlying database table. */
@@ -82,9 +84,21 @@ public class UserDao extends AbstractDao<User, Long> {
             stmt.bindLong(1, id);
         }
         stmt.bindLong(2, entity.getUserNo());
-        stmt.bindString(3, entity.getRealName());
-        stmt.bindString(4, entity.getNickName());
-        stmt.bindString(5, entity.getMobile());
+ 
+        String realName = entity.getRealName();
+        if (realName != null) {
+            stmt.bindString(3, realName);
+        }
+ 
+        String nickName = entity.getNickName();
+        if (nickName != null) {
+            stmt.bindString(4, nickName);
+        }
+ 
+        String mobile = entity.getMobile();
+        if (mobile != null) {
+            stmt.bindString(5, mobile);
+        }
  
         String autograph = entity.getAutograph();
         if (autograph != null) {
@@ -125,6 +139,11 @@ public class UserDao extends AbstractDao<User, Long> {
         if (registTime != null) {
             stmt.bindString(13, registTime);
         }
+ 
+        String updateTime = entity.getUpdateTime();
+        if (updateTime != null) {
+            stmt.bindString(14, updateTime);
+        }
     }
 
     /** @inheritdoc */
@@ -139,9 +158,9 @@ public class UserDao extends AbstractDao<User, Long> {
         User entity = new User( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
             cursor.getLong(offset + 1), // userNo
-            cursor.getString(offset + 2), // realName
-            cursor.getString(offset + 3), // nickName
-            cursor.getString(offset + 4), // mobile
+            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // realName
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // nickName
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // mobile
             cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // autograph
             cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6), // gender
             cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // birthday
@@ -149,7 +168,8 @@ public class UserDao extends AbstractDao<User, Long> {
             cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // location
             cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // picPath
             cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // smallNick
-            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12) // registTime
+            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // registTime
+            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13) // updateTime
         );
         return entity;
     }
@@ -159,9 +179,9 @@ public class UserDao extends AbstractDao<User, Long> {
     public void readEntity(Cursor cursor, User entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setUserNo(cursor.getLong(offset + 1));
-        entity.setRealName(cursor.getString(offset + 2));
-        entity.setNickName(cursor.getString(offset + 3));
-        entity.setMobile(cursor.getString(offset + 4));
+        entity.setRealName(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setNickName(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setMobile(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
         entity.setAutograph(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
         entity.setGender(cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6));
         entity.setBirthday(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
@@ -170,6 +190,7 @@ public class UserDao extends AbstractDao<User, Long> {
         entity.setPicPath(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
         entity.setSmallNick(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
         entity.setRegistTime(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
+        entity.setUpdateTime(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
      }
     
     /** @inheritdoc */

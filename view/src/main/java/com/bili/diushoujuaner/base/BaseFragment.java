@@ -25,10 +25,10 @@ import butterknife.ButterKnife;
  */
 public class BaseFragment extends Fragment {
 
-    @Bind(R.id.textNavTitle)
-    TextView textNavTitle;
-    @Bind(R.id.textRight)
-    TextView textRight;
+    @Bind(R.id.txtNavTitle)
+    TextView txtNavTitle;
+    @Bind(R.id.txtRight)
+    TextView txtRight;
     @Bind(R.id.btnRight)
     ImageButton btnRight;
 
@@ -71,10 +71,10 @@ public class BaseFragment extends Fragment {
 
     public void showPageHead(String titleText, Integer iconId, String rightText) {
         if(titleText == null){
-            textNavTitle.setVisibility(View.INVISIBLE);
+            txtNavTitle.setVisibility(View.INVISIBLE);
         }else{
-            textNavTitle.setVisibility(View.VISIBLE);
-            textNavTitle.setText(titleText);
+            txtNavTitle.setVisibility(View.VISIBLE);
+            txtNavTitle.setText(titleText);
         }
 
         if(iconId == null){
@@ -85,10 +85,10 @@ public class BaseFragment extends Fragment {
         }
 
         if(rightText == null){
-            textRight.setVisibility(View.INVISIBLE);
+            txtRight.setVisibility(View.INVISIBLE);
         }else{
-            textRight.setVisibility(View.VISIBLE);
-            textRight.setText(rightText);
+            txtRight.setVisibility(View.VISIBLE);
+            txtRight.setText(rightText);
         }
     }
 

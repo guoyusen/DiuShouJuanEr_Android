@@ -6,8 +6,8 @@
     android:background="@color/COLOR_WHITE"
     android:gravity="center_vertical"
     android:orientation="horizontal"
-    android:paddingLeft="@dimen/x16"
-    android:paddingRight="@dimen/x16">
+    android:paddingLeft="@dimen/x24"
+    android:paddingRight="@dimen/x24">
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/ivItemHead"
@@ -20,7 +20,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/x20">
+        android:layout_marginLeft="@dimen/x24">
 
         <TextView
             android:id="@+id/textItemName"

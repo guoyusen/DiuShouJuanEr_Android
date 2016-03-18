@@ -33,7 +33,7 @@ public class SplashActivity extends BaseActivity implements SplashActivityView {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                ((RevealTextView) findViewById(R.id.textSlogon)).setAnimatedText(getResources().getString(R.string.slogon));
+                ((RevealTextView) findViewById(R.id.txtSlogon)).setAnimatedText(getResources().getString(R.string.slogon));
             }
         }, 800);
 

@@ -150,20 +150,20 @@ public class BaseActivity extends AbstractBaseActivity {
         showPageHead(titleText, iconId, null);
 
         if(rightText == null){
-            findViewById(R.id.textRight).setVisibility(View.INVISIBLE);
+            findViewById(R.id.txtRight).setVisibility(View.INVISIBLE);
         }else{
-            findViewById(R.id.textRight).setVisibility(View.VISIBLE);
-            ((TimeSinceTextView)findViewById(R.id.textRight)).setDate(rightText);
+            findViewById(R.id.txtRight).setVisibility(View.VISIBLE);
+            ((TimeSinceTextView)findViewById(R.id.txtRight)).setDate(rightText);
         }
     }
 
     @Override
     public void showPageHead(String titleText, Integer iconId, String rightText) {
         if(titleText == null){
-            findViewById(R.id.textNavTitle).setVisibility(View.INVISIBLE);
+            findViewById(R.id.txtNavTitle).setVisibility(View.INVISIBLE);
         }else{
-            findViewById(R.id.textNavTitle).setVisibility(View.VISIBLE);
-            ((TextView)findViewById(R.id.textNavTitle)).setText(titleText);
+            findViewById(R.id.txtNavTitle).setVisibility(View.VISIBLE);
+            ((TextView)findViewById(R.id.txtNavTitle)).setText(titleText);
         }
 
         if(iconId == null){
@@ -174,10 +174,10 @@ public class BaseActivity extends AbstractBaseActivity {
         }
 
         if(rightText == null){
-            findViewById(R.id.textRight).setVisibility(View.INVISIBLE);
+            findViewById(R.id.txtRight).setVisibility(View.INVISIBLE);
         }else{
-            findViewById(R.id.textRight).setVisibility(View.VISIBLE);
-            ((TextView)findViewById(R.id.textRight)).setText(rightText);
+            findViewById(R.id.txtRight).setVisibility(View.VISIBLE);
+            ((TextView)findViewById(R.id.txtRight)).setText(rightText);
         }
     }
 

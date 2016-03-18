@@ -28,7 +28,7 @@ public class ChatDao extends AbstractDao<Chat, Long> {
         public final static Property FromNo = new Property(2, long.class, "fromNo", false, "FROM_NO");
         public final static Property ToNo = new Property(3, long.class, "toNo", false, "TO_NO");
         public final static Property Content = new Property(4, String.class, "content", false, "CONTENT");
-        public final static Property Time = new Property(5, java.util.Date.class, "time", false, "TIME");
+        public final static Property Time = new Property(5, String.class, "time", false, "TIME");
         public final static Property MsgType = new Property(6, int.class, "msgType", false, "MSG_TYPE");
         public final static Property ConType = new Property(7, int.class, "conType", false, "CON_TYPE");
     };
@@ -51,7 +51,7 @@ public class ChatDao extends AbstractDao<Chat, Long> {
                 "\"FROM_NO\" INTEGER NOT NULL ," + // 2: fromNo
                 "\"TO_NO\" INTEGER NOT NULL ," + // 3: toNo
                 "\"CONTENT\" TEXT," + // 4: content
-                "\"TIME\" INTEGER NOT NULL ," + // 5: time
+                "\"TIME\" TEXT NOT NULL ," + // 5: time
                 "\"MSG_TYPE\" INTEGER NOT NULL ," + // 6: msgType
                 "\"CON_TYPE\" INTEGER NOT NULL );"); // 7: conType
         // Add Indexes
@@ -82,7 +82,7 @@ public class ChatDao extends AbstractDao<Chat, Long> {
         if (content != null) {
             stmt.bindString(5, content);
         }
-        stmt.bindLong(6, entity.getTime().getTime());
+        stmt.bindString(6, entity.getTime());
         stmt.bindLong(7, entity.getMsgType());
         stmt.bindLong(8, entity.getConType());
     }
@@ -102,7 +102,7 @@ public class ChatDao extends AbstractDao<Chat, Long> {
             cursor.getLong(offset + 2), // fromNo
             cursor.getLong(offset + 3), // toNo
             cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // content
-            new java.util.Date(cursor.getLong(offset + 5)), // time
+            cursor.getString(offset + 5), // time
             cursor.getInt(offset + 6), // msgType
             cursor.getInt(offset + 7) // conType
         );
@@ -117,7 +117,7 @@ public class ChatDao extends AbstractDao<Chat, Long> {
         entity.setFromNo(cursor.getLong(offset + 2));
         entity.setToNo(cursor.getLong(offset + 3));
         entity.setContent(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
-        entity.setTime(new java.util.Date(cursor.getLong(offset + 5)));
+        entity.setTime(cursor.getString(offset + 5));
         entity.setMsgType(cursor.getInt(offset + 6));
         entity.setConType(cursor.getInt(offset + 7));
      }

@@ -22,6 +22,8 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.text.TextUtils;
@@ -175,7 +177,7 @@ public class BGABadgeViewHelper {
     public boolean onTouchEvent(MotionEvent event) {
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                if (mDragable && mIsShowBadge && mBadgeRectF.contains(event.getX(), event.getY())) {
+                if (mDragable && mIsShowBadge && isContainTouchPoint(event)) {
                     mIsDraging = true;
                     mBadgeable.getParent().requestDisallowInterceptTouchEvent(true);
 
@@ -206,6 +208,13 @@ public class BGABadgeViewHelper {
                 break;
         }
         return mBadgeable.callSuperOnTouchEvent(event);
+    }
+
+    private boolean isContainTouchPoint(MotionEvent event){
+        if(mBadgeRectF.left - 10 < event.getX() && mBadgeRectF.top - 10 < event.getY() && mBadgeRectF.right + 10 > event.getX() && mBadgeRectF.bottom + 10 > event.getY()){
+            return true;
+        }
+        return false;
     }
 
     public void endDragWithDismiss() {
@@ -321,6 +330,9 @@ public class BGABadgeViewHelper {
     }
 
     public void showTextBadge(String badgeText) {
+        if(badgeText.trim().length() <= 0){
+            return;
+        }
         mIsShowDrawable = false;
         mBadgeText = badgeText;
         mIsShowBadge = true;

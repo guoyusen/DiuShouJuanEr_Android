@@ -5,8 +5,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/COLOR_WHITE"
     android:gravity="center_vertical"
-    android:paddingLeft="@dimen/x16"
-    android:paddingRight="@dimen/x16"
+    android:paddingLeft="@dimen/x24"
+    android:paddingRight="@dimen/x24"
     android:orientation="horizontal">
 
     <com.facebook.drawee.view.SimpleDraweeView
