@@ -25,13 +25,14 @@
                 <RelativeLayout
                     android:id="@+id/layoutNewContact"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/y128">
+                    android:layout_height="@dimen/y144">
 
                     <TextView
-                        android:textSize="@dimen/x55"
-                        android:layout_width="wrap_content"
+                        android:textSize="@dimen/x50"
+                        android:layout_width="@dimen/x60"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
+                        android:gravity="center"
                         android:layout_marginLeft="@dimen/x24"
                         android:focusable="true"
                         android:focusableInTouchMode="true"
@@ -39,8 +40,8 @@
                         android:text="★"/>
 
                     <com.facebook.drawee.view.SimpleDraweeView
-                        android:layout_width="@dimen/x100"
-                        android:layout_height="@dimen/y100"
+                        android:layout_width="@dimen/x112"
+                        android:layout_height="@dimen/x112"
                         android:layout_centerVertical="true"
                         android:layout_alignParentRight="true"
                         android:layout_marginRight="@dimen/x24"
@@ -51,7 +52,7 @@
                         style="@style/TextLarge"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/x120"
+                        android:layout_marginLeft="@dimen/x144"
                         android:layout_centerVertical="true"
                         android:text="新的朋友"
                         android:textColor="@color/TC_333333" />
@@ -61,11 +62,11 @@
                 <RelativeLayout
                     android:id="@+id/layoutParty"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/y128">
+                    android:layout_height="@dimen/y144">
 
                     <com.facebook.drawee.view.SimpleDraweeView
-                        android:layout_width="@dimen/x100"
-                        android:layout_height="@dimen/y100"
+                        android:layout_width="@dimen/x112"
+                        android:layout_height="@dimen/x112"
                         android:layout_centerVertical="true"
                         android:layout_alignParentRight="true"
                         android:layout_marginRight="@dimen/x24"
@@ -76,24 +77,29 @@
                         style="@style/TextLarge"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/x120"
+                        android:layout_marginLeft="@dimen/x144"
                         android:layout_centerVertical="true"
                         android:text="群组"
                         android:textColor="@color/TC_333333" />
 
                 </RelativeLayout>
 
-                <View
-                    style="@style/line"
-                    android:layout_marginLeft="@dimen/x16"
-                    android:layout_marginRight="@dimen/x16" />
-
                 <com.bili.diushoujuaner.widget.CustomListViewRefresh
                     android:id="@+id/customListViewRefresh"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:divider="@color/LC_F6F6F6"
-                    android:dividerHeight="@dimen/y2" />
+                    android:divider="@null" />
+
+                <TextView
+                    android:id="@+id/txtPartyCount"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingTop="@dimen/y40"
+                    android:paddingBottom="@dimen/y40"
+                    style="@style/TextMiddle"
+                    android:textColor="@color/TC_BFBFBF"
+                    android:text="9个群组"/>
 
             </LinearLayout>
 

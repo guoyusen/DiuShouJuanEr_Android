@@ -7,7 +7,10 @@ import com.bili.diushoujuaner.model.databasehelper.dao.DaoMaster;
 import com.bili.diushoujuaner.model.databasehelper.dao.DaoSession;
 import com.bili.diushoujuaner.model.databasehelper.dao.Friend;
 import com.bili.diushoujuaner.model.databasehelper.dao.FriendDao;
+import com.bili.diushoujuaner.model.databasehelper.dao.Member;
+import com.bili.diushoujuaner.model.databasehelper.dao.MemberDao;
 import com.bili.diushoujuaner.model.databasehelper.dao.Party;
+import com.bili.diushoujuaner.model.databasehelper.dao.PartyDao;
 import com.bili.diushoujuaner.model.databasehelper.dao.User;
 import com.bili.diushoujuaner.model.databasehelper.dao.UserDao;
 import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
@@ -15,6 +18,8 @@ import com.bili.diushoujuaner.utils.Common;
 import com.bili.diushoujuaner.utils.Constant;
 import com.bili.diushoujuaner.utils.GsonParser;
 import com.bili.diushoujuaner.utils.entity.FriendVo;
+import com.bili.diushoujuaner.utils.entity.PartyVo;
+import com.bili.diushoujuaner.utils.response.MemberDto;
 import com.bili.diushoujuaner.utils.response.UserRes;
 import com.google.gson.Gson;
 import com.orhanobut.logger.Logger;
@@ -71,6 +76,10 @@ public class DBManager {
         return dbManager;
     }
 
+    /**
+     * 保存用户列表
+     * @param userList
+     */
     public void saveUserList(List<User> userList){
         for(User user : userList){
             saveUser(user);
@@ -104,9 +113,13 @@ public class DBManager {
         if(userList.size() > 0){
             return userList.get(0);
         }
-        return new User();
+        return null;
     }
 
+    /**
+     * 获取好友列表
+     * @param friendList
+     */
     public void saveFriendList(List<Friend> friendList){
         for(Friend friend : friendList){
             saveFriend(friend);
@@ -114,31 +127,36 @@ public class DBManager {
     }
 
     public List<FriendVo> getFriendVo(){
-        String sql = "select user_No, nick_Name, remark, mobile, autograph, gender, birthday,home_Town, location, pic_Path, small_Nick, regist_Time, update_Time from User, Friend where owner_No = " +
-                + CustomSessionPreference.getInstance().getCustomSession().getUserNo() +
-                " and user_No = friend_No";
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("select user_No, nick_Name, remark, mobile, autograph, gender, birthday,home_Town, location, pic_Path, small_Nick, regist_Time, update_Time ");
+        stringBuilder.append("from User, Friend ");
+        stringBuilder.append("where owner_No = " + CustomSessionPreference.getInstance().getCustomSession().getUserNo() + " ");
+        stringBuilder.append("and user_No = friend_No");
+
         List<FriendVo> friendVoList = new ArrayList<>();
         FriendVo friendVo;
-        Cursor cursor = daoSession.getDatabase().rawQuery(sql, null);
+        Cursor cursor = daoSession.getDatabase().rawQuery(stringBuilder.toString(), null);
         cursor.moveToFirst();
-        do{
-            friendVo = new FriendVo();
-            friendVo.setFriendNo(cursor.getLong(cursor.getColumnIndex("USER_NO")));
-            friendVo.setNickName(cursor.getString(cursor.getColumnIndex("NICK_NAME")));
-            friendVo.setRemark(cursor.getString(cursor.getColumnIndex("REMARK")));
-            friendVo.setMobile(cursor.getString(cursor.getColumnIndex("MOBILE")));
-            friendVo.setAutograph(cursor.getString(cursor.getColumnIndex("AUTOGRAPH")));
-            friendVo.setGender(cursor.getInt(cursor.getColumnIndex("GENDER")));
-            friendVo.setBirthday(cursor.getString(cursor.getColumnIndex("BIRTHDAY")));
-            friendVo.setHomeTown(cursor.getString(cursor.getColumnIndex("HOME_TOWN")));
-            friendVo.setLocation(cursor.getString(cursor.getColumnIndex("LOCATION")));
-            friendVo.setPicPath(cursor.getString(cursor.getColumnIndex("PIC_PATH")));
-            friendVo.setSmallNick(cursor.getString(cursor.getColumnIndex("SMALL_NICK")));
-            friendVo.setRegistTime(cursor.getString(cursor.getColumnIndex("REGIST_TIME")));
-            friendVo.setUpdateTime(cursor.getString(cursor.getColumnIndex("UPDATE_TIME")));
+        if(cursor.getCount() > 0) {
+            do {
+                friendVo = new FriendVo();
+                friendVo.setFriendNo(cursor.getLong(cursor.getColumnIndex("USER_NO")));
+                friendVo.setNickName(cursor.getString(cursor.getColumnIndex("NICK_NAME")));
+                friendVo.setDisplayName(cursor.getString(cursor.getColumnIndex("REMARK")));
+                friendVo.setMobile(cursor.getString(cursor.getColumnIndex("MOBILE")));
+                friendVo.setAutograph(cursor.getString(cursor.getColumnIndex("AUTOGRAPH")));
+                friendVo.setGender(cursor.getInt(cursor.getColumnIndex("GENDER")));
+                friendVo.setBirthday(cursor.getString(cursor.getColumnIndex("BIRTHDAY")));
+                friendVo.setHomeTown(cursor.getString(cursor.getColumnIndex("HOME_TOWN")));
+                friendVo.setLocation(cursor.getString(cursor.getColumnIndex("LOCATION")));
+                friendVo.setPicPath(cursor.getString(cursor.getColumnIndex("PIC_PATH")));
+                friendVo.setSmallNick(cursor.getString(cursor.getColumnIndex("SMALL_NICK")));
+                friendVo.setRegistTime(cursor.getString(cursor.getColumnIndex("REGIST_TIME")));
+                friendVo.setUpdateTime(cursor.getString(cursor.getColumnIndex("UPDATE_TIME")));
 
-            friendVoList.add(friendVo);
-        }while(cursor.moveToNext());
+                friendVoList.add(friendVo);
+            } while (cursor.moveToNext());
+        }
 
         return friendVoList;
     }
@@ -158,6 +176,10 @@ public class DBManager {
         }
     }
 
+    /**
+     * 保存群组列表
+     * @param partyList
+     */
     public void savePartyList(List<Party> partyList){
         for(Party party : partyList){
             saveParty(party);
@@ -165,7 +187,66 @@ public class DBManager {
     }
 
     public void saveParty(Party party){
+        List<Party> partyList = daoSession.getPartyDao().queryBuilder()
+                .where(PartyDao.Properties.PartyNo.eq(Common.getLongValue(party.getPartyNo())))
+                .build()
+                .list();
+        if (partyList.size() <= 0) {
+            daoSession.getPartyDao().insertOrReplace(party);
+        } else {
+            for(Party item : partyList){
+                daoSession.getPartyDao().insertOrReplace(DataTypeUtil.updatePartyByParty(item, party));
+            }
+        }
+    }
 
+    public List<PartyVo> getPartyVoList(){
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("select Party.PARTY_NO, PARTY_NAME, OWNER_NO, INFORMATION, REGISTER_TIME, PIC_PATH ");
+        stringBuilder.append("from Party,Member ");
+        stringBuilder.append("where Party.PARTY_NO = Member.PARTY_NO ");
+        stringBuilder.append("and Member.USER_NO = " + CustomSessionPreference.getInstance().getCustomSession().getUserNo());
+
+        List<PartyVo> partyVoList = new ArrayList<>();
+        PartyVo partyVo;
+        Cursor cursor = daoSession.getDatabase().rawQuery(stringBuilder.toString(), null);
+        cursor.moveToFirst();
+        if(cursor.getCount() > 0) {
+            do {
+                partyVo = new PartyVo();
+                partyVo.setPartyNo(cursor.getLong(cursor.getColumnIndex("PARTY_NO")));
+                partyVo.setDisplayName(cursor.getString(cursor.getColumnIndex("PARTY_NAME")));
+                partyVo.setOwnerNo(cursor.getLong(cursor.getColumnIndex("OWNER_NO")));
+                partyVo.setInformation(cursor.getString(cursor.getColumnIndex("INFORMATION")));
+                partyVo.setRegisterTime(cursor.getString(cursor.getColumnIndex("REGISTER_TIME")));
+                partyVo.setPicPath(cursor.getString(cursor.getColumnIndex("PIC_PATH")));
+
+                partyVoList.add(partyVo);
+            } while (cursor.moveToNext());
+        }
+
+        return partyVoList;
+    }
+
+    public void saveMemberList(List<Member> memberList){
+        for(Member member : memberList){
+            saveMember(member);
+        }
+    }
+
+    public void saveMember(Member member){
+        List<Member> memberList = daoSession.getMemberDao().queryBuilder()
+                .where(MemberDao.Properties.PartyNo.eq(Common.getLongValue(member.getPartyNo()))
+                        , MemberDao.Properties.UserNo.eq(Common.getLongValue(member.getUserNo())))
+                .build()
+                .list();
+        if (memberList.size() <= 0) {
+            daoSession.getMemberDao().insertOrReplace(member);
+        } else {
+            for(Member item : memberList){
+                daoSession.getMemberDao().insertOrReplace(DataTypeUtil.updateMemberByMember(item, member));
+            }
+        }
     }
 
 }

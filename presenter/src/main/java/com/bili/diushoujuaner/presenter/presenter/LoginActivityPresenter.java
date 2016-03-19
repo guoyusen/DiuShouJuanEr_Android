@@ -28,7 +28,7 @@ public class LoginActivityPresenter extends BasePresenter {
         if(!validate(mobile, psd)){
             return;
         }
-        getViewByClass(LoginActivityView.class).showLoading(Constant.LOADING_TOP);
+        showLoading(Constant.LOADING_TOP,"登录中...");
 
         UserAccountReq userAccountReq = new UserAccountReq();
         userAccountReq.setMobile(mobile);
@@ -40,12 +40,12 @@ public class LoginActivityPresenter extends BasePresenter {
                     CustomSessionPreference.getInstance().saveCustomSession(result.getData());
                     getViewByClass(LoginActivityView.class).loginSuccess();
                 }
-                getViewByClass(LoginActivityView.class).hideLoading(Constant.LOADING_TOP);
+                hideLoading(Constant.LOADING_TOP);
             }
 
             @Override
             public void onFailure(int errorCode) {
-                getViewByClass(LoginActivityView.class).hideLoading(Constant.LOADING_TOP);
+                hideLoading(Constant.LOADING_TOP);
                 showError(errorCode);
             }
         });
@@ -53,15 +53,15 @@ public class LoginActivityPresenter extends BasePresenter {
 
     private boolean validate(String mobile, String psd) {
         if (TextUtils.isEmpty(mobile)) {
-            getViewByClass(LoginActivityView.class).showWarning("请输入手机号");
+            showWarning("请输入手机号");
             return false;
         }
         if (!(Common.isMobile(mobile))) {
-            getViewByClass(LoginActivityView.class).showWarning("请输入正确的手机号码");
+            showWarning("请输入正确的手机号码");
             return false;
         }
         if (TextUtils.isEmpty(psd)) {
-            getViewByClass(LoginActivityView.class).showWarning("请输入登录密码");
+            showWarning("请输入登录密码");
             return false;
         }
         return true;

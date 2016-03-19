@@ -68,6 +68,21 @@ public abstract class AbstractBaseFragmentActivity extends FragmentActivity {
      */
     public abstract void onPageDestroy();
 
+    /**
+     * == 显示加载框
+     */
+    public abstract void showLoading(int loadingType, String message);
+
+    /**
+     * == 隐藏加载框
+     */
+    public abstract void hideLoading(int loadingType);
+
+    /**
+     * == 显示警告信息
+     */
+    public abstract void showWarning(String message);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);

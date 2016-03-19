@@ -10,7 +10,7 @@ public class Member {
     private long partyNo;
     private long userNo;
     /** Not-null value. */
-    private String nickName;
+    private String memberName;
     /** Not-null value. */
     private String addTime;
     private int type;
@@ -22,11 +22,11 @@ public class Member {
         this.id = id;
     }
 
-    public Member(Long id, long partyNo, long userNo, String nickName, String addTime, int type) {
+    public Member(Long id, long partyNo, long userNo, String memberName, String addTime, int type) {
         this.id = id;
         this.partyNo = partyNo;
         this.userNo = userNo;
-        this.nickName = nickName;
+        this.memberName = memberName;
         this.addTime = addTime;
         this.type = type;
     }
@@ -56,13 +56,13 @@ public class Member {
     }
 
     /** Not-null value. */
-    public String getNickName() {
-        return nickName;
+    public String getMemberName() {
+        return memberName;
     }
 
     /** Not-null value; ensure this value is available before it is saved to the database. */
-    public void setNickName(String nickName) {
-        this.nickName = nickName;
+    public void setMemberName(String memberName) {
+        this.memberName = memberName;
     }
 
     /** Not-null value. */

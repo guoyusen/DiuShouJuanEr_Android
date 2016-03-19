@@ -7,6 +7,7 @@ import com.bili.diushoujuaner.model.apihelper.ApiRespon;
 import com.bili.diushoujuaner.model.callback.ActionCallbackListener;
 import com.bili.diushoujuaner.model.databasehelper.DBManager;
 import com.bili.diushoujuaner.model.databasehelper.dao.Friend;
+import com.bili.diushoujuaner.model.databasehelper.dao.Member;
 import com.bili.diushoujuaner.model.databasehelper.dao.Party;
 import com.bili.diushoujuaner.model.databasehelper.dao.User;
 import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
@@ -17,7 +18,9 @@ import com.bili.diushoujuaner.utils.Common;
 import com.bili.diushoujuaner.utils.Constant;
 import com.bili.diushoujuaner.utils.entity.FriendVo;
 import com.bili.diushoujuaner.utils.pinyin.PinyinComparator;
+import com.bili.diushoujuaner.utils.pinyin.PinyinUtil;
 import com.bili.diushoujuaner.utils.response.ContactDto;
+import com.bili.diushoujuaner.utils.response.MemberDto;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,32 +35,38 @@ public class ContactFragmentPresenter extends BasePresenter {
         super(baseView, context);
     }
 
-    public void getContacts(){
-        showContacts();
+    public void getContactList(){
+        showContactList();
         if(Common.checkNetworkStatus(context)){
-            getViewByClass(ContactFragmentView.class).showLoading(Constant.LOADING_DEFAULT);
-            ContactsAction.getInstance(context).getContacts(new ActionCallbackListener<ApiRespon<List<ContactDto>>>() {
+            showLoading(Constant.LOADING_DEFAULT, "");
+            ContactsAction.getInstance(context).getContactList(new ActionCallbackListener<ApiRespon<List<ContactDto>>>() {
                 @Override
                 public void onSuccess(ApiRespon<List<ContactDto>> result) {
-                    if(showMessage(result.getRetCode(), result.getMessage())){
+                    if (showMessage(result.getRetCode(), result.getMessage())) {
                         saveContactFromList(result.getData());
                     }
-                    showContacts();
-                    getViewByClass(ContactFragmentView.class).hideLoading(Constant.LOADING_DEFAULT);
+                    showContactList();
+                    hideLoading(Constant.LOADING_DEFAULT);
                 }
 
                 @Override
                 public void onFailure(int errorCode) {
                     showError(errorCode);
-                    getViewByClass(ContactFragmentView.class).hideLoading(Constant.LOADING_DEFAULT);
+                    hideLoading(Constant.LOADING_DEFAULT);
                 }
             });
         }
     }
 
-    private void showContacts(){
+    private void showContactList(){
         List<FriendVo> friendVoList = getFriendFromDb();
         Collections.sort(friendVoList, new PinyinComparator());
+
+        if(friendVoList.size() == 1){
+            char capital = PinyinUtil.getHeadCapitalByChar(friendVoList.get(0).getDisplayName().charAt(0));
+            friendVoList.get(0).setSortLetter((capital >= 'A' && capital <= 'Z') ? (capital + "") : "#");
+        }
+
         getViewByClass(ContactFragmentView.class).showContactList(friendVoList);
     }
 
@@ -69,6 +78,7 @@ public class ContactFragmentPresenter extends BasePresenter {
         List<Friend> friendList = new ArrayList<>();
         List<Party> partyList = new ArrayList<>();
         List<User> userList = new ArrayList<>();
+        List<Member> memberList = new ArrayList<>();
 
         for(ContactDto contactDto : contactDtoList){
             if(contactDto.getType() == Constant.CONTACT_FRIEND){
@@ -76,11 +86,33 @@ public class ContactFragmentPresenter extends BasePresenter {
                 userList.add(getUserFromContactDto(contactDto));
             }else if(contactDto.getType() == Constant.CONTACT_PARTY){
                 partyList.add(getPartyFromContactDto(contactDto));
+                memberList.addAll(getMemberList(contactDto));
             }
         }
         DBManager.getInstance().saveUserList(userList);
         DBManager.getInstance().saveFriendList(friendList);
         DBManager.getInstance().savePartyList(partyList);
+        DBManager.getInstance().saveMemberList(memberList);
+    }
+
+    private List<Member> getMemberList(ContactDto contactDto){
+        List<Member> memberList = new ArrayList<>();
+        List<MemberDto> memberDtoList = new ArrayList<>();
+
+        memberDtoList.addAll(contactDto.getMemberList());
+        Member member;
+        for(MemberDto memberDto : memberDtoList){
+            member = new Member();
+            member.setPartyNo(memberDto.getPartyNo());
+            member.setUserNo(memberDto.getUserNo());
+            member.setAddTime(memberDto.getAddTime());
+            member.setMemberName(memberDto.getMemberName());
+            member.setType(memberDto.getType());
+
+            memberList.add(member);
+        }
+
+        return memberList;
     }
 
     private User getUserFromContactDto(ContactDto contactDto){

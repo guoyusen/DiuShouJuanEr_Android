@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/y128"
+    android:layout_height="@dimen/y144"
     android:background="@color/COLOR_WHITE"
     android:gravity="center_vertical"
     android:orientation="horizontal"
@@ -11,8 +11,8 @@
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/ivItemHead"
-        android:layout_width="@dimen/x100"
-        android:layout_height="@dimen/y100"
+        android:layout_width="@dimen/x112"
+        android:layout_height="@dimen/x112"
         android:layout_centerVertical="true"
         app:placeholderImage="@mipmap/shin"
         app:roundAsCircle="true" />
@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_marginTop="@dimen/y16"
+            android:layout_marginTop="@dimen/y22"
             android:ellipsize="marquee"
             android:singleLine="true"
             android:text="三木同学"
@@ -42,11 +42,21 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
-            android:layout_marginBottom="@dimen/y16"
+            android:layout_marginBottom="@dimen/y22"
+            android:layout_marginRight="@dimen/x80"
             android:ellipsize="marquee"
             android:singleLine="true"
             android:text="就让大雨冲刷记忆中的沙，让我了无牵挂浪迹在天涯"
             android:textColor="@color/TC_808080" />
+
+        <com.bili.diushoujuaner.widget.badgeview.BGABadgeTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            app:badge_textSize="@dimen/x26"
+            app:badge_dragable="true"
+            android:layout_marginBottom="@dimen/y22"/>
 
         <TextView
             android:id="@+id/textItemTime"
@@ -58,6 +68,10 @@
             android:layout_alignParentTop="true"
             android:text="20:20"
             android:textColor="@color/TC_808080" />
+
+        <View
+            style="@style/line"
+            android:layout_alignParentBottom="true"/>
 
     </RelativeLayout>
 

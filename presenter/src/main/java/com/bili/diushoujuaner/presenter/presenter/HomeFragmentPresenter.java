@@ -21,8 +21,7 @@ public class HomeFragmentPresenter extends BasePresenter {
         super(baseView, context);
     }
 
-    public void loadRecallList(){
-        getViewByClass(HomeFragmentView.class).showLoading(Constant.LOADING_TOP);
+    public void getRecallList(){
         RecallAction.getInstance().getRecallList(new ActionCallbackListener<List<RecallVo>>() {
             @Override
             public void onSuccess(List<RecallVo> recallVoList) {
@@ -37,8 +36,8 @@ public class HomeFragmentPresenter extends BasePresenter {
 
     }
 
-    public void loadMoreRecallList(){
-        getViewByClass(HomeFragmentView.class).showLoading(Constant.LOADING_NONE);
+    public void getMoreRecallList(){
+
     }
 
 }

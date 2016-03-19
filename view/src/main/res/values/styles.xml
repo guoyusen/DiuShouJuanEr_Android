@@ -33,7 +33,7 @@
     </style>
 
     <style name="TextSmall">
-        <item name="android:textSize">@dimen/x28</item>
+        <item name="android:textSize">@dimen/x26</item>
     </style>
 
     <style name="TextMiddle">

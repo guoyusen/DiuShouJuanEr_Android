@@ -54,21 +54,6 @@ public class LoginActivity extends BaseActivity implements LoginActivityView, Vi
     }
 
     @Override
-    public void showWarning(String message) {
-        super.showWarning(message);
-    }
-
-    @Override
-    public void showLoading(int loadingType) {
-        super.showLoading(loadingType);
-    }
-
-    @Override
-    public void hideLoading(int loadingType) {
-        super.hideLoading(loadingType);
-    }
-
-    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnLogin:

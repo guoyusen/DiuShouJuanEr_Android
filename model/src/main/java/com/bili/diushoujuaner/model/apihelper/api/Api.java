@@ -30,6 +30,6 @@ public interface Api {
      * 获取用户的通讯录
      * @param apiCallbackListener
      */
-    void getContacts(ApiCallbackListener apiCallbackListener);
+    void getContactList(ApiCallbackListener apiCallbackListener);
 
 }

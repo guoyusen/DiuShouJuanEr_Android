@@ -24,14 +24,14 @@
                 android:divider="@color/LC_F6F6F6"/>
 
             <TextView
-                android:id="@+id/textPartyCount"
+                android:id="@+id/txtPartyCount"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:paddingTop="@dimen/y20"
-                android:paddingBottom="@dimen/y20"
-                style="@style/TextLarge"
-                android:textColor="@color/TC_808080"
+                android:paddingTop="@dimen/y40"
+                android:paddingBottom="@dimen/y40"
+                style="@style/TextMiddle"
+                android:textColor="@color/TC_BFBFBF"
                 android:text="9个群组"/>
 
         </LinearLayout>

@@ -2,25 +2,30 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/y128"
+    android:layout_height="@dimen/y144"
     android:background="@color/COLOR_WHITE">
 
-
+    <View
+        android:id="@+id/line"
+        style="@style/line"
+        android:layout_marginLeft="@dimen/x120"
+        android:layout_marginRight="@dimen/x24" />
 
     <TextView
-        android:id="@+id/textItemMark"
-        android:layout_width="wrap_content"
+        android:id="@+id/txtItemMark"
+        android:layout_width="@dimen/x60"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/x24"
         android:layout_centerVertical="true"
+        android:gravity="center"
         android:text="A"
         android:textColor="@color/TC_FF4081"
-        android:textSize="@dimen/x55" />
+        android:textSize="@dimen/x50" />
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/ivItemHead"
-        android:layout_width="@dimen/x100"
-        android:layout_height="@dimen/y100"
+        android:layout_width="@dimen/x112"
+        android:layout_height="@dimen/x112"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="@dimen/x24"
@@ -28,11 +33,11 @@
         app:roundAsCircle="true" />
 
     <TextView
-        android:id="@+id/textContactName"
+        android:id="@+id/txtContactName"
         style="@style/TextLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/x120"
+        android:layout_marginLeft="@dimen/x144"
         android:layout_centerVertical="true"
         android:text="三木同学"
         android:textColor="@color/TC_333333" />

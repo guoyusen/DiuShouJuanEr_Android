@@ -96,20 +96,22 @@ public class BaseFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         ButterKnife.unbind(this);
-        basePresenter.detachView();
+        if(basePresenter != null){
+            basePresenter.detachView();
+        }
     }
 
     protected <T> T getPresenterByClass(Class<T> t){
         return (T)basePresenter;
     }
 
-    protected void showLoading(int loadingType) {
+    public void showLoading(int loadingType, String message) {
         switch (loadingType){
             case Constant.LOADING_CENTER:
-                CustomProgress.getInstance(context).showCenter(getResources().getString(R.string.loging_status), true, null);
+                CustomProgress.getInstance(context).showCenter(message, true, null);
                 break;
             case Constant.LOADING_TOP:
-                CustomProgress.getInstance(context).showTop(getResources().getString(R.string.loging_status), true, null);
+                CustomProgress.getInstance(context).showTop(message, true, null);
                 break;
             case Constant.LOADING_DEFAULT:
                 if(defaultCircle != null){
@@ -120,7 +122,7 @@ public class BaseFragment extends Fragment {
         }
     }
 
-    protected void hideLoading(int loadingType) {
+    public void hideLoading(int loadingType) {
         switch (loadingType){
             case Constant.LOADING_CENTER:
             case Constant.LOADING_TOP:
@@ -135,7 +137,7 @@ public class BaseFragment extends Fragment {
         }
     }
 
-    protected void showWarning(String message) {
+    public void showWarning(String message) {
         CustomToast.getInstance().showWarning(context, message);
     }
 }

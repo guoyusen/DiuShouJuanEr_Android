@@ -50,4 +50,16 @@ public class BasePresenter {
                 return true;
         }
     }
+
+    protected void showLoading(int loadingType, String message){
+        baseView.showLoading(loadingType, message);
+    }
+
+    protected void hideLoading(int loadingType){
+        baseView.hideLoading(loadingType);
+    }
+
+    protected void showWarning(String message){
+        baseView.showWarning(message);
+    }
 }

@@ -26,14 +26,14 @@ public class MainActivityPresenter extends BasePresenter {
     }
 
     public void getUserInfo(){
-        getViewByClass(MainActivityView.class).getUserInfo(getUserFromDb());
+        showUserInfo();
         if(Common.checkNetworkStatus(context)){
             UserInfoAction.getInstance(context).getUserInfo(new ActionCallbackListener<ApiRespon<UserRes>>() {
                 @Override
                 public void onSuccess(ApiRespon<UserRes> result) {
                     if(showMessage(result.getRetCode(), result.getMessage())){
                         DBManager.getInstance().saveUser(result.getData());
-                        getViewByClass(MainActivityView.class).getUserInfo(getUserFromDb());
+                        showUserInfo();
                     }
                 }
 
@@ -43,6 +43,14 @@ public class MainActivityPresenter extends BasePresenter {
                 }
             });
         }
+    }
+
+    private void showUserInfo(){
+        User user = getUserFromDb();
+        if(user == null){
+            return;
+        }
+        getViewByClass(MainActivityView.class).showUserInfo(user);
     }
 
     private User getUserFromDb(){

@@ -8,25 +8,25 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y128"
+        android:layout_height="@dimen/y120"
         android:layout_marginLeft="@dimen/x24"
         android:layout_marginRight="@dimen/x24">
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/ivItemHead"
-            android:layout_width="@dimen/x100"
-            android:layout_height="@dimen/y100"
+            android:layout_width="@dimen/x80"
+            android:layout_height="@dimen/x80"
             android:layout_centerVertical="true"
             app:placeholderImage="@mipmap/shin"
             app:roundAsCircle="true" />
 
         <TextView
             android:id="@+id/textItemUserName"
-            style="@style/TextLarge"
+            style="@style/TextMiddle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/x24"
-            android:layout_marginTop="@dimen/x16"
+            android:layout_alignTop="@+id/ivItemHead"
             android:layout_toRightOf="@+id/ivItemHead"
             android:text="三木同学"
             android:textColor="@color/TC_BLACK" />
@@ -37,34 +37,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignLeft="@+id/textItemUserName"
-            android:layout_below="@+id/textItemUserName"
-            android:layout_marginTop="@dimen/y6"
-            android:layout_toRightOf="@+id/ivItemHead"
+            android:layout_alignBottom="@+id/ivItemHead"
+            android:layout_marginTop="@dimen/y8"
             android:text="02月28日09:34"
             android:textColor="@color/TC_808080" />
 
     </RelativeLayout>
 
-    <com.bili.diushoujuaner.widget.aligntextview.AlignTextView
-        android:id="@+id/textItemContent"
-        style="@style/TextMiddle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/y8"
-        android:layout_marginLeft="@dimen/x24"
-        android:layout_marginRight="@dimen/x24"
-        android:layout_marginTop="@dimen/y8"
-        android:ellipsize="marquee"
-        android:maxLines="4"
-        android:text="@string/tmpString"
-        android:textColor="@color/TC_333333"
-        cb:align="left" />
-
     <RelativeLayout
         android:id="@+id/layoutItemPic"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y380"
-        android:layout_marginTop="@dimen/y10">
+        android:layout_height="@dimen/y380">
 
         <ImageView
             android:id="@+id/ivItemPic"
@@ -89,20 +72,32 @@
 
     </RelativeLayout>
 
+    <com.bili.diushoujuaner.widget.aligntextview.AlignTextView
+        android:id="@+id/textItemContent"
+        style="@style/TextMiddle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/y24"
+        android:ellipsize="marquee"
+        android:maxLines="4"
+        android:text="@string/tmpString"
+        android:textColor="@color/TC_333333"
+        cb:align="left" />
+
     <View
         style="@style/line"/>
 
     <LinearLayout
         style="@style/MarginHorizontal"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="@dimen/y80"
+        android:layout_gravity="right"
         android:orientation="horizontal">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="@dimen/x144"
             android:layout_height="match_parent"
-            android:layout_weight="1.0"
-            android:gravity="center"
+            android:gravity="right|center"
             android:orientation="horizontal">
 
             <ImageView
@@ -120,18 +115,11 @@
 
         </LinearLayout>
 
-        <View
-            android:layout_width="@dimen/x2"
-            android:layout_height="@dimen/y50"
-            android:layout_gravity="center_vertical"
-            android:background="@color/BG_ECECEC" />
-
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="@dimen/x144"
             android:layout_height="match_parent"
-            android:layout_weight="1.0"
             android:orientation="horizontal"
-            android:gravity="center">
+            android:gravity="right|center">
 
             <ImageView
                 android:layout_width="@dimen/x36"

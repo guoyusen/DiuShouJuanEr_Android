@@ -26,7 +26,7 @@
             style="@style/TextMiddle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="@dimen/y80"
+            android:minHeight="@dimen/y72"
             android:layout_marginRight="@dimen/x124"
             android:background="@drawable/common_rectangle_solid_white"
             android:hint="说点什么呗..."
@@ -39,7 +39,7 @@
         <Button
             android:id="@+id/btnSend"
             android:layout_width="@dimen/y100"
-            android:layout_height="@dimen/y80"
+            android:layout_height="@dimen/y72"
             android:layout_alignParentRight="true"
             android:layout_alignBottom="@+id/textComment"
             android:text="发送"

@@ -3,7 +3,6 @@ package com.bili.diushoujuaner.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.GravityCompat;
@@ -16,7 +15,8 @@ import android.widget.Toast;
 
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.base.BaseFragmentActivity;
-import com.bili.diushoujuaner.callback.IShowMainMenu;
+import com.bili.diushoujuaner.callback.IMainFragmentOperateListener;
+import com.bili.diushoujuaner.callback.IMainOperateListener;
 import com.bili.diushoujuaner.fragment.ContactFragment;
 import com.bili.diushoujuaner.fragment.HomeFragment;
 import com.bili.diushoujuaner.fragment.MessageFragment;
@@ -27,7 +27,6 @@ import com.bili.diushoujuaner.utils.Common;
 import com.bili.diushoujuaner.utils.Imageloader;
 import com.bili.diushoujuaner.utils.manager.ActivityManager;
 import com.bili.diushoujuaner.widget.CustomViewPager;
-import com.bili.diushoujuaner.widget.badgeview.BGABadgeRadioButton;
 import com.bili.diushoujuaner.widget.badgeview.BGABadgeTextView;
 import com.bili.diushoujuaner.widget.badgeview.BGABottomNavigation;
 import com.bili.diushoujuaner.widget.badgeview.BGABottomNavigationItem;
@@ -40,9 +39,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 
-public class MainActivity extends BaseFragmentActivity implements View.OnClickListener, IShowMainMenu, MainActivityView, BGABottomNavigation.IViewInitFinishListener {
+public class MainActivity extends BaseFragmentActivity implements View.OnClickListener, IMainOperateListener, MainActivityView, BGABottomNavigation.IViewInitFinishListener {
 
     @Bind(R.id.customViewPager)
     CustomViewPager customViewPager;
@@ -76,6 +74,8 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
     private int badgeMessCount = 0;
     private int badgeContCount = 0;
 
+    private List<IMainFragmentOperateListener> iMainFragmentOperateListenerList;
+
     @Override
     public void tintStatusColor() {
         super.tintStatusColor();
@@ -85,6 +85,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
     @Override
     public void beforeInitView() {
         fragmentList = new ArrayList<>();
+        iMainFragmentOperateListenerList = new ArrayList<>();
     }
 
     @Override
@@ -117,9 +118,13 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
         homeFragment = HomeFragment.instantiation(0);
         messageFragment = MessageFragment.instantiation(1);
         contactFragment = ContactFragment.instantiation(2);
-        homeFragment.setShowMainMenu(this);
-        messageFragment.setShowMainMenu(this);
-        contactFragment.setShowMainMenu(this);
+        homeFragment.setMainOperateListener(this);
+        messageFragment.setMainOperateListener(this);
+        contactFragment.setMainOperateListener(this);
+
+        iMainFragmentOperateListenerList.add(homeFragment);
+        iMainFragmentOperateListenerList.add(messageFragment);
+        iMainFragmentOperateListenerList.add(contactFragment);
 
         fragmentList.add(homeFragment);
         fragmentList.add(messageFragment);
@@ -175,6 +180,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
                 break;
             case R.id.menuHead:
                 startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                finish();
                 break;
             case R.id.textAutograph:
                 startActivity(new Intent(MainActivity.this, ContentEditActivity.class));
@@ -215,22 +221,13 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
     }
 
     @Override
-    public void getUserInfo(User user) {
+    public void showUserInfo(User user) {
         Imageloader.getInstance().displayDraweeView(Common.getCompleteUrl(user.getPicPath()), menuHead);
         txtAutograph.setText(user.getAutograph());
         txtUserName.setText(user.getNickName());
-    }
 
-    @Override
-    public void showLoading(int loadingType) {
+        for(IMainFragmentOperateListener iMainFragmentOperateListener : iMainFragmentOperateListenerList){
+            iMainFragmentOperateListener.showHead(user.getPicPath());
+        }
     }
-
-    @Override
-    public void hideLoading(int loadingType) {
-    }
-
-    @Override
-    public void showWarning(String message) {
-    }
-
 }

@@ -39,7 +39,7 @@ public class ApiAction implements Api {
     }
 
     @Override
-    public void getContacts(ApiCallbackListener apiCallbackListener) {
+    public void getContactList(ApiCallbackListener apiCallbackListener) {
         dataLoader.processStringRequest(Request.Method.GET, Api.getContacts, null, apiCallbackListener);
     }
 }

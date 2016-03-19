@@ -5,6 +5,9 @@ import android.widget.TextView;
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.adapter.PartyAdapter;
 import com.bili.diushoujuaner.base.BaseActivity;
+import com.bili.diushoujuaner.presenter.presenter.PartyActivityPresenter;
+import com.bili.diushoujuaner.presenter.viewinterface.PartyActivityView;
+import com.bili.diushoujuaner.utils.entity.PartyVo;
 import com.bili.diushoujuaner.utils.response.PartyDto;
 import com.bili.diushoujuaner.widget.CustomListViewRefresh;
 
@@ -16,20 +19,20 @@ import butterknife.Bind;
 /**
  * Created by BiLi on 2016/3/9.
  */
-public class PartyActivity extends BaseActivity {
+public class PartyActivity extends BaseActivity implements PartyActivityView {
 
 
     @Bind(R.id.customListViewRefresh)
     CustomListViewRefresh customListViewRefresh;
-    @Bind(R.id.textPartyCount)
-    TextView textPartyCount;
+    @Bind(R.id.txtPartyCount)
+    TextView txtPartyCount;
 
-    private List<PartyDto> partyDtoList;
+    private List<PartyVo> partyVoList;
     private PartyAdapter partyAdapter;
 
     @Override
     public void beforeInitView() {
-        partyDtoList = new ArrayList<>();
+        partyVoList = new ArrayList<>();
     }
 
     @Override
@@ -40,11 +43,20 @@ public class PartyActivity extends BaseActivity {
     @Override
     public void setViewStatus() {
         showPageHead("群组",null,null);
-        for(int i=0;i<9;i++){
-            partyDtoList.add(new PartyDto());
-        }
-        partyAdapter = new PartyAdapter(this, partyDtoList);
+
+        partyAdapter = new PartyAdapter(this, partyVoList);
         customListViewRefresh.setAdapter(partyAdapter);
+        basePresenter = new PartyActivityPresenter(this, context);
+        getPresenterByClass(PartyActivityPresenter.class).getPartyList();
     }
 
+    @Override
+    public void showPartyList(List<PartyVo> partyVoList) {
+        partyAdapter.refresh(partyVoList);
+        if(partyVoList.size() <= 0){
+            txtPartyCount.setText("暂无群组");
+        } else{
+            txtPartyCount.setText(partyVoList.size() + "个群组");
+        }
+    }
 }

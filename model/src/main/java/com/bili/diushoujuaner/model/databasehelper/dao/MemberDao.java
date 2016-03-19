@@ -26,7 +26,7 @@ public class MemberDao extends AbstractDao<Member, Long> {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property PartyNo = new Property(1, long.class, "partyNo", false, "PARTY_NO");
         public final static Property UserNo = new Property(2, long.class, "userNo", false, "USER_NO");
-        public final static Property NickName = new Property(3, String.class, "nickName", false, "NICK_NAME");
+        public final static Property MemberName = new Property(3, String.class, "memberName", false, "MEMBER_NAME");
         public final static Property AddTime = new Property(4, String.class, "addTime", false, "ADD_TIME");
         public final static Property Type = new Property(5, int.class, "type", false, "TYPE");
     };
@@ -47,7 +47,7 @@ public class MemberDao extends AbstractDao<Member, Long> {
                 "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
                 "\"PARTY_NO\" INTEGER NOT NULL ," + // 1: partyNo
                 "\"USER_NO\" INTEGER NOT NULL ," + // 2: userNo
-                "\"NICK_NAME\" TEXT NOT NULL ," + // 3: nickName
+                "\"MEMBER_NAME\" TEXT NOT NULL ," + // 3: memberName
                 "\"ADD_TIME\" TEXT NOT NULL ," + // 4: addTime
                 "\"TYPE\" INTEGER NOT NULL );"); // 5: type
         // Add Indexes
@@ -72,7 +72,7 @@ public class MemberDao extends AbstractDao<Member, Long> {
         }
         stmt.bindLong(2, entity.getPartyNo());
         stmt.bindLong(3, entity.getUserNo());
-        stmt.bindString(4, entity.getNickName());
+        stmt.bindString(4, entity.getMemberName());
         stmt.bindString(5, entity.getAddTime());
         stmt.bindLong(6, entity.getType());
     }
@@ -90,7 +90,7 @@ public class MemberDao extends AbstractDao<Member, Long> {
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
             cursor.getLong(offset + 1), // partyNo
             cursor.getLong(offset + 2), // userNo
-            cursor.getString(offset + 3), // nickName
+            cursor.getString(offset + 3), // memberName
             cursor.getString(offset + 4), // addTime
             cursor.getInt(offset + 5) // type
         );
@@ -103,7 +103,7 @@ public class MemberDao extends AbstractDao<Member, Long> {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setPartyNo(cursor.getLong(offset + 1));
         entity.setUserNo(cursor.getLong(offset + 2));
-        entity.setNickName(cursor.getString(offset + 3));
+        entity.setMemberName(cursor.getString(offset + 3));
         entity.setAddTime(cursor.getString(offset + 4));
         entity.setType(cursor.getInt(offset + 5));
      }

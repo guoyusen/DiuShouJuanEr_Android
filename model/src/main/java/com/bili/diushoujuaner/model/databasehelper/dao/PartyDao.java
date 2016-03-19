@@ -49,7 +49,7 @@ public class PartyDao extends AbstractDao<Party, Long> {
                 "\"PARTY_NO\" INTEGER NOT NULL ," + // 1: partyNo
                 "\"PARTY_NAME\" TEXT NOT NULL ," + // 2: partyName
                 "\"OWNER_NO\" INTEGER NOT NULL ," + // 3: ownerNo
-                "\"INFORMATION\" TEXT NOT NULL ," + // 4: information
+                "\"INFORMATION\" TEXT," + // 4: information
                 "\"REGISTER_TIME\" TEXT NOT NULL ," + // 5: registerTime
                 "\"PIC_PATH\" TEXT NOT NULL );"); // 6: picPath
     }
@@ -72,7 +72,11 @@ public class PartyDao extends AbstractDao<Party, Long> {
         stmt.bindLong(2, entity.getPartyNo());
         stmt.bindString(3, entity.getPartyName());
         stmt.bindLong(4, entity.getOwnerNo());
-        stmt.bindString(5, entity.getInformation());
+ 
+        String information = entity.getInformation();
+        if (information != null) {
+            stmt.bindString(5, information);
+        }
         stmt.bindString(6, entity.getRegisterTime());
         stmt.bindString(7, entity.getPicPath());
     }
@@ -91,7 +95,7 @@ public class PartyDao extends AbstractDao<Party, Long> {
             cursor.getLong(offset + 1), // partyNo
             cursor.getString(offset + 2), // partyName
             cursor.getLong(offset + 3), // ownerNo
-            cursor.getString(offset + 4), // information
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // information
             cursor.getString(offset + 5), // registerTime
             cursor.getString(offset + 6) // picPath
         );
@@ -105,7 +109,7 @@ public class PartyDao extends AbstractDao<Party, Long> {
         entity.setPartyNo(cursor.getLong(offset + 1));
         entity.setPartyName(cursor.getString(offset + 2));
         entity.setOwnerNo(cursor.getLong(offset + 3));
-        entity.setInformation(cursor.getString(offset + 4));
+        entity.setInformation(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
         entity.setRegisterTime(cursor.getString(offset + 5));
         entity.setPicPath(cursor.getString(offset + 6));
      }

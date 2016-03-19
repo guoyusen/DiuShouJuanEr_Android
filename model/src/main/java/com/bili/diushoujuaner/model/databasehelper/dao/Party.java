@@ -11,7 +11,6 @@ public class Party {
     /** Not-null value. */
     private String partyName;
     private long ownerNo;
-    /** Not-null value. */
     private String information;
     /** Not-null value. */
     private String registerTime;
@@ -69,12 +68,10 @@ public class Party {
         this.ownerNo = ownerNo;
     }
 
-    /** Not-null value. */
     public String getInformation() {
         return information;
     }
 
-    /** Not-null value; ensure this value is available before it is saved to the database. */
     public void setInformation(String information) {
         this.information = information;
     }

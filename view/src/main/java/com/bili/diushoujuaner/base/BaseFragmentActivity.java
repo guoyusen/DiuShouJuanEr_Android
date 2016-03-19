@@ -56,4 +56,19 @@ public class BaseFragmentActivity extends AbstractBaseFragmentActivity {
     public void back(View view) {
         finish();
     }
+
+    @Override
+    public void showLoading(int loadingType, String message) {
+
+    }
+
+    @Override
+    public void hideLoading(int loadingType) {
+
+    }
+
+    @Override
+    public void showWarning(String message) {
+
+    }
 }

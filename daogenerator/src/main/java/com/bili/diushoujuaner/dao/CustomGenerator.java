@@ -66,7 +66,7 @@ public class CustomGenerator {
         party.addLongProperty("partyNo").notNull();
         party.addStringProperty("partyName").notNull();
         party.addLongProperty("ownerNo").notNull();
-        party.addStringProperty("information").notNull();
+        party.addStringProperty("information");
         party.addStringProperty("registerTime").notNull();
         party.addStringProperty("picPath").notNull();
 
@@ -77,7 +77,7 @@ public class CustomGenerator {
         member.addIdProperty().autoincrement().primaryKey();
         member.addLongProperty("partyNo").notNull().index();
         member.addLongProperty("userNo").notNull();
-        member.addStringProperty("nickName").notNull();
+        member.addStringProperty("memberName").notNull();
         member.addStringProperty("addTime").notNull();
         member.addIntProperty("type").notNull();
     }

@@ -7,6 +7,7 @@ import com.bili.diushoujuaner.model.apihelper.api.ApiAction;
 import com.bili.diushoujuaner.model.apihelper.callback.ApiCallbackListener;
 import com.bili.diushoujuaner.model.callback.ActionCallbackListener;
 import com.bili.diushoujuaner.utils.GsonParser;
+import com.bili.diushoujuaner.utils.entity.PartyVo;
 import com.bili.diushoujuaner.utils.response.ContactDto;
 import com.google.gson.reflect.TypeToken;
 import com.nanotasks.BackgroundWork;
@@ -34,8 +35,8 @@ public class ContactsAction {
         return contactsAction;
     }
 
-    public void getContacts(final ActionCallbackListener<ApiRespon<List<ContactDto>>> actionCallbackListener){
-        ApiAction.getInstance().getContacts(new ApiCallbackListener() {
+    public void getContactList(final ActionCallbackListener<ApiRespon<List<ContactDto>>> actionCallbackListener){
+        ApiAction.getInstance().getContactList(new ApiCallbackListener() {
             @Override
             public void onSuccess(final String data) {
                 Tasks.executeInBackground(context, new BackgroundWork<ApiRespon<List<ContactDto>>>() {

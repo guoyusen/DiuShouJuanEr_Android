@@ -1,6 +1,8 @@
 package com.bili.diushoujuaner.model.databasehelper;
 
 import com.bili.diushoujuaner.model.databasehelper.dao.Friend;
+import com.bili.diushoujuaner.model.databasehelper.dao.Member;
+import com.bili.diushoujuaner.model.databasehelper.dao.Party;
 import com.bili.diushoujuaner.model.databasehelper.dao.User;
 import com.bili.diushoujuaner.utils.Common;
 import com.bili.diushoujuaner.utils.response.UserRes;
@@ -45,7 +47,22 @@ public class DataTypeUtil {
     }
 
     public static Friend updateFriendByFriend(Friend older, Friend newer){
-        older.setRemark(Common.isEmpty(newer.getRemark())? older.getRemark():newer.getRemark());
+        older.setRemark(Common.isEmpty(newer.getRemark()) ? older.getRemark() : newer.getRemark());
+
+        return older;
+    }
+
+    public static Party updatePartyByParty(Party older, Party newer){
+        older.setPicPath(Common.isEmpty(newer.getPicPath()) ? older.getPicPath() : newer.getPicPath());
+        older.setPartyName(Common.isEmpty(newer.getPartyName()) ? older.getPartyName() : newer.getPartyName());
+        older.setInformation(Common.isEmpty(newer.getInformation()) ? older.getPicPath() : newer.getInformation());
+
+        return older;
+    }
+
+    public static Member updateMemberByMember(Member older, Member newer){
+        older.setMemberName(Common.isEmpty(newer.getMemberName()) ? older.getMemberName() : newer.getMemberName());
+        older.setType(newer.getType());
 
         return older;
     }

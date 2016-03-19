@@ -6,11 +6,10 @@ import android.os.Parcelable;
 /**
  * Created by BiLi on 2016/3/18.
  */
-public class FriendVo implements Parcelable {
+public class FriendVo extends SortVo implements Parcelable {
 
     private long friendNo;
     private String nickName;
-    private String remark;
     private String mobile;
     private String autograph;
     private Integer gender;
@@ -21,15 +20,6 @@ public class FriendVo implements Parcelable {
     private String smallNick;
     private String registTime;
     private String updateTime;
-    private String sortLetter;
-
-    public String getSortLetter() {
-        return sortLetter;
-    }
-
-    public void setSortLetter(String sortLetter) {
-        this.sortLetter = sortLetter;
-    }
 
     public long getFriendNo() {
         return friendNo;
@@ -45,14 +35,6 @@ public class FriendVo implements Parcelable {
 
     public void setNickName(String nickName) {
         this.nickName = nickName;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
     }
 
     public String getMobile() {
@@ -144,7 +126,6 @@ public class FriendVo implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeLong(this.friendNo);
         dest.writeString(this.nickName);
-        dest.writeString(this.remark);
         dest.writeString(this.mobile);
         dest.writeString(this.autograph);
         dest.writeValue(this.gender);
@@ -163,7 +144,6 @@ public class FriendVo implements Parcelable {
     protected FriendVo(Parcel in) {
         this.friendNo = in.readLong();
         this.nickName = in.readString();
-        this.remark = in.readString();
         this.mobile = in.readString();
         this.autograph = in.readString();
         this.gender = (Integer) in.readValue(Integer.class.getClassLoader());

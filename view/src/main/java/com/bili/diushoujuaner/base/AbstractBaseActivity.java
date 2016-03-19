@@ -69,7 +69,7 @@ public abstract class AbstractBaseActivity extends Activity {
     /**
      * == 显示加载框
      */
-    public abstract void showLoading(int loadingType);
+    public abstract void showLoading(int loadingType, String message);
 
     /**
      * == 隐藏加载框

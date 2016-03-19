@@ -5,7 +5,7 @@ package com.bili.diushoujuaner.presenter.base;
  */
 public interface IBaseView {
 
-    void showLoading(int loadingType);
+    void showLoading(int loadingType, String message);
 
     void hideLoading(int loadingType);
 

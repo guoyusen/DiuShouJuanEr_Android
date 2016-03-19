@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 
@@ -11,7 +12,10 @@ import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.activity.RecallDetailActivity;
 import com.bili.diushoujuaner.adapter.RecallAdapter;
 import com.bili.diushoujuaner.base.BaseFragment;
-import com.bili.diushoujuaner.callback.IShowMainMenu;
+import com.bili.diushoujuaner.callback.IMainFragmentOperateListener;
+import com.bili.diushoujuaner.callback.IMainOperateListener;
+import com.bili.diushoujuaner.utils.Common;
+import com.bili.diushoujuaner.utils.Imageloader;
 import com.bili.diushoujuaner.utils.response.RecallVo;
 import com.bili.diushoujuaner.presenter.presenter.HomeFragmentPresenter;
 import com.bili.diushoujuaner.presenter.viewinterface.HomeFragmentView;
@@ -27,7 +31,7 @@ import butterknife.Bind;
 /**
  * Created by BiLi on 2016/3/2.
  */
-public class HomeFragment extends BaseFragment implements WaveSwipeRefreshLayout.OnRefreshListener, HomeFragmentView, View.OnClickListener {
+public class HomeFragment extends BaseFragment implements WaveSwipeRefreshLayout.OnRefreshListener, HomeFragmentView, View.OnClickListener, IMainFragmentOperateListener {
 
     @Bind(R.id.customListViewRefresh)
     CustomListViewRefresh customListViewRefresh;
@@ -38,7 +42,8 @@ public class HomeFragment extends BaseFragment implements WaveSwipeRefreshLayout
 
     private List<RecallVo> recallVoList;
     private RecallAdapter recallAdapter;
-    private IShowMainMenu showMainMenu;
+    private IMainOperateListener iMainOperateListener;
+    private String ivNavHeadUrl;
 
     public static HomeFragment instantiation(int position){
         HomeFragment fragment = new HomeFragment();
@@ -77,8 +82,10 @@ public class HomeFragment extends BaseFragment implements WaveSwipeRefreshLayout
         waveSwipeRefreshLayout.setWaveColor(Color.parseColor("#5C84DC"));
         waveSwipeRefreshLayout.setOnRefreshListener(this);
 
+        Imageloader.getInstance().displayDraweeView(Common.getCompleteUrl(ivNavHeadUrl), ivNavHead);
+
         basePresenter = new HomeFragmentPresenter(this, getContext());
-        getPresenterByClass(HomeFragmentPresenter.class).loadRecallList();
+        getPresenterByClass(HomeFragmentPresenter.class).getRecallList();
 
     }
 
@@ -86,13 +93,13 @@ public class HomeFragment extends BaseFragment implements WaveSwipeRefreshLayout
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.ivNavHead:
-                showMainMenu.showMainMenu();
+                iMainOperateListener.showMainMenu();
                 break;
         }
     }
 
-    public void setShowMainMenu(IShowMainMenu showMainMenu) {
-        this.showMainMenu = showMainMenu;
+    public void setMainOperateListener(IMainOperateListener iMainOperateListener) {
+        this.iMainOperateListener = iMainOperateListener;
     }
 
     @Override
@@ -116,17 +123,10 @@ public class HomeFragment extends BaseFragment implements WaveSwipeRefreshLayout
     }
 
     @Override
-    public void showLoading(int loadingType) {
-
-    }
-
-    @Override
-    public void hideLoading(int loadingType) {
-
-    }
-
-    @Override
-    public void showWarning(String message) {
-
+    public void showHead(String url) {
+        ivNavHeadUrl = url;
+        if(ivNavHead != null){
+            Imageloader.getInstance().displayDraweeView(Common.getCompleteUrl(ivNavHeadUrl), ivNavHead);
+        }
     }
 }

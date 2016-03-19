@@ -8,6 +8,6 @@ import com.bili.diushoujuaner.presenter.base.IBaseView;
  */
 public interface MainActivityView extends IBaseView {
 
-    void getUserInfo(User user);
+    void showUserInfo(User user);
 
 }

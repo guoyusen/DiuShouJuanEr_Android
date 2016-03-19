@@ -2,6 +2,7 @@ package com.bili.diushoujuaner.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.RelativeLayout;
@@ -13,11 +14,13 @@ import com.bili.diushoujuaner.activity.ContactSearchActivity;
 import com.bili.diushoujuaner.activity.PartyActivity;
 import com.bili.diushoujuaner.adapter.ContactAdapter;
 import com.bili.diushoujuaner.base.BaseFragment;
-import com.bili.diushoujuaner.callback.IShowMainMenu;
+import com.bili.diushoujuaner.callback.IMainFragmentOperateListener;
+import com.bili.diushoujuaner.callback.IMainOperateListener;
 import com.bili.diushoujuaner.presenter.presenter.ContactFragmentPresenter;
 import com.bili.diushoujuaner.presenter.viewinterface.ContactFragmentView;
+import com.bili.diushoujuaner.utils.Common;
+import com.bili.diushoujuaner.utils.Imageloader;
 import com.bili.diushoujuaner.utils.entity.FriendVo;
-import com.bili.diushoujuaner.utils.response.ContactDto;
 import com.bili.diushoujuaner.widget.CustomListViewRefresh;
 import com.bili.diushoujuaner.widget.ReboundScrollView;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -30,7 +33,7 @@ import butterknife.Bind;
 /**
  * Created by BiLi on 2016/3/2.
  */
-public class ContactFragment extends BaseFragment implements View.OnClickListener, ContactFragmentView {
+public class ContactFragment extends BaseFragment implements View.OnClickListener, ContactFragmentView, IMainFragmentOperateListener {
 
     @Bind(R.id.customListViewRefresh)
     CustomListViewRefresh customListViewRefresh;
@@ -44,10 +47,13 @@ public class ContactFragment extends BaseFragment implements View.OnClickListene
     TextView txtRight;
     @Bind(R.id.ivNavHead)
     SimpleDraweeView ivNavHead;
+    @Bind(R.id.txtPartyCount)
+    TextView txtPartyCount;
 
     private ContactAdapter contactAdapter;
     private List<FriendVo> friendVoList;
-    private IShowMainMenu showMainMenu;
+    private IMainOperateListener iMainOperateListener;
+    private String ivNavHeadUrl;
 
     public static ContactFragment instantiation(int position) {
         ContactFragment fragment = new ContactFragment();
@@ -84,12 +90,14 @@ public class ContactFragment extends BaseFragment implements View.OnClickListene
         layoutParty.setOnClickListener(this);
         txtRight.setOnClickListener(this);
 
+        Imageloader.getInstance().displayDraweeView(Common.getCompleteUrl(ivNavHeadUrl), ivNavHead);
+
         basePresenter = new ContactFragmentPresenter(this, getContext());
-        getPresenterByClass(ContactFragmentPresenter.class).getContacts();
+        getPresenterByClass(ContactFragmentPresenter.class).getContactList();
     }
 
-    public void setShowMainMenu(IShowMainMenu showMainMenu) {
-        this.showMainMenu = showMainMenu;
+    public void setMainOperateListener(IMainOperateListener iMainOperateListener) {
+        this.iMainOperateListener = iMainOperateListener;
     }
 
     @Override
@@ -102,7 +110,7 @@ public class ContactFragment extends BaseFragment implements View.OnClickListene
                 startActivity(new Intent(getContext(), ContactSearchActivity.class));
                 break;
             case R.id.ivNavHead:
-                showMainMenu.showMainMenu();
+                iMainOperateListener.showMainMenu();
                 break;
         }
     }
@@ -110,21 +118,19 @@ public class ContactFragment extends BaseFragment implements View.OnClickListene
     @Override
     public void showContactList(List<FriendVo> friendVoList) {
         contactAdapter.refresh(friendVoList);
+
+        if(friendVoList.size() <= 0){
+            txtPartyCount.setText("暂无联系人");
+        } else{
+            txtPartyCount.setText(friendVoList.size() + "个联系人");
+        }
     }
 
     @Override
-    public void showLoading(int loadingType) {
-        super.showLoading(loadingType);
+    public void showHead(String url) {
+        ivNavHeadUrl = url;
+        if(ivNavHead != null){
+            Imageloader.getInstance().displayDraweeView(Common.getCompleteUrl(ivNavHeadUrl), ivNavHead);
+        }
     }
-
-    @Override
-    public void hideLoading(int loadingType) {
-        super.hideLoading(loadingType);
-    }
-
-    @Override
-    public void showWarning(String message) {
-        super.showWarning(message);
-    }
-
 }

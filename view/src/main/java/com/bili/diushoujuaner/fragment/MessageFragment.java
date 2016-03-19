@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 
@@ -11,7 +12,10 @@ import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.activity.ChattingActivity;
 import com.bili.diushoujuaner.adapter.MessageAdapter;
 import com.bili.diushoujuaner.base.BaseFragment;
-import com.bili.diushoujuaner.callback.IShowMainMenu;
+import com.bili.diushoujuaner.callback.IMainFragmentOperateListener;
+import com.bili.diushoujuaner.callback.IMainOperateListener;
+import com.bili.diushoujuaner.utils.Common;
+import com.bili.diushoujuaner.utils.Imageloader;
 import com.bili.diushoujuaner.utils.response.MessageDto;
 import com.bili.diushoujuaner.widget.CustomListViewRefresh;
 import com.bili.diushoujuaner.widget.waveswipe.WaveSwipeRefreshLayout;
@@ -25,7 +29,7 @@ import butterknife.Bind;
 /**
  * Created by BiLi on 2016/3/2.
  */
-public class MessageFragment extends BaseFragment implements WaveSwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
+public class MessageFragment extends BaseFragment implements WaveSwipeRefreshLayout.OnRefreshListener, View.OnClickListener, IMainFragmentOperateListener {
 
     @Bind(R.id.customListViewRefresh)
     CustomListViewRefresh customListViewRefresh;
@@ -36,7 +40,8 @@ public class MessageFragment extends BaseFragment implements WaveSwipeRefreshLay
 
     private List<MessageDto> listMessage;
     private MessageAdapter messageAdapter;
-    private IShowMainMenu showMainMenu;
+    private IMainOperateListener iMainOperateListener;
+    private String ivNavHeadUrl;
 
     public static MessageFragment instantiation(int position) {
         MessageFragment fragment = new MessageFragment();
@@ -78,19 +83,21 @@ public class MessageFragment extends BaseFragment implements WaveSwipeRefreshLay
         waveSwipeRefreshLayout.setColorSchemeColors(Color.WHITE, Color.WHITE);
         waveSwipeRefreshLayout.setWaveColor(Color.parseColor("#5C84DC"));
         waveSwipeRefreshLayout.setOnRefreshListener(this);
+
+        Imageloader.getInstance().displayDraweeView(Common.getCompleteUrl(ivNavHeadUrl), ivNavHead);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.ivNavHead:
-                showMainMenu.showMainMenu();
+                iMainOperateListener.showMainMenu();
                 break;
         }
     }
 
-    public void setShowMainMenu(IShowMainMenu showMainMenu) {
-        this.showMainMenu = showMainMenu;
+    public void setMainOperateListener(IMainOperateListener iMainOperateListener) {
+        this.iMainOperateListener = iMainOperateListener;
     }
 
     @Override
@@ -103,4 +110,11 @@ public class MessageFragment extends BaseFragment implements WaveSwipeRefreshLay
         }, 3000);
     }
 
+    @Override
+    public void showHead(String url) {
+        ivNavHeadUrl = url;
+        if(ivNavHead != null){
+            Imageloader.getInstance().displayDraweeView(Common.getCompleteUrl(ivNavHeadUrl), ivNavHead);
+        }
+    }
 }

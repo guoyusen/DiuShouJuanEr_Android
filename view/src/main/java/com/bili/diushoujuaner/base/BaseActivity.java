@@ -182,13 +182,13 @@ public class BaseActivity extends AbstractBaseActivity {
     }
 
     @Override
-    public void showLoading(int loadingType) {
+    public void showLoading(int loadingType, String message) {
         switch (loadingType){
             case Constant.LOADING_CENTER:
-                CustomProgress.getInstance(context).showCenter(getResources().getString(R.string.loging_status), true, null);
+                CustomProgress.getInstance(context).showCenter(message, true, null);
                 break;
             case Constant.LOADING_TOP:
-                CustomProgress.getInstance(context).showTop(getResources().getString(R.string.loging_status), true, null);
+                CustomProgress.getInstance(context).showTop(message, true, null);
                 break;
             case Constant.LOADING_DEFAULT:
                 if(findViewById(R.id.defaultCircle) != null){
