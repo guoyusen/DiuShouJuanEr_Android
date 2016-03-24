@@ -6,9 +6,8 @@ import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.adapter.PartyAdapter;
 import com.bili.diushoujuaner.base.BaseActivity;
 import com.bili.diushoujuaner.presenter.presenter.PartyActivityPresenter;
-import com.bili.diushoujuaner.presenter.viewinterface.PartyActivityView;
+import com.bili.diushoujuaner.presenter.view.IPartyView;
 import com.bili.diushoujuaner.utils.entity.PartyVo;
-import com.bili.diushoujuaner.utils.response.PartyDto;
 import com.bili.diushoujuaner.widget.CustomListViewRefresh;
 
 import java.util.ArrayList;
@@ -19,7 +18,7 @@ import butterknife.Bind;
 /**
  * Created by BiLi on 2016/3/9.
  */
-public class PartyActivity extends BaseActivity implements PartyActivityView {
+public class PartyActivity extends BaseActivity<PartyActivityPresenter> implements IPartyView {
 
 
     @Bind(R.id.customListViewRefresh)
@@ -47,7 +46,7 @@ public class PartyActivity extends BaseActivity implements PartyActivityView {
         partyAdapter = new PartyAdapter(this, partyVoList);
         customListViewRefresh.setAdapter(partyAdapter);
         basePresenter = new PartyActivityPresenter(this, context);
-        getPresenterByClass(PartyActivityPresenter.class).getPartyList();
+        getRelativePresenter().getPartyList();
     }
 
     @Override

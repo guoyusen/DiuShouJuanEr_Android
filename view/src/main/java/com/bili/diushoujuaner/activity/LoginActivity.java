@@ -10,13 +10,11 @@ import android.widget.TextView;
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.base.BaseActivity;
 import com.bili.diushoujuaner.presenter.presenter.LoginActivityPresenter;
-import com.bili.diushoujuaner.presenter.viewinterface.LoginActivityView;
-import com.bili.diushoujuaner.widget.CustomProgress;
-import com.bili.diushoujuaner.widget.CustomToast;
+import com.bili.diushoujuaner.presenter.view.ILoginView;
 
 import butterknife.Bind;
 
-public class LoginActivity extends BaseActivity implements LoginActivityView, View.OnClickListener {
+public class LoginActivity extends BaseActivity<LoginActivityPresenter> implements ILoginView, View.OnClickListener {
 
     @Bind(R.id.txtRight)
     TextView txtRight;
@@ -57,7 +55,7 @@ public class LoginActivity extends BaseActivity implements LoginActivityView, Vi
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnLogin:
-                getPresenterByClass(LoginActivityPresenter.class).getUserLogin(edtMobile.getText().toString().trim(), edtPassword.getText().toString().trim());
+                getRelativePresenter().getUserLogin(edtMobile.getText().toString().trim(), edtPassword.getText().toString().trim());
                 break;
         }
     }

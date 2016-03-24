@@ -2,6 +2,7 @@ package com.bili.diushoujuaner.model.apihelper.api;
 
 import com.bili.diushoujuaner.model.apihelper.callback.ApiCallbackListener;
 import com.bili.diushoujuaner.utils.Constant;
+import com.bili.diushoujuaner.utils.request.RecallListReq;
 import com.bili.diushoujuaner.utils.request.UserAccountReq;
 
 /**
@@ -11,7 +12,10 @@ public interface Api {
 
     String getUserLogin = Constant.HOST_ADDRESS + "1.0/users/login";
     String getUserInfo = Constant.HOST_ADDRESS + "1.0/users/info";
-    String getContacts = Constant.HOST_ADDRESS + "1.0/contacts";
+    String getContactList = Constant.HOST_ADDRESS + "1.0/contacts";
+    String getRecallList = Constant.HOST_ADDRESS + "1.0/recalls?";
+    String getGoodAdd = Constant.HOST_ADDRESS + "1.0/goods/add";
+    String getGoodRemove = Constant.HOST_ADDRESS + "1.0/goods/remove";
 
     /**
      * 用户登录
@@ -31,5 +35,26 @@ public interface Api {
      * @param apiCallbackListener
      */
     void getContactList(ApiCallbackListener apiCallbackListener);
+
+    /**
+     * 获取童趣列表
+     * @param recallListReq
+     * @param apiCallbackListener
+     */
+    void getRecallList(RecallListReq recallListReq, ApiCallbackListener apiCallbackListener);
+
+    /**
+     * 添加赞
+     * @param recallNo
+     * @param apiCallbackListener
+     */
+    void getGoodAdd(long recallNo, ApiCallbackListener apiCallbackListener);
+
+    /**
+     * 取消赞
+     * @param recallNo
+     * @param apiCallbackListener
+     */
+    void getGoodRemove(long recallNo, ApiCallbackListener apiCallbackListener);
 
 }

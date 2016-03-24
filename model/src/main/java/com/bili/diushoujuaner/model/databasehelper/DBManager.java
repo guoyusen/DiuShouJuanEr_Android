@@ -14,6 +14,7 @@ import com.bili.diushoujuaner.model.databasehelper.dao.PartyDao;
 import com.bili.diushoujuaner.model.databasehelper.dao.User;
 import com.bili.diushoujuaner.model.databasehelper.dao.UserDao;
 import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
+import com.bili.diushoujuaner.model.tempHelper.ContactTemper;
 import com.bili.diushoujuaner.utils.Common;
 import com.bili.diushoujuaner.utils.Constant;
 import com.bili.diushoujuaner.utils.GsonParser;
@@ -155,6 +156,7 @@ public class DBManager {
                 friendVo.setUpdateTime(cursor.getString(cursor.getColumnIndex("UPDATE_TIME")));
 
                 friendVoList.add(friendVo);
+                ContactTemper.addFriendVo(friendVo);
             } while (cursor.moveToNext());
         }
 
@@ -222,6 +224,7 @@ public class DBManager {
                 partyVo.setPicPath(cursor.getString(cursor.getColumnIndex("PIC_PATH")));
 
                 partyVoList.add(partyVo);
+                ContactTemper.addPartyVo(partyVo);
             } while (cursor.moveToNext());
         }
 

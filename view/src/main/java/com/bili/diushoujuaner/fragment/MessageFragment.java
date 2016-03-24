@@ -63,7 +63,6 @@ public class MessageFragment extends BaseFragment implements WaveSwipeRefreshLay
 
     @Override
     public void setViewStatus() {
-
         showPageHead("消息", null, null);
         ivNavHead.setOnClickListener(this);
 
@@ -84,7 +83,7 @@ public class MessageFragment extends BaseFragment implements WaveSwipeRefreshLay
         waveSwipeRefreshLayout.setWaveColor(Color.parseColor("#5C84DC"));
         waveSwipeRefreshLayout.setOnRefreshListener(this);
 
-        Imageloader.getInstance().displayDraweeView(Common.getCompleteUrl(ivNavHeadUrl), ivNavHead);
+        Imageloader.getInstance().displayDraweeView(ivNavHeadUrl, ivNavHead);
     }
 
     @Override
@@ -114,7 +113,7 @@ public class MessageFragment extends BaseFragment implements WaveSwipeRefreshLay
     public void showHead(String url) {
         ivNavHeadUrl = url;
         if(ivNavHead != null){
-            Imageloader.getInstance().displayDraweeView(Common.getCompleteUrl(ivNavHeadUrl), ivNavHead);
+            Imageloader.getInstance().displayDraweeView(ivNavHeadUrl, ivNavHead);
         }
     }
 }

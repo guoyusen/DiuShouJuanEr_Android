@@ -7,7 +7,11 @@ import android.view.View;
 /**
  * Created by BiLi on 2016/2/28.
  */
-public class BaseFragmentActivity extends AbstractBaseFragmentActivity {
+public class BaseFragmentActivity<T> extends AbstractBaseFragmentActivity {
+
+    protected T getRelativePresenter(){
+        return (T)basePresenter;
+    }
 
     @Override
     public void initIntentParam(Intent intent) {
@@ -68,7 +72,12 @@ public class BaseFragmentActivity extends AbstractBaseFragmentActivity {
     }
 
     @Override
-    public void showWarning(String message) {
+     public void showWarning(String message) {
+
+    }
+
+    @Override
+    public void showWarning(int warningType) {
 
     }
 }

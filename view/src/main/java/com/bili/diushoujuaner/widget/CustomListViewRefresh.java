@@ -1,6 +1,7 @@
 package com.bili.diushoujuaner.widget;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,12 +19,16 @@ import com.bili.diushoujuaner.R;
  */
 public class CustomListViewRefresh extends ListView implements OnScrollListener {
 
+	/** 刷新中 */
+	private final static int ENDINT_REFRESH = 0;
 	/** 加载中 */
 	private final static int ENDINT_LOADING = 1;
-	/** 手动完成刷新 */
-	private final static int ENDINT_MANUAL_LOAD_DONE = 2;
+	/** 加载数据完成 */
+	private final static int ENDING_FINISHED = 2;
+	/** 数据已经全部加载 */
+	private final static int ENDING_COMPLETE = 3;
 	/** 自动完成刷新 */
-	private final static int ENDINT_AUTO_LOAD_DONE = 3;
+	private final static int ENDINT_AUTO_LOAD_DONE = 4;
 	/**
 	 * 0:完成/等待刷新 ;
 	 * <p>
@@ -32,11 +37,9 @@ public class CustomListViewRefresh extends ListView implements OnScrollListener 
 	private int mEndState;
 
 	/** 可以加载更多？ */
-	private boolean mCanLoadMore = false;
-	/** 可以自动加载更多吗？（注意，先判断是否有加载更多，如果没有，这个flag也没有意义） */
-	private boolean mIsAutoLoadMore = true;
+	private boolean mCanLoadMore = true;
 	/** 下拉刷新后是否显示第一条Item */
-	private boolean mIsMoveToFirstItemAfterRefresh = false;
+	private boolean mIsMoveToFirstItemAfterRefresh = true;
 
 	private LayoutInflater mInflater;
 	private View mEndRootView;
@@ -49,6 +52,23 @@ public class CustomListViewRefresh extends ListView implements OnScrollListener 
 
 	private OnLoadMoreListener mLoadMoreListener;
 
+	/**
+	 * 加载更多监听接口
+	 */
+	public interface OnLoadMoreListener {
+		void onLoadMore();
+	}
+
+	public void setOnLoadMoreListener(OnLoadMoreListener pLoadMoreListener) {
+		if (pLoadMoreListener != null) {
+			mLoadMoreListener = pLoadMoreListener;
+			mCanLoadMore = true;
+			if (getFooterViewsCount() == 0) {
+				addFootView();
+			}
+		}
+	}
+
 	public CustomListViewRefresh(Context pContext, AttributeSet pAttrs) {
 		super(pContext, pAttrs);
 		init(pContext);
@@ -59,21 +79,17 @@ public class CustomListViewRefresh extends ListView implements OnScrollListener 
 		init(pContext);
 	}
 
-	public CustomListViewRefresh(Context pContext, AttributeSet pAttrs,
-								 int pDefStyle) {
+	public CustomListViewRefresh(Context pContext, AttributeSet pAttrs, int pDefStyle) {
 		super(pContext, pAttrs, pDefStyle);
 		init(pContext);
 	}
 
-	/**
-	 * 初始化操作
-	 */
 	private void init(Context pContext) {
 		if (pContext == null) {
 			return;
 		}
 
-		setCacheColorHint(pContext.getResources().getColor(R.color.TRANSPARENT));
+		setCacheColorHint(ContextCompat.getColor(pContext, R.color.TRANSPARENT));
 		mInflater = LayoutInflater.from(pContext);
 		setOnScrollListener(this);
 	}
@@ -89,20 +105,11 @@ public class CustomListViewRefresh extends ListView implements OnScrollListener 
 		}
 	}
 
-	public boolean isAutoLoadMore() {
-		return mIsAutoLoadMore;
-	}
-
-	public void setAutoLoadMore(boolean pIsAutoLoadMore) {
-		mIsAutoLoadMore = pIsAutoLoadMore;
-	}
-
 	public boolean isMoveToFirstItemAfterRefresh() {
 		return mIsMoveToFirstItemAfterRefresh;
 	}
 
-	public void setMoveToFirstItemAfterRefresh(
-			boolean pIsMoveToFirstItemAfterRefresh) {
+	public void setMoveToFirstItemAfterRefresh(boolean pIsMoveToFirstItemAfterRefresh) {
 		mIsMoveToFirstItemAfterRefresh = pIsMoveToFirstItemAfterRefresh;
 	}
 
@@ -113,59 +120,12 @@ public class CustomListViewRefresh extends ListView implements OnScrollListener 
 	private void addFootView() {
 		mEndRootView = mInflater.inflate(R.layout.footer_load_more,
 				null);
-		mEndRootView.setVisibility(View.VISIBLE);
+		mEndRootView.setVisibility(View.GONE);
 		customRefreshCircle = (MaterialCircleView) mEndRootView.findViewById(R.id.customRefreshCircle);
-		mEndLoadTipsTextView = (TextView) mEndRootView
-				.findViewById(R.id.textLoadMore);
-		mEndRootView.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				if (mCanLoadMore && mEndState != ENDINT_LOADING) {
-					// 当不能下拉刷新时，FootView不正在加载时，才可以点击加载更多。
-					mEndState = ENDINT_LOADING;
-					onLoadMore();
-				}
-			}
-		});
+		mEndLoadTipsTextView = (TextView) mEndRootView.findViewById(R.id.textLoadMore);
 
 		addFooterView(mEndRootView);
-
-		if (mIsAutoLoadMore) {
-			mEndState = ENDINT_AUTO_LOAD_DONE;
-		} else {
-			mEndState = ENDINT_MANUAL_LOAD_DONE;
-		}
-	}
-
-	/**
-	 * 测量HeadView宽高(注意：此方法仅适用于LinearLayout，请读者自己测试验证。)
-	 */
-	private void measureView(View pChild) {
-		ViewGroup.LayoutParams p = pChild.getLayoutParams();
-		if (p == null) {
-			p = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-					ViewGroup.LayoutParams.WRAP_CONTENT);
-		}
-		int childWidthSpec = ViewGroup.getChildMeasureSpec(0, 0 + 0, p.width);
-		int lpHeight = p.height;
-
-		int childHeightSpec;
-		if (lpHeight > 0) {
-			childHeightSpec = MeasureSpec.makeMeasureSpec(lpHeight,
-					MeasureSpec.EXACTLY);
-		} else {
-			childHeightSpec = MeasureSpec.makeMeasureSpec(0,
-					MeasureSpec.UNSPECIFIED);
-		}
-		pChild.measure(childWidthSpec, childHeightSpec);
-	}
-
-	@Override
-	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-		int expandSpec = MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE >> 2,
-				MeasureSpec.AT_MOST);
-		super.onMeasure(widthMeasureSpec, expandSpec);
+		mEndState = ENDINT_AUTO_LOAD_DONE;
 	}
 
 	/**
@@ -186,31 +146,33 @@ public class CustomListViewRefresh extends ListView implements OnScrollListener 
 	@Override
 	public void onScrollStateChanged(AbsListView pView, int pScrollState) {
 		if (mCanLoadMore) {
-			// 存在加载更多功能
 			if (mLastItemIndex == mCount && pScrollState == SCROLL_STATE_IDLE) {
 				// SCROLL_STATE_IDLE=0，滑动停止
-				if (mEndState != ENDINT_LOADING) {
-					if (mIsAutoLoadMore) {
-							// 没有下拉刷新，我们直接进行加载更多。
-							// FootView显示 : 更 多 ---> 加载中...
-							mEndState = ENDINT_LOADING;
-							onLoadMore();
-							changeEndViewByState();
-					} else {
-						// 不是自动加载更多，我们让FootView显示 “点击加载”
-						// FootView显示 : 点击加载 ---> 加载中...
-						mEndState = ENDINT_MANUAL_LOAD_DONE;
-						changeEndViewByState();
-					}
+				if (mEndState != ENDINT_LOADING && mEndState != ENDINT_REFRESH && mEndState != ENDING_COMPLETE) {
+					mEndState = ENDINT_LOADING;
+					onLoadMore();
+					changeEndViewByState();
 				}
 			}
-		} else if (mEndRootView != null
-				&& mEndRootView.getVisibility() == VISIBLE) {
+		} else if (mEndRootView != null && mEndRootView.getVisibility() == VISIBLE) {
 			// 突然关闭加载更多功能之后，我们要移除FootView。
-			System.out.println("this.removeFooterView(endRootView);...");
 			mEndRootView.setVisibility(View.GONE);
 			this.removeFooterView(mEndRootView);
 		}
+	}
+
+	public void setListViewStateRefresh(){
+		mEndState = ENDINT_REFRESH;
+	}
+
+	public void setListViewStateFinished(){
+		mEndState = ENDING_FINISHED;
+		changeEndViewByState();
+	}
+
+	public void setListViewStateComplete(){
+		mEndState = ENDING_COMPLETE;
+		changeEndViewByState();
 	}
 
 	/**
@@ -220,52 +182,24 @@ public class CustomListViewRefresh extends ListView implements OnScrollListener 
 		if (mCanLoadMore) {
 			// 允许加载更多
 			switch (mEndState) {
-			case 0:// 刷新中
-
-				// 加载中...
-				if (mEndLoadTipsTextView.getText().equals(
-						R.string.p2refresh_doing_end)) {
-					break;
+			case ENDINT_LOADING:// 刷新中
+				mEndLoadTipsTextView.setVisibility(View.INVISIBLE);
+				customRefreshCircle.setVisibility(View.VISIBLE);
+				mEndRootView.setVisibility(View.VISIBLE);
+				break;
+			case ENDING_FINISHED:
+				if(mIsMoveToFirstItemAfterRefresh){
+					setSelection(0);
 				}
+				mEndRootView.setVisibility(View.GONE);
+				break;
+			case ENDING_COMPLETE:
 				mEndLoadTipsTextView.setText(R.string.p2refresh_doing_end);
 				mEndLoadTipsTextView.setVisibility(View.VISIBLE);
 				customRefreshCircle.setVisibility(View.GONE);
-				break;
-			case ENDINT_LOADING:// 刷新中
-
-				// 加载中...
-				if (mEndLoadTipsTextView.getText().equals(
-						R.string.p2refresh_doing_end_refresh)) {
-					break;
-				}
-				mEndLoadTipsTextView
-						.setText(R.string.p2refresh_doing_end_refresh);
-				mEndLoadTipsTextView.setVisibility(View.VISIBLE);
-				customRefreshCircle.setVisibility(View.VISIBLE);
-				break;
-			case ENDINT_MANUAL_LOAD_DONE:// 手动刷新完成
-
-				// 点击加载
-				mEndLoadTipsTextView
-						.setText(R.string.p2refresh_end_click_load_more);
-				mEndLoadTipsTextView.setVisibility(View.VISIBLE);
-				customRefreshCircle.setVisibility(View.GONE);
-
-				mEndRootView.setVisibility(View.VISIBLE);
-				break;
-			case ENDINT_AUTO_LOAD_DONE:// 自动刷新完成
-
-				// 更 多
-				mEndLoadTipsTextView.setText(R.string.p2refresh_end_load_more);
-				mEndLoadTipsTextView.setVisibility(View.VISIBLE);
-				customRefreshCircle.setVisibility(View.GONE);
-
 				mEndRootView.setVisibility(View.VISIBLE);
 				break;
 			default:
-				// 原来的代码是为了： 当所有item的高度小于ListView本身的高度时，
-				// 要隐藏掉FootView，
-
 				if (mEnoughCount) {
 					mEndRootView.setVisibility(View.VISIBLE);
 				} else {
@@ -277,59 +211,15 @@ public class CustomListViewRefresh extends ListView implements OnScrollListener 
 	}
 
 	/**
-	 * 下拉刷新监听接口
-	 */
-	public interface OnRefreshListener {
-		public void onRefresh();
-	}
-
-	/**
-	 * 加载更多监听接口
-	 */
-	public interface OnLoadMoreListener {
-		void onLoadMore();
-	}
-
-	public void setOnLoadListener(OnLoadMoreListener pLoadMoreListener) {
-		if (pLoadMoreListener != null) {
-			mLoadMoreListener = pLoadMoreListener;
-			mCanLoadMore = true;
-			if (mCanLoadMore && getFooterViewsCount() == 0) {
-				addFootView();
-			}
-		}
-	}
-
-	/**
-	 * 正在加载更多，FootView显示 ： 加载中...
+	 * 正在加载，显示加载旋转动画
 	 */
 	private void onLoadMore() {
 		if (mLoadMoreListener != null) {
-			// 加载中...
-			mEndLoadTipsTextView.setText(R.string.p2refresh_doing_end_refresh);
-			mEndLoadTipsTextView.setVisibility(View.VISIBLE);
+			mEndLoadTipsTextView.setVisibility(View.INVISIBLE);
 			customRefreshCircle.setVisibility(View.VISIBLE);
-
+			mEndRootView.setVisibility(View.VISIBLE);
 			mLoadMoreListener.onLoadMore();
 		}
-	}
-	/**
-	 * 加载更多完成
-	 */
-	public void onLoadMoreComplete() {
-		if (mIsAutoLoadMore) {
-			mEndState = ENDINT_AUTO_LOAD_DONE;
-		} else {
-			mEndState = ENDINT_MANUAL_LOAD_DONE;
-		}
-		changeEndViewByState();
-	}
-
-	public void onLoadComplete() {
-
-		mEndState = 0;
-
-		changeEndViewByState();
 	}
 
 }

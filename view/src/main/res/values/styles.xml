@@ -37,15 +37,15 @@
     </style>
 
     <style name="TextMiddle">
-        <item name="android:textSize">@dimen/x32</item>
+        <item name="android:textSize">@dimen/x30</item>
     </style>
 
     <style name="TextLarge">
-        <item name="android:textSize">@dimen/x36</item>
+        <item name="android:textSize">@dimen/x34</item>
     </style>
 
     <style name="TextXLarge">
-        <item name="android:textSize">@dimen/x42</item>
+        <item name="android:textSize">@dimen/x38</item>
     </style>
 
     <style name="Btn" parent="TextLarge">
@@ -83,10 +83,9 @@
         <item name="android:gravity">center</item>
     </style>
 
-    <style name="TextNavTitle" parent="TextXLarge">
+    <style name="TextNavTitle" parent="TextLarge">
         <item name="android:textColor">@color/COLOR_WHITE</item>
         <item name="android:layout_centerInParent">true</item>
-        <item name="android:textStyle">bold</item>
         <item name="android:paddingLeft">@dimen/x30</item>
         <item name="android:paddingRight">@dimen/x30</item>
         <item name="android:layout_width">wrap_content</item>

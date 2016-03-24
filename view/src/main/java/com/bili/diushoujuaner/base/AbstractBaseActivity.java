@@ -81,9 +81,12 @@ public abstract class AbstractBaseActivity extends Activity {
      */
     public abstract void showWarning(String message);
 
-    public abstract void showPageHead(String titleText, Integer iconId, String rightText);
+    /**
+     * == 显示警告信息
+     */
+    public abstract void showWarning(int warningType);
 
-    public abstract void showPageHeadSpecial(String titleText, Integer iconId, Date rightText);
+    public abstract void showPageHead(String titleText, Integer iconId, String rightText);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,7 +158,4 @@ public abstract class AbstractBaseActivity extends Activity {
         super.finish();
     }
 
-    protected <T> T getPresenterByClass(Class<T> t){
-        return (T)basePresenter;
-    }
 }

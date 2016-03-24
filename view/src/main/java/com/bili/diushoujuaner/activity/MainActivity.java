@@ -10,6 +10,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,7 +23,7 @@ import com.bili.diushoujuaner.fragment.HomeFragment;
 import com.bili.diushoujuaner.fragment.MessageFragment;
 import com.bili.diushoujuaner.model.databasehelper.dao.User;
 import com.bili.diushoujuaner.presenter.presenter.MainActivityPresenter;
-import com.bili.diushoujuaner.presenter.viewinterface.MainActivityView;
+import com.bili.diushoujuaner.presenter.view.IMainView;
 import com.bili.diushoujuaner.utils.Common;
 import com.bili.diushoujuaner.utils.Imageloader;
 import com.bili.diushoujuaner.utils.manager.ActivityManager;
@@ -40,7 +41,7 @@ import java.util.TimerTask;
 
 import butterknife.Bind;
 
-public class MainActivity extends BaseFragmentActivity implements View.OnClickListener, IMainOperateListener, MainActivityView, BGABottomNavigation.IViewInitFinishListener {
+public class MainActivity extends BaseFragmentActivity<MainActivityPresenter> implements View.OnClickListener, IMainOperateListener, IMainView, BGABottomNavigation.IViewInitFinishListener {
 
     @Bind(R.id.customViewPager)
     CustomViewPager customViewPager;
@@ -58,6 +59,8 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
     TextView txtUserName;
     @Bind(R.id.bottomNavigation)
     BGABottomNavigation bottomNavigation;
+    @Bind(R.id.layoutAutograph)
+    LinearLayout layoutAutograph;
 
     private boolean isWaitingExit = false;
 
@@ -102,7 +105,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
         txtSystemNotice.showTextBadge("2");
 
         basePresenter = new MainActivityPresenter(this, getApplicationContext());
-        getPresenterByClass(MainActivityPresenter.class).getUserInfo();
+        getRelativePresenter().getUserInfo();
     }
 
     @Override
@@ -147,7 +150,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
     private void initOnClickListner(){
         menuHead.setOnClickListener(this);
         btnMenuExit.setOnClickListener(this);
-        txtAutograph.setOnClickListener(this);
+        layoutAutograph.setOnClickListener(this);
     }
 
     private void initBottomButton(){
@@ -182,7 +185,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
                 startActivity(new Intent(MainActivity.this, LoginActivity.class));
                 finish();
                 break;
-            case R.id.textAutograph:
+            case R.id.layoutAutograph:
                 startActivity(new Intent(MainActivity.this, ContentEditActivity.class));
                 break;
             case R.id.textFeedBack:
@@ -222,7 +225,7 @@ public class MainActivity extends BaseFragmentActivity implements View.OnClickLi
 
     @Override
     public void showUserInfo(User user) {
-        Imageloader.getInstance().displayDraweeView(Common.getCompleteUrl(user.getPicPath()), menuHead);
+        Imageloader.getInstance().displayDraweeView(user.getPicPath(), menuHead);
         txtAutograph.setText(user.getAutograph());
         txtUserName.setText(user.getNickName());
 

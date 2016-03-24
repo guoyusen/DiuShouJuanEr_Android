@@ -6,6 +6,7 @@ package com.bili.diushoujuaner.widget;
 import android.content.Context;
 import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.TranslateAnimation;
@@ -23,7 +24,7 @@ public class ReboundScrollView extends ScrollView {
 
     //移动因子, 是一个百分比, 比如手指移动了100px, 那么View就只移动50px
     //目的是达到一个延迟的效果
-    private static final float MOVE_FACTOR = 0.5f;
+    private static final float MOVE_FACTOR = 0.2f;
 
     //松开手指后, 界面回到正常位置需要的动画时间
     private static final int ANIM_TIME = 300;
@@ -101,7 +102,7 @@ public class ReboundScrollView extends ScrollView {
 
                 if(!isMoved) break;  //如果没有移动布局， 则跳过执行
 
-                // 开启动画
+//                 开启动画
                 TranslateAnimation anim = new TranslateAnimation(0, 0, contentView.getTop(),
                         originalRect.top);
                 anim.setDuration(ANIM_TIME);

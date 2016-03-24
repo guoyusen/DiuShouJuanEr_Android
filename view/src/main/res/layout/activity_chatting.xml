@@ -33,7 +33,7 @@
             android:maxLines="6"
             android:paddingLeft="@dimen/x5"
             android:paddingRight="@dimen/x5"
-            android:textColor="@color/TC_BLACK"
+            android:textColor="@color/TC_040404"
             android:textColorHint="@color/TC_ADADBB" />
 
         <Button

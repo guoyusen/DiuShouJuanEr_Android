@@ -4,8 +4,7 @@ import android.content.Context;
 
 import com.bili.diushoujuaner.model.databasehelper.DBManager;
 import com.bili.diushoujuaner.presenter.base.BasePresenter;
-import com.bili.diushoujuaner.presenter.base.IBaseView;
-import com.bili.diushoujuaner.presenter.viewinterface.PartyActivityView;
+import com.bili.diushoujuaner.presenter.view.IPartyView;
 import com.bili.diushoujuaner.utils.Constant;
 import com.bili.diushoujuaner.utils.entity.PartyVo;
 import com.bili.diushoujuaner.utils.pinyin.PinyinComparator;
@@ -17,9 +16,9 @@ import java.util.List;
 /**
  * Created by BiLi on 2016/3/19.
  */
-public class PartyActivityPresenter extends BasePresenter {
+public class PartyActivityPresenter extends BasePresenter<IPartyView> {
 
-    public PartyActivityPresenter(IBaseView baseView, Context context) {
+    public PartyActivityPresenter(IPartyView baseView, Context context) {
         super(baseView, context);
     }
 
@@ -33,7 +32,7 @@ public class PartyActivityPresenter extends BasePresenter {
             partyVoList.get(0).setSortLetter((capital >= 'A' && capital <= 'Z') ? (capital + "") : "#");
         }
 
-        getViewByClass(PartyActivityView.class).showPartyList(partyVoList);
+        getRelativeView().showPartyList(partyVoList);
         hideLoading(Constant.LOADING_DEFAULT);
     }
 }

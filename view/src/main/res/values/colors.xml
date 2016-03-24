@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="TRANSPARENT">#00FFFFFF</color>
+    <color name="TRANSPARENT_HALF">#55000000</color>
 
     <!-- 常用颜色 -->
     <color name="COLOR_WHITE">#FFFFFF</color>
@@ -16,18 +17,21 @@
 
     <!-- 线条常用颜色 -->
     <color name="LC_F6F6F6">#F6F6F6</color>
+    <color name="LC_BFBFBF">#BFBFBF</color>
+    <color name="LC_5C84DC">#5C84DC</color>
 
     <!-- 字体常用颜色 -->
     <color name="TC_WHITE_HINT">#AAFFFFFF</color>
     <color name="TC_WHITE">#FFFFFF</color>
-    <color name="TC_BLACK">#000000</color>
+    <color name="TC_040404">#040404</color>
     <color name="TC_ADADBB">#ADADBB</color><!-- nav按钮normal使用 -->
     <color name="TC_5C84DC">#5C84DC</color><!-- nav按钮press使用 -->
     <color name="TC_FF4081">#ff4081</color>
+    <color name="TC_2D2D2D">#2d2d2d</color>
     <color name="TC_F55555">#F55555</color>
     <color name="TC_BFBFBF">#BFBFBF</color>
     <color name="TC_333333">#333333</color>
-    <color name="TC_808080">#808080</color><!-- 聊天信息列表使用 -->
+    <color name="TC_8A8A8A">#8A8A8A</color><!-- 聊天信息列表使用 -->
 
     <!-- 按钮常用颜色 -->
     <color name="BTN_GREEN1">#9DEC5B</color>

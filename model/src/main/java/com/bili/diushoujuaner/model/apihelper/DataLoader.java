@@ -47,8 +47,10 @@ public class DataLoader {
                     case 100:
                         apiCallbackListener.onFailure(100);
                         break;
+                    case 503:
+                        apiCallbackListener.onFailure(503);
+                        break;
                 }
-                HttpEngine.getInstance().cancleAllTask(TAG);
             }
         }) {
             @Override

@@ -2,7 +2,7 @@ package com.bili.diushoujuaner.presenter.presenter;
 
 import android.content.Context;
 
-import com.bili.diushoujuaner.model.action.ContactsAction;
+import com.bili.diushoujuaner.model.action.ContactAction;
 import com.bili.diushoujuaner.model.apihelper.ApiRespon;
 import com.bili.diushoujuaner.model.callback.ActionCallbackListener;
 import com.bili.diushoujuaner.model.databasehelper.DBManager;
@@ -12,8 +12,7 @@ import com.bili.diushoujuaner.model.databasehelper.dao.Party;
 import com.bili.diushoujuaner.model.databasehelper.dao.User;
 import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
 import com.bili.diushoujuaner.presenter.base.BasePresenter;
-import com.bili.diushoujuaner.presenter.base.IBaseView;
-import com.bili.diushoujuaner.presenter.viewinterface.ContactFragmentView;
+import com.bili.diushoujuaner.presenter.view.IContactView;
 import com.bili.diushoujuaner.utils.Common;
 import com.bili.diushoujuaner.utils.Constant;
 import com.bili.diushoujuaner.utils.entity.FriendVo;
@@ -29,9 +28,9 @@ import java.util.List;
 /**
  * Created by BiLi on 2016/3/15.
  */
-public class ContactFragmentPresenter extends BasePresenter {
+public class ContactFragmentPresenter extends BasePresenter<IContactView> {
 
-    public ContactFragmentPresenter(IBaseView baseView, Context context) {
+    public ContactFragmentPresenter(IContactView baseView, Context context) {
         super(baseView, context);
     }
 
@@ -39,13 +38,13 @@ public class ContactFragmentPresenter extends BasePresenter {
         showContactList();
         if(Common.checkNetworkStatus(context)){
             showLoading(Constant.LOADING_DEFAULT, "");
-            ContactsAction.getInstance(context).getContactList(new ActionCallbackListener<ApiRespon<List<ContactDto>>>() {
+            ContactAction.getInstance().getContactList(new ActionCallbackListener<ApiRespon<List<ContactDto>>>() {
                 @Override
                 public void onSuccess(ApiRespon<List<ContactDto>> result) {
                     if (showMessage(result.getRetCode(), result.getMessage())) {
                         saveContactFromList(result.getData());
+                        showContactList();
                     }
-                    showContactList();
                     hideLoading(Constant.LOADING_DEFAULT);
                 }
 
@@ -67,7 +66,7 @@ public class ContactFragmentPresenter extends BasePresenter {
             friendVoList.get(0).setSortLetter((capital >= 'A' && capital <= 'Z') ? (capital + "") : "#");
         }
 
-        getViewByClass(ContactFragmentView.class).showContactList(friendVoList);
+        getRelativeView().showContactList(friendVoList);
     }
 
     private List<FriendVo> getFriendFromDb(){

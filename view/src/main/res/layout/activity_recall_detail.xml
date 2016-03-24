@@ -9,7 +9,7 @@
         android:id="@+id/layoutHead"
         layout="@layout/include_head_recall_detail" />
 
-    <ScrollView
+    <com.bili.diushoujuaner.widget.ReboundScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -19,74 +19,158 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:paddingBottom="@dimen/y200">
+            android:orientation="vertical">
 
             <com.bili.diushoujuaner.widget.aligntextview.CBAlignTextView
-                android:id="@+id/textRecallDetail"
+                android:id="@+id/txtRecallDetail"
                 style="@style/TextMiddle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/x16"
-                cb:punctuationConvert="true"
+                android:layout_margin="@dimen/x24"
+                android:textColor="@color/TC_333333"
                 android:textColorHighlight="@color/SELECT_HLIGHT"
                 android:textIsSelectable="true"
-                android:textColor="@color/TC_333333" />
+                cb:punctuationConvert="true" />
 
             <com.bili.diushoujuaner.widget.CustomGridView
                 android:id="@+id/customGridView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/x24"
+                android:layout_marginRight="@dimen/x24"
                 android:numColumns="3"
-                android:scrollbars="none"
-                android:layout_marginLeft="@dimen/x8"
-                android:layout_marginRight="@dimen/x8"/>
+                android:scrollbars="none" />
+
+            <View
+                style="@style/line"
+                android:layout_marginLeft="@dimen/x16"
+                android:layout_marginRight="@dimen/x16" />
+
+            <RelativeLayout
+                style="@style/MarginHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y100">
+
+                <LinearLayout
+                    android:id="@+id/layoutComment"
+                    android:layout_width="@dimen/x142"
+                    android:layout_height="@dimen/y54"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/x20"
+                    android:layout_toLeftOf="@+id/layoutGood"
+                    android:background="@drawable/common_rectangle_bfbfbf"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="@dimen/x32"
+                        android:layout_height="@dimen/y32"
+                        android:src="@mipmap/icon_comment_normal" />
+
+                    <TextView
+                        style="@style/TextSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/x10"
+                        android:text="评论"
+                        android:textColor="@color/TC_BFBFBF" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layoutGood"
+                    android:layout_width="@dimen/x142"
+                    android:layout_height="@dimen/y54"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/common_rectangle_bfbfbf"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/ivGood"
+                        android:layout_width="@dimen/x32"
+                        android:layout_height="@dimen/y32"
+                        android:src="@mipmap/icon_good_normal" />
+
+                    <TextView
+                        android:id="@+id/txtGood"
+                        style="@style/TextSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/x10"
+                        android:text="赞"
+                        android:textColor="@color/TC_BFBFBF" />
+                </LinearLayout>
+            </RelativeLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutGoodContent"
+                style="@style/MarginHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/x32"
+                    android:layout_height="@dimen/y32"
+                    android:src="@mipmap/icon_good_normal" />
 
                 <TextView
+                    android:id="@+id/txtGoodDetail"
+                    style="@style/TextSmall"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/y200"
-                    style="@style/TextXLarge"
-                    android:textColor="@color/TC_808080"
-                    android:gravity="center"
-                    android:text="评论展示区"/>
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/x15"
+                    android:minHeight="@dimen/y32"
+                    android:textColor="@color/TC_5C84DC" />
+
+            </LinearLayout>
+
+            <ListView
+                android:id="@+id/listViewComment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="none"
+                android:divider="@null" />
 
         </LinearLayout>
 
-    </ScrollView>
+    </com.bili.diushoujuaner.widget.ReboundScrollView>
 
     <RelativeLayout
         android:id="@+id/layoutBottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:padding="@dimen/x16"
-        android:background="@color/BG_ECECEC">
+        android:background="@color/BG_ECECEC"
+        android:padding="@dimen/x16">
 
         <EditText
             android:id="@+id/textComment"
             style="@style/TextMiddle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="@dimen/y80"
             android:layout_marginRight="@dimen/x124"
             android:background="@drawable/common_rectangle_solid_white"
             android:hint="说点什么呗..."
             android:maxLines="6"
+            android:minHeight="@dimen/y80"
             android:paddingLeft="@dimen/x5"
             android:paddingRight="@dimen/x5"
-            android:textColor="@color/TC_BLACK"
+            android:textColor="@color/TC_040404"
             android:textColorHint="@color/TC_ADADBB" />
 
         <Button
             android:id="@+id/btnSend"
+            style="@style/TextMiddle"
             android:layout_width="@dimen/y100"
             android:layout_height="@dimen/y80"
-            android:layout_alignParentRight="true"
             android:layout_alignBottom="@+id/textComment"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/common_rectangle_solid_blue_normal"
             android:text="发送"
-            android:textColor="@color/TC_WHITE"
-            style="@style/TextMiddle"
-            android:background="@drawable/common_rectangle_solid_blue_normal"/>
+            android:textColor="@color/TC_WHITE" />
 
     </RelativeLayout>
 

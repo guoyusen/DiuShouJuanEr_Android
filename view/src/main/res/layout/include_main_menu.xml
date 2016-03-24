@@ -1,21 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.bili.diushoujuaner.widget.CustomRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/tools"
     style="@style/MatchMatch.FitWindow"
-    android:clickable="true"
-    android:background="@mipmap/bg_menu_head">
+    android:clickable="true">
 
     <RelativeLayout
         android:id="@+id/menuLayoutHeader"
         android:layout_width="match_parent"
         android:layout_height="@dimen/y400"
         android:background="@color/TRANSPARENT">
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:src="@mipmap/bg_menu_head" />
 
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/menuHead"
@@ -24,6 +18,9 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/y70"
             app:placeholderImage="@mipmap/shin"
+            app:actualImageScaleType="focusCrop"
+            app:roundingBorderWidth="@dimen/x2"
+            fresco:roundingBorderColor="@color/BG_F6F6F6"
             app:roundAsCircle="true" />
 
         <TextView
@@ -39,16 +36,18 @@
             android:textStyle="bold" />
 
         <LinearLayout
+            android:id="@+id/layoutAutograph"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/y70"
+            android:layout_height="@dimen/y100"
             android:layout_alignParentBottom="true"
+            android:gravity="center_vertical"
+            android:background="@drawable/transparent_up_bg"
             android:orientation="horizontal">
 
             <ImageView
                 android:layout_width="@dimen/x40"
                 android:layout_height="@dimen/y40"
                 android:layout_marginLeft="@dimen/x24"
-                android:layout_marginTop="@dimen/y15"
                 android:src="@mipmap/icon_menu_autograph_quote" />
 
             <TextView
@@ -57,11 +56,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="@dimen/x24"
-                android:layout_marginTop="@dimen/x20"
                 android:ellipsize="marquee"
                 android:singleLine="true"
                 android:text="就让大雨冲刷记忆中的沙,让我了无牵挂浪迹在天涯"
-                android:textColor="@color/TC_ADADBB" />
+                android:textColor="@color/TC_WHITE" />
 
         </LinearLayout>
 
@@ -89,18 +87,6 @@
                 <TextView
                     style="@style/menu_item_text"
                     android:text="个人空间" />
-
-            </LinearLayout>
-
-            <LinearLayout style="@style/menu_item_layout">
-
-                <ImageView
-                    style="@style/menu_item_icon"
-                    android:src="@mipmap/icon_menu_favorite" />
-
-                <TextView
-                    style="@style/menu_item_text"
-                    android:text="我的收藏" />
 
             </LinearLayout>
 
@@ -203,4 +189,4 @@
     </LinearLayout>
 
 
-</RelativeLayout>
+</com.bili.diushoujuaner.widget.CustomRelativeLayout>

@@ -2,7 +2,6 @@ package com.bili.diushoujuaner.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.RelativeLayout;
@@ -17,9 +16,11 @@ import com.bili.diushoujuaner.base.BaseFragment;
 import com.bili.diushoujuaner.callback.IMainFragmentOperateListener;
 import com.bili.diushoujuaner.callback.IMainOperateListener;
 import com.bili.diushoujuaner.presenter.presenter.ContactFragmentPresenter;
-import com.bili.diushoujuaner.presenter.viewinterface.ContactFragmentView;
+import com.bili.diushoujuaner.presenter.view.IContactView;
 import com.bili.diushoujuaner.utils.Common;
+import com.bili.diushoujuaner.utils.Constant;
 import com.bili.diushoujuaner.utils.Imageloader;
+import com.bili.diushoujuaner.utils.ListViewHighter;
 import com.bili.diushoujuaner.utils.entity.FriendVo;
 import com.bili.diushoujuaner.widget.CustomListViewRefresh;
 import com.bili.diushoujuaner.widget.ReboundScrollView;
@@ -33,7 +34,7 @@ import butterknife.Bind;
 /**
  * Created by BiLi on 2016/3/2.
  */
-public class ContactFragment extends BaseFragment implements View.OnClickListener, ContactFragmentView, IMainFragmentOperateListener {
+public class ContactFragment extends BaseFragment<ContactFragmentPresenter> implements View.OnClickListener, IContactView, IMainFragmentOperateListener {
 
     @Bind(R.id.customListViewRefresh)
     CustomListViewRefresh customListViewRefresh;
@@ -83,17 +84,21 @@ public class ContactFragment extends BaseFragment implements View.OnClickListene
         customListViewRefresh.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                startActivity(new Intent(getContext(), ContactDetailActivity.class));
+                Intent intent = new Intent(getContext(), ContactDetailActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putParcelable(Constant.INTENT_CONTACT_DETAIL,contactAdapter.getItem(position));
+                intent.putExtras(bundle);
+                startActivity(intent);
             }
         });
 
         layoutParty.setOnClickListener(this);
         txtRight.setOnClickListener(this);
 
-        Imageloader.getInstance().displayDraweeView(Common.getCompleteUrl(ivNavHeadUrl), ivNavHead);
+        Imageloader.getInstance().displayDraweeView(ivNavHeadUrl, ivNavHead);
 
         basePresenter = new ContactFragmentPresenter(this, getContext());
-        getPresenterByClass(ContactFragmentPresenter.class).getContactList();
+        getRelativePresenter().getContactList();
     }
 
     public void setMainOperateListener(IMainOperateListener iMainOperateListener) {
@@ -118,6 +123,7 @@ public class ContactFragment extends BaseFragment implements View.OnClickListene
     @Override
     public void showContactList(List<FriendVo> friendVoList) {
         contactAdapter.refresh(friendVoList);
+        ListViewHighter.setListViewHeightBasedOnChildren(customListViewRefresh);
 
         if(friendVoList.size() <= 0){
             txtPartyCount.setText("暂无联系人");
@@ -130,7 +136,7 @@ public class ContactFragment extends BaseFragment implements View.OnClickListene
     public void showHead(String url) {
         ivNavHeadUrl = url;
         if(ivNavHead != null){
-            Imageloader.getInstance().displayDraweeView(Common.getCompleteUrl(ivNavHeadUrl), ivNavHead);
+            Imageloader.getInstance().displayDraweeView(ivNavHeadUrl, ivNavHead);
         }
     }
 }

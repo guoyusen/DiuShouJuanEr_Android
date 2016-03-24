@@ -21,7 +21,8 @@ public class Imageloader {
         if(url.length() <= 0){
             return;
         }
-        Uri uri = Uri.parse(url);
+        Uri uri = Uri.parse(Common.getCompleteUrl(url));
         draweeView.setImageURI(uri);
     }
+
 }

@@ -29,7 +29,6 @@ public class ViewHolder {
         convertView = LayoutInflater.from(context).inflate(layoutId, parent,
                 false);
         convertView.setTag(this);
-
     }
 
     public static ViewHolder get(Context context, View convertView,
@@ -54,23 +53,4 @@ public class ViewHolder {
         }
         return (T) view;
     }
-
-    public void setText(int viewId, String text) {
-        TextView tv = (TextView) views.get(viewId);
-        tv.setText(text);
-    }
-
-
-    public ViewHolder setImageResource(int viewId, int resId) {
-        ImageView view = (ImageView) views.get(viewId);
-        view.setImageResource(resId);
-        return this;
-    }
-
-    public ViewHolder setImageBitmap(int viewId, Bitmap bitmap) {
-        ImageView view = getView(viewId);
-        view.setImageBitmap(bitmap);
-        return this;
-    }
-
 }

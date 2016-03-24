@@ -83,6 +83,11 @@ public abstract class AbstractBaseFragmentActivity extends FragmentActivity {
      */
     public abstract void showWarning(String message);
 
+    /**
+     * == 显示警告信息
+     */
+    public abstract void showWarning(int warningType);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(R.style.AppTheme);

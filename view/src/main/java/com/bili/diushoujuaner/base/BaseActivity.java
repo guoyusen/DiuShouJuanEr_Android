@@ -15,18 +15,16 @@ import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.utils.Constant;
 import com.bili.diushoujuaner.widget.CustomProgress;
 import com.bili.diushoujuaner.widget.CustomToast;
-import com.bili.diushoujuaner.widget.TimeSinceTextView;
 import com.nanotasks.BackgroundWork;
 import com.nanotasks.Completion;
 import com.nanotasks.Tasks;
 
-import java.util.Date;
 import java.util.List;
 
 /**
  * Created by BiLi on 2016/2/27.
  */
-public class BaseActivity extends AbstractBaseActivity {
+public class BaseActivity<T> extends AbstractBaseActivity {
 
     @Override
     protected void onRestart() {
@@ -41,6 +39,10 @@ public class BaseActivity extends AbstractBaseActivity {
 //                startActivity(intent);
 //            }
         }
+    }
+
+    protected T getRelativePresenter(){
+        return (T)basePresenter;
     }
 
     @Override
@@ -146,18 +148,6 @@ public class BaseActivity extends AbstractBaseActivity {
     }
 
     @Override
-    public void showPageHeadSpecial(String titleText, Integer iconId, Date rightText) {
-        showPageHead(titleText, iconId, null);
-
-        if(rightText == null){
-            findViewById(R.id.txtRight).setVisibility(View.INVISIBLE);
-        }else{
-            findViewById(R.id.txtRight).setVisibility(View.VISIBLE);
-            ((TimeSinceTextView)findViewById(R.id.txtRight)).setDate(rightText);
-        }
-    }
-
-    @Override
     public void showPageHead(String titleText, Integer iconId, String rightText) {
         if(titleText == null){
             findViewById(R.id.txtNavTitle).setVisibility(View.INVISIBLE);
@@ -216,7 +206,31 @@ public class BaseActivity extends AbstractBaseActivity {
     }
 
     @Override
-    public void showWarning(String message) {
+     public void showWarning(String message) {
         CustomToast.getInstance().showWarning(context, message);
+    }
+
+    @Override
+    public void showWarning(int warningType) {
+        switch (warningType){
+            case Constant.WARNING_401:
+                showWarning(context.getString(R.string.warning_401));
+                break;
+            case Constant.WARNING_403:
+                showWarning(context.getString(R.string.warning_403));
+                break;
+            case Constant.WARNING_503:
+                showWarning(context.getString(R.string.warning_503));
+                break;
+            case Constant.WARNING_500:
+                showWarning(context.getString(R.string.warning_500));
+                break;
+            case Constant.WARNING_NET:
+                showWarning(context.getString(R.string.warning_net));
+                break;
+            case Constant.WARNING_PARSE:
+                showWarning(context.getString(R.string.warning_parse));
+                break;
+        }
     }
 }

@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/MatchMatch"
-    android:background="@color/COLOR_WHITE">
+    style="@style/MatchMatch">
 
     <include
         android:id="@+id/layoutHead"
@@ -15,6 +14,7 @@
 
         <com.bili.diushoujuaner.widget.ReboundScrollView
             android:id="@+id/reboundScrollView"
+            android:overScrollMode="never"
             style="@style/MatchMatch">
 
             <LinearLayout
@@ -25,7 +25,7 @@
                 <RelativeLayout
                     android:id="@+id/layoutNewContact"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/y144">
+                    android:layout_height="@dimen/y128">
 
                     <TextView
                         android:textSize="@dimen/x50"
@@ -40,8 +40,8 @@
                         android:text="★"/>
 
                     <com.facebook.drawee.view.SimpleDraweeView
-                        android:layout_width="@dimen/x112"
-                        android:layout_height="@dimen/x112"
+                        android:layout_width="@dimen/x96"
+                        android:layout_height="@dimen/x96"
                         android:layout_centerVertical="true"
                         android:layout_alignParentRight="true"
                         android:layout_marginRight="@dimen/x24"
@@ -49,24 +49,24 @@
                         app:roundAsCircle="true" />
 
                     <TextView
-                        style="@style/TextLarge"
+                        style="@style/TextMiddle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/x144"
                         android:layout_centerVertical="true"
                         android:text="新的朋友"
-                        android:textColor="@color/TC_333333" />
+                        android:textColor="@color/TC_040404" />
 
                 </RelativeLayout>
 
                 <RelativeLayout
                     android:id="@+id/layoutParty"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/y144">
+                    android:layout_height="@dimen/y128">
 
                     <com.facebook.drawee.view.SimpleDraweeView
-                        android:layout_width="@dimen/x112"
-                        android:layout_height="@dimen/x112"
+                        android:layout_width="@dimen/x96"
+                        android:layout_height="@dimen/x96"
                         android:layout_centerVertical="true"
                         android:layout_alignParentRight="true"
                         android:layout_marginRight="@dimen/x24"
@@ -74,13 +74,13 @@
                         app:roundAsCircle="true" />
 
                     <TextView
-                        style="@style/TextLarge"
+                        style="@style/TextMiddle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/x144"
                         android:layout_centerVertical="true"
                         android:text="群组"
-                        android:textColor="@color/TC_333333" />
+                        android:textColor="@color/TC_040404" />
 
                 </RelativeLayout>
 

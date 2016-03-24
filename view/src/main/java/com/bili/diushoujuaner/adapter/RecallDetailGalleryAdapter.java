@@ -4,7 +4,9 @@ import android.content.Context;
 
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.adapter.viewholder.ViewHolder;
+import com.bili.diushoujuaner.utils.Imageloader;
 import com.bili.diushoujuaner.utils.response.PictureDto;
+import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.List;
 
@@ -20,7 +22,7 @@ public class RecallDetailGalleryAdapter extends CommonAdapter<PictureDto> {
     @Override
     public void convert(ViewHolder holder, PictureDto picture, int position) throws Exception {
         if(picture != null){
-
+            Imageloader.getInstance().displayDraweeView(picture.getPicPath(), (SimpleDraweeView) holder.getView(R.id.ivItemGallery));
         }
     }
 }

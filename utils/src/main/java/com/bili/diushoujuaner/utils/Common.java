@@ -2,6 +2,12 @@ package com.bili.diushoujuaner.utils;
 
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.PixelFormat;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.NinePatchDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
@@ -10,7 +16,14 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import com.bili.diushoujuaner.utils.entity.SortVo;
+import com.orhanobut.logger.Logger;
+
 import java.lang.reflect.Field;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -22,10 +35,106 @@ import java.util.regex.Pattern;
  */
 public class Common {
 
+    private static SimpleDateFormat sdf_YYMMDD_HHMMSS = new SimpleDateFormat(
+            "yyyy-MM-dd HH:mm:ss");
+
+    private static int getYearDifferenceBetweenTime(String start, String end){
+        return Math.abs(getYearFromTime(start) - getYearFromTime(end));
+    }
+
+    private static int getDayDifferenceBetweenTime(String start, String end){
+        Calendar c1 = Calendar.getInstance();
+        Calendar c2 = Calendar.getInstance();
+        c1.set(getYearFromTime(start), getMonthFromTime(start), getDayFromTime(start));
+        c2.set(getYearFromTime(end), getMonthFromTime(end), getDayFromTime(end));
+
+        return (int)Math.abs(((c1.getTimeInMillis() - c2.getTimeInMillis())/24/3600000));
+    }
+
+    private static int getYearFromTime(String time){
+        return Integer.valueOf(time.substring(0, 4));
+    }
+
+    private static int getMonthFromTime(String time){
+        return Integer.valueOf(time.substring(5, 7));
+    }
+
+    private static int getDayFromTime(String time){
+        return Integer.valueOf(time.substring(8, 10));
+    }
+
+    /**
+     * yyyy-MM-dd HH:mm:ss
+     * @param time
+     */
+    public static String getFormatTime(String time){
+        int dayDifference, yearDifference;
+        StringBuilder result = new StringBuilder();
+
+        dayDifference = getDayDifferenceBetweenTime(time, sdf_YYMMDD_HHMMSS.format(new Date()));
+        yearDifference = getYearDifferenceBetweenTime(time, sdf_YYMMDD_HHMMSS.format(new Date()));
+
+        if(dayDifference == 0){
+            result.append("今天" + getTimeHHMMFromTime(time));
+        }else if(dayDifference == 1){
+            result.append("昨天" + getTimeHHMMFromTime(time));
+        }else if(dayDifference == 2){
+            result.append("前天" + getTimeHHMMFromTime(time));
+        }else if(dayDifference >= 3 && dayDifference <= 60){
+            result.append(getTimeMMDD_HHMMFromTime(time));
+        }else if(yearDifference > 0){
+            result.append(getTimeYYMMDDFromTime(time));
+        }else{
+            result.append(getTimeMMDD_HHMMFromTime(time));
+        }
+
+        return result.toString();
+    }
+
+    public static String getTimeHHMMFromTime(String time){
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(time.substring(11, 16));
+
+        return stringBuilder.toString();
+    }
+
+    public static String getTimeYYMMDDFromTime(String time){
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(time.substring(0,10));
+
+        return stringBuilder.toString();
+    }
+
+    public static String getTimeMMDD_HHMMFromTime(String time){
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(time.substring(5,16));
+
+        return stringBuilder.toString();
+    }
+
     public static String changeObjToString(Object object){
         return object + "";
     }
 
+    public static Bitmap drawable2Bitmap(Drawable drawable) {
+        if (drawable instanceof BitmapDrawable) {
+            return ((BitmapDrawable) drawable).getBitmap();
+        } else if (drawable instanceof NinePatchDrawable) {
+            Bitmap bitmap = Bitmap
+                    .createBitmap(
+                            drawable.getIntrinsicWidth(),
+                            drawable.getIntrinsicHeight(),
+                            drawable.getOpacity() != PixelFormat.OPAQUE ? Bitmap.Config.ARGB_8888
+                                    : Bitmap.Config.RGB_565);
+            Canvas canvas = new Canvas(bitmap);
+            drawable.setBounds(0, 0, drawable.getIntrinsicWidth(),
+                    drawable.getIntrinsicHeight());
+            drawable.draw(canvas);
+            return bitmap;
+        } else {
+            return null;
+        }
+    }
 
     public static boolean isApkDebugable(Context context){
         try {
@@ -61,6 +170,34 @@ public class Common {
 
     public static String getCompleteUrl(String url){
         return Constant.HOST_ADDRESS + url;
+    }
+
+    public static String getCompleteUrl(String prefixUrl, Object obj){
+        StringBuilder stringBuilder = new StringBuilder();
+        if(obj == null){
+            return "";
+        }
+        Field[] fields = obj.getClass().getDeclaredFields();
+        try {
+            stringBuilder.append(prefixUrl);
+            for (int i = 0; i < fields.length; i++) {
+                try {
+                    Field f = obj.getClass().getDeclaredField(fields[i].getName());
+                    f.setAccessible(true);
+                    Object o = f.get(obj);
+                    stringBuilder.append(fields[i].getName() + "=" + o.toString() + "&");
+                } catch (NoSuchFieldException e) {
+                    e.printStackTrace();
+                } catch (IllegalArgumentException e) {
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    e.printStackTrace();
+                }
+            }
+        } catch (SecurityException e) {
+            e.printStackTrace();
+        }
+        return stringBuilder.toString();
     }
 
     public static Map<String, String> ConvertObjToMap(Object obj) {

@@ -12,6 +12,14 @@
         android:layout_marginLeft="@dimen/x24"
         android:layout_marginRight="@dimen/x24">
 
+        <ImageView
+            android:id="@+id/ivItemFriend"
+            android:layout_width="@dimen/x42"
+            android:layout_height="@dimen/x42"
+            android:src="@mipmap/icon_friend"
+            android:layout_alignBottom="@+id/txtItemUserName"
+            android:layout_alignParentRight="true"/>
+
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/ivItemHead"
             android:layout_width="@dimen/x80"
@@ -21,7 +29,7 @@
             app:roundAsCircle="true" />
 
         <TextView
-            android:id="@+id/textItemUserName"
+            android:id="@+id/txtItemUserName"
             style="@style/TextMiddle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -29,32 +37,32 @@
             android:layout_alignTop="@+id/ivItemHead"
             android:layout_toRightOf="@+id/ivItemHead"
             android:text="三木同学"
-            android:textColor="@color/TC_BLACK" />
+            android:textColor="@color/TC_040404" />
 
         <TextView
-            android:id="@+id/textItemPublishTime"
+            android:id="@+id/tetItemPublishTime"
             style="@style/TextSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/textItemUserName"
+            android:layout_alignLeft="@+id/txtItemUserName"
             android:layout_alignBottom="@+id/ivItemHead"
             android:layout_marginTop="@dimen/y8"
             android:text="02月28日09:34"
-            android:textColor="@color/TC_808080" />
+            android:textColor="@color/TC_8A8A8A" />
 
     </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/layoutItemPic"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y380">
+        android:layout_height="wrap_content">
 
-        <ImageView
+        <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/ivItemPic"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop"
-            android:src="@mipmap/bg_menu_head" />
+            android:layout_height="wrap_content"
+            app:viewAspectRatio="2"
+            app:retryImageScaleType="centerCrop"/>
 
         <TextView
             android:id="@+id/txtItemPicCount"
@@ -62,26 +70,24 @@
             android:layout_height="wrap_content"
             android:background="@drawable/text_pic_count_bg"
             android:textColor="@color/TC_WHITE"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentBottom="true"
+            android:layout_alignRight="@+id/ivItemPic"
+            android:layout_alignBottom="@+id/ivItemPic"
             android:layout_marginRight="@dimen/x24"
             android:layout_marginBottom="@dimen/x32"
             android:gravity="center"
-            android:text="6"
             style="@style/TextSmall"/>
 
     </RelativeLayout>
 
-    <com.bili.diushoujuaner.widget.aligntextview.AlignTextView
-        android:id="@+id/textItemContent"
+    <TextView
+        android:id="@+id/tetItemContent"
         style="@style/TextMiddle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/y24"
         android:ellipsize="marquee"
         android:maxLines="4"
-        android:text="@string/tmpString"
-        android:textColor="@color/TC_333333"
+        android:textColor="@color/TC_2D2D2D"
         cb:align="left" />
 
     <View
@@ -103,15 +109,15 @@
             <ImageView
                 android:layout_width="@dimen/x36"
                 android:layout_height="@dimen/y36"
-                android:src="@mipmap/icon_comment"/>
+                android:src="@mipmap/icon_comment_normal"/>
 
             <TextView
+                android:id="@+id/txtCommentCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/TC_BFBFBF"
                 android:layout_marginLeft="@dimen/x10"
-                style="@style/TextMiddle"
-                android:text="9"/>
+                style="@style/TextMiddle"/>
 
         </LinearLayout>
 
@@ -122,17 +128,18 @@
             android:gravity="right|center">
 
             <ImageView
+                android:id="@+id/ivItemGood"
                 android:layout_width="@dimen/x36"
                 android:layout_height="@dimen/y36"
                 android:src="@mipmap/icon_good_press"/>
 
             <TextView
+                android:id="@+id/txtGoodCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/TC_5C84DC"
                 android:layout_marginLeft="@dimen/x10"
-                style="@style/TextMiddle"
-                android:text="9"/>
+                style="@style/TextMiddle"/>
 
         </LinearLayout>
 

@@ -11,4 +11,6 @@ public interface IBaseView {
 
     void showWarning(String message);
 
+    void showWarning(int warningType);
+
 }

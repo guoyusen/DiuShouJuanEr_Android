@@ -124,6 +124,7 @@ public class FriendVo extends SortVo implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        super.writeToParcel(dest, flags);
         dest.writeLong(this.friendNo);
         dest.writeString(this.nickName);
         dest.writeString(this.mobile);
@@ -142,6 +143,7 @@ public class FriendVo extends SortVo implements Parcelable {
     }
 
     protected FriendVo(Parcel in) {
+        super(in);
         this.friendNo = in.readLong();
         this.nickName = in.readString();
         this.mobile = in.readString();

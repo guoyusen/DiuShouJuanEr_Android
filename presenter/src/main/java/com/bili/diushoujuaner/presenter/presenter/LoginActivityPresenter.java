@@ -5,22 +5,21 @@ import android.text.TextUtils;
 
 import com.bili.diushoujuaner.model.apihelper.ApiRespon;
 import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
-import com.bili.diushoujuaner.presenter.base.IBaseView;
 import com.bili.diushoujuaner.utils.Constant;
 import com.bili.diushoujuaner.utils.response.CustomSession;
 import com.bili.diushoujuaner.utils.request.UserAccountReq;
 import com.bili.diushoujuaner.model.action.CustomSessionAction;
 import com.bili.diushoujuaner.model.callback.ActionCallbackListener;
 import com.bili.diushoujuaner.presenter.base.BasePresenter;
-import com.bili.diushoujuaner.presenter.viewinterface.LoginActivityView;
+import com.bili.diushoujuaner.presenter.view.ILoginView;
 import com.bili.diushoujuaner.utils.Common;
 
 /**
  * Created by BiLi on 2016/3/10.
  */
-public class LoginActivityPresenter extends BasePresenter {
+public class LoginActivityPresenter extends BasePresenter<ILoginView> {
 
-    public LoginActivityPresenter(IBaseView baseView, Context context) {
+    public LoginActivityPresenter(ILoginView baseView, Context context) {
         super(baseView, context);
     }
 
@@ -33,12 +32,12 @@ public class LoginActivityPresenter extends BasePresenter {
         UserAccountReq userAccountReq = new UserAccountReq();
         userAccountReq.setMobile(mobile);
         userAccountReq.setPassword(psd);
-        CustomSessionAction.getInstance(context).getUserLogin(userAccountReq, new ActionCallbackListener<ApiRespon<CustomSession>>() {
+        CustomSessionAction.getInstance().getUserLogin(userAccountReq, new ActionCallbackListener<ApiRespon<CustomSession>>() {
             @Override
             public void onSuccess(ApiRespon<CustomSession> result) {
                 if(showMessage(result.getRetCode(), result.getMessage())){
                     CustomSessionPreference.getInstance().saveCustomSession(result.getData());
-                    getViewByClass(LoginActivityView.class).loginSuccess();
+                    getRelativeView().loginSuccess();
                 }
                 hideLoading(Constant.LOADING_TOP);
             }

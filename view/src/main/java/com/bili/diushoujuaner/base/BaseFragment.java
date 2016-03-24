@@ -23,7 +23,7 @@ import butterknife.ButterKnife;
 /**
  * Created by BiLi on 2016/2/28.
  */
-public class BaseFragment extends Fragment {
+public class BaseFragment<T> extends Fragment {
 
     @Bind(R.id.txtNavTitle)
     TextView txtNavTitle;
@@ -101,7 +101,7 @@ public class BaseFragment extends Fragment {
         }
     }
 
-    protected <T> T getPresenterByClass(Class<T> t){
+    protected T getRelativePresenter(){
         return (T)basePresenter;
     }
 
@@ -139,5 +139,28 @@ public class BaseFragment extends Fragment {
 
     public void showWarning(String message) {
         CustomToast.getInstance().showWarning(context, message);
+    }
+
+    public void showWarning(int warningType) {
+        switch (warningType){
+            case Constant.WARNING_401:
+                showWarning(context.getString(R.string.warning_401));
+                break;
+            case Constant.WARNING_403:
+                showWarning(context.getString(R.string.warning_403));
+                break;
+            case Constant.WARNING_503:
+                showWarning(context.getString(R.string.warning_503));
+                break;
+            case Constant.WARNING_500:
+                showWarning(context.getString(R.string.warning_500));
+                break;
+            case Constant.WARNING_NET:
+                showWarning(context.getString(R.string.warning_net));
+                break;
+            case Constant.WARNING_PARSE:
+                showWarning(context.getString(R.string.warning_parse));
+                break;
+        }
     }
 }

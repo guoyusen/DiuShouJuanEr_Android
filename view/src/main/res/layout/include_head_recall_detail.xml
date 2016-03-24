@@ -51,7 +51,7 @@
         android:id="@+id/txtNavTitle"
         style="@style/TextNavTitle"/>
 
-    <com.bili.diushoujuaner.widget.TimeSinceTextView
+    <TextView
         android:id="@+id/txtRight"
         style="@style/TextNavRight"/>
 
