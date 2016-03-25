@@ -84,8 +84,8 @@
 
                 </RelativeLayout>
 
-                <com.bili.diushoujuaner.widget.CustomListViewRefresh
-                    android:id="@+id/customListViewRefresh"
+                <com.bili.diushoujuaner.widget.CustomListView
+                    android:id="@+id/customListView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:divider="@null" />

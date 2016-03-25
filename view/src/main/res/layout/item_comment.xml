@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:cb="http://schemas.android.com/tools"
     android:background="@color/COLOR_WHITE"
     android:orientation="horizontal"
     android:paddingBottom="@dimen/y10"
@@ -74,21 +73,22 @@
 
         </RelativeLayout>
 
-        <com.bili.diushoujuaner.widget.aligntextview.AlignTextView
+        <TextView
             android:id="@+id/txtCommentContent"
             android:layout_marginTop="@dimen/y6"
             android:layout_marginLeft="@dimen/x24"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/TC_2D2D2D"
-            cb:align="left"/>
+            android:textColor="@color/TC_2D2D2D"/>
 
-        <ListView
+        <com.bili.diushoujuaner.widget.CustomListView
             android:id="@+id/listViewRespon"
             android:layout_marginTop="@dimen/y6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x24"
             android:scrollbars="none"
+            android:dividerHeight="0dp"
             android:divider="@null"/>
 
     </LinearLayout>

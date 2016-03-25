@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/MatchMatch">
+
+    <View
+        android:id="@+id/mask"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/COLOR_BLACK"/>
+
+    <com.bili.diushoujuaner.widget.picture.ReboundViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <RelativeLayout
+        android:id="@+id/layoutIndex"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="@dimen/x36"
+        android:paddingRight="@dimen/x36"
+        android:paddingTop="@dimen/y10"
+        android:paddingBottom="@dimen/y10"
+        android:layout_gravity="bottom|center"
+        android:layout_marginBottom="@dimen/y80">
+
+        <TextView
+            android:id="@+id/txtIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/TC_WHITE"
+            android:layout_centerInParent="true"
+            style="@style/TextMiddle"
+            android:text="6/8"/>
+
+    </RelativeLayout>
+
+</FrameLayout>

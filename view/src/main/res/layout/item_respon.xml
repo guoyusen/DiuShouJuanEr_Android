@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <com.bili.diushoujuaner.widget.aligntextview.AlignTextView
+    <TextView
         android:id="@+id/txtRespon"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="@dimen/y10"
-        android:paddingBottom="@dimen/y10"/>
+        style="@style/TextMiddle"
+        android:textColor="@color/TC_5C84DC"
+        android:layout_marginTop="@dimen/y6"
+        android:layout_marginBottom="@dimen/y6"/>
 
-</RelativeLayout>
+</LinearLayout>

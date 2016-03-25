@@ -17,12 +17,10 @@ import com.bili.diushoujuaner.callback.IMainFragmentOperateListener;
 import com.bili.diushoujuaner.callback.IMainOperateListener;
 import com.bili.diushoujuaner.presenter.presenter.ContactFragmentPresenter;
 import com.bili.diushoujuaner.presenter.view.IContactView;
-import com.bili.diushoujuaner.utils.Common;
 import com.bili.diushoujuaner.utils.Constant;
 import com.bili.diushoujuaner.utils.Imageloader;
-import com.bili.diushoujuaner.utils.ListViewHighter;
 import com.bili.diushoujuaner.utils.entity.FriendVo;
-import com.bili.diushoujuaner.widget.CustomListViewRefresh;
+import com.bili.diushoujuaner.widget.CustomListView;
 import com.bili.diushoujuaner.widget.ReboundScrollView;
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -36,8 +34,8 @@ import butterknife.Bind;
  */
 public class ContactFragment extends BaseFragment<ContactFragmentPresenter> implements View.OnClickListener, IContactView, IMainFragmentOperateListener {
 
-    @Bind(R.id.customListViewRefresh)
-    CustomListViewRefresh customListViewRefresh;
+    @Bind(R.id.customListView)
+    CustomListView customListView;
     @Bind(R.id.reboundScrollView)
     ReboundScrollView reboundScrollView;
     @Bind(R.id.layoutNewContact)
@@ -80,8 +78,8 @@ public class ContactFragment extends BaseFragment<ContactFragmentPresenter> impl
         ivNavHead.setOnClickListener(this);
 
         contactAdapter = new ContactAdapter(getContext(), friendVoList);
-        customListViewRefresh.setAdapter(contactAdapter);
-        customListViewRefresh.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        customListView.setAdapter(contactAdapter);
+        customListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getContext(), ContactDetailActivity.class);
@@ -123,7 +121,6 @@ public class ContactFragment extends BaseFragment<ContactFragmentPresenter> impl
     @Override
     public void showContactList(List<FriendVo> friendVoList) {
         contactAdapter.refresh(friendVoList);
-        ListViewHighter.setListViewHeightBasedOnChildren(customListViewRefresh);
 
         if(friendVoList.size() <= 0){
             txtPartyCount.setText("暂无联系人");

@@ -113,6 +113,13 @@ public class CustomListViewRefresh extends ListView implements OnScrollListener 
 		mIsMoveToFirstItemAfterRefresh = pIsMoveToFirstItemAfterRefresh;
 	}
 
+	@Override
+	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+		int expandSpec = MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE >> 2,
+				MeasureSpec.AT_MOST);
+		super.onMeasure(widthMeasureSpec, expandSpec);
+	}
+
 
 	/**
 	 * 添加加载更多FootView

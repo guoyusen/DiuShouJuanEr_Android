@@ -1,7 +1,6 @@
 package com.bili.diushoujuaner.activity;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -9,8 +8,10 @@ import android.widget.TextView;
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.adapter.ContactRecentGalleryAdapter;
 import com.bili.diushoujuaner.base.BaseActivity;
+import com.bili.diushoujuaner.utils.Common;
 import com.bili.diushoujuaner.utils.Constant;
 import com.bili.diushoujuaner.utils.entity.FriendVo;
+import com.bili.diushoujuaner.utils.entity.PictureVo;
 import com.bili.diushoujuaner.utils.response.PictureDto;
 import com.bili.diushoujuaner.widget.CustomGridView;
 import com.bili.diushoujuaner.widget.CustomRelativeLayout;
@@ -20,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 
 /**
  * Created by BiLi on 2016/3/9.
@@ -71,7 +71,7 @@ public class ContactDetailActivity extends BaseActivity {
     public void setViewStatus() {
         showPageHead(null, null, "更多");
 
-        layoutHead.setBackground(getResources().getDrawable(R.drawable.transparent_down_bg));
+        layoutHead.setBackground(getResources().getDrawable(R.drawable.transparent_black_down_bg));
         layoutParent.setBgUrl(friendVo.getPicPath());
         txtFriendName.setText(friendVo.getDisplayName());
         txtFriendAutograph.setText(friendVo.getAutograph());

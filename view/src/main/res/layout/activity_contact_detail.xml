@@ -19,7 +19,7 @@
                 android:id="@+id/layoutContactName"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/y150"
-                android:background="@drawable/transparent_up_bg">
+                android:background="@drawable/transparent_black_up_bg">
 
                 <TextView
                     android:id="@+id/txtFriendName"

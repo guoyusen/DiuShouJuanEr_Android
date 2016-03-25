@@ -6,7 +6,7 @@
     <!-- 常用颜色 -->
     <color name="COLOR_WHITE">#FFFFFF</color>
     <color name="COLOR_THEME">#5C84DC</color>
-    <color name="COLOR_BLACK">#333645</color>
+    <color name="COLOR_BLACK">#000000</color>
 
     <!-- 背景常用颜-色 -->
     <color name="BG_F6F6F6">#F6F6F6</color>

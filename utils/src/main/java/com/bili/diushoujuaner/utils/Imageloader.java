@@ -18,7 +18,7 @@ public class Imageloader {
     }
 
     public void displayDraweeView(String url, SimpleDraweeView draweeView) {
-        if(url.length() <= 0){
+        if(Common.isEmpty(url) || url.length() <= 0){
             return;
         }
         Uri uri = Uri.parse(Common.getCompleteUrl(url));

@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.adapter.viewholder.ViewHolder;
+import com.bili.diushoujuaner.callback.IRecallGoodListener;
 import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
 import com.bili.diushoujuaner.model.tempHelper.ContactTemper;
 import com.bili.diushoujuaner.model.tempHelper.GoodTemper;
@@ -27,12 +28,18 @@ import java.util.List;
  */
 public class RecallAdapter extends CommonAdapter<RecallDto> {
 
+    private IRecallGoodListener recallGoodListener;
+
     public RecallAdapter(Context context, List<RecallDto> list){
         super(context,list, R.layout.item_main_recall);
     }
 
+    public void setRecallGoodListener(IRecallGoodListener recallGoodListener) {
+        this.recallGoodListener = recallGoodListener;
+    }
+
     @Override
-    public void convert(ViewHolder holder, RecallDto recallDto, int position) throws Exception {
+    public void convert(final ViewHolder holder, RecallDto recallDto, final int position) throws Exception {
         if(recallDto != null){
             Imageloader.getInstance().displayDraweeView(recallDto.getUserPicPath(), (SimpleDraweeView) holder.getView(R.id.ivItemHead));
             if(recallDto.getPictureList().size() > 0){
@@ -61,20 +68,31 @@ public class RecallAdapter extends CommonAdapter<RecallDto> {
             ((TextView)holder.getView(R.id.txtCommentCount)).setText(recallDto.getCommentList().size() + "");
             ((TextView)holder.getView(R.id.txtGoodCount)).setText(recallDto.getGoodList().size() + "");
 
-            if(GoodTemper.isExists(recallDto.getRecallNo())){
-                if(GoodTemper.getGoodStatus(recallDto.getRecallNo())){
-                    setGoodStatus(holder, true);
-                }else{
-                    setGoodStatus(holder, false);
+            getGoodStatus(holder, recallDto);
+
+            holder.getView(R.id.layoutItemGood).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    recallGoodListener.getGoodChange(holder,position);
                 }
+            });
+        }
+    }
+
+    private void getGoodStatus(ViewHolder holder, RecallDto recallDto){
+        if(GoodTemper.isExists(recallDto.getRecallNo())){
+            if(GoodTemper.getGoodStatus(recallDto.getRecallNo())){
+                setGoodStatus(holder, true);
             }else{
-                if(getGoodStatusFromRecallDto(recallDto)){
-                    GoodTemper.setGoodStatus(recallDto.getRecallNo(), true);
-                    setGoodStatus(holder, true);
-                }else{
-                    GoodTemper.setGoodStatus(recallDto.getRecallNo(), false);
-                    setGoodStatus(holder, false);
-                }
+                setGoodStatus(holder, false);
+            }
+        }else{
+            if(getGoodStatusFromRecallDto(recallDto)){
+                GoodTemper.setGoodStatus(recallDto.getRecallNo(), true);
+                setGoodStatus(holder, true);
+            }else{
+                GoodTemper.setGoodStatus(recallDto.getRecallNo(), false);
+                setGoodStatus(holder, false);
             }
         }
     }

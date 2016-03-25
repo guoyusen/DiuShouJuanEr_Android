@@ -1,33 +1,41 @@
 package com.bili.diushoujuaner.activity;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
+import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.adapter.CommentAdapter;
-import com.bili.diushoujuaner.adapter.RecallDetailGalleryAdapter;
+import com.bili.diushoujuaner.adapter.ImageAdapter;
 import com.bili.diushoujuaner.base.BaseActivity;
+import com.bili.diushoujuaner.base.BaseFragmentActivity;
+import com.bili.diushoujuaner.fragment.PictureFragment;
 import com.bili.diushoujuaner.model.tempHelper.GoodTemper;
 import com.bili.diushoujuaner.presenter.presenter.RecallDetailActivityPresenter;
 import com.bili.diushoujuaner.presenter.view.IRecallDetailView;
 import com.bili.diushoujuaner.utils.Common;
 import com.bili.diushoujuaner.utils.Constant;
 import com.bili.diushoujuaner.utils.Imageloader;
-import com.bili.diushoujuaner.utils.ListViewHighter;
+import com.bili.diushoujuaner.utils.entity.PictureVo;
 import com.bili.diushoujuaner.utils.response.CommentDto;
 import com.bili.diushoujuaner.utils.response.GoodDto;
 import com.bili.diushoujuaner.utils.response.PictureDto;
 import com.bili.diushoujuaner.utils.response.RecallDto;
 import com.bili.diushoujuaner.widget.CustomGridView;
+import com.bili.diushoujuaner.widget.CustomListView;
 import com.bili.diushoujuaner.widget.aligntextview.CBAlignTextView;
+import com.bili.diushoujuaner.widget.picture.ImageInfo;
+import com.bili.diushoujuaner.widget.picture.PhotoFrescoView;
+import com.bili.diushoujuaner.widget.picture.PhotoView;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
@@ -38,7 +46,7 @@ import butterknife.Bind;
 /**
  * Created by BiLi on 2016/3/8.
  */
-public class RecallDetailActivity extends BaseActivity<RecallDetailActivityPresenter> implements IRecallDetailView, View.OnClickListener {
+public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActivityPresenter> implements IRecallDetailView, View.OnClickListener {
 
     @Bind(R.id.ivNavHead)
     SimpleDraweeView ivNavHead;
@@ -61,20 +69,27 @@ public class RecallDetailActivity extends BaseActivity<RecallDetailActivityPrese
     @Bind(R.id.txtGood)
     TextView txtGood;
     @Bind(R.id.listViewComment)
-    ListView listViewComment;
+    CustomListView listViewComment;
 
-    private RecallDetailGalleryAdapter recallDetailGalleryAdapter;
-    private List<PictureDto> pictureList;
+    private ArrayList<PictureVo> pictureVoList;
     private RecallDto recallDto;
     private boolean goodstatus = false;
     private Handler handler;
     private CustomRunnable customRunnable;
     private CommentAdapter commentAdapter;
     private List<CommentDto> commentDtoList;
+    private ArrayList<ImageInfo> imageInfoArrayList;
+    private ImageAdapter imageAdapter;
 
     @Override
     public void initIntentParam(Intent intent) {
         recallDto = intent.getExtras().getParcelable(Constant.INTENT_RECALL_DETAIL);
+    }
+
+    @Override
+    public void onPageResume() {
+        super.onPageResume();
+        tintManager.setStatusBarTintResource(R.color.COLOR_THEME);
     }
 
     @Override
@@ -84,10 +99,11 @@ public class RecallDetailActivity extends BaseActivity<RecallDetailActivityPrese
 
     @Override
     public void beforeInitView() {
-        pictureList = new ArrayList<>();
         commentDtoList = new ArrayList<>();
         handler = new Handler();
         customRunnable = new CustomRunnable();
+        pictureVoList = new ArrayList<>();
+        imageInfoArrayList = new ArrayList<>();
     }
 
     @Override
@@ -132,14 +148,33 @@ public class RecallDetailActivity extends BaseActivity<RecallDetailActivityPrese
         goodstatus = GoodTemper.getGoodStatus(recallDto.getRecallNo());
         setGoodStatus(GoodTemper.getGoodStatus(recallDto.getRecallNo()));
 
-        pictureList.addAll(recallDto.getPictureList());
-        recallDetailGalleryAdapter = new RecallDetailGalleryAdapter(this, pictureList);
-        customGridView.setAdapter(recallDetailGalleryAdapter);
+        pictureVoList.addAll(Common.changePictureDtoListToPictureVoList(recallDto.getPictureList()));
+        imageAdapter = new ImageAdapter(this, pictureVoList);
+        customGridView.setAdapter(imageAdapter);
+        customGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if(view.isEnabled()) {
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelableArrayList("PictureVoList", pictureVoList);
+                    bundle.putParcelable("ImageInfo", ((PhotoFrescoView) view).getInfo());
+                    bundle.putInt("Position", position);
+                    imageInfoArrayList.clear();
+                    for (int i = 0; i < pictureVoList.size(); i++) {
+                        imageInfoArrayList.add(((PhotoFrescoView) parent.getChildAt(i)).getInfo());
+                    }
+                    parent.getChildAt(position);
+                    bundle.putParcelableArrayList("ImageInfoList", imageInfoArrayList);
+                    getSupportFragmentManager().beginTransaction().replace(android.R.id.content, PictureFragment.getInstance(bundle), "PictureFragment")
+                            .addToBackStack(null).commit();
+                }
+            }
+        });
 
         commentDtoList.addAll(recallDto.getCommentList());
         commentAdapter = new CommentAdapter(this, commentDtoList);
         listViewComment.setAdapter(commentAdapter);
-        ListViewHighter.setListViewHeightBasedOnChildren(listViewComment);
+        commentAdapter.notifyDataSetChanged();
     }
 
     /**

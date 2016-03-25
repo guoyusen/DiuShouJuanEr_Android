@@ -30,7 +30,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_marginTop="@dimen/y20"
-            android:ellipsize="marquee"
+            android:ellipsize="end"
             android:singleLine="true"
             android:text="三木同学"
             android:textColor="@color/TC_040404" />
@@ -44,7 +44,7 @@
             android:layout_alignParentLeft="true"
             android:layout_marginBottom="@dimen/y24"
             android:layout_marginRight="@dimen/x80"
-            android:ellipsize="marquee"
+            android:ellipsize="end"
             android:singleLine="true"
             android:text="就让大雨冲刷记忆中的沙，让我了无牵挂浪迹在天涯"
             android:textColor="@color/TC_8A8A8A" />

@@ -16,15 +16,19 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import com.bili.diushoujuaner.utils.entity.PictureVo;
 import com.bili.diushoujuaner.utils.entity.SortVo;
+import com.bili.diushoujuaner.utils.response.PictureDto;
 import com.orhanobut.logger.Logger;
 
 import java.lang.reflect.Field;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -364,6 +368,17 @@ public class Common {
         } else {
             return html.replaceAll("&lt;", "<").replaceAll("&gt;", ">").replaceAll("&amp;", "&").replaceAll("&quot;","\"");
         }
+    }
+
+    public static List<PictureVo> changePictureDtoListToPictureVoList(List<PictureDto> pictureDtoList){
+        List<PictureVo> pictureVoList = new ArrayList<>();
+        for(PictureDto pictureDto : pictureDtoList){
+            PictureVo pictureVo = new PictureVo();
+            pictureVo.setPicPath(pictureDto.getPicPath());
+
+            pictureVoList.add(pictureVo);
+        }
+        return pictureVoList;
     }
 
 }

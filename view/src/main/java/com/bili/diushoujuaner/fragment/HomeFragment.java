@@ -3,6 +3,7 @@ package com.bili.diushoujuaner.fragment;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.RelativeLayout;
@@ -10,13 +11,14 @@ import android.widget.RelativeLayout;
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.activity.RecallDetailActivity;
 import com.bili.diushoujuaner.adapter.RecallAdapter;
+import com.bili.diushoujuaner.adapter.viewholder.ViewHolder;
 import com.bili.diushoujuaner.base.BaseFragment;
 import com.bili.diushoujuaner.callback.IMainFragmentOperateListener;
 import com.bili.diushoujuaner.callback.IMainOperateListener;
-import com.bili.diushoujuaner.utils.Common;
+import com.bili.diushoujuaner.callback.IRecallGoodListener;
+import com.bili.diushoujuaner.model.tempHelper.GoodTemper;
 import com.bili.diushoujuaner.utils.Constant;
 import com.bili.diushoujuaner.utils.Imageloader;
-import com.bili.diushoujuaner.utils.ListViewHighter;
 import com.bili.diushoujuaner.utils.response.RecallDto;
 import com.bili.diushoujuaner.presenter.presenter.HomeFragmentPresenter;
 import com.bili.diushoujuaner.presenter.view.IHomeView;
@@ -32,7 +34,7 @@ import butterknife.Bind;
 /**
  * Created by BiLi on 2016/3/2.
  */
-public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements WaveSwipeRefreshLayout.OnRefreshListener, IHomeView, View.OnClickListener, IMainFragmentOperateListener,CustomListViewRefresh.OnLoadMoreListener {
+public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements WaveSwipeRefreshLayout.OnRefreshListener, IHomeView, View.OnClickListener, IMainFragmentOperateListener,CustomListViewRefresh.OnLoadMoreListener,IRecallGoodListener {
 
     @Bind(R.id.customListViewRefresh)
     CustomListViewRefresh customListViewRefresh;
@@ -47,6 +49,20 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
     private RecallAdapter recallAdapter;
     private IMainOperateListener iMainOperateListener;
     private String ivNavHeadUrl;
+    private Handler handler;
+    private boolean goodstatus = false;
+    private boolean isGoodStatusInited = false;
+    private CustomRunnable customRunnable;
+    private long goodRecallNo;
+
+    class CustomRunnable implements Runnable{
+        @Override
+        public void run() {
+            // 重置，允许再次进行点击，并发送请求
+            isGoodStatusInited = false;
+            getRelativePresenter().executeGoodChange(goodstatus, goodRecallNo);
+        }
+    }
 
     public static HomeFragment instantiation(int position){
         HomeFragment fragment = new HomeFragment();
@@ -64,6 +80,8 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
     @Override
     public void beforeInitView() {
         recallDtoList = new ArrayList<>();
+        handler = new Handler();
+        customRunnable = new CustomRunnable();
     }
 
     @Override
@@ -72,9 +90,10 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
         ivNavHead.setOnClickListener(this);
 
         recallAdapter = new RecallAdapter(getContext(), recallDtoList);
+        recallAdapter.setRecallGoodListener(this);
+        customListViewRefresh.setAdapter(recallAdapter);
         customListViewRefresh.setCanLoadMore(true);
         customListViewRefresh.setOnLoadMoreListener(this);
-        customListViewRefresh.setAdapter(recallAdapter);
         customListViewRefresh.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -142,7 +161,6 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
             customListViewRefresh.setListViewStateFinished();
         }
         recallAdapter.refresh(recallDtoList);
-        ListViewHighter.setListViewHeightBasedOnChildren(customListViewRefresh);
     }
 
     @Override
@@ -153,7 +171,6 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
             customListViewRefresh.setListViewStateFinished();
         }
         recallAdapter.add(recallDtoList);
-        ListViewHighter.setListViewHeightBasedOnChildren(customListViewRefresh);
     }
 
     @Override
@@ -172,5 +189,24 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
         if(ivNavHead != null){
             Imageloader.getInstance().displayDraweeView(ivNavHeadUrl, ivNavHead);
         }
+    }
+
+    @Override
+    public void getGoodChange(ViewHolder holder, int position) {
+        if(!isGoodStatusInited){
+            isGoodStatusInited = true;
+            goodstatus = GoodTemper.getGoodStatus(recallAdapter.getItem(position).getRecallNo());
+            goodRecallNo = recallAdapter.getItem(position).getRecallNo();
+        }
+        if(GoodTemper.getGoodStatus(recallAdapter.getItem(position).getRecallNo())){
+            GoodTemper.setGoodStatus(recallAdapter.getItem(position).getRecallNo(), false);
+            getRelativePresenter().removeGoodDtoFromTemper(recallAdapter.getItem(position).getRecallNo());
+        }else{
+            GoodTemper.setGoodStatus(recallAdapter.getItem(position).getRecallNo(), true);
+            getRelativePresenter().addGoodDtoToTemper(recallAdapter.getItem(position).getRecallNo());
+        }
+        recallAdapter.notifyDataSetChanged();
+        handler.removeCallbacks(customRunnable);
+        handler.postDelayed(customRunnable, 1500);
     }
 }

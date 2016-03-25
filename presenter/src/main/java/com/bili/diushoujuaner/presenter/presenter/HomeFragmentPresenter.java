@@ -2,8 +2,10 @@ package com.bili.diushoujuaner.presenter.presenter;
 
 import android.content.Context;
 
+import com.bili.diushoujuaner.model.action.GoodAction;
 import com.bili.diushoujuaner.model.apihelper.ApiRespon;
 import com.bili.diushoujuaner.model.cachehelper.ACache;
+import com.bili.diushoujuaner.model.databasehelper.DBManager;
 import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
 import com.bili.diushoujuaner.model.tempHelper.GoodTemper;
 import com.bili.diushoujuaner.model.tempHelper.RecallTemper;
@@ -11,6 +13,7 @@ import com.bili.diushoujuaner.utils.Common;
 import com.bili.diushoujuaner.utils.Constant;
 import com.bili.diushoujuaner.utils.GsonParser;
 import com.bili.diushoujuaner.utils.request.RecallListReq;
+import com.bili.diushoujuaner.utils.response.GoodDto;
 import com.bili.diushoujuaner.utils.response.RecallDto;
 import com.bili.diushoujuaner.model.action.RecallAction;
 import com.bili.diushoujuaner.model.callback.ActionCallbackListener;
@@ -30,6 +33,58 @@ public class HomeFragmentPresenter extends BasePresenter<IHomeView> {
 
     public HomeFragmentPresenter(IHomeView baseView, Context context) {
         super(baseView, context);
+    }
+
+    public boolean executeGoodChange(boolean goodstatus, long recallNo){
+        if(goodstatus == GoodTemper.getGoodStatus(recallNo)){
+            return goodstatus;
+        }
+        if(GoodTemper.getGoodStatus(recallNo)){
+            getGoodAdd(recallNo);
+            return true;
+        }else{
+            getGoodRemove(recallNo);
+            return false;
+        }
+    }
+
+    public void getGoodAdd(long recallNo){
+        GoodAction.getInstance().getGoodAdd(recallNo, new ActionCallbackListener<ApiRespon<String>>() {
+            @Override
+            public void onSuccess(ApiRespon<String> result) {
+                showMessage(result.getRetCode(), result.getMessage());
+            }
+
+            @Override
+            public void onFailure(int errorCode) {
+                showError(errorCode);
+            }
+        });
+    }
+
+    public void getGoodRemove(long recallNo){
+        GoodAction.getInstance().getGoodRemove(recallNo, new ActionCallbackListener<ApiRespon<String>>() {
+            @Override
+            public void onSuccess(ApiRespon<String> result) {
+                showMessage(result.getRetCode(), result.getMessage());
+            }
+
+            @Override
+            public void onFailure(int errorCode) {
+                showError(errorCode);
+            }
+        });
+    }
+
+    public void addGoodDtoToTemper(long recallNo){
+        GoodDto goodDto = new GoodDto();
+        goodDto.setUserNo(CustomSessionPreference.getInstance().getCustomSession().getUserNo());
+        goodDto.setNickName(DBManager.getInstance().getUser(CustomSessionPreference.getInstance().getCustomSession().getUserNo()).getRealName());
+        RecallTemper.addGood(recallNo, goodDto);
+    }
+
+    public void removeGoodDtoFromTemper(long recallNo){
+        RecallTemper.removeGood(recallNo);
     }
 
     public void getRecallList(final int refreshType){

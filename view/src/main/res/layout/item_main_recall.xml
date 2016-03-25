@@ -85,10 +85,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/y24"
-        android:ellipsize="marquee"
+        android:ellipsize="end"
         android:maxLines="4"
-        android:textColor="@color/TC_2D2D2D"
-        cb:align="left" />
+        android:textColor="@color/TC_2D2D2D" />
 
     <View
         style="@style/line"/>
@@ -122,6 +121,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/layoutItemGood"
             android:layout_width="@dimen/x144"
             android:layout_height="match_parent"
             android:orientation="horizontal"

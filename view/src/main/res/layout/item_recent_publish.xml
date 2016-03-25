@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/tools"
     style="@style/WrapWrap"
     android:background="@color/COLOR_WHITE"
     android:padding="@dimen/x8">
 
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/ivItemGallery"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/y108"
-        android:src="@mipmap/bg_menu_head"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:placeholderImage="@mipmap/image_load_fail"
         app:placeholderImageScaleType="centerCrop"
         app:viewAspectRatio="1.4"
-        app:retryImageScaleType="centerCrop"/>
+        fresco:actualImageScaleType="focusCrop"/>
 
 </RelativeLayout>

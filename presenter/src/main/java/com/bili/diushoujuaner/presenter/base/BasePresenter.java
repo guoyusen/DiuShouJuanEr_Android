@@ -26,6 +26,9 @@ public class BasePresenter<T extends IBaseView> {
     }
 
     protected void showError(int errorCode) {
+        if(this.baseView == null){
+            return;
+        }
         switch (errorCode) {
             case 401:
                 baseView.showWarning(Constant.WARNING_401);
@@ -50,6 +53,9 @@ public class BasePresenter<T extends IBaseView> {
     }
 
     public boolean showMessage(String retCode, String message) {
+        if(this.baseView == null){
+            return false;
+        }
         switch (retCode) {
             case "fail":
                 baseView.showWarning(message);
@@ -60,14 +66,23 @@ public class BasePresenter<T extends IBaseView> {
     }
 
     protected void showLoading(int loadingType, String message){
+        if(this.baseView == null){
+            return;
+        }
         baseView.showLoading(loadingType, message);
     }
 
     protected void hideLoading(int loadingType){
+        if(this.baseView == null){
+            return;
+        }
         baseView.hideLoading(loadingType);
     }
 
     protected void showWarning(String message){
+        if(this.baseView == null){
+            return;
+        }
         baseView.showWarning(message);
     }
 }
