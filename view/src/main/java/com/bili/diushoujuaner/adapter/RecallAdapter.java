@@ -2,7 +2,6 @@ package com.bili.diushoujuaner.adapter;
 
 import android.content.Context;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -14,11 +13,8 @@ import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
 import com.bili.diushoujuaner.model.tempHelper.ContactTemper;
 import com.bili.diushoujuaner.model.tempHelper.GoodTemper;
 import com.bili.diushoujuaner.utils.Common;
-import com.bili.diushoujuaner.utils.Imageloader;
-import com.bili.diushoujuaner.utils.response.CustomSession;
 import com.bili.diushoujuaner.utils.response.GoodDto;
 import com.bili.diushoujuaner.utils.response.RecallDto;
-import com.bili.diushoujuaner.widget.aligntextview.AlignTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.List;
@@ -41,10 +37,10 @@ public class RecallAdapter extends CommonAdapter<RecallDto> {
     @Override
     public void convert(final ViewHolder holder, RecallDto recallDto, final int position) throws Exception {
         if(recallDto != null){
-            Imageloader.getInstance().displayDraweeView(recallDto.getUserPicPath(), (SimpleDraweeView) holder.getView(R.id.ivItemHead));
+            Common.displayDraweeView(recallDto.getUserPicPath(), (SimpleDraweeView) holder.getView(R.id.ivItemHead));
             if(recallDto.getPictureList().size() > 0){
                 holder.getView(R.id.layoutItemPic).setVisibility(View.VISIBLE);
-                Imageloader.getInstance().displayDraweeView(recallDto.getPictureList().get(0).getPicPath(), (SimpleDraweeView) holder.getView(R.id.ivItemPic));
+                Common.displayDraweeView(recallDto.getPictureList().get(0).getPicPath(), (SimpleDraweeView) holder.getView(R.id.ivItemPic));
                 if(recallDto.getPictureList().size() > 1){
                     holder.getView(R.id.txtItemPicCount).setVisibility(View.VISIBLE);
                     ((TextView)holder.getView(R.id.txtItemPicCount)).setText(recallDto.getPictureList().size() + "");

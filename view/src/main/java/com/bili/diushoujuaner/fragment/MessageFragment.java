@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 
@@ -15,7 +14,6 @@ import com.bili.diushoujuaner.base.BaseFragment;
 import com.bili.diushoujuaner.callback.IMainFragmentOperateListener;
 import com.bili.diushoujuaner.callback.IMainOperateListener;
 import com.bili.diushoujuaner.utils.Common;
-import com.bili.diushoujuaner.utils.Imageloader;
 import com.bili.diushoujuaner.utils.response.MessageDto;
 import com.bili.diushoujuaner.widget.CustomListViewRefresh;
 import com.bili.diushoujuaner.widget.waveswipe.WaveSwipeRefreshLayout;
@@ -83,7 +81,7 @@ public class MessageFragment extends BaseFragment implements WaveSwipeRefreshLay
         waveSwipeRefreshLayout.setWaveColor(Color.parseColor("#5C84DC"));
         waveSwipeRefreshLayout.setOnRefreshListener(this);
 
-        Imageloader.getInstance().displayDraweeView(ivNavHeadUrl, ivNavHead);
+        Common.displayDraweeView(ivNavHeadUrl, ivNavHead);
     }
 
     @Override
@@ -113,7 +111,7 @@ public class MessageFragment extends BaseFragment implements WaveSwipeRefreshLay
     public void showHead(String url) {
         ivNavHeadUrl = url;
         if(ivNavHead != null){
-            Imageloader.getInstance().displayDraweeView(ivNavHeadUrl, ivNavHead);
+            Common.displayDraweeView(ivNavHeadUrl, ivNavHead);
         }
     }
 }

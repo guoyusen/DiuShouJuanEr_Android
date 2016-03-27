@@ -6,9 +6,7 @@ import android.widget.TextView;
 
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.adapter.viewholder.ViewHolder;
-import com.bili.diushoujuaner.model.tempHelper.ContactTemper;
 import com.bili.diushoujuaner.utils.Common;
-import com.bili.diushoujuaner.utils.Imageloader;
 import com.bili.diushoujuaner.utils.entity.FriendVo;
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -39,7 +37,7 @@ public class ContactAdapter extends CommonAdapter<FriendVo> {
                 holder.getView(R.id.txtItemMark).setVisibility(View.INVISIBLE);
                 holder.getView(R.id.line).setVisibility(View.INVISIBLE);
             }
-            Imageloader.getInstance().displayDraweeView(friendVo.getPicPath(), (SimpleDraweeView) holder.getView(R.id.ivItemHead));
+            Common.displayDraweeView(friendVo.getPicPath(), (SimpleDraweeView) holder.getView(R.id.ivItemHead));
             ((TextView) holder.getView(R.id.txtContactName)).setText(friendVo.getDisplayName());
         }
     }

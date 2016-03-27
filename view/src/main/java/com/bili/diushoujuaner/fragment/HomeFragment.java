@@ -17,8 +17,8 @@ import com.bili.diushoujuaner.callback.IMainFragmentOperateListener;
 import com.bili.diushoujuaner.callback.IMainOperateListener;
 import com.bili.diushoujuaner.callback.IRecallGoodListener;
 import com.bili.diushoujuaner.model.tempHelper.GoodTemper;
+import com.bili.diushoujuaner.utils.Common;
 import com.bili.diushoujuaner.utils.Constant;
-import com.bili.diushoujuaner.utils.Imageloader;
 import com.bili.diushoujuaner.utils.response.RecallDto;
 import com.bili.diushoujuaner.presenter.presenter.HomeFragmentPresenter;
 import com.bili.diushoujuaner.presenter.view.IHomeView;
@@ -109,7 +109,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
         waveSwipeRefreshLayout.setWaveColor(Color.parseColor("#5C84DC"));
         waveSwipeRefreshLayout.setOnRefreshListener(this);
 
-        Imageloader.getInstance().displayDraweeView(ivNavHeadUrl, ivNavHead);
+        Common.displayDraweeView(ivNavHeadUrl, ivNavHead);
 
         basePresenter = new HomeFragmentPresenter(this, getContext());
         getRelativePresenter().showRecallFromCache();
@@ -187,7 +187,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
     public void showHead(String url) {
         ivNavHeadUrl = url;
         if(ivNavHead != null){
-            Imageloader.getInstance().displayDraweeView(ivNavHeadUrl, ivNavHead);
+            Common.displayDraweeView(ivNavHeadUrl, ivNavHead);
         }
     }
 

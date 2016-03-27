@@ -11,6 +11,9 @@ import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
 import com.bili.diushoujuaner.utils.Common;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.stetho.Stetho;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
+import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.orhanobut.logger.Logger;
 
 /**
@@ -29,12 +32,23 @@ public class CustomApplication extends Application {
         super.onCreate();
         instance = this;
         initHtpp();// 初始化网络请求
-        initImageLoader(); // 初始化图片加载器
-        initAcache();// 初始化缓存模块
+        initFresco(); // 初始化Fresco
+        initAcache();// 初始化ACache
         initPrefs(); // 初始化SharedPreference
         initDatabase();// 初始化DBManager
         initLogger();
         Stetho.initializeWithDefaults(this);
+        initImageLoader();
+    }
+
+    private void initImageLoader(){
+        ImageLoaderConfiguration.Builder configBuilder = new ImageLoaderConfiguration.Builder(this)
+                .threadPriority(Thread.NORM_PRIORITY - 2)
+                .denyCacheImageMultipleSizesInMemory();
+        configBuilder.tasksProcessingOrder(QueueProcessingType.LIFO);
+
+        ImageLoaderConfiguration config = configBuilder.build();
+        ImageLoader.getInstance().init(config);
     }
 
     private void initLogger(){
@@ -52,7 +66,7 @@ public class CustomApplication extends Application {
         ACache.initialize(this);
     }
 
-    private void initImageLoader() {
+    private void initFresco() {
         Fresco.initialize(this);
     }
 

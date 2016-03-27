@@ -6,7 +6,6 @@ import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.text.method.LinkMovementMethod;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -16,7 +15,6 @@ import android.widget.TextView;
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.adapter.CommentAdapter;
 import com.bili.diushoujuaner.adapter.ImageAdapter;
-import com.bili.diushoujuaner.base.BaseActivity;
 import com.bili.diushoujuaner.base.BaseFragmentActivity;
 import com.bili.diushoujuaner.fragment.PictureFragment;
 import com.bili.diushoujuaner.model.tempHelper.GoodTemper;
@@ -24,18 +22,13 @@ import com.bili.diushoujuaner.presenter.presenter.RecallDetailActivityPresenter;
 import com.bili.diushoujuaner.presenter.view.IRecallDetailView;
 import com.bili.diushoujuaner.utils.Common;
 import com.bili.diushoujuaner.utils.Constant;
-import com.bili.diushoujuaner.utils.Imageloader;
 import com.bili.diushoujuaner.utils.entity.PictureVo;
 import com.bili.diushoujuaner.utils.response.CommentDto;
 import com.bili.diushoujuaner.utils.response.GoodDto;
-import com.bili.diushoujuaner.utils.response.PictureDto;
 import com.bili.diushoujuaner.utils.response.RecallDto;
 import com.bili.diushoujuaner.widget.CustomGridView;
 import com.bili.diushoujuaner.widget.CustomListView;
 import com.bili.diushoujuaner.widget.aligntextview.CBAlignTextView;
-import com.bili.diushoujuaner.widget.picture.ImageInfo;
-import com.bili.diushoujuaner.widget.picture.PhotoFrescoView;
-import com.bili.diushoujuaner.widget.picture.PhotoView;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
@@ -78,7 +71,6 @@ public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActiv
     private CustomRunnable customRunnable;
     private CommentAdapter commentAdapter;
     private List<CommentDto> commentDtoList;
-    private ArrayList<ImageInfo> imageInfoArrayList;
     private ImageAdapter imageAdapter;
 
     @Override
@@ -103,7 +95,6 @@ public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActiv
         handler = new Handler();
         customRunnable = new CustomRunnable();
         pictureVoList = new ArrayList<>();
-        imageInfoArrayList = new ArrayList<>();
     }
 
     @Override
@@ -141,7 +132,7 @@ public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActiv
         layoutGood.setOnClickListener(this);
 
         txtRecallDetail.setText(recallDto.getContent());
-        Imageloader.getInstance().displayDraweeView(recallDto.getUserPicPath(), ivNavHead);
+        Common.displayDraweeView(recallDto.getUserPicPath(), ivNavHead);
         txtAuthor.setText(recallDto.getUserName());
         // 设置赞状态
         showGoodDetail(recallDto.getGoodList());
@@ -154,20 +145,12 @@ public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActiv
         customGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(view.isEnabled()) {
                     Bundle bundle = new Bundle();
                     bundle.putParcelableArrayList("PictureVoList", pictureVoList);
-                    bundle.putParcelable("ImageInfo", ((PhotoFrescoView) view).getInfo());
                     bundle.putInt("Position", position);
-                    imageInfoArrayList.clear();
-                    for (int i = 0; i < pictureVoList.size(); i++) {
-                        imageInfoArrayList.add(((PhotoFrescoView) parent.getChildAt(i)).getInfo());
-                    }
                     parent.getChildAt(position);
-                    bundle.putParcelableArrayList("ImageInfoList", imageInfoArrayList);
-                    getSupportFragmentManager().beginTransaction().replace(android.R.id.content, PictureFragment.getInstance(bundle), "PictureFragment")
+                    getSupportFragmentManager().beginTransaction().add(android.R.id.content, PictureFragment.getInstance(bundle), "PictureFragment")
                             .addToBackStack(null).commit();
-                }
             }
         });
 

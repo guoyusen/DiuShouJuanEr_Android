@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.NinePatchDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.telephony.TelephonyManager;
 import android.view.View;
@@ -19,6 +20,7 @@ import android.widget.EditText;
 import com.bili.diushoujuaner.utils.entity.PictureVo;
 import com.bili.diushoujuaner.utils.entity.SortVo;
 import com.bili.diushoujuaner.utils.response.PictureDto;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.orhanobut.logger.Logger;
 
 import java.lang.reflect.Field;
@@ -379,6 +381,14 @@ public class Common {
             pictureVoList.add(pictureVo);
         }
         return pictureVoList;
+    }
+
+    public static void displayDraweeView(String url, SimpleDraweeView draweeView) {
+        if(Common.isEmpty(url) || url.length() <= 0){
+            return;
+        }
+        Uri uri = Uri.parse(Common.getCompleteUrl(url));
+        draweeView.setImageURI(uri);
     }
 
 }

@@ -25,7 +25,6 @@ import com.bili.diushoujuaner.model.databasehelper.dao.User;
 import com.bili.diushoujuaner.presenter.presenter.MainActivityPresenter;
 import com.bili.diushoujuaner.presenter.view.IMainView;
 import com.bili.diushoujuaner.utils.Common;
-import com.bili.diushoujuaner.utils.Imageloader;
 import com.bili.diushoujuaner.utils.manager.ActivityManager;
 import com.bili.diushoujuaner.widget.CustomViewPager;
 import com.bili.diushoujuaner.widget.badgeview.BGABadgeTextView;
@@ -225,7 +224,7 @@ public class MainActivity extends BaseFragmentActivity<MainActivityPresenter> im
 
     @Override
     public void showUserInfo(User user) {
-        Imageloader.getInstance().displayDraweeView(user.getPicPath(), menuHead);
+        Common.displayDraweeView(user.getPicPath(), menuHead);
         txtAutograph.setText(user.getAutograph());
         txtUserName.setText(user.getNickName());
 

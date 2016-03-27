@@ -17,8 +17,8 @@ import com.bili.diushoujuaner.callback.IMainFragmentOperateListener;
 import com.bili.diushoujuaner.callback.IMainOperateListener;
 import com.bili.diushoujuaner.presenter.presenter.ContactFragmentPresenter;
 import com.bili.diushoujuaner.presenter.view.IContactView;
+import com.bili.diushoujuaner.utils.Common;
 import com.bili.diushoujuaner.utils.Constant;
-import com.bili.diushoujuaner.utils.Imageloader;
 import com.bili.diushoujuaner.utils.entity.FriendVo;
 import com.bili.diushoujuaner.widget.CustomListView;
 import com.bili.diushoujuaner.widget.ReboundScrollView;
@@ -93,7 +93,7 @@ public class ContactFragment extends BaseFragment<ContactFragmentPresenter> impl
         layoutParty.setOnClickListener(this);
         txtRight.setOnClickListener(this);
 
-        Imageloader.getInstance().displayDraweeView(ivNavHeadUrl, ivNavHead);
+        Common.displayDraweeView(ivNavHeadUrl, ivNavHead);
 
         basePresenter = new ContactFragmentPresenter(this, getContext());
         getRelativePresenter().getContactList();
@@ -133,7 +133,7 @@ public class ContactFragment extends BaseFragment<ContactFragmentPresenter> impl
     public void showHead(String url) {
         ivNavHeadUrl = url;
         if(ivNavHead != null){
-            Imageloader.getInstance().displayDraweeView(ivNavHeadUrl, ivNavHead);
+            Common.displayDraweeView(ivNavHeadUrl, ivNavHead);
         }
     }
 }

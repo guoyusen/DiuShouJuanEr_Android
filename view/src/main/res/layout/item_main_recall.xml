@@ -62,7 +62,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:viewAspectRatio="2"
-            app:retryImageScaleType="centerCrop"/>
+            app:actualImageScaleType="centerCrop"/>
 
         <TextView
             android:id="@+id/txtItemPicCount"
