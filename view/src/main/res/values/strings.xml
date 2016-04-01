@@ -24,64 +24,8 @@
     <string name="warning_503">服务器维护中...</string>
     <string name="warning_parse">数据解析失败</string>
 
-    <string name="tip_nodata">客官，好像咩数据哦</string>
+<string name="tip_nodata">暂无数据</string>
     <string name="tip_nomess">客官，最近没消息哦</string>
     
-    <string name="timespan_now">刚刚</string>
-    <plurals name="timespan_years">
-        <item quantity="one">%d年前</item>
-        <item quantity="other">%d年前</item>
-    </plurals>
-    <plurals name="timespan_months">
-        <item quantity="one">%d月前</item>
-        <item quantity="other">%d月前</item>
-    </plurals>
-    <plurals name="timespan_weeks">
-        <item quantity="one">%d周前</item>
-        <item quantity="other">%d周前</item>
-    </plurals>
-    <plurals name="timespan_days">
-        <item quantity="one">%d天前</item>
-        <item quantity="other">%d天前</item>
-    </plurals>
-    <plurals name="timespan_hours">
-        <item quantity="one">%d小时前</item>
-        <item quantity="other">%d小时前</item>
-    </plurals>
-    <plurals name="timespan_minutes">
-        <item quantity="one">%d分钟前</item>
-        <item quantity="other">%d分钟前</item>
-    </plurals>
-    <plurals name="timespan_seconds">
-        <item quantity="one">%d秒前</item>
-        <item quantity="other">%d秒前</item>
-    </plurals>
-    <plurals name="timespan_years_abbr">
-        <item quantity="one">%dyr</item>
-        <item quantity="other">%dyr</item>
-    </plurals>
-    <plurals name="timespan_months_abbr">
-        <item quantity="one">%dmo</item>
-        <item quantity="other">%dmo</item>
-    </plurals>
-    <plurals name="timespan_weeks_abbr">
-        <item quantity="one">%dwk</item>
-        <item quantity="other">%dwk</item>
-    </plurals>
-    <plurals name="timespan_days_abbr">
-        <item quantity="one">%dd</item>
-        <item quantity="other">%dd</item>
-    </plurals>
-    <plurals name="timespan_hours_abbr">
-        <item quantity="one">%dh</item>
-        <item quantity="other">%dh</item>
-    </plurals>
-    <plurals name="timespan_minutes_abbr">
-        <item quantity="one">%dm</item>
-        <item quantity="other">%dm</item>
-    </plurals>
-    <plurals name="timespan_seconds_abbr">
-        <item quantity="one">%ds</item>
-        <item quantity="other">%ds</item>
-    </plurals>
+    <string name="send_hint">说点什么呗...</string>
 </resources>

@@ -39,7 +39,7 @@ public class CustomListViewRefresh extends ListView implements OnScrollListener 
 	/** 可以加载更多？ */
 	private boolean mCanLoadMore = true;
 	/** 下拉刷新后是否显示第一条Item */
-	private boolean mIsMoveToFirstItemAfterRefresh = true;
+	private boolean mIsMoveToFirstItemAfterRefresh = false;
 
 	private LayoutInflater mInflater;
 	private View mEndRootView;

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.AdapterView;
 
@@ -78,7 +79,7 @@ public class MessageFragment extends BaseFragment implements WaveSwipeRefreshLay
         });
 
         waveSwipeRefreshLayout.setColorSchemeColors(Color.WHITE, Color.WHITE);
-        waveSwipeRefreshLayout.setWaveColor(Color.parseColor("#5C84DC"));
+        waveSwipeRefreshLayout.setWaveColor(ContextCompat.getColor(context, R.color.COLOR_THEME));
         waveSwipeRefreshLayout.setOnRefreshListener(this);
 
         Common.displayDraweeView(ivNavHeadUrl, ivNavHead);

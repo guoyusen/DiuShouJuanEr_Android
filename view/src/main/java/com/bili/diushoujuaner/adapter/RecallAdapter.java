@@ -1,6 +1,7 @@
 package com.bili.diushoujuaner.adapter;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.ImageView;
@@ -8,14 +9,17 @@ import android.widget.TextView;
 
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.adapter.viewholder.ViewHolder;
-import com.bili.diushoujuaner.callback.IRecallGoodListener;
+import com.bili.diushoujuaner.event.RecallGoodEvent;
 import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
 import com.bili.diushoujuaner.model.tempHelper.ContactTemper;
 import com.bili.diushoujuaner.model.tempHelper.GoodTemper;
 import com.bili.diushoujuaner.utils.Common;
 import com.bili.diushoujuaner.utils.response.GoodDto;
 import com.bili.diushoujuaner.utils.response.RecallDto;
+import com.bili.diushoujuaner.widget.TintedBitmapDrawable;
 import com.facebook.drawee.view.SimpleDraweeView;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -24,14 +28,10 @@ import java.util.List;
  */
 public class RecallAdapter extends CommonAdapter<RecallDto> {
 
-    private IRecallGoodListener recallGoodListener;
+    private Drawable thumbUpDrawable, thumbDownDrawable, commentDrawable, frienddrawable;
 
     public RecallAdapter(Context context, List<RecallDto> list){
-        super(context,list, R.layout.item_main_recall);
-    }
-
-    public void setRecallGoodListener(IRecallGoodListener recallGoodListener) {
-        this.recallGoodListener = recallGoodListener;
+        super(context, list, R.layout.item_main_recall);
     }
 
     @Override
@@ -50,14 +50,24 @@ public class RecallAdapter extends CommonAdapter<RecallDto> {
             }else{
                 holder.getView(R.id.layoutItemPic).setVisibility(View.GONE);
             }
+            //设置好友标志和昵称
             String userName = ContactTemper.getFriendRemark(recallDto.getUserNo());
             if(userName != null){
                 ((TextView) holder.getView(R.id.txtItemUserName)).setText(userName);
-                holder.getView(R.id.ivItemFriend).setVisibility(View.VISIBLE);
+                if(frienddrawable == null){
+                    frienddrawable = new TintedBitmapDrawable(context.getResources(),R.mipmap.icon_friend,ContextCompat.getColor(context, R.color.COLOR_BFBFBF));
+                }
+                ((ImageView)holder.getView(R.id.ivItemFriend)).setVisibility(View.VISIBLE);
+                ((ImageView)holder.getView(R.id.ivItemFriend)).setImageDrawable(frienddrawable);
             }else{
                 ((TextView) holder.getView(R.id.txtItemUserName)).setText(recallDto.getUserName());
                 holder.getView(R.id.ivItemFriend).setVisibility(View.GONE);
             }
+            // 设置评论图标
+            if(commentDrawable == null){
+                commentDrawable = new TintedBitmapDrawable(context.getResources(),R.mipmap.icon_comment,ContextCompat.getColor(context, R.color.COLOR_BFBFBF));
+            }
+            ((ImageView)holder.getView(R.id.ivItemComment)).setImageDrawable(commentDrawable);
 
             ((TextView)holder.getView(R.id.tetItemPublishTime)).setText(Common.getFormatTime(recallDto.getPublishTime()));
             ((TextView)holder.getView(R.id.tetItemContent)).setText(recallDto.getContent());
@@ -69,7 +79,7 @@ public class RecallAdapter extends CommonAdapter<RecallDto> {
             holder.getView(R.id.layoutItemGood).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    recallGoodListener.getGoodChange(holder,position);
+                    EventBus.getDefault().post(new RecallGoodEvent(position));
                 }
             });
         }
@@ -95,10 +105,16 @@ public class RecallAdapter extends CommonAdapter<RecallDto> {
 
     private void setGoodStatus(ViewHolder holder, boolean goodStatus){
         if(goodStatus){
-            ((ImageView)holder.getView(R.id.ivItemGood)).setImageResource(R.mipmap.icon_good_press);
-            ((TextView)holder.getView(R.id.txtGoodCount)).setTextColor(ContextCompat.getColor(context, R.color.TC_5C84DC));
+            if(thumbUpDrawable == null){
+                thumbUpDrawable = new TintedBitmapDrawable(context.getResources(),R.mipmap.icon_good,ContextCompat.getColor(context, R.color.COLOR_THEME));
+            }
+            ((ImageView)holder.getView(R.id.ivItemGood)).setImageDrawable(thumbUpDrawable);
+            ((TextView)holder.getView(R.id.txtGoodCount)).setTextColor(ContextCompat.getColor(context, R.color.TC_12B7F5));
         }else{
-            ((ImageView)holder.getView(R.id.ivItemGood)).setImageResource(R.mipmap.icon_good_normal);
+            if(thumbDownDrawable == null){
+                thumbDownDrawable = new TintedBitmapDrawable(context.getResources(),R.mipmap.icon_good,ContextCompat.getColor(context, R.color.COLOR_BFBFBF));
+            }
+            ((ImageView)holder.getView(R.id.ivItemGood)).setImageDrawable(thumbDownDrawable);
             ((TextView)holder.getView(R.id.txtGoodCount)).setTextColor(ContextCompat.getColor(context, R.color.TC_BFBFBF));
         }
     }

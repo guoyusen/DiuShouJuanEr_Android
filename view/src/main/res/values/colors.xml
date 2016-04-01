@@ -5,27 +5,32 @@
 
     <!-- 常用颜色 -->
     <color name="COLOR_WHITE">#FFFFFF</color>
-    <color name="COLOR_THEME">#5C84DC</color>
+    <!--<color name="COLOR_THEME">#5C84DC</color>-->
+    <color name="COLOR_THEME">#12B7F5</color>
     <color name="COLOR_BLACK">#000000</color>
+    <color name="COLOR_BFBFBF">#BFBFBF</color>
 
     <!-- 背景常用颜-色 -->
     <color name="BG_F6F6F6">#F6F6F6</color>
     <color name="BG_TOAST">#99000000</color>
     <color name="BG_ECECEC">#ECECEC</color>
+    <color name="BG_333645">#333645</color>
+    <color name="BG_ADADBB">#ADADBB</color>
+    <color name="BG_DDDEE2">#DDDEE2</color>
 
     <color name="SELECT_HLIGHT">#88E67F22</color>
 
     <!-- 线条常用颜色 -->
     <color name="LC_F6F6F6">#F6F6F6</color>
     <color name="LC_BFBFBF">#BFBFBF</color>
-    <color name="LC_5C84DC">#5C84DC</color>
+    <color name="LC_12B7F5">#12b7f5</color>
 
     <!-- 字体常用颜色 -->
     <color name="TC_WHITE_HINT">#AAFFFFFF</color>
     <color name="TC_WHITE">#FFFFFF</color>
     <color name="TC_040404">#040404</color>
     <color name="TC_ADADBB">#ADADBB</color><!-- nav按钮normal使用 -->
-    <color name="TC_5C84DC">#5C84DC</color><!-- nav按钮press使用 -->
+    <color name="TC_12B7F5">#12b7f5</color><!-- nav按钮press使用 -->
     <color name="TC_FF4081">#ff4081</color>
     <color name="TC_2D2D2D">#2d2d2d</color>
     <color name="TC_F55555">#F55555</color>
@@ -36,8 +41,8 @@
     <!-- 按钮常用颜色 -->
     <color name="BTN_GREEN1">#9DEC5B</color>
     <color name="BTN_GREEN2">#95E058</color>
-    <color name="BTN_BLUE1">#5C84DC</color>
-    <color name="BTN_BLUE2">#577dcf</color>
+    <color name="BTN_BLUE1">#12b7f5</color>
+    <color name="BTN_BLUE2">#00b7fb</color>
     <color name="BTN_RED1">#FC6E51</color>
     <color name="BTN_RED2">#E9573F</color>
 

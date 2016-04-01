@@ -5,11 +5,11 @@
     android:layout_height="wrap_content">
 
     <com.facebook.drawee.view.SimpleDraweeView
-    android:id="@+id/ivItemPicture"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="@dimen/x8"
-    app:viewAspectRatio="1.4"
-    app:actualImageScaleType="centerCrop"/>
+        android:id="@+id/ivItemPicture"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/x8"
+        app:actualImageScaleType="centerCrop"
+        app:viewAspectRatio="1.4" />
 
 </RelativeLayout>

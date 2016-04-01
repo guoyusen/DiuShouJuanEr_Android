@@ -16,7 +16,6 @@
             android:id="@+id/ivItemFriend"
             android:layout_width="@dimen/x42"
             android:layout_height="@dimen/x42"
-            android:src="@mipmap/icon_friend"
             android:layout_alignBottom="@+id/txtItemUserName"
             android:layout_alignParentRight="true"/>
 
@@ -106,9 +105,10 @@
             android:orientation="horizontal">
 
             <ImageView
+                android:id="@+id/ivItemComment"
+                android:layout_marginTop="@dimen/y3"
                 android:layout_width="@dimen/x36"
-                android:layout_height="@dimen/y36"
-                android:src="@mipmap/icon_comment_normal"/>
+                android:layout_height="@dimen/y36"/>
 
             <TextView
                 android:id="@+id/txtCommentCount"
@@ -130,14 +130,13 @@
             <ImageView
                 android:id="@+id/ivItemGood"
                 android:layout_width="@dimen/x36"
-                android:layout_height="@dimen/y36"
-                android:src="@mipmap/icon_good_press"/>
+                android:layout_height="@dimen/y36"/>
 
             <TextView
                 android:id="@+id/txtGoodCount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/TC_5C84DC"
+                android:textColor="@color/TC_12B7F5"
                 android:layout_marginLeft="@dimen/x10"
                 style="@style/TextMiddle"/>
 

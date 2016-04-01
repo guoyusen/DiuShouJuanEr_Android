@@ -3,7 +3,6 @@ package com.bili.diushoujuaner.base;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Window;
@@ -15,15 +14,13 @@ import com.bili.diushoujuaner.presenter.base.BasePresenter;
 import com.bili.diushoujuaner.utils.manager.ActivityManager;
 import com.bili.diushoujuaner.utils.manager.SystemBarTintManager;
 
-import java.util.Date;
-
 import butterknife.ButterKnife;
 
 /**
  * Created by BiLi on 2016/2/27.
  */
 @TargetApi(Build.VERSION_CODES.KITKAT)
-public abstract class AbstractBaseActivity extends Activity {
+public abstract class AbstractBaseActivity extends Activity implements IBaseActivity{
 
     public final String TAG = getClass().getSimpleName();
     public Context context;
@@ -31,62 +28,6 @@ public abstract class AbstractBaseActivity extends Activity {
     public SystemBarTintManager tintManager;
     protected BasePresenter basePresenter;
 
-    /**
-     * 初始化activity传递的参数
-     */
-    public abstract void initIntentParam(Intent intent);
-
-    /**
-     * 初始化页面之前的操作
-     */
-    public abstract void beforeInitView();
-
-    /**
-     * 定义页面控件
-     */
-    public abstract void initView();
-
-    /**
-     * 设置页面控件事件和状态
-     */
-    public abstract void setViewStatus();
-
-    /**
-     * == onResume()
-     */
-    public abstract void onPageResume();
-
-    /**
-     * == onPause()
-     */
-    public abstract void onPagePause();
-
-    /**
-     * == onDestroy()
-     */
-    public abstract void onPageDestroy();
-
-    /**
-     * == 显示加载框
-     */
-    public abstract void showLoading(int loadingType, String message);
-
-    /**
-     * == 隐藏加载框
-     */
-    public abstract void hideLoading(int loadingType);
-
-    /**
-     * == 显示警告信息
-     */
-    public abstract void showWarning(String message);
-
-    /**
-     * == 显示警告信息
-     */
-    public abstract void showWarning(int warningType);
-
-    public abstract void showPageHead(String titleText, Integer iconId, String rightText);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,11 +92,6 @@ public abstract class AbstractBaseActivity extends Activity {
     protected void onResume() {
         super.onResume();
         onPageResume();
-    }
-
-    @Override
-    public void finish() {
-        super.finish();
     }
 
 }

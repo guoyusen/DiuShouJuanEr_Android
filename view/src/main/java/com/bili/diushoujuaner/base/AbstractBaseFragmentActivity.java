@@ -6,7 +6,6 @@ package com.bili.diushoujuaner.base;
 
 import android.annotation.TargetApi;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -24,71 +23,13 @@ import com.bili.diushoujuaner.utils.manager.SystemBarTintManager;
 
 import butterknife.ButterKnife;
 
-public abstract class AbstractBaseFragmentActivity extends FragmentActivity {
+public abstract class AbstractBaseFragmentActivity extends FragmentActivity implements IBaseActivity{
 
     public final String TAG = getClass().getSimpleName();
     public Context context;
     public CustomApplication customApplication;
     public SystemBarTintManager tintManager;
     protected BasePresenter basePresenter;
-
-    /**
-     * 初始化activity传递的参数
-     */
-    public abstract void initIntentParam(Intent intent);
-
-    /**
-     * 初始化页面之前的操作
-     */
-    public abstract void beforeInitView();
-
-    /**
-     * 定义页面控件
-     */
-    public abstract void initView();
-
-    /**
-     * 设置页面控件事件和状态
-     */
-    public abstract void setViewStatus();
-
-
-    /**
-     * == onResume()
-     */
-    public abstract void onPageResume();
-
-    /**
-     * == onPause()
-     */
-    public abstract void onPagePause();
-
-    /**
-     * == onDestroy()
-     */
-    public abstract void onPageDestroy();
-
-    /**
-     * == 显示加载框
-     */
-    public abstract void showLoading(int loadingType, String message);
-
-    /**
-     * == 隐藏加载框
-     */
-    public abstract void hideLoading(int loadingType);
-
-    /**
-     * == 显示警告信息
-     */
-    public abstract void showWarning(String message);
-
-    /**
-     * == 显示警告信息
-     */
-    public abstract void showWarning(int warningType);
-
-    public abstract void showPageHead(String titleText, Integer iconId, String rightText);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -168,11 +109,6 @@ public abstract class AbstractBaseFragmentActivity extends FragmentActivity {
     @Override
     public void setContentView(View view, ViewGroup.LayoutParams params) {
         super.setContentView(view, params);
-    }
-
-    @Override
-    public void finish() {
-        super.finish();
     }
 
 }

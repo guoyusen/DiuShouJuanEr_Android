@@ -1,12 +1,13 @@
 package com.bili.diushoujuaner.model.apihelper;
 
+import com.bili.diushoujuaner.utils.Constant;
+
 import java.io.Serializable;
 
 /**
  * Created by BiLi on 2016/3/11.
  */
 public class ApiRespon<T>  implements Serializable {
-
 
     private String message;
     private String retCode;
@@ -35,4 +36,9 @@ public class ApiRespon<T>  implements Serializable {
     public void setData(T data) {
         this.data = data;
     }
+
+    public boolean getIsLegal(){
+        return this.getRetCode().equals(Constant.RETCODE_SUCCESS);
+    }
+
 }

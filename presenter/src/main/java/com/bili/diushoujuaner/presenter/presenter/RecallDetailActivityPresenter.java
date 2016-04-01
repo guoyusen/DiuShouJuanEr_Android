@@ -99,15 +99,11 @@ public class RecallDetailActivityPresenter extends BasePresenter<IRecallDetailVi
         }
     }
 
-    public List<GoodDto> getGoodDtoListFromTemper(long recallNo){
-        return RecallTemper.getRecallDto(recallNo).getGoodList();
-    }
-
     public void addGoodDtoToTemper(long recallNo){
         GoodDto goodDto = new GoodDto();
         goodDto.setUserNo(CustomSessionPreference.getInstance().getCustomSession().getUserNo());
         goodDto.setNickName(DBManager.getInstance().getUser(CustomSessionPreference.getInstance().getCustomSession().getUserNo()).getRealName());
-        RecallTemper.addGood(recallNo, goodDto);
+        RecallTemper.addGood(goodDto, recallNo);
     }
 
     public void removeGoodDtoFromTemper(long recallNo){

@@ -3,15 +3,21 @@ package com.bili.diushoujuaner.widget;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.widget.RelativeLayout;
 
 import com.bili.diushoujuaner.R;
+import com.bili.diushoujuaner.base.BaseActivity;
+import com.bili.diushoujuaner.base.IBaseActivity;
 import com.bili.diushoujuaner.utils.Common;
+import com.bili.diushoujuaner.utils.manager.SystemBarTintManager;
 import com.facebook.common.executors.CallerThreadExecutor;
 import com.facebook.common.references.CloseableReference;
 import com.facebook.datasource.DataSource;
@@ -53,7 +59,6 @@ public class CustomRelativeLayout extends RelativeLayout {
             return;
         }
         this.context = context;
-        drawHeight = getResources().getDimension(R.dimen.y500);
         showTopBg();
         setBackground(new ColorDrawable(ContextCompat.getColor(context, R.color.COLOR_WHITE)));
     }
@@ -62,6 +67,7 @@ public class CustomRelativeLayout extends RelativeLayout {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         drawWidth = measureWidth(widthMeasureSpec);
+        drawHeight = drawWidth * 5 / 6;
     }
 
     private int measureWidth(int measureSpec) {
@@ -84,8 +90,11 @@ public class CustomRelativeLayout extends RelativeLayout {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        if(this.drawBitmap != null){
+        if(this.drawBitmap != null && !this.drawBitmap.isRecycled()){
             drawImage(canvas, this.drawBitmap, 0, 0, (int)drawWidth, (int)(drawWidth >= drawHeight ? drawWidth : drawHeight), 0, 0);
+            drawBitmap.recycle();
+        }else{
+            showTopBg();
         }
     }
 
@@ -103,7 +112,7 @@ public class CustomRelativeLayout extends RelativeLayout {
         dataSource.subscribe(new BaseBitmapDataSubscriber() {
             @Override
             protected void onNewResultImpl(Bitmap bitmap) {
-                drawBitmap = bitmap;
+                drawBitmap = Bitmap.createBitmap(bitmap);
                 invalidate();
             }
 

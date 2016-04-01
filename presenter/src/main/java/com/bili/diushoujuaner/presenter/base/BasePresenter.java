@@ -57,7 +57,8 @@ public class BasePresenter<T extends IBaseView> {
             return false;
         }
         switch (retCode) {
-            case "fail":
+            case Constant.RETCODE_FAIL:
+            case Constant.RETCODE_ERROR:
                 baseView.showWarning(message);
                 return false;
             default:

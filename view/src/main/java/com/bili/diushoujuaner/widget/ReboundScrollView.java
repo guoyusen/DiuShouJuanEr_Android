@@ -24,7 +24,7 @@ public class ReboundScrollView extends ScrollView {
 
     //移动因子, 是一个百分比, 比如手指移动了100px, 那么View就只移动50px
     //目的是达到一个延迟的效果
-    private static final float MOVE_FACTOR = 0.2f;
+    private static final float MOVE_FACTOR = 0.18f;
 
     //松开手指后, 界面回到正常位置需要的动画时间
     private static final int ANIM_TIME = 300;

@@ -4,11 +4,9 @@
     style="@style/MatchMatch">
 
     <include
-        android:id="@+id/layoutMainContent"
         layout="@layout/include_main_content" />
 
     <include
-        android:id="@+id/layoutMainMenu"
         layout="@layout/include_main_menu"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -18,6 +18,7 @@ public class CommentDto implements Parcelable {
      * nickName : 曹孟德
      */
 
+    private String timeStamp;
     private String addTime;
     private long commentNo;
     private String content;
@@ -82,6 +83,14 @@ public class CommentDto implements Parcelable {
         this.responList = responList;
     }
 
+    public String getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(String timeStamp) {
+        this.timeStamp = timeStamp;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -89,6 +98,7 @@ public class CommentDto implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.timeStamp);
         dest.writeString(this.addTime);
         dest.writeLong(this.commentNo);
         dest.writeString(this.content);
@@ -102,6 +112,7 @@ public class CommentDto implements Parcelable {
     }
 
     protected CommentDto(Parcel in) {
+        this.timeStamp = in.readString();
         this.addTime = in.readString();
         this.commentNo = in.readLong();
         this.content = in.readString();

@@ -46,7 +46,7 @@
             android:gravity="center"
             android:text="搜索"
             style="@style/TextMiddle"
-            android:textColor="@color/TC_5C84DC"/>
+            android:textColor="@color/TC_12B7F5"/>
 
     </RelativeLayout>
 

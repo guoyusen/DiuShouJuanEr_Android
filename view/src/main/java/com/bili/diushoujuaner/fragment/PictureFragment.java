@@ -67,7 +67,7 @@ public class PictureFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         ((BaseFragmentActivity)getActivity()).tintManager.setStatusBarTintResource(R.color.COLOR_BLACK);
-        runEnterAnimation();
+//        runEnterAnimation();
         Bundle bundle = getArguments();
         pictureVoList = bundle.getParcelableArrayList("PictureVoList");
         position = bundle.getInt("Position", 0);
@@ -90,7 +90,6 @@ public class PictureFragment extends Fragment {
                 view.setController(Fresco.newDraweeControllerBuilder()
                         .setUri(Uri.parse(Common.getCompleteUrl(pictureVoList.get(pos).getPicPath())))
                         .build());
-
                 GenericDraweeHierarchy hierarchy =
                         new GenericDraweeHierarchyBuilder(container.getResources())
                                 .setActualImageScaleType(ScalingUtils.ScaleType.FIT_CENTER)

@@ -3,6 +3,7 @@ package com.bili.diushoujuaner.presenter.presenter;
 import android.content.Context;
 
 import com.bili.diushoujuaner.model.action.GoodAction;
+import com.bili.diushoujuaner.model.action.respon.ActionRespon;
 import com.bili.diushoujuaner.model.apihelper.ApiRespon;
 import com.bili.diushoujuaner.model.cachehelper.ACache;
 import com.bili.diushoujuaner.model.databasehelper.DBManager;
@@ -35,19 +36,6 @@ public class HomeFragmentPresenter extends BasePresenter<IHomeView> {
         super(baseView, context);
     }
 
-    public boolean executeGoodChange(boolean goodstatus, long recallNo){
-        if(goodstatus == GoodTemper.getGoodStatus(recallNo)){
-            return goodstatus;
-        }
-        if(GoodTemper.getGoodStatus(recallNo)){
-            getGoodAdd(recallNo);
-            return true;
-        }else{
-            getGoodRemove(recallNo);
-            return false;
-        }
-    }
-
     public void getGoodAdd(long recallNo){
         GoodAction.getInstance().getGoodAdd(recallNo, new ActionCallbackListener<ApiRespon<String>>() {
             @Override
@@ -76,31 +64,22 @@ public class HomeFragmentPresenter extends BasePresenter<IHomeView> {
         });
     }
 
-    public void addGoodDtoToTemper(long recallNo){
-        GoodDto goodDto = new GoodDto();
-        goodDto.setUserNo(CustomSessionPreference.getInstance().getCustomSession().getUserNo());
-        goodDto.setNickName(DBManager.getInstance().getUser(CustomSessionPreference.getInstance().getCustomSession().getUserNo()).getRealName());
-        RecallTemper.addGood(recallNo, goodDto);
-    }
-
-    public void removeGoodDtoFromTemper(long recallNo){
-        RecallTemper.removeGood(recallNo);
-    }
-
     public void getRecallList(final int refreshType){
         showLoadingByRefreshType(refreshType);
         initRecallListReq();
 
-        RecallAction.getInstance().getRecallList(recallListReq, new ActionCallbackListener<ApiRespon<List<RecallDto>>>() {
+        RecallAction.getInstance().getRecallList(recallListReq, new ActionCallbackListener<ActionRespon<List<RecallDto>>>() {
             @Override
-            public void onSuccess(ApiRespon<List<RecallDto>> result) {
+            public void onSuccess(ActionRespon<List<RecallDto>> result) {
                 if (showMessage(result.getRetCode(), result.getMessage())) {
-                    updateRequestParam(result.getData());
-                    getRelativeView().showRecallList(result.getData());
+                    if (result.getData() != null) {
+                        updateRequestParam(result.getData());
+                        getRelativeView().showRecallList(result.getData());
 
-                    RecallTemper.clear();
-                    GoodTemper.clear();
-                    RecallTemper.addRecallDtoList(result.getData());
+                        RecallTemper.clear();
+                        GoodTemper.clear();
+                        RecallTemper.addRecallDtoList(result.getData());
+                    }
                 }
                 hideLoading();
             }
@@ -114,6 +93,73 @@ public class HomeFragmentPresenter extends BasePresenter<IHomeView> {
 
     }
 
+    public void showRecallFromCache(){
+        RecallAction.getInstance().getRecallListFromACache(new ActionCallbackListener<ActionRespon<List<RecallDto>>>() {
+            @Override
+            public void onSuccess(ActionRespon<List<RecallDto>> result) {
+                if (showMessage(result.getRetCode(), result.getMessage())) {
+                    if (result.getData() != null) {
+                        RecallTemper.clear();
+                        RecallTemper.addRecallDtoList(result.getData());
+                        getRelativeView().showRecallList(result.getData());
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(int errorCode) {
+            }
+        });
+    }
+
+    public void getMoreRecallList(){
+        RecallAction.getInstance().getRecallList(recallListReq, new ActionCallbackListener<ActionRespon<List<RecallDto>>>() {
+            @Override
+            public void onSuccess(ActionRespon<List<RecallDto>> result) {
+                if (showMessage(result.getRetCode(), result.getMessage())) {
+                    if(result.getData() != null){
+                        updateRequestParam(result.getData());
+                        getRelativeView().showMoreRecallList(result.getData());
+
+                        RecallTemper.addRecallDtoList(result.getData());
+                    }
+                }else{
+                    getRelativeView().setLoadMoreEnd();
+                }
+            }
+
+            @Override
+            public void onFailure(int errorCode) {
+                showError(errorCode);
+                getRelativeView().setLoadMoreEnd();
+            }
+        });
+    }
+
+    public boolean executeGoodChange(boolean goodstatus, long recallNo){
+        if(goodstatus == GoodTemper.getGoodStatus(recallNo)){
+            return goodstatus;
+        }
+        if(GoodTemper.getGoodStatus(recallNo)){
+            getGoodAdd(recallNo);
+            return true;
+        }else{
+            getGoodRemove(recallNo);
+            return false;
+        }
+    }
+
+    public void addGoodDtoToTemper(int position){
+        GoodDto goodDto = new GoodDto();
+        goodDto.setUserNo(CustomSessionPreference.getInstance().getCustomSession().getUserNo());
+        goodDto.setNickName(DBManager.getInstance().getUser(CustomSessionPreference.getInstance().getCustomSession().getUserNo()).getRealName());
+        RecallTemper.addGood(goodDto, position);
+    }
+
+    public void removeGoodDtoFromTemper(int position){
+        RecallTemper.removeGood(position);
+    }
+
     private void showLoadingByRefreshType(int refreshType){
         if(refreshType == Constant.REFRESH_DEFAULT){
             showLoading(Constant.LOADING_DEFAULT, "");
@@ -125,44 +171,8 @@ public class HomeFragmentPresenter extends BasePresenter<IHomeView> {
         getRelativeView().setRefreshingEnd();
     }
 
-    public void showRecallFromCache(){
-        List<RecallDto> recallDtoList = GsonParser.getInstance().fromJson(ACache.getInstance().getAsString(Constant.ACACHE_RECALL_LIST), new TypeToken<List<RecallDto>>() {
-        }.getType());
-
-        RecallTemper.clear();
-        RecallTemper.addRecallDtoList(recallDtoList);
-
-        getRelativeView().showRecallList(recallDtoList);
-    }
-
-    public void getMoreRecallList(){
-        if(Common.checkNetworkStatus(context)) {
-            RecallAction.getInstance().getRecallList(recallListReq, new ActionCallbackListener<ApiRespon<List<RecallDto>>>() {
-                @Override
-                public void onSuccess(ApiRespon<List<RecallDto>> result) {
-                    if (showMessage(result.getRetCode(), result.getMessage())) {
-                        updateRequestParam(result.getData());
-                        getRelativeView().showMoreRecallList(result.getData());
-
-                        RecallTemper.addRecallDtoList(result.getData());
-                    }
-                    hideLoading(Constant.LOADING_DEFAULT);
-                }
-
-                @Override
-                public void onFailure(int errorCode) {
-                    showError(errorCode);
-                    hideLoading(Constant.LOADING_DEFAULT);
-                }
-            });
-        }else{
-            getRelativeView().showWarning(Constant.WARNING_NET);
-            getRelativeView().setLoadMoreEnd();
-        }
-    }
-
     private void updateRequestParam(List<RecallDto> recallDtoList){
-        if(recallDtoList.size() > 0){
+        if(recallDtoList.size() >= recallListReq.getPageSize()){
             recallListReq.setPageIndex(recallListReq.getPageIndex() + 1);
             recallListReq.setLastRecall(recallDtoList.get(0).getRecallNo());
         }

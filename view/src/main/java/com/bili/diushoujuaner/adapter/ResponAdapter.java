@@ -4,9 +4,8 @@ import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.text.SpannableString;
 import android.text.Spanned;
-import android.text.TextPaint;
-import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
@@ -30,6 +29,23 @@ public class ResponAdapter extends CommonAdapter<ResponDto> {
     public void convert(ViewHolder holder, ResponDto responDto, int position) throws Exception {
         if(responDto != null){
             ((TextView)holder.getView(R.id.txtRespon)).setText(getSpannableString(responDto));
+            holder.getView(R.id.txtRespon).setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_DOWN:
+                            v.setBackgroundColor(ContextCompat.getColor(context, R.color.BG_ECECEC));
+                            break;
+                        case MotionEvent.ACTION_UP:
+                            v.setBackgroundColor(ContextCompat.getColor(context, R.color.COLOR_WHITE));
+                            break;
+                        case MotionEvent.ACTION_CANCEL:
+                            v.setBackgroundColor(ContextCompat.getColor(context, R.color.COLOR_WHITE));
+                            break;
+                    }
+                    return true;
+                }
+            });
         }
     }
 
@@ -48,7 +64,7 @@ public class ResponAdapter extends CommonAdapter<ResponDto> {
         int end = 0;
         end += userFromName != null ? userFromName.length() : responDto.getNickNameFrom().length();
         responSpan.setSpan(
-                new ForegroundColorSpan(ContextCompat.getColor(context, R.color.TC_5C84DC)),
+                new ForegroundColorSpan(ContextCompat.getColor(context, R.color.TC_12B7F5)),
                 start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         start = end;
         end += " 回复 ".length();
@@ -58,7 +74,7 @@ public class ResponAdapter extends CommonAdapter<ResponDto> {
         start = end;
         end += userToName != null ? userToName.length() : responDto.getNickNameTo().length();
         responSpan.setSpan(
-                new ForegroundColorSpan(ContextCompat.getColor(context, R.color.TC_5C84DC)),
+                new ForegroundColorSpan(ContextCompat.getColor(context, R.color.TC_12B7F5)),
                 start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         start = end;
         end += responDto.getContent().length() + 1;

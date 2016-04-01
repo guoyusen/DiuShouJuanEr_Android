@@ -2,14 +2,16 @@ package com.bili.diushoujuaner.activity;
 
 
 import android.content.Intent;
-import android.graphics.Color;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,7 +28,9 @@ import com.bili.diushoujuaner.presenter.presenter.MainActivityPresenter;
 import com.bili.diushoujuaner.presenter.view.IMainView;
 import com.bili.diushoujuaner.utils.Common;
 import com.bili.diushoujuaner.utils.manager.ActivityManager;
+import com.bili.diushoujuaner.widget.CustomRelativeLayout;
 import com.bili.diushoujuaner.widget.CustomViewPager;
+import com.bili.diushoujuaner.widget.TintedBitmapDrawable;
 import com.bili.diushoujuaner.widget.badgeview.BGABadgeTextView;
 import com.bili.diushoujuaner.widget.badgeview.BGABottomNavigation;
 import com.bili.diushoujuaner.widget.badgeview.BGABottomNavigationItem;
@@ -39,6 +43,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 
 public class MainActivity extends BaseFragmentActivity<MainActivityPresenter> implements View.OnClickListener, IMainOperateListener, IMainView, BGABottomNavigation.IViewInitFinishListener {
 
@@ -60,6 +65,18 @@ public class MainActivity extends BaseFragmentActivity<MainActivityPresenter> im
     BGABottomNavigation bottomNavigation;
     @Bind(R.id.layoutAutograph)
     LinearLayout layoutAutograph;
+    @Bind(R.id.layoutParent)
+    CustomRelativeLayout layoutParent;
+    @Bind(R.id.ivUser)
+    ImageView ivUser;
+    @Bind(R.id.ivFocus)
+    ImageView ivFocus;
+    @Bind(R.id.ivFolder)
+    ImageView ivFolder;
+    @Bind(R.id.ivNotice)
+    ImageView ivNotice;
+    @Bind(R.id.ivFeedBack)
+    ImageView ivFeedBack;
 
     private boolean isWaitingExit = false;
 
@@ -100,6 +117,7 @@ public class MainActivity extends BaseFragmentActivity<MainActivityPresenter> im
         initOnClickListner();
         initFragment();
         initBottomButton();
+        initMenuIv();
 
         txtSystemNotice.showTextBadge("2");
 
@@ -116,7 +134,15 @@ public class MainActivity extends BaseFragmentActivity<MainActivityPresenter> im
         navHome.showTextBadge("1");
     }
 
-    private void initFragment(){
+    private void initMenuIv(){
+        ivUser.setImageDrawable(new TintedBitmapDrawable(getResources(),R.mipmap.icon_menu_user,ContextCompat.getColor(context,R.color.COLOR_THEME)));
+        ivFeedBack.setImageDrawable(new TintedBitmapDrawable(getResources(),R.mipmap.icon_menu_feedback,ContextCompat.getColor(context,R.color.COLOR_THEME)));
+        ivFocus.setImageDrawable(new TintedBitmapDrawable(getResources(),R.mipmap.icon_menu_focus,ContextCompat.getColor(context,R.color.COLOR_THEME)));
+        ivFolder.setImageDrawable(new TintedBitmapDrawable(getResources(),R.mipmap.icon_menu_folder,ContextCompat.getColor(context,R.color.COLOR_THEME)));
+        ivNotice.setImageDrawable(new TintedBitmapDrawable(getResources(),R.mipmap.icon_menu_notice,ContextCompat.getColor(context,R.color.COLOR_THEME)));
+    }
+
+    private void initFragment() {
         homeFragment = HomeFragment.instantiation(0);
         messageFragment = MessageFragment.instantiation(1);
         contactFragment = ContactFragment.instantiation(2);
@@ -137,6 +163,7 @@ public class MainActivity extends BaseFragmentActivity<MainActivityPresenter> im
             public Fragment getItem(int position) {
                 return fragmentList.get(position);
             }
+
             @Override
             public int getCount() {
                 return fragmentList.size();
@@ -146,16 +173,16 @@ public class MainActivity extends BaseFragmentActivity<MainActivityPresenter> im
         customViewPager.setOffscreenPageLimit(3);
     }
 
-    private void initOnClickListner(){
+    private void initOnClickListner() {
         menuHead.setOnClickListener(this);
         btnMenuExit.setOnClickListener(this);
         layoutAutograph.setOnClickListener(this);
     }
 
-    private void initBottomButton(){
-        BGABottomNavigationItem itemHome = new BGABottomNavigationItem(getResources().getString(R.string.main_nav_home),R.mipmap.nav_home_normal, Color.parseColor("#5C84DC"));
-        BGABottomNavigationItem itemMess = new BGABottomNavigationItem(getResources().getString(R.string.main_nav_mess),R.mipmap.nav_mess_normal, Color.parseColor("#5C84DC"));
-        BGABottomNavigationItem itemCont = new BGABottomNavigationItem(getResources().getString(R.string.main_nav_cont),R.mipmap.nav_cont_normal, Color.parseColor("#5C84DC"));
+    private void initBottomButton() {
+        BGABottomNavigationItem itemHome = new BGABottomNavigationItem(getResources().getString(R.string.main_nav_home), R.mipmap.nav_home, ContextCompat.getColor(context, R.color.COLOR_THEME));
+        BGABottomNavigationItem itemMess = new BGABottomNavigationItem(getResources().getString(R.string.main_nav_mess), R.mipmap.nav_mess, ContextCompat.getColor(context, R.color.COLOR_THEME));
+        BGABottomNavigationItem itemCont = new BGABottomNavigationItem(getResources().getString(R.string.main_nav_cont), R.mipmap.nav_cont, ContextCompat.getColor(context, R.color.COLOR_THEME));
 
         ArrayList<BGABottomNavigationItem> items = new ArrayList<>();
         items.add(itemHome);
@@ -163,8 +190,8 @@ public class MainActivity extends BaseFragmentActivity<MainActivityPresenter> im
         items.add(itemCont);
 
         bottomNavigation.addItems(items);
-        bottomNavigation.setAccentColor(Color.parseColor("#5C84DC"));
-        bottomNavigation.setInactiveColor(Color.parseColor("#858585"));
+        bottomNavigation.setAccentColor(ContextCompat.getColor(context, R.color.COLOR_THEME));
+        bottomNavigation.setInactiveColor(ContextCompat.getColor(context, R.color.TC_ADADBB));
         bottomNavigation.setiViewInitFinishListener(this);
         bottomNavigation.setAHBottomNavigationListener(new BGABottomNavigation.AHBottomNavigationListener() {
             @Override
@@ -227,9 +254,11 @@ public class MainActivity extends BaseFragmentActivity<MainActivityPresenter> im
         Common.displayDraweeView(user.getPicPath(), menuHead);
         txtAutograph.setText(user.getAutograph());
         txtUserName.setText(user.getNickName());
+//        layoutParent.setBgUrl(user.getPicPath());
 
-        for(IMainFragmentOperateListener iMainFragmentOperateListener : iMainFragmentOperateListenerList){
+        for (IMainFragmentOperateListener iMainFragmentOperateListener : iMainFragmentOperateListenerList) {
             iMainFragmentOperateListener.showHead(user.getPicPath());
         }
     }
+
 }

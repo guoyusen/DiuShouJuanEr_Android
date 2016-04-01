@@ -13,6 +13,7 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
@@ -86,10 +87,8 @@ public class MaterialCircleView extends View {
             mPaint.setColor(circleColor);
         }
         mPaint.setAntiAlias(true);
-        setBackgroundColor(getResources().getColor(android.R.color.transparent));
+        setBackgroundColor(ContextCompat.getColor(context,android.R.color.transparent));
     }
-
-
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {

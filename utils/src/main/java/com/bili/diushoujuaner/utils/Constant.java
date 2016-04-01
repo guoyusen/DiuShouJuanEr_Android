@@ -5,6 +5,11 @@ package com.bili.diushoujuaner.utils;
  */
 public interface Constant {
 
+    // 返回结果的retCode
+    String RETCODE_SUCCESS = "success";
+    String RETCODE_FAIL = "fail";
+    String RETCODE_ERROR = "error";
+
     int SHOW_TYPE_LOGIN = 0;
     int SHOW_TYPE_MAIN = 1;
 
@@ -42,7 +47,7 @@ public interface Constant {
     int REFRESH_DEFAULT = 1;
     int REFRESH_INTENT = 2;
 
-    String INTENT_CONTACT_DETAIL = "CONTACT_DETAIL";
-    String INTENT_RECALL_DETAIL = "RECALL_DETAIL";
+    String ACTION_LOAD_LOCAL_SUCCESS = "本地数据加载成功";
+    String ACTION_LOAD_LOCAL_FAILURE = "本地数据加载失败";
 
 }

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:cb="http://schemas.android.com/tools"
     style="@style/MatchMatch.FitWindow"
     android:background="@color/COLOR_WHITE">
@@ -63,9 +62,9 @@
                     android:orientation="horizontal">
 
                     <ImageView
+                        android:id="@+id/ivComment"
                         android:layout_width="@dimen/x32"
-                        android:layout_height="@dimen/y32"
-                        android:src="@mipmap/icon_comment_normal" />
+                        android:layout_height="@dimen/y32" />
 
                     <TextView
                         style="@style/TextSmall"
@@ -90,8 +89,7 @@
                     <ImageView
                         android:id="@+id/ivGood"
                         android:layout_width="@dimen/x32"
-                        android:layout_height="@dimen/y32"
-                        android:src="@mipmap/icon_good_normal" />
+                        android:layout_height="@dimen/y32"/>
 
                     <TextView
                         android:id="@+id/txtGood"
@@ -112,9 +110,9 @@
                 android:orientation="horizontal">
 
                 <ImageView
+                    android:id="@+id/ivGoodSum"
                     android:layout_width="@dimen/x32"
-                    android:layout_height="@dimen/y32"
-                    android:src="@mipmap/icon_good_normal" />
+                    android:layout_height="@dimen/y32"/>
 
                 <TextView
                     android:id="@+id/txtGoodDetail"
@@ -123,7 +121,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/x15"
                     android:minHeight="@dimen/y32"
-                    android:textColor="@color/TC_5C84DC" />
+                    android:textColor="@color/TC_12B7F5" />
 
             </LinearLayout>
 
@@ -148,13 +146,13 @@
         android:padding="@dimen/x16">
 
         <EditText
-            android:id="@+id/textComment"
+            android:id="@+id/txtComment"
             style="@style/TextMiddle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/x124"
+            android:layout_marginRight="@dimen/x108"
             android:background="@drawable/common_rectangle_solid_white"
-            android:hint="说点什么呗..."
+            android:hint="@string/send_hint"
             android:maxLines="6"
             android:minHeight="@dimen/y80"
             android:paddingLeft="@dimen/x5"
@@ -162,16 +160,21 @@
             android:textColor="@color/TC_040404"
             android:textColorHint="@color/TC_ADADBB" />
 
-        <Button
-            android:id="@+id/btnSend"
-            style="@style/TextMiddle"
-            android:layout_width="@dimen/y100"
-            android:layout_height="@dimen/y80"
-            android:layout_alignBottom="@+id/textComment"
+        <RelativeLayout
+            android:id="@+id/layoutSend"
+            android:layout_width="@dimen/x80"
+            android:layout_height="@dimen/x80"
+            android:layout_alignBottom="@+id/txtComment"
             android:layout_alignParentRight="true"
-            android:background="@drawable/common_rectangle_solid_blue_normal"
-            android:text="发送"
-            android:textColor="@color/TC_WHITE" />
+            android:gravity="center"
+            android:background="@drawable/layout_send_close_bg">
+
+            <ImageView
+                android:layout_width="@dimen/x48"
+                android:layout_height="@dimen/x48"
+                android:src="@mipmap/icon_send"/>
+
+        </RelativeLayout>
 
     </RelativeLayout>
 

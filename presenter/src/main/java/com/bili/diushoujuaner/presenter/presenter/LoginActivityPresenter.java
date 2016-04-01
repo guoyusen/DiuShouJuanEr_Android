@@ -3,8 +3,7 @@ package com.bili.diushoujuaner.presenter.presenter;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.bili.diushoujuaner.model.apihelper.ApiRespon;
-import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
+import com.bili.diushoujuaner.model.action.respon.ActionRespon;
 import com.bili.diushoujuaner.utils.Constant;
 import com.bili.diushoujuaner.utils.response.CustomSession;
 import com.bili.diushoujuaner.utils.request.UserAccountReq;
@@ -32,11 +31,10 @@ public class LoginActivityPresenter extends BasePresenter<ILoginView> {
         UserAccountReq userAccountReq = new UserAccountReq();
         userAccountReq.setMobile(mobile);
         userAccountReq.setPassword(psd);
-        CustomSessionAction.getInstance().getUserLogin(userAccountReq, new ActionCallbackListener<ApiRespon<CustomSession>>() {
+        CustomSessionAction.getInstance().getUserLogin(userAccountReq, new ActionCallbackListener<ActionRespon<CustomSession>>() {
             @Override
-            public void onSuccess(ApiRespon<CustomSession> result) {
+            public void onSuccess(ActionRespon<CustomSession> result) {
                 if(showMessage(result.getRetCode(), result.getMessage())){
-                    CustomSessionPreference.getInstance().saveCustomSession(result.getData());
                     getRelativeView().loginSuccess();
                 }
                 hideLoading(Constant.LOADING_TOP);

@@ -72,7 +72,7 @@
                         android:layout_width="@dimen/x60"
                         android:layout_height="@dimen/y60"
                         android:layout_marginLeft="@dimen/x25"
-                        android:src="@mipmap/icon_login__lock"/>
+                        android:src="@mipmap/icon_login_lock"/>
 
                     <EditText
                         android:id="@+id/edtPassword"

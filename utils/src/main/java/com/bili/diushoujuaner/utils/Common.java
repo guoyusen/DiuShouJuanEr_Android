@@ -12,6 +12,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.telephony.TelephonyManager;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -340,13 +342,21 @@ public class Common {
 
     /**
      * 关闭虚拟键盘
-     *
      * @param context
      * @param view
      */
     public static void hideSoftInputFromWindow(Context context, View view) {
         InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+    /**
+     * 显示虚拟键盘
+     * @param context
+     * @param view
+     */
+    public static void showSoftInputFromWindow(Context context, View view) {
+        InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(view, InputMethodManager.SHOW_FORCED);
     }
 
     /**
@@ -384,7 +394,7 @@ public class Common {
     }
 
     public static void displayDraweeView(String url, SimpleDraweeView draweeView) {
-        if(Common.isEmpty(url) || url.length() <= 0){
+        if (Common.isEmpty(url) || url.length() <= 0) {
             return;
         }
         Uri uri = Uri.parse(Common.getCompleteUrl(url));

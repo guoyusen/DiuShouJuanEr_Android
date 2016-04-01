@@ -1,6 +1,7 @@
 package com.bili.diushoujuaner.activity;
 
 import android.content.Intent;
+import android.support.v4.content.ContextCompat;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -45,10 +46,11 @@ public class ContactDetailActivity extends BaseActivity {
     private ContactRecentGalleryAdapter contactRecentGalleryAdapter;
     private List<PictureDto> pictureList;
     private FriendVo friendVo;
+    public static final String TAG = "ContactDetailActivity";
 
     @Override
     public void initIntentParam(Intent intent) {
-        friendVo = intent.getExtras().getParcelable(Constant.INTENT_CONTACT_DETAIL);
+        friendVo = intent.getExtras().getParcelable(TAG);
     }
 
     @Override
@@ -71,7 +73,7 @@ public class ContactDetailActivity extends BaseActivity {
     public void setViewStatus() {
         showPageHead(null, null, "更多");
 
-        layoutHead.setBackground(getResources().getDrawable(R.drawable.transparent_black_down_bg));
+        layoutHead.setBackground(ContextCompat.getDrawable(context, R.drawable.transparent_black_down_bg));
         layoutParent.setBgUrl(friendVo.getPicPath());
         txtFriendName.setText(friendVo.getDisplayName());
         txtFriendAutograph.setText(friendVo.getAutograph());
