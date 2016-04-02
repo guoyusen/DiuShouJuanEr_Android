@@ -10,8 +10,6 @@ import com.bili.diushoujuaner.base.BaseActivity;
  */
 public class ContentEditActivity extends BaseActivity {
 
-    private int editType;
-
     @Override
     public void initIntentParam(Intent intent) {
 

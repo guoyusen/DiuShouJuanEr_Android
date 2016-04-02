@@ -1,7 +1,6 @@
-package com.bili.diushoujuaner.model.action;
+package com.bili.diushoujuaner.model.action.impl;
 
-import android.content.Context;
-
+import com.bili.diushoujuaner.model.action.IGoodAction;
 import com.bili.diushoujuaner.model.apihelper.ApiRespon;
 import com.bili.diushoujuaner.model.apihelper.api.ApiAction;
 import com.bili.diushoujuaner.model.apihelper.callback.ApiCallbackListener;
@@ -12,7 +11,7 @@ import com.google.gson.reflect.TypeToken;
 /**
  * Created by BiLi on 2016/3/23.
  */
-public class GoodAction {
+public class GoodAction implements IGoodAction {
 
     private static GoodAction goodAction;
 
@@ -23,6 +22,7 @@ public class GoodAction {
         return goodAction;
     }
 
+    @Override
     public void getGoodAdd(long recallNo, final ActionCallbackListener<ApiRespon<String>> actionCallbackListener){
         ApiAction.getInstance().getGoodAdd(recallNo, new ApiCallbackListener() {
             @Override
@@ -39,6 +39,7 @@ public class GoodAction {
         });
     }
 
+    @Override
     public void getGoodRemove(long recallNo, final ActionCallbackListener<ApiRespon<String>> actionCallbackListener){
         ApiAction.getInstance().getGoodRemove(recallNo, new ApiCallbackListener() {
             @Override

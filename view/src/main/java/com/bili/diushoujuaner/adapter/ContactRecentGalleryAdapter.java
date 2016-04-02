@@ -20,7 +20,7 @@ public class ContactRecentGalleryAdapter extends CommonAdapter<PictureDto> {
     @Override
     public void convert(ViewHolder holder, PictureDto picture, int position) throws Exception {
         if(picture != null){
-
+            
         }
     }
 }

@@ -21,7 +21,7 @@ public class BasePresenter<T extends IBaseView> {
         this.baseView = null;
     }
 
-    protected T getRelativeView(){
+    protected T getBindView(){
         return (T)baseView;
     }
 

@@ -12,13 +12,16 @@ import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.activity.ChattingActivity;
 import com.bili.diushoujuaner.adapter.MessageAdapter;
 import com.bili.diushoujuaner.base.BaseFragment;
-import com.bili.diushoujuaner.callback.IMainFragmentOperateListener;
-import com.bili.diushoujuaner.callback.IMainOperateListener;
+import com.bili.diushoujuaner.event.ShowHeadEvent;
+import com.bili.diushoujuaner.event.ShowMainMenuEvent;
 import com.bili.diushoujuaner.utils.Common;
 import com.bili.diushoujuaner.utils.response.MessageDto;
 import com.bili.diushoujuaner.widget.CustomListViewRefresh;
 import com.bili.diushoujuaner.widget.waveswipe.WaveSwipeRefreshLayout;
 import com.facebook.drawee.view.SimpleDraweeView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +31,7 @@ import butterknife.Bind;
 /**
  * Created by BiLi on 2016/3/2.
  */
-public class MessageFragment extends BaseFragment implements WaveSwipeRefreshLayout.OnRefreshListener, View.OnClickListener, IMainFragmentOperateListener {
+public class MessageFragment extends BaseFragment implements WaveSwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
 
     @Bind(R.id.customListViewRefresh)
     CustomListViewRefresh customListViewRefresh;
@@ -39,8 +42,7 @@ public class MessageFragment extends BaseFragment implements WaveSwipeRefreshLay
 
     private List<MessageDto> listMessage;
     private MessageAdapter messageAdapter;
-    private IMainOperateListener iMainOperateListener;
-    private String ivNavHeadUrl;
+    private String headPicUrl;
 
     public static MessageFragment instantiation(int position) {
         MessageFragment fragment = new MessageFragment();
@@ -62,6 +64,7 @@ public class MessageFragment extends BaseFragment implements WaveSwipeRefreshLay
 
     @Override
     public void setViewStatus() {
+        EventBus.getDefault().register(this);
         showPageHead("消息", null, null);
         ivNavHead.setOnClickListener(this);
 
@@ -82,20 +85,16 @@ public class MessageFragment extends BaseFragment implements WaveSwipeRefreshLay
         waveSwipeRefreshLayout.setWaveColor(ContextCompat.getColor(context, R.color.COLOR_THEME));
         waveSwipeRefreshLayout.setOnRefreshListener(this);
 
-        Common.displayDraweeView(ivNavHeadUrl, ivNavHead);
+        Common.displayDraweeView(headPicUrl, ivNavHead);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.ivNavHead:
-                iMainOperateListener.showMainMenu();
+                EventBus.getDefault().post(new ShowMainMenuEvent());
                 break;
         }
-    }
-
-    public void setMainOperateListener(IMainOperateListener iMainOperateListener) {
-        this.iMainOperateListener = iMainOperateListener;
     }
 
     @Override
@@ -108,11 +107,17 @@ public class MessageFragment extends BaseFragment implements WaveSwipeRefreshLay
         }, 3000);
     }
 
-    @Override
-    public void showHead(String url) {
-        ivNavHeadUrl = url;
+    @Subscribe
+    public void showHead(ShowHeadEvent showHeadEvent) {
+        this.headPicUrl = showHeadEvent.getHeadPicUrl();
         if(ivNavHead != null){
-            Common.displayDraweeView(ivNavHeadUrl, ivNavHead);
+            Common.displayDraweeView(this.headPicUrl, ivNavHead);
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroyView();
     }
 }

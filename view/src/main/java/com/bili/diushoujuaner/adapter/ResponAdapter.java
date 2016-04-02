@@ -64,7 +64,7 @@ public class ResponAdapter extends CommonAdapter<ResponDto> {
         int end = 0;
         end += userFromName != null ? userFromName.length() : responDto.getNickNameFrom().length();
         responSpan.setSpan(
-                new ForegroundColorSpan(ContextCompat.getColor(context, R.color.TC_12B7F5)),
+                new ForegroundColorSpan(ContextCompat.getColor(context, R.color.TC_388ECD)),
                 start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         start = end;
         end += " 回复 ".length();
@@ -74,7 +74,7 @@ public class ResponAdapter extends CommonAdapter<ResponDto> {
         start = end;
         end += userToName != null ? userToName.length() : responDto.getNickNameTo().length();
         responSpan.setSpan(
-                new ForegroundColorSpan(ContextCompat.getColor(context, R.color.TC_12B7F5)),
+                new ForegroundColorSpan(ContextCompat.getColor(context, R.color.TC_388ECD)),
                 start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         start = end;
         end += responDto.getContent().length() + 1;

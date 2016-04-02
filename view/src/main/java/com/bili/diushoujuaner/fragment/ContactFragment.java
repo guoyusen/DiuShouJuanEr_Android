@@ -13,16 +13,19 @@ import com.bili.diushoujuaner.activity.ContactSearchActivity;
 import com.bili.diushoujuaner.activity.PartyActivity;
 import com.bili.diushoujuaner.adapter.ContactAdapter;
 import com.bili.diushoujuaner.base.BaseFragment;
-import com.bili.diushoujuaner.callback.IMainFragmentOperateListener;
-import com.bili.diushoujuaner.callback.IMainOperateListener;
+import com.bili.diushoujuaner.event.ShowHeadEvent;
+import com.bili.diushoujuaner.event.ShowMainMenuEvent;
 import com.bili.diushoujuaner.presenter.presenter.ContactFragmentPresenter;
+import com.bili.diushoujuaner.presenter.presenter.impl.ContactFragmentPresenterImpl;
 import com.bili.diushoujuaner.presenter.view.IContactView;
 import com.bili.diushoujuaner.utils.Common;
-import com.bili.diushoujuaner.utils.Constant;
 import com.bili.diushoujuaner.utils.entity.FriendVo;
 import com.bili.diushoujuaner.widget.CustomListView;
 import com.bili.diushoujuaner.widget.ReboundScrollView;
 import com.facebook.drawee.view.SimpleDraweeView;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +35,7 @@ import butterknife.Bind;
 /**
  * Created by BiLi on 2016/3/2.
  */
-public class ContactFragment extends BaseFragment<ContactFragmentPresenter> implements View.OnClickListener, IContactView, IMainFragmentOperateListener {
+public class ContactFragment extends BaseFragment<ContactFragmentPresenter> implements View.OnClickListener, IContactView {
 
     @Bind(R.id.customListView)
     CustomListView customListView;
@@ -51,8 +54,7 @@ public class ContactFragment extends BaseFragment<ContactFragmentPresenter> impl
 
     private ContactAdapter contactAdapter;
     private List<FriendVo> friendVoList;
-    private IMainOperateListener iMainOperateListener;
-    private String ivNavHeadUrl;
+    private String headPicUrl;
 
     public static ContactFragment instantiation(int position) {
         ContactFragment fragment = new ContactFragment();
@@ -74,8 +76,14 @@ public class ContactFragment extends BaseFragment<ContactFragmentPresenter> impl
 
     @Override
     public void setViewStatus() {
+        EventBus.getDefault().register(this);
         showPageHead("联系人", null, "添加");
+
+        layoutParty.setOnClickListener(this);
         ivNavHead.setOnClickListener(this);
+        txtRight.setOnClickListener(this);
+
+        Common.displayDraweeView(headPicUrl, ivNavHead);
 
         contactAdapter = new ContactAdapter(getContext(), friendVoList);
         customListView.setAdapter(contactAdapter);
@@ -84,23 +92,14 @@ public class ContactFragment extends BaseFragment<ContactFragmentPresenter> impl
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getContext(), ContactDetailActivity.class);
                 Bundle bundle = new Bundle();
-                bundle.putParcelable(ContactDetailActivity.TAG,contactAdapter.getItem(position));
+                bundle.putParcelable(ContactDetailActivity.TAG, contactAdapter.getItem(position));
                 intent.putExtras(bundle);
                 startActivity(intent);
             }
         });
 
-        layoutParty.setOnClickListener(this);
-        txtRight.setOnClickListener(this);
-
-        Common.displayDraweeView(ivNavHeadUrl, ivNavHead);
-
-        basePresenter = new ContactFragmentPresenter(this, getContext());
-        getRelativePresenter().getContactList();
-    }
-
-    public void setMainOperateListener(IMainOperateListener iMainOperateListener) {
-        this.iMainOperateListener = iMainOperateListener;
+        basePresenter = new ContactFragmentPresenterImpl(this, getContext());
+        getBindPresenter().getContactList();
     }
 
     @Override
@@ -113,7 +112,7 @@ public class ContactFragment extends BaseFragment<ContactFragmentPresenter> impl
                 startActivity(new Intent(getContext(), ContactSearchActivity.class));
                 break;
             case R.id.ivNavHead:
-                iMainOperateListener.showMainMenu();
+                EventBus.getDefault().post(new ShowMainMenuEvent());
                 break;
         }
     }
@@ -129,11 +128,17 @@ public class ContactFragment extends BaseFragment<ContactFragmentPresenter> impl
         }
     }
 
-    @Override
-    public void showHead(String url) {
-        ivNavHeadUrl = url;
+    @Subscribe
+    public void showHead(ShowHeadEvent showHeadEvent) {
+        this.headPicUrl = showHeadEvent.getHeadPicUrl();
         if(ivNavHead != null){
-            Common.displayDraweeView(ivNavHeadUrl, ivNavHead);
+            Common.displayDraweeView(this.headPicUrl, ivNavHead);
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroyView();
     }
 }

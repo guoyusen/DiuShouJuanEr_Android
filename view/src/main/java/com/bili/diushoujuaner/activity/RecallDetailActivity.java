@@ -8,7 +8,6 @@ import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -23,9 +22,8 @@ import com.bili.diushoujuaner.adapter.ImageAdapter;
 import com.bili.diushoujuaner.base.BaseFragmentActivity;
 import com.bili.diushoujuaner.event.CommentEvent;
 import com.bili.diushoujuaner.fragment.PictureFragment;
-import com.bili.diushoujuaner.model.tempHelper.GoodTemper;
-import com.bili.diushoujuaner.model.tempHelper.RecallTemper;
 import com.bili.diushoujuaner.presenter.presenter.RecallDetailActivityPresenter;
+import com.bili.diushoujuaner.presenter.presenter.impl.RecallDetailActivityPresenterImpl;
 import com.bili.diushoujuaner.presenter.view.IRecallDetailView;
 import com.bili.diushoujuaner.utils.Common;
 
@@ -33,6 +31,7 @@ import com.bili.diushoujuaner.utils.entity.PictureVo;
 import com.bili.diushoujuaner.utils.response.CommentDto;
 import com.bili.diushoujuaner.utils.response.GoodDto;
 
+import com.bili.diushoujuaner.utils.response.RecallDto;
 import com.bili.diushoujuaner.widget.CustomGridView;
 import com.bili.diushoujuaner.widget.CustomListView;
 import com.bili.diushoujuaner.widget.TintedBitmapDrawable;
@@ -87,17 +86,131 @@ public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActiv
 
     private ArrayList<PictureVo> pictureVoList;
     private long recallNo;
-    private long currentNo;
-    private boolean goodstatus = false;
+    private boolean goodStatus = false;
     private Handler handler;
     private CustomRunnable customRunnable;
     private CommentAdapter commentAdapter;
     private List<CommentDto> commentDtoList;
     private ImageAdapter imageAdapter;
-    private HashMap<Long,String> draftMap = new HashMap<>();
     private Drawable thumbUpDrawable, thumbDownDrawable, commentNormalDrawable;
+    private CommentConfig commentConfig;
 
     public static final String TAG = "RecallDetailActivity";
+
+    class CommentConfig{
+        public static final int TYPE_NONE = 0;
+        public static final int TYPE_COMMENT = 1;
+        public static final int TYPE_RESPON_FIRST = 2;
+        public static final int TYPE_RESPON_SECOND = 3;
+
+        private long receiveNo = -1;
+        private long commentNo = -1;
+        private long responNo = -1;
+        private int type = 0;
+        private boolean isReady = false;
+        private HashMap<String,String> draftMap = new HashMap<>();
+        private StringBuilder stringBuilder = new StringBuilder();
+
+        public void clearConfig(){
+            clearDraft();
+            this.type = TYPE_NONE;
+            this.receiveNo = -1;
+            this.commentNo = -1;
+            this.responNo = -1;
+            this.isReady = false;
+        }
+
+        private String getCurrentDraftMapKey(){
+            stringBuilder.delete(0, stringBuilder.length());
+            stringBuilder.append(receiveNo);
+            if(this.type == TYPE_RESPON_FIRST){
+                stringBuilder.append(commentNo);
+            }else if(this.type == TYPE_RESPON_SECOND){
+                stringBuilder.append(commentNo);
+                stringBuilder.append(responNo);
+            }
+            return stringBuilder.toString();
+        }
+
+        /**
+         * =====key=====
+         * Comment: receiveNo + "";
+         * ResponFirst: receiveNo + commentNo + "";
+         * ResponSecond: receiveNo + commentNo + responNo + "";
+         */
+        public void addDraft(String value){
+            draftMap.put(getCurrentDraftMapKey(), value);
+        }
+
+        public String getDraft(){
+            return draftMap.get(getCurrentDraftMapKey());
+        }
+
+        public void clearDraft(){
+            draftMap.remove(getCurrentDraftMapKey());
+        }
+
+        public boolean isReady() {
+            return isReady;
+        }
+
+        public void setIsReady(boolean isReady) {
+            this.isReady = isReady;
+        }
+
+        public long getCommentNo() {
+            return commentNo;
+        }
+
+        public void setCommentNo(long commentNo) {
+            this.commentNo = commentNo;
+        }
+
+        public long getReceiveNo() {
+            return receiveNo;
+        }
+
+        public void setReceiveNo(long receiveNo) {
+            this.receiveNo = receiveNo;
+        }
+
+        public int getType() {
+            return type;
+        }
+
+        public void setType(int type) {
+            this.type = type;
+        }
+    }
+
+    class CustomRunnable implements Runnable{
+        @Override
+        public void run() {
+            goodStatus = getBindPresenter().executeGoodChange(goodStatus,recallNo);
+        }
+    }
+
+    class CommentTextWatcher implements TextWatcher{
+        @Override
+        public void afterTextChanged(Editable s) {
+            if(s.toString().trim().length() > 0){
+                layoutSend.setBackground(ContextCompat.getDrawable(context, R.drawable.layout_send_ready_bg));
+                commentConfig.setIsReady(true);
+            }else{
+                layoutSend.setBackground(ContextCompat.getDrawable(context, R.drawable.layout_send_close_bg));
+                commentConfig.setIsReady(false);
+            }
+            commentConfig.addDraft(s.toString());
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+        }
+    }
 
     @Override
     public void initIntentParam(Intent intent) {
@@ -115,77 +228,16 @@ public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActiv
         handler = new Handler();
         customRunnable = new CustomRunnable();
         pictureVoList = new ArrayList<>();
+        commentConfig = new CommentConfig();
 
         commentNormalDrawable = new TintedBitmapDrawable(context.getResources(),R.mipmap.icon_comment,ContextCompat.getColor(context, R.color.COLOR_BFBFBF));
         thumbDownDrawable = new TintedBitmapDrawable(context.getResources(),R.mipmap.icon_good,ContextCompat.getColor(context, R.color.COLOR_BFBFBF));
-        thumbUpDrawable = new TintedBitmapDrawable(context.getResources(),R.mipmap.icon_good,ContextCompat.getColor(context, R.color.COLOR_THEME));
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.layoutGood:
-                if(GoodTemper.getGoodStatus(recallNo)){
-                    GoodTemper.setGoodStatus(recallNo, false);
-                    setGoodStatus(false);
-                    getRelativePresenter().removeGoodDtoFromTemper(recallNo);
-                }else{
-                    GoodTemper.setGoodStatus(recallNo, true);
-                    setGoodStatus(true);
-                    getRelativePresenter().addGoodDtoToTemper(recallNo);
-                }
-                showGoodDetail(RecallTemper.getRecallDto(recallNo).getGoodList());
-                handler.removeCallbacks(customRunnable);
-                handler.postDelayed(customRunnable, 1500);
-                break;
-            case R.id.layoutComment:
-                txtComment.requestFocus();
-                txtComment.setHint(R.string.send_hint);
-
-                currentNo = RecallTemper.getRecallDto(recallNo).getUserNo();
-                if(draftMap.get(currentNo) != null){
-                    txtComment.setText(draftMap.get(currentNo).toString());
-                }
-                Common.showSoftInputFromWindow(this, txtComment);
-                break;
-            case R.id.layoutSend:
-
-                break;
-        }
-    }
-
-    class CustomRunnable implements Runnable{
-        @Override
-        public void run() {
-            goodstatus = getRelativePresenter().executeGoodChange(goodstatus,recallNo);
-        }
-    }
-
-    class CommentTextWatcher implements TextWatcher{
-        @Override
-        public void afterTextChanged(Editable s) {
-            if(s.toString().trim().length() > 0){
-                layoutSend.setBackground(ContextCompat.getDrawable(context, R.drawable.layout_send_ready_bg));
-            }else{
-                layoutSend.setBackground(ContextCompat.getDrawable(context, R.drawable.layout_send_close_bg));
-            }
-            draftMap.put(RecallTemper.getRecallDto(recallNo).getUserNo(), s.toString());
-        }
-
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-        }
+        thumbUpDrawable = new TintedBitmapDrawable(context.getResources(),R.mipmap.icon_good,ContextCompat.getColor(context, R.color.COLOR_388ECD));
     }
 
     @Override
     public void setViewStatus() {
         EventBus.getDefault().register(this);
-        showPageHead(null, null, Common.getFormatTime(RecallTemper.getRecallDto(recallNo).getPublishTime()));
-        basePresenter = new RecallDetailActivityPresenter(this, context);
 
         layoutGood.setOnClickListener(this);
         layoutComment.setOnClickListener(this);
@@ -193,35 +245,43 @@ public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActiv
 
         ivComment.setImageDrawable(commentNormalDrawable);
         ivGoodSum.setImageDrawable(thumbUpDrawable);
-
         txtComment.addTextChangedListener(new CommentTextWatcher());
 
-        txtRecallDetail.setText(RecallTemper.getRecallDto(recallNo).getContent());
-        Common.displayDraweeView(RecallTemper.getRecallDto(recallNo).getUserPicPath(), ivNavHead);
-        txtAuthor.setText(RecallTemper.getRecallDto(recallNo).getUserName());
-        // 设置赞状态
-        showGoodDetail(RecallTemper.getRecallDto(recallNo).getGoodList());
-        goodstatus = GoodTemper.getGoodStatus(recallNo);
-        setGoodStatus(GoodTemper.getGoodStatus(recallNo));
-
-        pictureVoList.addAll(Common.changePictureDtoListToPictureVoList(RecallTemper.getRecallDto(recallNo).getPictureList()));
         imageAdapter = new ImageAdapter(this, pictureVoList);
         customGridView.setAdapter(imageAdapter);
         customGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Bundle bundle = new Bundle();
-                    bundle.putParcelableArrayList("PictureVoList", pictureVoList);
-                    bundle.putInt("Position", position);
-                    parent.getChildAt(position);
-                    getSupportFragmentManager().beginTransaction().add(android.R.id.content, PictureFragment.getInstance(bundle), "PictureFragment")
-                            .addToBackStack(null).commit();
+                Bundle bundle = new Bundle();
+                bundle.putParcelableArrayList("PictureVoList", pictureVoList);
+                bundle.putInt("Position", position);
+                parent.getChildAt(position);
+                getSupportFragmentManager().beginTransaction().add(android.R.id.content, PictureFragment.getInstance(bundle), "PictureFragment")
+                        .addToBackStack(null).commit();
             }
         });
-
-        commentDtoList.addAll(RecallTemper.getRecallDto(recallNo).getCommentList());
         commentAdapter = new CommentAdapter(this, commentDtoList);
         listViewComment.setAdapter(commentAdapter);
+
+        basePresenter = new RecallDetailActivityPresenterImpl(this, context);
+        getBindPresenter().showRecallDetailByRecallNo(recallNo);
+
+        goodStatus = getBindPresenter().getGoodStatus(recallNo);
+        setGoodStatus(goodStatus);
+
+    }
+
+    @Override
+    public void showRecallDetail(RecallDto recallDto) {
+        showPageHead(null, null, Common.getFormatTime(recallDto.getPublishTime()));
+        txtRecallDetail.setText(recallDto.getContent());
+        Common.displayDraweeView(recallDto.getUserPicPath(), ivNavHead);
+        txtAuthor.setText(recallDto.getUserName());
+        showGoodDetail(recallDto.getGoodList());
+
+        pictureVoList.addAll(Common.changePictureDtoListToPictureVoList(recallDto.getPictureList()));
+        commentDtoList.addAll(recallDto.getCommentList());
+        imageAdapter.notifyDataSetChanged();
         commentAdapter.notifyDataSetChanged();
     }
 
@@ -229,12 +289,13 @@ public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActiv
      * 设置点赞按钮的状态 我 是否已赞
      * @param isGood
      */
-    private void setGoodStatus(boolean isGood) {
+    @Override
+    public void setGoodStatus(boolean isGood) {
         if (isGood) {
-            layoutGood.setBackground(ContextCompat.getDrawable(context, R.drawable.common_rectangle_5c84dc));
+            layoutGood.setBackground(ContextCompat.getDrawable(context, R.drawable.common_rectangle_388ecd));
             ivGood.setImageDrawable(thumbUpDrawable);
             txtGood.setText("已赞");
-            txtGood.setTextColor(ContextCompat.getColor(context, R.color.TC_12B7F5));
+            txtGood.setTextColor(ContextCompat.getColor(context, R.color.TC_388ECD));
         } else {
             layoutGood.setBackground(ContextCompat.getDrawable(context, R.drawable.common_rectangle_bfbfbf));
             ivGood.setImageDrawable(thumbDownDrawable);
@@ -254,8 +315,59 @@ public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActiv
         } else {
             layoutGoodContent.setVisibility(View.VISIBLE);
         }
-        txtGoodDetail.setText(getRelativePresenter().getSpannableString(goodDtoList));
+        txtGoodDetail.setText(getBindPresenter().getSpannableString(goodDtoList));
         txtGoodDetail.setMovementMethod(LinkMovementMethod.getInstance());
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.layoutGood:
+                executeClickForGood();
+                break;
+            case R.id.layoutComment:
+                executeClickForComment();
+                break;
+            case R.id.layoutSend:
+                executeClickForSend();
+                break;
+        }
+    }
+
+    private void executeClickForGood(){
+        showGoodDetail(getBindPresenter().changeGoodStatusToLocal(recallNo));
+        handler.removeCallbacks(customRunnable);
+        handler.postDelayed(customRunnable, 1500);
+    }
+
+    private void executeClickForComment(){
+        txtComment.requestFocus();
+        txtComment.setHint(R.string.send_hint);
+
+        commentConfig.setReceiveNo(getBindPresenter().getRecallDtoByRecallNo(recallNo).getUserNo());
+        commentConfig.setType(CommentConfig.TYPE_COMMENT);
+        if(commentConfig.getDraft() != null){
+            txtComment.setText(commentConfig.getDraft());
+        }
+        Common.showSoftInputFromWindow(this, txtComment);
+    }
+
+    private void executeClickForSend(){
+        if(!commentConfig.isReady()){
+            return;
+        }
+        if(commentConfig.getType() == CommentConfig.TYPE_COMMENT){
+
+            //TODO 该写提交了
+
+        }else if(commentConfig.getType() == CommentConfig.TYPE_RESPON_FIRST || commentConfig.getType() == CommentConfig.TYPE_RESPON_SECOND){
+
+        }
+
+        commentConfig.clearConfig();
+        txtComment.clearFocus();
+        txtComment.setText(null);
+        txtComment.setHint("说点什么呗...");
     }
 
     @Override
@@ -264,12 +376,20 @@ public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActiv
     }
 
     @Override
-    public void onPageDestroy() {
-        EventBus.getDefault().unregister(this);
+    public void refreshComment() {
+        commentAdapter.notifyDataSetChanged();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onCommentEvent(CommentEvent commentEvent){
 
     }
+
+    @Override
+    public void onPageDestroy() {
+        //退出时，移除在缓存中的RecallDto
+        getBindPresenter().removeRecallDto(recallNo);
+        EventBus.getDefault().unregister(this);
+    }
+
 }

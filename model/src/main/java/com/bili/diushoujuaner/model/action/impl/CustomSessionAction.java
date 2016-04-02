@@ -1,12 +1,12 @@
-package com.bili.diushoujuaner.model.action;
+package com.bili.diushoujuaner.model.action.impl;
 
 
+import com.bili.diushoujuaner.model.action.ICustomSessionAction;
 import com.bili.diushoujuaner.model.action.respon.ActionRespon;
 import com.bili.diushoujuaner.model.apihelper.ApiRespon;
 import com.bili.diushoujuaner.model.apihelper.api.ApiAction;
 import com.bili.diushoujuaner.model.apihelper.callback.ApiCallbackListener;
 import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
-import com.bili.diushoujuaner.utils.Constant;
 import com.bili.diushoujuaner.utils.GsonParser;
 import com.bili.diushoujuaner.utils.response.CustomSession;
 import com.bili.diushoujuaner.utils.request.UserAccountReq;
@@ -16,7 +16,7 @@ import com.google.gson.reflect.TypeToken;
 /**
  * Created by BiLi on 2016/3/10.
  */
-public class CustomSessionAction {
+public class CustomSessionAction implements ICustomSessionAction {
 
     private static CustomSessionAction customSessionAction;
 
@@ -27,8 +27,8 @@ public class CustomSessionAction {
         return customSessionAction;
     }
 
-    public void getIsLogined(ActionCallbackListener<ActionRespon<Boolean>> actionCallbackListener){
-        actionCallbackListener.onSuccess(ActionRespon.getActionRespon(Constant.ACTION_LOAD_LOCAL_SUCCESS,Constant.RETCODE_SUCCESS,CustomSessionPreference.getInstance().isLogined()));
+    public boolean getIsLogined(){
+        return CustomSessionPreference.getInstance().isLogined();
     }
 
     public void getUserLogin(UserAccountReq userAccountReq, final ActionCallbackListener<ActionRespon<CustomSession>> actionCallbackListener){

@@ -41,7 +41,7 @@ public class BaseFragmentActivity<T> extends AbstractBaseFragmentActivity {
         }
     }
 
-    protected T getRelativePresenter(){
+    protected T getBindPresenter(){
         return (T)basePresenter;
     }
 

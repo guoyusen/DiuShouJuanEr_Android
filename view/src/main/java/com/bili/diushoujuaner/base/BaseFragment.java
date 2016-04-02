@@ -101,7 +101,7 @@ public class BaseFragment<T> extends Fragment {
         }
     }
 
-    protected T getRelativePresenter(){
+    protected T getBindPresenter(){
         return (T)basePresenter;
     }
 

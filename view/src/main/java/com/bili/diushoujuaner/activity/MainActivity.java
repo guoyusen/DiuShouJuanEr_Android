@@ -2,7 +2,6 @@ package com.bili.diushoujuaner.activity;
 
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
@@ -18,13 +17,13 @@ import android.widget.Toast;
 
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.base.BaseFragmentActivity;
-import com.bili.diushoujuaner.callback.IMainFragmentOperateListener;
-import com.bili.diushoujuaner.callback.IMainOperateListener;
+import com.bili.diushoujuaner.event.ShowHeadEvent;
+import com.bili.diushoujuaner.event.ShowMainMenuEvent;
 import com.bili.diushoujuaner.fragment.ContactFragment;
 import com.bili.diushoujuaner.fragment.HomeFragment;
 import com.bili.diushoujuaner.fragment.MessageFragment;
 import com.bili.diushoujuaner.model.databasehelper.dao.User;
-import com.bili.diushoujuaner.presenter.presenter.MainActivityPresenter;
+import com.bili.diushoujuaner.presenter.presenter.impl.MainActivityPresenterImpl;
 import com.bili.diushoujuaner.presenter.view.IMainView;
 import com.bili.diushoujuaner.utils.Common;
 import com.bili.diushoujuaner.utils.manager.ActivityManager;
@@ -37,15 +36,18 @@ import com.bili.diushoujuaner.widget.badgeview.BGABottomNavigationItem;
 import com.bili.diushoujuaner.widget.badgeview.BGABottomNavigationItemView;
 import com.facebook.drawee.view.SimpleDraweeView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 
-public class MainActivity extends BaseFragmentActivity<MainActivityPresenter> implements View.OnClickListener, IMainOperateListener, IMainView, BGABottomNavigation.IViewInitFinishListener {
+public class MainActivity extends BaseFragmentActivity<MainActivityPresenterImpl> implements View.OnClickListener, IMainView, BGABottomNavigation.IViewInitFinishListener {
 
     @Bind(R.id.customViewPager)
     CustomViewPager customViewPager;
@@ -93,8 +95,6 @@ public class MainActivity extends BaseFragmentActivity<MainActivityPresenter> im
     private int badgeMessCount = 0;
     private int badgeContCount = 0;
 
-    private List<IMainFragmentOperateListener> iMainFragmentOperateListenerList;
-
     @Override
     public void tintStatusColor() {
         super.tintStatusColor();
@@ -104,7 +104,6 @@ public class MainActivity extends BaseFragmentActivity<MainActivityPresenter> im
     @Override
     public void beforeInitView() {
         fragmentList = new ArrayList<>();
-        iMainFragmentOperateListenerList = new ArrayList<>();
     }
 
     @Override
@@ -114,6 +113,7 @@ public class MainActivity extends BaseFragmentActivity<MainActivityPresenter> im
 
     @Override
     public void setViewStatus() {
+        EventBus.getDefault().register(this);
         initOnClickListner();
         initFragment();
         initBottomButton();
@@ -121,8 +121,8 @@ public class MainActivity extends BaseFragmentActivity<MainActivityPresenter> im
 
         txtSystemNotice.showTextBadge("2");
 
-        basePresenter = new MainActivityPresenter(this, getApplicationContext());
-        getRelativePresenter().getUserInfo();
+        basePresenter = new MainActivityPresenterImpl(this, getApplicationContext());
+        getBindPresenter().getUserInfo();
     }
 
     @Override
@@ -146,13 +146,6 @@ public class MainActivity extends BaseFragmentActivity<MainActivityPresenter> im
         homeFragment = HomeFragment.instantiation(0);
         messageFragment = MessageFragment.instantiation(1);
         contactFragment = ContactFragment.instantiation(2);
-        homeFragment.setMainOperateListener(this);
-        messageFragment.setMainOperateListener(this);
-        contactFragment.setMainOperateListener(this);
-
-        iMainFragmentOperateListenerList.add(homeFragment);
-        iMainFragmentOperateListenerList.add(messageFragment);
-        iMainFragmentOperateListenerList.add(contactFragment);
 
         fragmentList.add(homeFragment);
         fragmentList.add(messageFragment);
@@ -221,8 +214,8 @@ public class MainActivity extends BaseFragmentActivity<MainActivityPresenter> im
 
     }
 
-    @Override
-    public void showMainMenu() {
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void showMainMenu(ShowMainMenuEvent showMainMenuEvent) {
         drawerLayout.openDrawer(GravityCompat.START);
     }
 
@@ -254,11 +247,11 @@ public class MainActivity extends BaseFragmentActivity<MainActivityPresenter> im
         Common.displayDraweeView(user.getPicPath(), menuHead);
         txtAutograph.setText(user.getAutograph());
         txtUserName.setText(user.getNickName());
-//        layoutParent.setBgUrl(user.getPicPath());
-
-        for (IMainFragmentOperateListener iMainFragmentOperateListener : iMainFragmentOperateListenerList) {
-            iMainFragmentOperateListener.showHead(user.getPicPath());
-        }
+        EventBus.getDefault().post(new ShowHeadEvent(user.getPicPath()));
     }
 
+    @Override
+    public void onPageDestroy() {
+        EventBus.getDefault().unregister(this);
+    }
 }

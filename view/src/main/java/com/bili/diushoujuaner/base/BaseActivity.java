@@ -41,7 +41,7 @@ public class BaseActivity<T> extends AbstractBaseActivity {
         }
     }
 
-    protected T getRelativePresenter(){
+    protected T getBindPresenter(){
         return (T)basePresenter;
     }
 

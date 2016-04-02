@@ -23,6 +23,10 @@ public class RecallTemper {
         recallDtoHashtable.put(recallDto.getRecallNo(), recallDto);
     }
 
+    public static void removeRecallDto(long recallNo){
+        recallDtoHashtable.remove(recallNo);
+    }
+
     public static RecallDto getRecallDto(long recallNo){
         return recallDtoHashtable.get(recallNo);
     }

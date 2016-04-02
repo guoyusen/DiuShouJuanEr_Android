@@ -1,5 +1,6 @@
-package com.bili.diushoujuaner.model.action;
+package com.bili.diushoujuaner.model.action.impl;
 
+import com.bili.diushoujuaner.model.action.IUserInfoAction;
 import com.bili.diushoujuaner.model.action.respon.ActionRespon;
 import com.bili.diushoujuaner.model.apihelper.ApiRespon;
 import com.bili.diushoujuaner.model.apihelper.api.ApiAction;
@@ -16,9 +17,10 @@ import com.google.gson.reflect.TypeToken;
 /**
  * Created by BiLi on 2016/3/13.
  */
-public class UserInfoAction {
+public class UserInfoAction implements IUserInfoAction {
 
     private static UserInfoAction userInfoAction;
+    private User user;
 
     public static synchronized UserInfoAction getInstance(){
         if(userInfoAction == null){
@@ -27,6 +29,15 @@ public class UserInfoAction {
         return userInfoAction;
     }
 
+    @Override
+    public User getUserFromLocal(){
+        if(user == null){
+            user = DBManager.getInstance().getUser(CustomSessionPreference.getInstance().getCustomSession().getUserNo());
+        }
+        return user;
+    }
+
+    @Override
     public void getUserInfo(final ActionCallbackListener<ActionRespon<User>> actionCallbackListener){
         //先展示本地数据
         actionCallbackListener.onSuccess(ActionRespon.getActionRespon(Constant.ACTION_LOAD_LOCAL_SUCCESS, Constant.RETCODE_SUCCESS, DBManager.getInstance().getUser(CustomSessionPreference.getInstance().getCustomSession().getUserNo())));
@@ -38,7 +49,7 @@ public class UserInfoAction {
                 }.getType());
                 if(result.getIsLegal()){
                     DBManager.getInstance().saveUser(result.getData());
-                    actionCallbackListener.onSuccess(ActionRespon.getActionRespon(result.getMessage(), result.getRetCode(), DBManager.getInstance().getUser(CustomSessionPreference.getInstance().getCustomSession().getUserNo())));
+                    actionCallbackListener.onSuccess(ActionRespon.getActionRespon(result.getMessage(), result.getRetCode(), getUserFromLocal()));
                 }else{
                     actionCallbackListener.onSuccess(ActionRespon.getActionRespon(result.getMessage(), result.getRetCode(), (User)null));
                 }

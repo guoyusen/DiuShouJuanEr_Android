@@ -5,7 +5,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
@@ -14,17 +13,15 @@ import android.widget.RelativeLayout;
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.activity.RecallDetailActivity;
 import com.bili.diushoujuaner.adapter.RecallAdapter;
-import com.bili.diushoujuaner.adapter.viewholder.ViewHolder;
 import com.bili.diushoujuaner.base.BaseFragment;
-import com.bili.diushoujuaner.callback.IMainFragmentOperateListener;
-import com.bili.diushoujuaner.callback.IMainOperateListener;
 import com.bili.diushoujuaner.event.RecallGoodEvent;
-import com.bili.diushoujuaner.model.tempHelper.GoodTemper;
-import com.bili.diushoujuaner.model.tempHelper.RecallTemper;
+import com.bili.diushoujuaner.event.ShowHeadEvent;
+import com.bili.diushoujuaner.event.ShowMainMenuEvent;
+import com.bili.diushoujuaner.presenter.presenter.HomeFragmentPresenter;
 import com.bili.diushoujuaner.utils.Common;
 import com.bili.diushoujuaner.utils.Constant;
 import com.bili.diushoujuaner.utils.response.RecallDto;
-import com.bili.diushoujuaner.presenter.presenter.HomeFragmentPresenter;
+import com.bili.diushoujuaner.presenter.presenter.impl.HomeFragmentPresenterImpl;
 import com.bili.diushoujuaner.presenter.view.IHomeView;
 import com.bili.diushoujuaner.widget.CustomListViewRefresh;
 import com.bili.diushoujuaner.widget.TintedBitmapDrawable;
@@ -43,7 +40,7 @@ import butterknife.Bind;
 /**
  * Created by BiLi on 2016/3/2.
  */
-public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements WaveSwipeRefreshLayout.OnRefreshListener, IHomeView, View.OnClickListener, IMainFragmentOperateListener,CustomListViewRefresh.OnLoadMoreListener {
+public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements WaveSwipeRefreshLayout.OnRefreshListener, IHomeView, View.OnClickListener, CustomListViewRefresh.OnLoadMoreListener {
 
     @Bind(R.id.customListViewRefresh)
     CustomListViewRefresh customListViewRefresh;
@@ -58,20 +55,19 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
 
     private List<RecallDto> recallDtoList;
     private RecallAdapter recallAdapter;
-    private IMainOperateListener iMainOperateListener;
-    private String ivNavHeadUrl;
     private Handler handler;
-    private boolean goodstatus = false;
+    private boolean goodStatus = false;
     private boolean isGoodStatusInited = false;
     private CustomRunnable customRunnable;
     private long goodRecallNo;
+    private String headPicUrl;
 
     class CustomRunnable implements Runnable{
         @Override
         public void run() {
             // 重置，允许再次进行点击，并发送请求
             isGoodStatusInited = false;
-            getRelativePresenter().executeGoodChange(goodstatus, goodRecallNo);
+            getBindPresenter().executeGoodChange(goodStatus, goodRecallNo);
         }
     }
 
@@ -98,11 +94,15 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
     @Override
     public void setViewStatus() {
         EventBus.getDefault().register(this);
-
         showPageHead("首页", R.mipmap.icon_recall_add, null);
+
+        waveSwipeRefreshLayout.setColorSchemeColors(Color.WHITE, Color.WHITE);
+        waveSwipeRefreshLayout.setWaveColor(ContextCompat.getColor(context, R.color.COLOR_THEME));
+        waveSwipeRefreshLayout.setOnRefreshListener(this);
         ivNavHead.setOnClickListener(this);
 
-        ivTip.setImageDrawable(new TintedBitmapDrawable(getResources(),R.mipmap.icon_nodata, ContextCompat.getColor(context, R.color.COLOR_BFBFBF)));
+        ivTip.setImageDrawable(new TintedBitmapDrawable(getResources(), R.mipmap.icon_nodata, ContextCompat.getColor(context, R.color.COLOR_BFBFBF)));
+        Common.displayDraweeView(headPicUrl, ivNavHead);
 
         recallAdapter = new RecallAdapter(getContext(), recallDtoList);
         customListViewRefresh.setAdapter(recallAdapter);
@@ -111,7 +111,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
         customListViewRefresh.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                RecallTemper.addRecallDto(recallAdapter.getItem(position));
+                getBindPresenter().addRecallDtoToTemper(recallAdapter.getItem(position));
 
                 Intent intent = new Intent(getContext(), RecallDetailActivity.class);
                 intent.putExtra(RecallDetailActivity.TAG, recallAdapter.getItem(position).getRecallNo());
@@ -119,22 +119,16 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
             }
         });
 
-        waveSwipeRefreshLayout.setColorSchemeColors(Color.WHITE, Color.WHITE);
-        waveSwipeRefreshLayout.setWaveColor(ContextCompat.getColor(context, R.color.COLOR_THEME));
-        waveSwipeRefreshLayout.setOnRefreshListener(this);
-
-        Common.displayDraweeView(ivNavHeadUrl, ivNavHead);
-
-        basePresenter = new HomeFragmentPresenter(this, getContext());
-        getRelativePresenter().showRecallFromCache();
-        getRelativePresenter().getRecallList(Constant.REFRESH_DEFAULT);
+        basePresenter = new HomeFragmentPresenterImpl(this, getContext());
+        getBindPresenter().showRecallFromCache();
+        getBindPresenter().getRecallList(Constant.REFRESH_DEFAULT);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.ivNavHead:
-                iMainOperateListener.showMainMenu();
+                EventBus.getDefault().post(new ShowMainMenuEvent());
                 break;
         }
     }
@@ -145,19 +139,15 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
         recallAdapter.notifyDataSetChanged();
     }
 
-    public void setMainOperateListener(IMainOperateListener iMainOperateListener) {
-        this.iMainOperateListener = iMainOperateListener;
-    }
-
     @Override
     public void onRefresh() {
         customListViewRefresh.setListViewStateRefresh();
-        getRelativePresenter().getRecallList(Constant.REFRESH_INTENT);
+        getBindPresenter().getRecallList(Constant.REFRESH_INTENT);
     }
 
     @Override
     public void onLoadMore() {
-        getRelativePresenter().getMoreRecallList();
+        getBindPresenter().getMoreRecallList();
     }
 
     @Override
@@ -201,11 +191,11 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
         customListViewRefresh.setListViewStateFinished();
     }
 
-    @Override
-    public void showHead(String url) {
-        ivNavHeadUrl = url;
+    @Subscribe
+    public void showHead(ShowHeadEvent showHeadEvent) {
+        this.headPicUrl = showHeadEvent.getHeadPicUrl();
         if(ivNavHead != null){
-            Common.displayDraweeView(ivNavHeadUrl, ivNavHead);
+            Common.displayDraweeView(this.headPicUrl, ivNavHead);
         }
     }
 
@@ -213,16 +203,11 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
     public void onRecallGoodEvent(RecallGoodEvent recallGoodEvent){
         if(!isGoodStatusInited){
             isGoodStatusInited = true;
-            goodstatus = GoodTemper.getGoodStatus(recallAdapter.getItem(recallGoodEvent.getPosition()).getRecallNo());
+            goodStatus = getBindPresenter().getGoodStatusByRecallNo(recallAdapter.getItem(recallGoodEvent.getPosition()).getRecallNo());
             goodRecallNo = recallAdapter.getItem(recallGoodEvent.getPosition()).getRecallNo();
         }
-        if(GoodTemper.getGoodStatus(recallAdapter.getItem(recallGoodEvent.getPosition()).getRecallNo())){
-            GoodTemper.setGoodStatus(recallAdapter.getItem(recallGoodEvent.getPosition()).getRecallNo(), false);
-            getRelativePresenter().removeGoodDtoFromTemper(recallGoodEvent.getPosition());
-        }else{
-            GoodTemper.setGoodStatus(recallAdapter.getItem(recallGoodEvent.getPosition()).getRecallNo(), true);
-            getRelativePresenter().addGoodDtoToTemper(recallGoodEvent.getPosition());
-        }
+
+        getBindPresenter().changeGoodStatusToLocal(goodRecallNo, recallGoodEvent.getPosition());
         recallAdapter.notifyDataSetChanged();
         handler.removeCallbacks(customRunnable);
         handler.postDelayed(customRunnable, 1500);

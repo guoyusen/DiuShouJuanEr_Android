@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.base.BaseActivity;
 import com.bili.diushoujuaner.presenter.presenter.LoginActivityPresenter;
+import com.bili.diushoujuaner.presenter.presenter.impl.LoginActivityPresenterImpl;
 import com.bili.diushoujuaner.presenter.view.ILoginView;
 
 import butterknife.Bind;
@@ -43,7 +44,7 @@ public class LoginActivity extends BaseActivity<LoginActivityPresenter> implemen
         showPageHead(null, null, "新用户");
 
         btnLogin.setOnClickListener(this);
-        basePresenter = new LoginActivityPresenter(this, getApplicationContext());
+        basePresenter = new LoginActivityPresenterImpl(this, getApplicationContext());
     }
 
     @Override
@@ -55,7 +56,7 @@ public class LoginActivity extends BaseActivity<LoginActivityPresenter> implemen
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnLogin:
-                getRelativePresenter().getUserLogin(edtMobile.getText().toString().trim(), edtPassword.getText().toString().trim());
+                getBindPresenter().getUserLogin(edtMobile.getText().toString().trim(), edtPassword.getText().toString().trim());
                 break;
         }
     }

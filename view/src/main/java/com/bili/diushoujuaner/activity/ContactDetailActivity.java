@@ -3,6 +3,7 @@ package com.bili.diushoujuaner.activity;
 import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -16,6 +17,7 @@ import com.bili.diushoujuaner.utils.entity.PictureVo;
 import com.bili.diushoujuaner.utils.response.PictureDto;
 import com.bili.diushoujuaner.widget.CustomGridView;
 import com.bili.diushoujuaner.widget.CustomRelativeLayout;
+import com.bili.diushoujuaner.widget.TintedBitmapDrawable;
 import com.bili.diushoujuaner.widget.aligntextview.AlignTextView;
 
 import java.util.ArrayList;
@@ -42,6 +44,8 @@ public class ContactDetailActivity extends BaseActivity {
     AlignTextView txtFriendAutograph;
     @Bind(R.id.btnStartMsg)
     Button btnStartMsg;
+    @Bind(R.id.ivArrowRight)
+    ImageView ivArrowRight;
 
     private ContactRecentGalleryAdapter contactRecentGalleryAdapter;
     private List<PictureDto> pictureList;
@@ -73,6 +77,7 @@ public class ContactDetailActivity extends BaseActivity {
     public void setViewStatus() {
         showPageHead(null, null, "更多");
 
+        ivArrowRight.setImageDrawable(new TintedBitmapDrawable(getResources(),R.mipmap.icon_arrow_right,ContextCompat.getColor(context,R.color.COLOR_8A8A8A)));
         layoutHead.setBackground(ContextCompat.getDrawable(context, R.drawable.transparent_black_down_bg));
         layoutParent.setBgUrl(friendVo.getPicPath());
         txtFriendName.setText(friendVo.getDisplayName());

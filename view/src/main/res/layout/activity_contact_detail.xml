@@ -126,11 +126,11 @@
                     android:visibility="gone" />
 
                 <ImageView
+                    android:id="@+id/ivArrowRight"
                     android:layout_width="@dimen/x50"
                     android:layout_height="@dimen/y50"
                     android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:src="@mipmap/icon_arrow_right_808080" />
+                    android:layout_centerVertical="true"/>
 
             </RelativeLayout>
 

@@ -112,7 +112,6 @@ public class PictureFragment extends Fragment {
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
             }
 
             @Override
@@ -122,7 +121,6 @@ public class PictureFragment extends Fragment {
 
             @Override
             public void onPageScrollStateChanged(int state) {
-
             }
         });
 

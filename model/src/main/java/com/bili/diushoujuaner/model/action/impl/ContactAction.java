@@ -1,5 +1,6 @@
-package com.bili.diushoujuaner.model.action;
+package com.bili.diushoujuaner.model.action.impl;
 
+import com.bili.diushoujuaner.model.action.IContactAction;
 import com.bili.diushoujuaner.model.action.respon.ActionRespon;
 import com.bili.diushoujuaner.model.apihelper.ApiRespon;
 import com.bili.diushoujuaner.model.apihelper.api.ApiAction;
@@ -28,7 +29,7 @@ import java.util.List;
 /**
  * Created by BiLi on 2016/3/15.
  */
-public class ContactAction {
+public class ContactAction implements IContactAction{
 
     private static ContactAction contactAction;
 
@@ -39,16 +40,18 @@ public class ContactAction {
         return contactAction;
     }
 
-    public void getPartyVoList(final ActionCallbackListener<ActionRespon<List<PartyVo>>> actionCallbackListener){
+    @Override
+    public List<PartyVo> getPartyVoList(){
         List<PartyVo> partyVoList = DBManager.getInstance().getPartyVoList();
         Collections.sort(partyVoList, new PinyinComparator());
         if(partyVoList.size() == 1){
             char capital = PinyinUtil.getHeadCapitalByChar(partyVoList.get(0).getDisplayName().charAt(0));
             partyVoList.get(0).setSortLetter((capital >= 'A' && capital <= 'Z') ? (capital + "") : "#");
         }
-        actionCallbackListener.onSuccess(ActionRespon.getActionRespon(Constant.ACTION_LOAD_LOCAL_SUCCESS,Constant.RETCODE_SUCCESS,partyVoList));
+        return partyVoList;
     }
 
+    @Override
     public void getContactList(final ActionCallbackListener<ActionRespon<List<FriendVo>>> actionCallbackListener){
         //先从本地加载并显示
         actionCallbackListener.onSuccess(ActionRespon.getActionRespon(Constant.ACTION_LOAD_LOCAL_SUCCESS,Constant.RETCODE_SUCCESS,getFriendVoFrimDB()));

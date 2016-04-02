@@ -32,7 +32,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/TextMiddle"
-                android:textColor="@color/TC_12B7F5"
+                android:textColor="@color/TC_388ECD"
                 android:text="三木同学"
                 android:textStyle="bold"/>
 
@@ -69,7 +69,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/x10"
                     android:text="回复"
-                    android:textColor="@color/TC_12B7F5" />
+                    android:textColor="@color/TC_388ECD" />
             </LinearLayout>
 
         </RelativeLayout>

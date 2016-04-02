@@ -1,7 +1,6 @@
-package com.bili.diushoujuaner.model.action;
+package com.bili.diushoujuaner.model.action.impl;
 
-import android.content.Context;
-
+import com.bili.diushoujuaner.model.action.IRecallAction;
 import com.bili.diushoujuaner.model.action.respon.ActionRespon;
 import com.bili.diushoujuaner.model.apihelper.ApiRespon;
 import com.bili.diushoujuaner.model.apihelper.api.ApiAction;
@@ -19,7 +18,7 @@ import java.util.List;
 /**
  * Created by BiLi on 2016/3/10.
  */
-public class RecallAction {
+public class RecallAction implements IRecallAction {
 
     private static RecallAction recallAction;
 
@@ -30,12 +29,15 @@ public class RecallAction {
         return recallAction;
     }
 
-    public void getRecallListFromACache(final ActionCallbackListener<ActionRespon<List<RecallDto>>> actionCallbackListener){
+    @Override
+    public List<RecallDto> getRecallListFromACache(){
         List<RecallDto> recallDtoList = GsonParser.getInstance().fromJson(ACache.getInstance().getAsString(Constant.ACACHE_RECALL_LIST), new TypeToken<List<RecallDto>>() {
         }.getType());
-        actionCallbackListener.onSuccess(ActionRespon.getActionRespon(Constant.ACTION_LOAD_LOCAL_SUCCESS, Constant.RETCODE_SUCCESS, recallDtoList));
+
+        return recallDtoList;
     }
 
+    @Override
     public void getRecallList(RecallListReq recallListReq, final ActionCallbackListener<ActionRespon<List<RecallDto>>> actionCallbackListener){
 
         ApiAction.getInstance().getRecallList(recallListReq, new ApiCallbackListener() {

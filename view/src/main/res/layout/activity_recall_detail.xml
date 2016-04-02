@@ -121,7 +121,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/x15"
                     android:minHeight="@dimen/y32"
-                    android:textColor="@color/TC_12B7F5" />
+                    android:textColor="@color/TC_388ECD" />
 
             </LinearLayout>
 

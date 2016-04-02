@@ -106,10 +106,10 @@ public class RecallAdapter extends CommonAdapter<RecallDto> {
     private void setGoodStatus(ViewHolder holder, boolean goodStatus){
         if(goodStatus){
             if(thumbUpDrawable == null){
-                thumbUpDrawable = new TintedBitmapDrawable(context.getResources(),R.mipmap.icon_good,ContextCompat.getColor(context, R.color.COLOR_THEME));
+                thumbUpDrawable = new TintedBitmapDrawable(context.getResources(),R.mipmap.icon_good,ContextCompat.getColor(context, R.color.COLOR_388ECD));
             }
             ((ImageView)holder.getView(R.id.ivItemGood)).setImageDrawable(thumbUpDrawable);
-            ((TextView)holder.getView(R.id.txtGoodCount)).setTextColor(ContextCompat.getColor(context, R.color.TC_12B7F5));
+            ((TextView)holder.getView(R.id.txtGoodCount)).setTextColor(ContextCompat.getColor(context, R.color.TC_388ECD));
         }else{
             if(thumbDownDrawable == null){
                 thumbDownDrawable = new TintedBitmapDrawable(context.getResources(),R.mipmap.icon_good,ContextCompat.getColor(context, R.color.COLOR_BFBFBF));

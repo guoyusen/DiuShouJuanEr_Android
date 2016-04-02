@@ -9,7 +9,7 @@
     <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/ivItemGallery"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         app:placeholderImage="@mipmap/image_load_fail"
         app:placeholderImageScaleType="centerCrop"
         app:viewAspectRatio="1.4"

@@ -6,6 +6,7 @@ import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.adapter.PartyAdapter;
 import com.bili.diushoujuaner.base.BaseActivity;
 import com.bili.diushoujuaner.presenter.presenter.PartyActivityPresenter;
+import com.bili.diushoujuaner.presenter.presenter.impl.PartyActivityPresenterImpl;
 import com.bili.diushoujuaner.presenter.view.IPartyView;
 import com.bili.diushoujuaner.utils.entity.PartyVo;
 import com.bili.diushoujuaner.widget.CustomListViewRefresh;
@@ -45,8 +46,8 @@ public class PartyActivity extends BaseActivity<PartyActivityPresenter> implemen
 
         partyAdapter = new PartyAdapter(this, partyVoList);
         customListViewRefresh.setAdapter(partyAdapter);
-        basePresenter = new PartyActivityPresenter(this, context);
-        getRelativePresenter().getPartyList();
+        basePresenter = new PartyActivityPresenterImpl(this, context);
+        getBindPresenter().getPartyList();
     }
 
     @Override

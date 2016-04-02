@@ -36,7 +36,7 @@ public class CommentAdapter extends CommonAdapter<CommentDto> {
     public void convert(ViewHolder holder, CommentDto commentDto, int position) throws Exception {
         if(commentDto != null){
             if(commentFocusDrawable == null){
-                commentFocusDrawable = new TintedBitmapDrawable(context.getResources(),R.mipmap.icon_comment,ContextCompat.getColor(context, R.color.COLOR_THEME));
+                commentFocusDrawable = new TintedBitmapDrawable(context.getResources(),R.mipmap.icon_comment,ContextCompat.getColor(context, R.color.COLOR_388ECD));
             }
             ((ImageView)holder.getView(R.id.ivComment)).setImageDrawable(commentFocusDrawable);
             Common.displayDraweeView(commentDto.getFromPicPath(), (SimpleDraweeView) holder.getView(R.id.ivItemHead));
