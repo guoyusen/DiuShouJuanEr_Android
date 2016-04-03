@@ -135,11 +135,11 @@ public class MainActivity extends BaseFragmentActivity<MainActivityPresenterImpl
     }
 
     private void initMenuIv(){
-        ivUser.setImageDrawable(new TintedBitmapDrawable(getResources(),R.mipmap.icon_menu_user,ContextCompat.getColor(context,R.color.COLOR_THEME)));
-        ivFeedBack.setImageDrawable(new TintedBitmapDrawable(getResources(),R.mipmap.icon_menu_feedback,ContextCompat.getColor(context,R.color.COLOR_THEME)));
-        ivFocus.setImageDrawable(new TintedBitmapDrawable(getResources(),R.mipmap.icon_menu_focus,ContextCompat.getColor(context,R.color.COLOR_THEME)));
-        ivFolder.setImageDrawable(new TintedBitmapDrawable(getResources(),R.mipmap.icon_menu_folder,ContextCompat.getColor(context,R.color.COLOR_THEME)));
-        ivNotice.setImageDrawable(new TintedBitmapDrawable(getResources(),R.mipmap.icon_menu_notice,ContextCompat.getColor(context,R.color.COLOR_THEME)));
+        ivUser.setImageDrawable(new TintedBitmapDrawable(getResources(),R.mipmap.icon_menu_user,ContextCompat.getColor(context,R.color.COLOR_388ECD)));
+        ivFeedBack.setImageDrawable(new TintedBitmapDrawable(getResources(),R.mipmap.icon_menu_feedback,ContextCompat.getColor(context,R.color.COLOR_388ECD)));
+        ivFocus.setImageDrawable(new TintedBitmapDrawable(getResources(),R.mipmap.icon_menu_focus,ContextCompat.getColor(context,R.color.COLOR_388ECD)));
+        ivFolder.setImageDrawable(new TintedBitmapDrawable(getResources(),R.mipmap.icon_menu_folder,ContextCompat.getColor(context,R.color.COLOR_388ECD)));
+        ivNotice.setImageDrawable(new TintedBitmapDrawable(getResources(),R.mipmap.icon_menu_notice,ContextCompat.getColor(context,R.color.COLOR_388ECD)));
     }
 
     private void initFragment() {

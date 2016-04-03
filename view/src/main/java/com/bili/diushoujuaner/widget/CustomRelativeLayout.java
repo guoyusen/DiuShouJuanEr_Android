@@ -8,11 +8,13 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
+import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.RelativeLayout;
 
+import com.android.volley.toolbox.ImageLoader;
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.base.BaseActivity;
 import com.bili.diushoujuaner.base.IBaseActivity;
@@ -38,6 +40,7 @@ public class CustomRelativeLayout extends RelativeLayout {
     private ImageRequest imageRequest = null;
     private DataSource<CloseableReference<CloseableImage>> dataSource = null;
     private String bgUrl;
+    private Handler handler;
 
     public CustomRelativeLayout(Context context) {
         super(context);
@@ -58,6 +61,7 @@ public class CustomRelativeLayout extends RelativeLayout {
         if(isInEditMode()){
             return;
         }
+        handler = new Handler();
         this.context = context;
         showTopBg();
         setBackground(new ColorDrawable(ContextCompat.getColor(context, R.color.COLOR_WHITE)));
@@ -92,7 +96,6 @@ public class CustomRelativeLayout extends RelativeLayout {
         super.onDraw(canvas);
         if(this.drawBitmap != null && !this.drawBitmap.isRecycled()){
             drawImage(canvas, this.drawBitmap, 0, 0, (int)drawWidth, (int)(drawWidth >= drawHeight ? drawWidth : drawHeight), 0, 0);
-            drawBitmap.recycle();
         }else{
             showTopBg();
         }
@@ -113,7 +116,7 @@ public class CustomRelativeLayout extends RelativeLayout {
             @Override
             protected void onNewResultImpl(Bitmap bitmap) {
                 drawBitmap = Bitmap.createBitmap(bitmap);
-                invalidate();
+                postInvalidate();
             }
 
             @Override

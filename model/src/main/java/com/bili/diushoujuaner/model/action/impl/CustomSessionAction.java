@@ -8,8 +8,8 @@ import com.bili.diushoujuaner.model.apihelper.api.ApiAction;
 import com.bili.diushoujuaner.model.apihelper.callback.ApiCallbackListener;
 import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
 import com.bili.diushoujuaner.utils.GsonParser;
-import com.bili.diushoujuaner.utils.response.CustomSession;
-import com.bili.diushoujuaner.utils.request.UserAccountReq;
+import com.bili.diushoujuaner.model.apihelper.response.CustomSession;
+import com.bili.diushoujuaner.model.apihelper.request.UserAccountReq;
 import com.bili.diushoujuaner.model.callback.ActionCallbackListener;
 import com.google.gson.reflect.TypeToken;
 
@@ -27,10 +27,12 @@ public class CustomSessionAction implements ICustomSessionAction {
         return customSessionAction;
     }
 
+    @Override
     public boolean getIsLogined(){
         return CustomSessionPreference.getInstance().isLogined();
     }
 
+    @Override
     public void getUserLogin(UserAccountReq userAccountReq, final ActionCallbackListener<ActionRespon<CustomSession>> actionCallbackListener){
         ApiAction.getInstance().getUserLogin(userAccountReq, new ApiCallbackListener() {
             @Override

@@ -1,7 +1,7 @@
 package com.bili.diushoujuaner.presenter.view;
 
 import com.bili.diushoujuaner.presenter.base.IBaseView;
-import com.bili.diushoujuaner.utils.response.RecallDto;
+import com.bili.diushoujuaner.model.apihelper.response.RecallDto;
 
 import java.util.List;
 

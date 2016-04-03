@@ -1,11 +1,13 @@
 package com.bili.diushoujuaner.model.tempHelper;
 
+import com.bili.diushoujuaner.model.apihelper.response.ResponDto;
 import com.bili.diushoujuaner.model.cachehelper.ACache;
 import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
 import com.bili.diushoujuaner.utils.Constant;
 import com.bili.diushoujuaner.utils.GsonParser;
-import com.bili.diushoujuaner.utils.response.GoodDto;
-import com.bili.diushoujuaner.utils.response.RecallDto;
+import com.bili.diushoujuaner.model.apihelper.response.CommentDto;
+import com.bili.diushoujuaner.model.apihelper.response.GoodDto;
+import com.bili.diushoujuaner.model.apihelper.response.RecallDto;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -147,6 +149,70 @@ public class RecallTemper {
             ACache.getInstance().put(Constant.ACACHE_RECALL_LIST, GsonParser.getInstance().toJson(recallList.subList(0,20)));
         }else{
             ACache.getInstance().put(Constant.ACACHE_RECALL_LIST, GsonParser.getInstance().toJson(recallList.subList(0,recallList.size())));
+        }
+    }
+
+    public static void addCommentDtoByRecallNo(long recallNo, CommentDto commentDto){
+        addCommentDtoByRecallNo(recallNo, commentDto, true);
+    }
+
+    public static void addCommentDtoByRecallNo(long recallNo, CommentDto commentDto, boolean isACache){
+        recallDtoHashtable.get(recallNo).getCommentList().add(commentDto);
+        if(isACache){
+            saveRecallListToCache();
+        }
+    }
+
+    public static void addResponDtoByRecallNo(long recallNo, long commentNo, ResponDto responDto){
+        addResponDtoByRecallNo(recallNo, commentNo, responDto, true);
+    }
+
+    public static void addResponDtoByRecallNo(long recallNo, long commentNo, ResponDto responDto, boolean isACache){
+        for(CommentDto commentDto : recallDtoHashtable.get(recallNo).getCommentList()){
+            if(commentDto.getCommentNo() == commentNo){
+                commentDto.getResponList().add(responDto);
+                break;
+            }
+        }
+        if(isACache){
+            saveRecallListToCache();
+        }
+    }
+
+    public static void removeCommentByRecalllNo(long recallNo, long commentNo){
+        removeCommentByRecalllNo(recallNo, commentNo, true);
+    }
+
+    public static void removeCommentByRecalllNo(long recallNo, long commentNo, boolean isACache){
+        for(CommentDto commentDto : recallDtoHashtable.get(recallNo).getCommentList()){
+            if(commentDto.getCommentNo() == commentNo){
+                recallDtoHashtable.get(recallNo).getCommentList().remove(commentDto);
+                break;
+            }
+        }
+        if(isACache){
+            saveRecallListToCache();
+        }
+    }
+
+    public static void removeResponByRecallNo(long recallNo, long commentNo, long responNo){
+        removeResponByRecallNo(recallNo, commentNo, responNo, true);
+    }
+
+    public static void removeResponByRecallNo(long recallNo, long commentNo, long responNo, boolean isACache){
+        for(CommentDto commentDto : recallDtoHashtable.get(recallNo).getCommentList()){
+            if(commentDto.getCommentNo() == commentNo){
+                for(ResponDto responDto : commentDto.getResponList()){
+                    if(responDto.getResponNo() == responNo){
+                        commentDto.getResponList().remove(responDto);
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+        if(isACache){
+            saveRecallListToCache();
         }
     }
 

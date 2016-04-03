@@ -1,7 +1,6 @@
 package com.bili.diushoujuaner.application;
 
 import android.app.Application;
-import android.os.Build;
 
 import com.bili.diushoujuaner.model.apihelper.HttpEngine;
 import com.bili.diushoujuaner.model.apihelper.api.ApiAction;
@@ -11,9 +10,6 @@ import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
 import com.bili.diushoujuaner.utils.Common;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.stetho.Stetho;
-import com.nostra13.universalimageloader.core.ImageLoader;
-import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
-import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.orhanobut.logger.Logger;
 
 /**
@@ -38,17 +34,6 @@ public class CustomApplication extends Application {
         initDatabase();// 初始化DBManager
         initLogger();
         Stetho.initializeWithDefaults(this);
-        initImageLoader();
-    }
-
-    private void initImageLoader(){
-        ImageLoaderConfiguration.Builder configBuilder = new ImageLoaderConfiguration.Builder(this)
-                .threadPriority(Thread.NORM_PRIORITY - 2)
-                .denyCacheImageMultipleSizesInMemory();
-        configBuilder.tasksProcessingOrder(QueueProcessingType.LIFO);
-
-        ImageLoaderConfiguration config = configBuilder.build();
-        ImageLoader.getInstance().init(config);
     }
 
     private void initLogger(){

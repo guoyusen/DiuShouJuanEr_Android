@@ -45,4 +45,8 @@ public class ContactTemper {
         return null;
     }
 
+    public static void clearFriend(){
+        friendVoHashtable.clear();
+    }
+
 }

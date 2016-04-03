@@ -1,4 +1,4 @@
-package com.bili.diushoujuaner.utils.response;
+package com.bili.diushoujuaner.model.apihelper.response;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -19,15 +19,24 @@ public class ResponDto implements Parcelable {
      * toNo : 10004
      */
 
+    private String timeStamp;
     private String addTime;
-    private long commentNo;
+    private Long commentNo;
     private String content;
-    private long fromNo;
+    private Long fromNo;
     private String fromPicPath;
     private String nickNameFrom;
     private String nickNameTo;
-    private long responNo;
-    private long toNo;
+    private Long responNo;
+    private Long toNo;
+
+    public String getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(String timeStamp) {
+        this.timeStamp = timeStamp;
+    }
 
     public String getAddTime() {
         return addTime;
@@ -37,11 +46,11 @@ public class ResponDto implements Parcelable {
         this.addTime = addTime;
     }
 
-    public long getCommentNo() {
+    public Long getCommentNo() {
         return commentNo;
     }
 
-    public void setCommentNo(long commentNo) {
+    public void setCommentNo(Long commentNo) {
         this.commentNo = commentNo;
     }
 
@@ -53,11 +62,11 @@ public class ResponDto implements Parcelable {
         this.content = content;
     }
 
-    public long getFromNo() {
+    public Long getFromNo() {
         return fromNo;
     }
 
-    public void setFromNo(long fromNo) {
+    public void setFromNo(Long fromNo) {
         this.fromNo = fromNo;
     }
 
@@ -85,21 +94,22 @@ public class ResponDto implements Parcelable {
         this.nickNameTo = nickNameTo;
     }
 
-    public long getResponNo() {
+    public Long getResponNo() {
         return responNo;
     }
 
-    public void setResponNo(long responNo) {
+    public void setResponNo(Long responNo) {
         this.responNo = responNo;
     }
 
-    public long getToNo() {
+    public Long getToNo() {
         return toNo;
     }
 
-    public void setToNo(long toNo) {
+    public void setToNo(Long toNo) {
         this.toNo = toNo;
     }
+
 
     @Override
     public int describeContents() {
@@ -108,6 +118,7 @@ public class ResponDto implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.timeStamp);
         dest.writeString(this.addTime);
         dest.writeLong(this.commentNo);
         dest.writeString(this.content);
@@ -123,6 +134,7 @@ public class ResponDto implements Parcelable {
     }
 
     protected ResponDto(Parcel in) {
+        this.timeStamp = in.readString();
         this.addTime = in.readString();
         this.commentNo = in.readLong();
         this.content = in.readString();
@@ -134,7 +146,7 @@ public class ResponDto implements Parcelable {
         this.toNo = in.readLong();
     }
 
-    public static final Parcelable.Creator<ResponDto> CREATOR = new Parcelable.Creator<ResponDto>() {
+    public static final Creator<ResponDto> CREATOR = new Creator<ResponDto>() {
         @Override
         public ResponDto createFromParcel(Parcel source) {
             return new ResponDto(source);

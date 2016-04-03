@@ -15,7 +15,7 @@ import com.bili.diushoujuaner.base.BaseFragment;
 import com.bili.diushoujuaner.event.ShowHeadEvent;
 import com.bili.diushoujuaner.event.ShowMainMenuEvent;
 import com.bili.diushoujuaner.utils.Common;
-import com.bili.diushoujuaner.utils.response.MessageDto;
+import com.bili.diushoujuaner.model.apihelper.response.MessageDto;
 import com.bili.diushoujuaner.widget.CustomListViewRefresh;
 import com.bili.diushoujuaner.widget.waveswipe.WaveSwipeRefreshLayout;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -46,6 +46,7 @@ public class MessageFragment extends BaseFragment implements WaveSwipeRefreshLay
 
     public static MessageFragment instantiation(int position) {
         MessageFragment fragment = new MessageFragment();
+        EventBus.getDefault().register(fragment);
         Bundle args = new Bundle();
         args.putInt("position", position);
         fragment.setArguments(args);
@@ -64,7 +65,6 @@ public class MessageFragment extends BaseFragment implements WaveSwipeRefreshLay
 
     @Override
     public void setViewStatus() {
-        EventBus.getDefault().register(this);
         showPageHead("消息", null, null);
         ivNavHead.setOnClickListener(this);
 

@@ -11,11 +11,15 @@ import android.widget.TextView;
 
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.adapter.viewholder.ViewHolder;
+import com.bili.diushoujuaner.event.ResponEvent;
 import com.bili.diushoujuaner.model.tempHelper.ContactTemper;
 import com.bili.diushoujuaner.utils.Common;
-import com.bili.diushoujuaner.utils.response.CommentDto;
+import com.bili.diushoujuaner.model.apihelper.response.CommentDto;
+import com.bili.diushoujuaner.utils.Constant;
 import com.bili.diushoujuaner.widget.TintedBitmapDrawable;
 import com.facebook.drawee.view.SimpleDraweeView;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.Hashtable;
 import java.util.List;
@@ -33,7 +37,7 @@ public class CommentAdapter extends CommonAdapter<CommentDto> {
     }
 
     @Override
-    public void convert(ViewHolder holder, CommentDto commentDto, int position) throws Exception {
+    public void convert(ViewHolder holder, final CommentDto commentDto, int position) throws Exception {
         if(commentDto != null){
             if(commentFocusDrawable == null){
                 commentFocusDrawable = new TintedBitmapDrawable(context.getResources(),R.mipmap.icon_comment,ContextCompat.getColor(context, R.color.COLOR_388ECD));
@@ -58,12 +62,19 @@ public class CommentAdapter extends CommonAdapter<CommentDto> {
                             break;
                         case MotionEvent.ACTION_UP:
                             v.setBackgroundColor(ContextCompat.getColor(context, R.color.COLOR_WHITE));
+                            EventBus.getDefault().post(ResponEvent.getResponEvent(commentDto.getCommentNo(), null, commentDto.getFromNo(), Constant.COMMENT_CLICK_COMMENT_CONTENT, commentDto.getNickName()));
                             break;
                         case MotionEvent.ACTION_CANCEL:
                             v.setBackgroundColor(ContextCompat.getColor(context, R.color.COLOR_WHITE));
                             break;
                     }
                     return true;
+                }
+            });
+            holder.getView(R.id.layoutRespon).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    EventBus.getDefault().post(ResponEvent.getResponEvent(commentDto.getCommentNo(), null, commentDto.getFromNo(), Constant.COMMENT_CLICK_LAYOUT_RESPON, commentDto.getNickName()));
                 }
             });
             if(responAdapterHashtable.get(commentDto.getCommentNo()) == null){
@@ -74,4 +85,6 @@ public class CommentAdapter extends CommonAdapter<CommentDto> {
             responAdapterHashtable.get(commentDto.getCommentNo()).notifyDataSetChanged();
         }
     }
+
+
 }

@@ -12,29 +12,19 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.telephony.TelephonyManager;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
-import com.bili.diushoujuaner.utils.entity.PictureVo;
-import com.bili.diushoujuaner.utils.entity.SortVo;
-import com.bili.diushoujuaner.utils.response.PictureDto;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.orhanobut.logger.Logger;
 
 import java.lang.reflect.Field;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -45,6 +35,10 @@ public class Common {
 
     private static SimpleDateFormat sdf_YYMMDD_HHMMSS = new SimpleDateFormat(
             "yyyy-MM-dd HH:mm:ss");
+
+    public static String getCurrentTimeYYMMDD_HHMMSS(){
+        return sdf_YYMMDD_HHMMSS.format(new Date());
+    }
 
     private static int getYearDifferenceBetweenTime(String start, String end){
         return Math.abs(getYearFromTime(start) - getYearFromTime(end));
@@ -380,17 +374,6 @@ public class Common {
         } else {
             return html.replaceAll("&lt;", "<").replaceAll("&gt;", ">").replaceAll("&amp;", "&").replaceAll("&quot;","\"");
         }
-    }
-
-    public static List<PictureVo> changePictureDtoListToPictureVoList(List<PictureDto> pictureDtoList){
-        List<PictureVo> pictureVoList = new ArrayList<>();
-        for(PictureDto pictureDto : pictureDtoList){
-            PictureVo pictureVo = new PictureVo();
-            pictureVo.setPicPath(pictureDto.getPicPath());
-
-            pictureVoList.add(pictureVo);
-        }
-        return pictureVoList;
     }
 
     public static void displayDraweeView(String url, SimpleDraweeView draweeView) {

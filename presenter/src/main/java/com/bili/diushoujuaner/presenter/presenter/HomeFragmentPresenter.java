@@ -1,6 +1,6 @@
 package com.bili.diushoujuaner.presenter.presenter;
 
-import com.bili.diushoujuaner.utils.response.RecallDto;
+import com.bili.diushoujuaner.model.apihelper.response.RecallDto;
 
 /**
  * Created by BiLi on 2016/4/2.

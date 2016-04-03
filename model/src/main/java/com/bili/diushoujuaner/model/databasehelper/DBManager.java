@@ -17,19 +17,12 @@ import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
 import com.bili.diushoujuaner.model.tempHelper.ContactTemper;
 import com.bili.diushoujuaner.utils.Common;
 import com.bili.diushoujuaner.utils.Constant;
-import com.bili.diushoujuaner.utils.GsonParser;
 import com.bili.diushoujuaner.utils.entity.FriendVo;
 import com.bili.diushoujuaner.utils.entity.PartyVo;
-import com.bili.diushoujuaner.utils.response.MemberDto;
-import com.bili.diushoujuaner.utils.response.UserRes;
-import com.google.gson.Gson;
-import com.orhanobut.logger.Logger;
+import com.bili.diushoujuaner.model.apihelper.response.UserRes;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import de.greenrobot.dao.query.CursorQuery;
-import de.greenrobot.dao.query.QueryBuilder;
 
 /**
  * Created by BiLi on 2016/3/12.
@@ -118,10 +111,11 @@ public class DBManager {
     }
 
     /**
-     * 获取好友列表
+     * 保存好友列表
      * @param friendList
      */
     public void saveFriendList(List<Friend> friendList){
+        daoSession.getDatabase().delete("Friend", "OWNER_NO = ? ", new String[]{CustomSessionPreference.getInstance().getCustomSession().getUserNo() + ""});
         for(Friend friend : friendList){
             saveFriend(friend);
         }
@@ -138,6 +132,7 @@ public class DBManager {
         FriendVo friendVo;
         Cursor cursor = daoSession.getDatabase().rawQuery(stringBuilder.toString(), null);
         cursor.moveToFirst();
+        ContactTemper.clearFriend();
         if(cursor.getCount() > 0) {
             do {
                 friendVo = new FriendVo();

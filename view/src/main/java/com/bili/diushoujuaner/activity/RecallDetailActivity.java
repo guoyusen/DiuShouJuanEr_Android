@@ -1,5 +1,6 @@
 package com.bili.diushoujuaner.activity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -8,9 +9,11 @@ import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
+import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -20,20 +23,23 @@ import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.adapter.CommentAdapter;
 import com.bili.diushoujuaner.adapter.ImageAdapter;
 import com.bili.diushoujuaner.base.BaseFragmentActivity;
-import com.bili.diushoujuaner.event.CommentEvent;
+import com.bili.diushoujuaner.event.ResponEvent;
 import com.bili.diushoujuaner.fragment.PictureFragment;
 import com.bili.diushoujuaner.presenter.presenter.RecallDetailActivityPresenter;
 import com.bili.diushoujuaner.presenter.presenter.impl.RecallDetailActivityPresenterImpl;
 import com.bili.diushoujuaner.presenter.view.IRecallDetailView;
 import com.bili.diushoujuaner.utils.Common;
 
+import com.bili.diushoujuaner.utils.Constant;
 import com.bili.diushoujuaner.utils.entity.PictureVo;
-import com.bili.diushoujuaner.utils.response.CommentDto;
-import com.bili.diushoujuaner.utils.response.GoodDto;
+import com.bili.diushoujuaner.model.apihelper.response.CommentDto;
+import com.bili.diushoujuaner.model.apihelper.response.GoodDto;
 
-import com.bili.diushoujuaner.utils.response.RecallDto;
+import com.bili.diushoujuaner.model.apihelper.response.RecallDto;
+import com.bili.diushoujuaner.widget.CustomEditText;
 import com.bili.diushoujuaner.widget.CustomGridView;
 import com.bili.diushoujuaner.widget.CustomListView;
+import com.bili.diushoujuaner.widget.ReboundScrollView;
 import com.bili.diushoujuaner.widget.TintedBitmapDrawable;
 import com.bili.diushoujuaner.widget.aligntextview.CBAlignTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -60,7 +66,7 @@ public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActiv
     @Bind(R.id.txtRecallDetail)
     CBAlignTextView txtRecallDetail;
     @Bind(R.id.txtComment)
-    EditText txtComment;
+    CustomEditText txtComment;
     @Bind(R.id.customGridView)
     CustomGridView customGridView;
     @Bind(R.id.txtGoodDetail)
@@ -83,6 +89,12 @@ public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActiv
     CustomListView listViewComment;
     @Bind(R.id.layoutSend)
     RelativeLayout layoutSend;
+    @Bind(R.id.layoutBottom)
+    RelativeLayout layoutBottom;
+    @Bind(R.id.layoutParent)
+    RelativeLayout layoutParent;
+    @Bind(R.id.scrollView)
+    ReboundScrollView scrollView;
 
     private ArrayList<PictureVo> pictureVoList;
     private long recallNo;
@@ -94,6 +106,7 @@ public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActiv
     private ImageAdapter imageAdapter;
     private Drawable thumbUpDrawable, thumbDownDrawable, commentNormalDrawable;
     private CommentConfig commentConfig;
+    private AlertDialog dialog;
 
     public static final String TAG = "RecallDetailActivity";
 
@@ -107,6 +120,7 @@ public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActiv
         private long commentNo = -1;
         private long responNo = -1;
         private int type = 0;
+        private String nickNameTo = "";
         private boolean isReady = false;
         private HashMap<String,String> draftMap = new HashMap<>();
         private StringBuilder stringBuilder = new StringBuilder();
@@ -118,6 +132,14 @@ public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActiv
             this.commentNo = -1;
             this.responNo = -1;
             this.isReady = false;
+            this.nickNameTo = "";
+        }
+
+        public boolean isConfigFree(){
+            if(this.type == TYPE_NONE && this.receiveNo == -1 && this.commentNo == -1 && this.responNo == -1 && !this.isReady){
+                return true;
+            }
+            return false;
         }
 
         private String getCurrentDraftMapKey(){
@@ -181,6 +203,22 @@ public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActiv
         public void setType(int type) {
             this.type = type;
         }
+
+        public long getResponNo() {
+            return responNo;
+        }
+
+        public void setResponNo(long responNo) {
+            this.responNo = responNo;
+        }
+
+        public String getNickNameTo() {
+            return nickNameTo;
+        }
+
+        public void setNickNameTo(String nickNameTo) {
+            this.nickNameTo = nickNameTo;
+        }
     }
 
     class CustomRunnable implements Runnable{
@@ -212,6 +250,26 @@ public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActiv
         }
     }
 
+    class CustomTouchListener implements View.OnTouchListener{
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            layoutParent.setFocusable(true);
+            layoutParent.setFocusableInTouchMode(true);
+            layoutParent.requestFocus();
+            return false;
+        }
+    }
+
+    class CustomFocusChangeListener implements View.OnFocusChangeListener {
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            if(!hasFocus){
+                layoutBottom.setVisibility(View.GONE);
+                Common.hideSoftInputFromWindow(context, txtComment);
+            }
+        }
+    }
+
     @Override
     public void initIntentParam(Intent intent) {
         recallNo = intent.getLongExtra(TAG, -1);
@@ -230,6 +288,8 @@ public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActiv
         pictureVoList = new ArrayList<>();
         commentConfig = new CommentConfig();
 
+        dialog = new AlertDialog.Builder(context).create();
+
         commentNormalDrawable = new TintedBitmapDrawable(context.getResources(),R.mipmap.icon_comment,ContextCompat.getColor(context, R.color.COLOR_BFBFBF));
         thumbDownDrawable = new TintedBitmapDrawable(context.getResources(),R.mipmap.icon_good,ContextCompat.getColor(context, R.color.COLOR_BFBFBF));
         thumbUpDrawable = new TintedBitmapDrawable(context.getResources(),R.mipmap.icon_good,ContextCompat.getColor(context, R.color.COLOR_388ECD));
@@ -243,9 +303,15 @@ public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActiv
         layoutComment.setOnClickListener(this);
         layoutSend.setOnClickListener(this);
 
+        layoutParent.setOnTouchListener(new CustomTouchListener());
+        scrollView.setOnTouchListener(new CustomTouchListener());
+        customGridView.setOnTouchListener(new CustomTouchListener());
+        listViewComment.setOnTouchListener(new CustomTouchListener());
+
         ivComment.setImageDrawable(commentNormalDrawable);
         ivGoodSum.setImageDrawable(thumbUpDrawable);
         txtComment.addTextChangedListener(new CommentTextWatcher());
+        txtComment.setOnFocusChangeListener(new CustomFocusChangeListener());
 
         imageAdapter = new ImageAdapter(this, pictureVoList);
         customGridView.setAdapter(imageAdapter);
@@ -279,7 +345,7 @@ public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActiv
         txtAuthor.setText(recallDto.getUserName());
         showGoodDetail(recallDto.getGoodList());
 
-        pictureVoList.addAll(Common.changePictureDtoListToPictureVoList(recallDto.getPictureList()));
+        pictureVoList.addAll(getBindPresenter().changePictureDtoListToPictureVoList(recallDto.getPictureList()));
         commentDtoList.addAll(recallDto.getCommentList());
         imageAdapter.notifyDataSetChanged();
         commentAdapter.notifyDataSetChanged();
@@ -341,6 +407,7 @@ public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActiv
     }
 
     private void executeClickForComment(){
+        layoutBottom.setVisibility(View.VISIBLE);
         txtComment.requestFocus();
         txtComment.setHint(R.string.send_hint);
 
@@ -357,17 +424,17 @@ public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActiv
             return;
         }
         if(commentConfig.getType() == CommentConfig.TYPE_COMMENT){
-
-            //TODO 该写提交了
-
+            getBindPresenter().getCommentPublish(recallNo, commentConfig.getDraft());
         }else if(commentConfig.getType() == CommentConfig.TYPE_RESPON_FIRST || commentConfig.getType() == CommentConfig.TYPE_RESPON_SECOND){
-
+            getBindPresenter().getResponPublish(recallNo, commentConfig.getCommentNo(), commentConfig.getReceiveNo(),commentConfig.getDraft(), commentConfig.getNickNameTo());
         }
 
         commentConfig.clearConfig();
         txtComment.clearFocus();
         txtComment.setText(null);
         txtComment.setHint("说点什么呗...");
+        layoutBottom.setVisibility(View.GONE);
+        Common.hideSoftInputFromWindow(context, txtComment);
     }
 
     @Override
@@ -377,12 +444,84 @@ public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActiv
 
     @Override
     public void refreshComment() {
+        commentAdapter.refresh(getBindPresenter().getRecallDtoByRecallNo(recallNo).getCommentList());
         commentAdapter.notifyDataSetChanged();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onCommentEvent(CommentEvent commentEvent){
+    public void onResponEvent(ResponEvent responEvent){
+        switch (responEvent.getType()){
+            case Constant.COMMENT_CLICK_LAYOUT_RESPON:
+                if(responEvent.getCommentNo() == null){
+                    return;
+                }
+                commentConfig.setType(CommentConfig.TYPE_RESPON_FIRST);
+                commentConfig.setCommentNo(responEvent.getCommentNo());
+                commentConfig.setReceiveNo(responEvent.getToNo());
+                commentConfig.setNickNameTo(responEvent.getNickName());
+                break;
+            case Constant.COMMENT_CLICK_COMMENT_CONTENT:
+                if(responEvent.getCommentNo() == null){
+                    return;
+                }
+                if(responEvent.getToNo() == getBindPresenter().getUserNoFromLocal()){
+                    showFooterDialog(responEvent.getCommentNo(), -1, Constant.DELETE_COMMENT);
+                    return;
+                }else{
+                    commentConfig.setType(CommentConfig.TYPE_RESPON_FIRST);
+                    commentConfig.setCommentNo(responEvent.getCommentNo());
+                    commentConfig.setReceiveNo(responEvent.getToNo());
+                    commentConfig.setNickNameTo(responEvent.getNickName());
+                }
+                break;
+            case Constant.COMMENT_CLICK_SUB_RESPON:
+                if(responEvent.getResponNo() == null){
+                    return;
+                }
+                if(responEvent.getToNo() == getBindPresenter().getUserNoFromLocal()){
+                    showFooterDialog(responEvent.getCommentNo(),responEvent.getResponNo(), Constant.DELETE_RESPON);
+                    return;
+                }else{
+                    commentConfig.setType(CommentConfig.TYPE_RESPON_SECOND);
+                    commentConfig.setCommentNo(responEvent.getCommentNo());
+                    commentConfig.setReceiveNo(responEvent.getToNo());
+                    commentConfig.setResponNo(responEvent.getResponNo());
+                    commentConfig.setNickNameTo(responEvent.getNickName());
+                }
+                break;
+        }
+        txtComment.requestFocus();
+        txtComment.setText(commentConfig.getDraft());
+        Common.showSoftInputFromWindow(context, txtComment);
+        layoutBottom.setVisibility(View.VISIBLE);
+    }
 
+    private void showFooterDialog(final long commentNo, final long responNo, final int type){
+        dialog.show();
+        Window window = dialog.getWindow();
+        window.setWindowAnimations(R.style.dialogWindowAnim);
+        window.setBackgroundDrawableResource(R.color.TRANSPARENT);
+        window.setContentView(R.layout.layout_comment_delete);
+        window.setGravity(Gravity.BOTTOM);
+        RelativeLayout layoutCancel = (RelativeLayout) window.findViewById(R.id.layoutCancle);
+        layoutCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        RelativeLayout layoutDelete = (RelativeLayout) window.findViewById(R.id.layoutDelete);
+        layoutDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(type == Constant.DELETE_COMMENT){
+                    getBindPresenter().getCommentRemove(recallNo, commentNo);
+                }else if(type == Constant.DELETE_RESPON){
+                    getBindPresenter().getResponRemove(recallNo, commentNo, responNo);
+                }
+                dialog.dismiss();
+            }
+        });
     }
 
     @Override

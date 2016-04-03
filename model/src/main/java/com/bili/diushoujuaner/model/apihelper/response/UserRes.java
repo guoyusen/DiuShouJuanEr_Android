@@ -1,6 +1,4 @@
-package com.bili.diushoujuaner.utils.response;
-
-import java.util.Date;
+package com.bili.diushoujuaner.model.apihelper.response;
 
 /**
  * Created by BiLi on 2016/3/10.

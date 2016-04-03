@@ -1,4 +1,4 @@
-package com.bili.diushoujuaner.utils.response;
+package com.bili.diushoujuaner.model.apihelper.response;
 
 import java.util.List;
 

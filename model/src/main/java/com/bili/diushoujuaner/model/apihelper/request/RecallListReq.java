@@ -1,4 +1,4 @@
-package com.bili.diushoujuaner.utils.request;
+package com.bili.diushoujuaner.model.apihelper.request;
 
 /**
  * Created by BiLi on 2016/3/21.

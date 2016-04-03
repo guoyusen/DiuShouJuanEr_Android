@@ -50,4 +50,11 @@ public interface Constant {
     String ACTION_LOAD_LOCAL_SUCCESS = "本地数据加载成功";
     String ACTION_LOAD_LOCAL_FAILURE = "本地数据加载失败";
 
+    int COMMENT_CLICK_LAYOUT_RESPON = 1;
+    int COMMENT_CLICK_COMMENT_CONTENT = 2;
+    int COMMENT_CLICK_SUB_RESPON = 3;
+
+    int DELETE_COMMENT = 1;
+    int DELETE_RESPON = 2;
+
 }

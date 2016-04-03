@@ -5,7 +5,7 @@ import com.bili.diushoujuaner.model.databasehelper.dao.Member;
 import com.bili.diushoujuaner.model.databasehelper.dao.Party;
 import com.bili.diushoujuaner.model.databasehelper.dao.User;
 import com.bili.diushoujuaner.utils.Common;
-import com.bili.diushoujuaner.utils.response.UserRes;
+import com.bili.diushoujuaner.model.apihelper.response.UserRes;
 
 /**
  * Created by BiLi on 2016/3/13.

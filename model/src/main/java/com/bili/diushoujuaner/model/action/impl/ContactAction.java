@@ -18,8 +18,8 @@ import com.bili.diushoujuaner.utils.entity.FriendVo;
 import com.bili.diushoujuaner.utils.entity.PartyVo;
 import com.bili.diushoujuaner.utils.pinyin.PinyinComparator;
 import com.bili.diushoujuaner.utils.pinyin.PinyinUtil;
-import com.bili.diushoujuaner.utils.response.ContactDto;
-import com.bili.diushoujuaner.utils.response.MemberDto;
+import com.bili.diushoujuaner.model.apihelper.response.ContactDto;
+import com.bili.diushoujuaner.model.apihelper.response.MemberDto;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;

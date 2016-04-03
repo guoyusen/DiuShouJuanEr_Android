@@ -1,12 +1,14 @@
 package com.bili.diushoujuaner.model.apihelper.api;
 
-import android.content.Context;
-
 import com.android.volley.Request;
 import com.bili.diushoujuaner.model.apihelper.DataLoader;
 import com.bili.diushoujuaner.model.apihelper.callback.ApiCallbackListener;
-import com.bili.diushoujuaner.utils.request.RecallListReq;
-import com.bili.diushoujuaner.utils.request.UserAccountReq;
+import com.bili.diushoujuaner.model.apihelper.request.CommentAddReq;
+import com.bili.diushoujuaner.model.apihelper.request.CommentRemoveReq;
+import com.bili.diushoujuaner.model.apihelper.request.RecallListReq;
+import com.bili.diushoujuaner.model.apihelper.request.ResponAddReq;
+import com.bili.diushoujuaner.model.apihelper.request.ResponRemoveReq;
+import com.bili.diushoujuaner.model.apihelper.request.UserAccountReq;
 import com.bili.diushoujuaner.utils.Common;
 
 import java.util.HashMap;
@@ -66,5 +68,25 @@ public class ApiAction implements Api {
         params.put("recallNo",recallNo + "");
 
         dataLoader.processStringRequest(Request.Method.POST, Api.getGoodRemove, params, apiCallbackListener);
+    }
+
+    @Override
+    public void getCommentAdd(CommentAddReq commentAddReq, ApiCallbackListener apiCallbackListener) {
+        dataLoader.processStringRequest(Request.Method.POST, Api.getCommentAdd, Common.ConvertObjToMap(commentAddReq), apiCallbackListener);
+    }
+
+    @Override
+    public void getResponAdd(ResponAddReq responAddReq, ApiCallbackListener apiCallbackListener) {
+        dataLoader.processStringRequest(Request.Method.POST, Api.getResponAdd, Common.ConvertObjToMap(responAddReq), apiCallbackListener);
+    }
+
+    @Override
+    public void getCommentRemove(CommentRemoveReq commentRemoveReq, ApiCallbackListener apiCallbackListener) {
+        dataLoader.processStringRequest(Request.Method.POST, Api.getCommentRemove, Common.ConvertObjToMap(commentRemoveReq), apiCallbackListener);
+    }
+
+    @Override
+    public void getResponRemove(ResponRemoveReq responRemoveReq, ApiCallbackListener apiCallbackListener) {
+        dataLoader.processStringRequest(Request.Method.POST, Api.getResponRemove, Common.ConvertObjToMap(responRemoveReq), apiCallbackListener);
     }
 }

@@ -13,6 +13,7 @@ import com.bili.diushoujuaner.activity.ContactSearchActivity;
 import com.bili.diushoujuaner.activity.PartyActivity;
 import com.bili.diushoujuaner.adapter.ContactAdapter;
 import com.bili.diushoujuaner.base.BaseFragment;
+import com.bili.diushoujuaner.event.RefreshRecallEvent;
 import com.bili.diushoujuaner.event.ShowHeadEvent;
 import com.bili.diushoujuaner.event.ShowMainMenuEvent;
 import com.bili.diushoujuaner.presenter.presenter.ContactFragmentPresenter;
@@ -58,6 +59,7 @@ public class ContactFragment extends BaseFragment<ContactFragmentPresenter> impl
 
     public static ContactFragment instantiation(int position) {
         ContactFragment fragment = new ContactFragment();
+        EventBus.getDefault().register(fragment);
         Bundle args = new Bundle();
         args.putInt("position", position);
         fragment.setArguments(args);
@@ -76,7 +78,6 @@ public class ContactFragment extends BaseFragment<ContactFragmentPresenter> impl
 
     @Override
     public void setViewStatus() {
-        EventBus.getDefault().register(this);
         showPageHead("联系人", null, "添加");
 
         layoutParty.setOnClickListener(this);
@@ -120,12 +121,12 @@ public class ContactFragment extends BaseFragment<ContactFragmentPresenter> impl
     @Override
     public void showContactList(List<FriendVo> friendVoList) {
         contactAdapter.refresh(friendVoList);
-
         if(friendVoList.size() <= 0){
             txtPartyCount.setText("暂无联系人");
         } else{
             txtPartyCount.setText(friendVoList.size() + "个联系人");
         }
+        EventBus.getDefault().post(new RefreshRecallEvent());
     }
 
     @Subscribe

@@ -14,8 +14,8 @@ import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
 import com.bili.diushoujuaner.model.tempHelper.ContactTemper;
 import com.bili.diushoujuaner.model.tempHelper.GoodTemper;
 import com.bili.diushoujuaner.utils.Common;
-import com.bili.diushoujuaner.utils.response.GoodDto;
-import com.bili.diushoujuaner.utils.response.RecallDto;
+import com.bili.diushoujuaner.model.apihelper.response.GoodDto;
+import com.bili.diushoujuaner.model.apihelper.response.RecallDto;
 import com.bili.diushoujuaner.widget.TintedBitmapDrawable;
 import com.facebook.drawee.view.SimpleDraweeView;
 

@@ -1,4 +1,4 @@
-package com.bili.diushoujuaner.utils.response;
+package com.bili.diushoujuaner.model.apihelper.response;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -19,13 +19,22 @@ public class CommentDto implements Parcelable {
      */
 
     private String timeStamp;
+    private Long recallNo;
     private String addTime;
-    private long commentNo;
+    private Long commentNo;
     private String content;
-    private long fromNo;
+    private Long fromNo;
     private String fromPicPath;
     private String nickName;
     private List<ResponDto> responList;
+
+    public Long getRecallNo() {
+        return recallNo;
+    }
+
+    public void setRecallNo(Long recallNo) {
+        this.recallNo = recallNo;
+    }
 
     public String getAddTime() {
         return addTime;
@@ -35,11 +44,11 @@ public class CommentDto implements Parcelable {
         this.addTime = addTime;
     }
 
-    public long getCommentNo() {
+    public Long getCommentNo() {
         return commentNo;
     }
 
-    public void setCommentNo(long commentNo) {
+    public void setCommentNo(Long commentNo) {
         this.commentNo = commentNo;
     }
 
@@ -51,11 +60,11 @@ public class CommentDto implements Parcelable {
         this.content = content;
     }
 
-    public long getFromNo() {
+    public Long getFromNo() {
         return fromNo;
     }
 
-    public void setFromNo(long fromNo) {
+    public void setFromNo(Long fromNo) {
         this.fromNo = fromNo;
     }
 
@@ -99,10 +108,11 @@ public class CommentDto implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(this.timeStamp);
+        dest.writeValue(this.recallNo);
         dest.writeString(this.addTime);
-        dest.writeLong(this.commentNo);
+        dest.writeValue(this.commentNo);
         dest.writeString(this.content);
-        dest.writeLong(this.fromNo);
+        dest.writeValue(this.fromNo);
         dest.writeString(this.fromPicPath);
         dest.writeString(this.nickName);
         dest.writeTypedList(responList);
@@ -113,16 +123,17 @@ public class CommentDto implements Parcelable {
 
     protected CommentDto(Parcel in) {
         this.timeStamp = in.readString();
+        this.recallNo = (Long) in.readValue(Long.class.getClassLoader());
         this.addTime = in.readString();
-        this.commentNo = in.readLong();
+        this.commentNo = (Long) in.readValue(Long.class.getClassLoader());
         this.content = in.readString();
-        this.fromNo = in.readLong();
+        this.fromNo = (Long) in.readValue(Long.class.getClassLoader());
         this.fromPicPath = in.readString();
         this.nickName = in.readString();
         this.responList = in.createTypedArrayList(ResponDto.CREATOR);
     }
 
-    public static final Parcelable.Creator<CommentDto> CREATOR = new Parcelable.Creator<CommentDto>() {
+    public static final Creator<CommentDto> CREATOR = new Creator<CommentDto>() {
         @Override
         public CommentDto createFromParcel(Parcel source) {
             return new CommentDto(source);

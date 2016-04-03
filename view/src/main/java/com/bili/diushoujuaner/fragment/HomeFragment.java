@@ -15,12 +15,13 @@ import com.bili.diushoujuaner.activity.RecallDetailActivity;
 import com.bili.diushoujuaner.adapter.RecallAdapter;
 import com.bili.diushoujuaner.base.BaseFragment;
 import com.bili.diushoujuaner.event.RecallGoodEvent;
+import com.bili.diushoujuaner.event.RefreshRecallEvent;
 import com.bili.diushoujuaner.event.ShowHeadEvent;
 import com.bili.diushoujuaner.event.ShowMainMenuEvent;
 import com.bili.diushoujuaner.presenter.presenter.HomeFragmentPresenter;
 import com.bili.diushoujuaner.utils.Common;
 import com.bili.diushoujuaner.utils.Constant;
-import com.bili.diushoujuaner.utils.response.RecallDto;
+import com.bili.diushoujuaner.model.apihelper.response.RecallDto;
 import com.bili.diushoujuaner.presenter.presenter.impl.HomeFragmentPresenterImpl;
 import com.bili.diushoujuaner.presenter.view.IHomeView;
 import com.bili.diushoujuaner.widget.CustomListViewRefresh;
@@ -73,6 +74,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
 
     public static HomeFragment instantiation(int position){
         HomeFragment fragment = new HomeFragment();
+        EventBus.getDefault().register(fragment);
         Bundle args = new Bundle();
         args.putInt("position", position);
         fragment.setArguments(args);
@@ -93,7 +95,6 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
 
     @Override
     public void setViewStatus() {
-        EventBus.getDefault().register(this);
         showPageHead("首页", R.mipmap.icon_recall_add, null);
 
         waveSwipeRefreshLayout.setColorSchemeColors(Color.WHITE, Color.WHITE);
@@ -211,6 +212,13 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
         recallAdapter.notifyDataSetChanged();
         handler.removeCallbacks(customRunnable);
         handler.postDelayed(customRunnable, 1500);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onRecallRefresh(RefreshRecallEvent refreshRecallEvent){
+        if(recallAdapter != null){
+            recallAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
