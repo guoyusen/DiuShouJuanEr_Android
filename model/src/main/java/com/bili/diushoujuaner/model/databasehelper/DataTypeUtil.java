@@ -42,6 +42,7 @@ public class DataTypeUtil {
         older.setSmallNick(Common.isEmpty(newer.getSmallNick()) ? older.getSmallNick() : newer.getSmallNick());
         older.setRegistTime(Common.isEmpty(newer.getRegistTime()) ? older.getRegistTime() : newer.getRegistTime());
         older.setGender(newer.getGender());
+        older.setUpdateTime((Common.isEmpty(newer.getUpdateTime()) ? older.getUpdateTime() : newer.getUpdateTime()));
 
         return older;
     }

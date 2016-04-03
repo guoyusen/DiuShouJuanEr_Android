@@ -5,7 +5,9 @@ import com.bili.diushoujuaner.model.apihelper.DataLoader;
 import com.bili.diushoujuaner.model.apihelper.callback.ApiCallbackListener;
 import com.bili.diushoujuaner.model.apihelper.request.CommentAddReq;
 import com.bili.diushoujuaner.model.apihelper.request.CommentRemoveReq;
+import com.bili.diushoujuaner.model.apihelper.request.ContactInfoReq;
 import com.bili.diushoujuaner.model.apihelper.request.RecallListReq;
+import com.bili.diushoujuaner.model.apihelper.request.RecentRecallReq;
 import com.bili.diushoujuaner.model.apihelper.request.ResponAddReq;
 import com.bili.diushoujuaner.model.apihelper.request.ResponRemoveReq;
 import com.bili.diushoujuaner.model.apihelper.request.UserAccountReq;
@@ -88,5 +90,15 @@ public class ApiAction implements Api {
     @Override
     public void getResponRemove(ResponRemoveReq responRemoveReq, ApiCallbackListener apiCallbackListener) {
         dataLoader.processStringRequest(Request.Method.POST, Api.getResponRemove, Common.ConvertObjToMap(responRemoveReq), apiCallbackListener);
+    }
+
+    @Override
+    public void getContactInfo(ContactInfoReq contactInfoReq, ApiCallbackListener apiCallbackListener) {
+        dataLoader.processStringRequest(Request.Method.GET, Common.getCompleteUrl(Api.getContactInfo, contactInfoReq), null, apiCallbackListener);
+    }
+
+    @Override
+    public void getRecentRecall(RecentRecallReq recentRecallReq, ApiCallbackListener apiCallbackListener) {
+        dataLoader.processStringRequest(Request.Method.GET, Common.getCompleteUrl(Api.getRecentRecall, recentRecallReq), null, apiCallbackListener);
     }
 }

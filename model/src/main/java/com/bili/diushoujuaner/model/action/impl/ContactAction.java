@@ -5,13 +5,17 @@ import com.bili.diushoujuaner.model.action.respon.ActionRespon;
 import com.bili.diushoujuaner.model.apihelper.ApiRespon;
 import com.bili.diushoujuaner.model.apihelper.api.ApiAction;
 import com.bili.diushoujuaner.model.apihelper.callback.ApiCallbackListener;
+import com.bili.diushoujuaner.model.apihelper.request.ContactInfoReq;
+import com.bili.diushoujuaner.model.apihelper.response.UserRes;
 import com.bili.diushoujuaner.model.callback.ActionCallbackListener;
 import com.bili.diushoujuaner.model.databasehelper.DBManager;
+import com.bili.diushoujuaner.model.databasehelper.DataTypeUtil;
 import com.bili.diushoujuaner.model.databasehelper.dao.Friend;
 import com.bili.diushoujuaner.model.databasehelper.dao.Member;
 import com.bili.diushoujuaner.model.databasehelper.dao.Party;
 import com.bili.diushoujuaner.model.databasehelper.dao.User;
 import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
+import com.bili.diushoujuaner.model.tempHelper.ContactTemper;
 import com.bili.diushoujuaner.utils.Constant;
 import com.bili.diushoujuaner.utils.GsonParser;
 import com.bili.diushoujuaner.utils.entity.FriendVo;
@@ -41,6 +45,33 @@ public class ContactAction implements IContactAction{
     }
 
     @Override
+    public void getContactFromApi(final ContactInfoReq contactInfoReq, final ActionCallbackListener<ActionRespon<FriendVo>> actionCallbackListener) {
+        ApiAction.getInstance().getContactInfo(contactInfoReq, new ApiCallbackListener() {
+            @Override
+            public void onSuccess(String data) {
+                ApiRespon<UserRes> result = GsonParser.getInstance().fromJson(data, new TypeToken<ApiRespon<UserRes>>() {
+                }.getType());
+                DBManager.getInstance().saveUser(result.getData());
+                actionCallbackListener.onSuccess(ActionRespon.getActionRespon(result.getMessage(), result.getRetCode(), DBManager.getInstance().getFriendVo(contactInfoReq.getUserNo())));
+            }
+
+            @Override
+            public void onFailure(int errorCode) {
+                actionCallbackListener.onFailure(errorCode);
+            }
+        });
+    }
+
+    @Override
+    public FriendVo getContactFromLocal(long userNo) {
+        FriendVo friendVo = ContactTemper.getFriendVo(userNo);
+        if(friendVo == null){
+            friendVo = DBManager.getInstance().getFriendVo(userNo);
+        }
+        return friendVo;
+    }
+
+    @Override
     public List<PartyVo> getPartyVoList(){
         List<PartyVo> partyVoList = DBManager.getInstance().getPartyVoList();
         Collections.sort(partyVoList, new PinyinComparator());
@@ -54,7 +85,7 @@ public class ContactAction implements IContactAction{
     @Override
     public void getContactList(final ActionCallbackListener<ActionRespon<List<FriendVo>>> actionCallbackListener){
         //先从本地加载并显示
-        actionCallbackListener.onSuccess(ActionRespon.getActionRespon(Constant.ACTION_LOAD_LOCAL_SUCCESS,Constant.RETCODE_SUCCESS,getFriendVoFrimDB()));
+        actionCallbackListener.onSuccess(ActionRespon.getActionRespon(Constant.ACTION_LOAD_LOCAL_SUCCESS,Constant.RETCODE_SUCCESS, getFriendVoListFromDB()));
         //TODO 判断是否需要进行全量加载
         ApiAction.getInstance().getContactList(new ApiCallbackListener() {
             @Override
@@ -63,7 +94,7 @@ public class ContactAction implements IContactAction{
                 }.getType());
                 if(result.getIsLegal()){
                     saveContactsFromList(result.getData());
-                    actionCallbackListener.onSuccess(ActionRespon.getActionRespon(result.getMessage(), result.getRetCode(), getFriendVoFrimDB()));
+                    actionCallbackListener.onSuccess(ActionRespon.getActionRespon(result.getMessage(), result.getRetCode(), getFriendVoListFromDB()));
                 }else{
                     actionCallbackListener.onSuccess(ActionRespon.getActionRespon(result.getMessage(), result.getRetCode(), (List<FriendVo>)null));
                 }
@@ -76,8 +107,8 @@ public class ContactAction implements IContactAction{
         });
     }
 
-    private List<FriendVo> getFriendVoFrimDB(){
-        List<FriendVo> friendVoList = DBManager.getInstance().getFriendVo();
+    private List<FriendVo> getFriendVoListFromDB(){
+        List<FriendVo> friendVoList = DBManager.getInstance().getFriendVoList();
         Collections.sort(friendVoList, new PinyinComparator());
         if(friendVoList.size() == 1){
             char capital = PinyinUtil.getHeadCapitalByChar(friendVoList.get(0).getDisplayName().charAt(0));

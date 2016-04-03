@@ -43,7 +43,7 @@ public interface RecallDetailActivityPresenter {
 
     List<PictureVo> changePictureDtoListToPictureVoList(List<PictureDto> pictureDtoList);
 
-    long getUserNoFromLocal();
+    long getLoginedUserNo();
 
     void getCommentRemove(long recallNo, long commentNo);
 

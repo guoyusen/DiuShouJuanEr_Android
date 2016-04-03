@@ -81,6 +81,7 @@ public class DBManager {
     }
 
     public void saveUser(User user){
+        user.setUpdateTime(Common.getCurrentTimeYYMMDD_HHMMSS());
         List<User> userList = daoSession.getUserDao().queryBuilder()
                 .where(UserDao.Properties.UserNo.eq(Common.getLongValue(user.getUserNo())))
                 .build()
@@ -121,7 +122,39 @@ public class DBManager {
         }
     }
 
-    public List<FriendVo> getFriendVo(){
+    public FriendVo getFriendVo(long userNo){
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("select user_No, nick_Name, mobile, autograph, gender, birthday,home_Town, location, pic_Path, small_Nick, regist_Time, update_Time ");
+        stringBuilder.append("from User ");
+        stringBuilder.append("where user_No = " + userNo);
+
+        List<FriendVo> friendVoList = new ArrayList<>();
+        FriendVo friendVo;
+        Cursor cursor = daoSession.getDatabase().rawQuery(stringBuilder.toString(), null);
+        cursor.moveToFirst();
+        if(cursor.getCount() > 0) {
+            do {
+                friendVo = new FriendVo();
+                friendVo.setFriendNo(cursor.getLong(cursor.getColumnIndex("USER_NO")));
+                friendVo.setNickName(cursor.getString(cursor.getColumnIndex("NICK_NAME")));
+                friendVo.setMobile(cursor.getString(cursor.getColumnIndex("MOBILE")));
+                friendVo.setAutograph(cursor.getString(cursor.getColumnIndex("AUTOGRAPH")));
+                friendVo.setGender(cursor.getInt(cursor.getColumnIndex("GENDER")));
+                friendVo.setBirthday(cursor.getString(cursor.getColumnIndex("BIRTHDAY")));
+                friendVo.setHomeTown(cursor.getString(cursor.getColumnIndex("HOME_TOWN")));
+                friendVo.setLocation(cursor.getString(cursor.getColumnIndex("LOCATION")));
+                friendVo.setPicPath(cursor.getString(cursor.getColumnIndex("PIC_PATH")));
+                friendVo.setSmallNick(cursor.getString(cursor.getColumnIndex("SMALL_NICK")));
+                friendVo.setRegistTime(cursor.getString(cursor.getColumnIndex("REGIST_TIME")));
+                friendVo.setUpdateTime(cursor.getString(cursor.getColumnIndex("UPDATE_TIME")));
+
+                friendVoList.add(friendVo);
+            } while (cursor.moveToNext());
+        }
+        return friendVoList.isEmpty() ? null : friendVoList.get(0);
+    }
+
+    public List<FriendVo> getFriendVoList(){
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("select user_No, nick_Name, remark, mobile, autograph, gender, birthday,home_Town, location, pic_Path, small_Nick, regist_Time, update_Time ");
         stringBuilder.append("from User, Friend ");

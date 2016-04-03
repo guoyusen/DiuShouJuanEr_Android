@@ -1,6 +1,7 @@
 package com.bili.diushoujuaner.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.view.MotionEvent;
@@ -10,6 +11,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bili.diushoujuaner.R;
+import com.bili.diushoujuaner.activity.ContactDetailActivity;
 import com.bili.diushoujuaner.adapter.viewholder.ViewHolder;
 import com.bili.diushoujuaner.event.ResponEvent;
 import com.bili.diushoujuaner.model.tempHelper.ContactTemper;
@@ -43,7 +45,16 @@ public class CommentAdapter extends CommonAdapter<CommentDto> {
                 commentFocusDrawable = new TintedBitmapDrawable(context.getResources(),R.mipmap.icon_comment,ContextCompat.getColor(context, R.color.COLOR_388ECD));
             }
             ((ImageView)holder.getView(R.id.ivComment)).setImageDrawable(commentFocusDrawable);
+
             Common.displayDraweeView(commentDto.getFromPicPath(), (SimpleDraweeView) holder.getView(R.id.ivItemHead));
+            holder.getView(R.id.ivItemHead).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, ContactDetailActivity.class);
+                    intent.putExtra(ContactDetailActivity.TAG, commentDto.getFromNo());
+                    context.startActivity(intent);
+                }
+            });
 
             String userName = ContactTemper.getFriendRemark(commentDto.getFromNo());
             if(userName != null){
@@ -51,6 +62,15 @@ public class CommentAdapter extends CommonAdapter<CommentDto> {
             }else{
                 ((TextView) holder.getView(R.id.itemCommentUserName)).setText(commentDto.getNickName());
             }
+            holder.getView(R.id.itemCommentUserName).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, ContactDetailActivity.class);
+                    intent.putExtra(ContactDetailActivity.TAG, commentDto.getFromNo());
+                    context.startActivity(intent);
+                }
+            });
+
             ((TextView) holder.getView(R.id.itemCommentTime)).setText(Common.getFormatTime(commentDto.getAddTime()));
             ((TextView) holder.getView(R.id.txtCommentContent)).setText(commentDto.getContent());
             holder.getView(R.id.txtCommentContent).setOnTouchListener(new View.OnTouchListener() {

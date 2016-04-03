@@ -65,7 +65,7 @@ public class RecallDetailActivityPresenterImpl extends BasePresenter<IRecallDeta
     }
 
     @Override
-    public long getUserNoFromLocal() {
+    public long getLoginedUserNo() {
         return CustomSessionPreference.getInstance().getCustomSession().getUserNo();
     }
 

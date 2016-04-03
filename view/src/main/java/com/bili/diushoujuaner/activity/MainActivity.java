@@ -26,6 +26,7 @@ import com.bili.diushoujuaner.model.databasehelper.dao.User;
 import com.bili.diushoujuaner.presenter.presenter.impl.MainActivityPresenterImpl;
 import com.bili.diushoujuaner.presenter.view.IMainView;
 import com.bili.diushoujuaner.utils.Common;
+import com.bili.diushoujuaner.utils.Constant;
 import com.bili.diushoujuaner.utils.manager.ActivityManager;
 import com.bili.diushoujuaner.widget.CustomRelativeLayout;
 import com.bili.diushoujuaner.widget.CustomViewPager;
@@ -57,6 +58,8 @@ public class MainActivity extends BaseFragmentActivity<MainActivityPresenterImpl
     DrawerLayout drawerLayout;
     @Bind(R.id.btnMenuExit)
     Button btnMenuExit;
+    @Bind(R.id.btnMenuSetting)
+    Button btnMenuSetting;
     @Bind(R.id.txtSystemNotice)
     BGABadgeTextView txtSystemNotice;
     @Bind(R.id.txtAutograph)
@@ -67,6 +70,8 @@ public class MainActivity extends BaseFragmentActivity<MainActivityPresenterImpl
     BGABottomNavigation bottomNavigation;
     @Bind(R.id.layoutAutograph)
     LinearLayout layoutAutograph;
+    @Bind(R.id.layoutFeedback)
+    LinearLayout layoutFeedback;
     @Bind(R.id.layoutParent)
     CustomRelativeLayout layoutParent;
     @Bind(R.id.ivUser)
@@ -169,7 +174,9 @@ public class MainActivity extends BaseFragmentActivity<MainActivityPresenterImpl
     private void initOnClickListner() {
         menuHead.setOnClickListener(this);
         btnMenuExit.setOnClickListener(this);
+        btnMenuSetting.setOnClickListener(this);
         layoutAutograph.setOnClickListener(this);
+        layoutFeedback.setOnClickListener(this);
     }
 
     private void initBottomButton() {
@@ -202,16 +209,17 @@ public class MainActivity extends BaseFragmentActivity<MainActivityPresenterImpl
                 break;
             case R.id.menuHead:
                 startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                finish();
                 break;
             case R.id.layoutAutograph:
-                startActivity(new Intent(MainActivity.this, ContentEditActivity.class));
+                startActivity(new Intent(MainActivity.this, ContentEditActivity.class).putExtra(ContentEditActivity.TAG, Constant.EDIT_CONTENT_AUTOGRAPH));
                 break;
-            case R.id.textFeedBack:
-
+            case R.id.layoutFeedback:
+                startActivity(new Intent(MainActivity.this, ContentEditActivity.class).putExtra(ContentEditActivity.TAG, Constant.EDIT_CONTENT_FEEDBACK));
+                break;
+            case R.id.btnMenuSetting:
+                startActivity(new Intent(MainActivity.this, SettingActivity.class));
                 break;
         }
-
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

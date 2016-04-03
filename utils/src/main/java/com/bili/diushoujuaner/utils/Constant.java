@@ -57,4 +57,11 @@ public interface Constant {
     int DELETE_COMMENT = 1;
     int DELETE_RESPON = 2;
 
+    //好友最新发表的缓存时间
+    int ACACHE_TIME_RECENT_RECALL = 600000;
+
+    int EDIT_CONTENT_NONE = 0;
+    int EDIT_CONTENT_AUTOGRAPH = 1;
+    int EDIT_CONTENT_FEEDBACK = 2;
+
 }

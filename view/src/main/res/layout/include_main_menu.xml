@@ -150,7 +150,9 @@
 
                 </LinearLayout>
 
-                <LinearLayout style="@style/menu_item_layout">
+                <LinearLayout
+                    android:id="@+id/layoutFeedback"
+                    style="@style/menu_item_layout">
 
                     <ImageView
                         android:id="@+id/ivFeedBack"
@@ -180,6 +182,7 @@
         android:orientation="horizontal">
 
         <Button
+            android:id="@+id/btnMenuSetting"
             style="@style/TextMiddle"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"

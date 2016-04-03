@@ -3,173 +3,222 @@
     android:id="@+id/layoutParent"
     style="@style/MatchMatch.FitWindow">
 
-    <com.bili.diushoujuaner.widget.ReboundScrollView
-        style="@style/MatchMatch"
-        android:layout_above="@+id/layoutBottom"
-        android:background="@color/TRANSPARENT"
-        android:overScrollMode="never"
-        android:scrollbars="none">
-
-        <RelativeLayout
-            style="@style/MatchMatch"
-            android:paddingTop="@dimen/y300"
-            android:background="@color/TRANSPARENT">
-
-            <RelativeLayout
-                android:id="@+id/layoutContactName"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/y150"
-                android:background="@drawable/transparent_black_up_bg">
-
-                <TextView
-                    android:id="@+id/txtFriendName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/y150"
-                    android:gravity="center"
-                    android:layout_marginLeft="@dimen/x24"
-                    android:layout_alignParentLeft="true"
-                    android:textColor="@color/TC_WHITE"
-                    android:textSize="@dimen/x48" />
-
-            </RelativeLayout>
-
-            <View
-                android:id="@+id/viewWhite"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/y80"
-                android:layout_below="@+id/layoutContactName"
-                android:background="@color/COLOR_WHITE"/>
-
-            <Button
-                android:id="@+id/btnFocus"
-                style="@style/TextMiddle"
-                android:layout_width="@dimen/x128"
-                android:layout_height="@dimen/x128"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="@dimen/x24"
-                android:layout_marginTop="@dimen/x86"
-                android:background="@drawable/btn_focus_normal_bg"
-                android:text="关注"
-                android:textColor="@color/TC_WHITE" />
-
-
-            <RelativeLayout
-                android:id="@+id/layoutAutograph"
-                style="@style/MatchWrap"
-                android:layout_below="@+id/viewWhite"
-                android:background="@color/COLOR_WHITE"
-                android:paddingLeft="@dimen/x24"
-                android:paddingTop="@dimen/x24"
-                android:paddingRight="@dimen/x24"
-                android:paddingBottom="@dimen/x48">
-
-                <TextView
-                    style="@style/TextMiddle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="个性签名"
-                    android:textColor="@color/TC_8A8A8A" />
-
-                <com.bili.diushoujuaner.widget.aligntextview.AlignTextView
-                    android:id="@+id/txtFriendAutograph"
-                    style="@style/TextMiddle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/x176"
-                    android:layout_marginRight="@dimen/x50"
-                    android:ellipsize="marquee"
-                    android:maxLines="3"
-                    android:textColor="@color/TC_333333" />
-
-            </RelativeLayout>
-
-            <View
-                android:id="@+id/line1"
-                style="@style/line"
-                android:layout_alignBottom="@+id/layoutAutograph"/>
-
-            <RelativeLayout
-                android:id="@+id/layoutRecent"
-                style="@style/MatchWrap"
-                android:layout_below="@+id/layoutAutograph"
-                android:background="@color/COLOR_WHITE"
-                android:gravity="center_vertical"
-                android:padding="@dimen/y24">
-
-                <TextView
-                    style="@style/TextMiddle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="最近发表"
-                    android:textColor="@color/TC_8A8A8A" />
-
-                <com.bili.diushoujuaner.widget.CustomGridView
-                    android:id="@+id/customGridView"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/x168"
-                    android:layout_marginRight="@dimen/x50"
-                    android:numColumns="3">
-
-                </com.bili.diushoujuaner.widget.CustomGridView>
-
-                <TextView
-                    style="@style/TextMiddle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/x176"
-                    android:layout_marginRight="@dimen/x50"
-                    android:ellipsize="marquee"
-                    android:maxLines="1"
-                    android:text="就让大雨冲刷记忆中的沙就让大雨冲刷记忆中的沙,让我了无牵挂浪迹在天涯"
-                    android:textColor="@color/TC_8A8A8A"
-                    android:visibility="gone" />
-
-                <ImageView
-                    android:id="@+id/ivArrowRight"
-                    android:layout_width="@dimen/x50"
-                    android:layout_height="@dimen/y50"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"/>
-
-            </RelativeLayout>
-
-            <View
-                android:id="@+id/line2"
-                style="@style/line"
-                android:layout_below="@+id/layoutRecent" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/y200"
-                android:layout_below="@+id/line2"
-                android:background="@color/COLOR_WHITE"/>
-
-        </RelativeLayout>
-
-    </com.bili.diushoujuaner.widget.ReboundScrollView>
-
     <include
         android:id="@+id/layoutHead"
         layout="@layout/include_head_transparent" />
 
-    <RelativeLayout
-        android:id="@+id/layoutBottom"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y132"
-        android:layout_alignParentBottom="true"
-        android:background="@color/COLOR_WHITE">
+        android:layout_height="match_parent"
+        android:layout_below="@+id/layoutHead">
 
-        <View
-            style="@style/line"
-            android:layout_alignParentTop="true" />
+        <RelativeLayout
+            android:id="@+id/layoutDetail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
 
-        <Button
-            android:id="@+id/btnStartMsg"
-            style="@style/BtnXLongGreen"
-            android:layout_centerVertical="true"
-            android:text="@string/contact_start_msg" />
+            <com.bili.diushoujuaner.widget.ReboundScrollView
+                style="@style/MatchMatch"
+                android:layout_above="@+id/layoutBottom"
+                android:background="@color/TRANSPARENT"
+                android:overScrollMode="never"
+                android:scrollbars="none">
 
-    </RelativeLayout>
+                <RelativeLayout
+                    style="@style/MatchMatch"
+                    android:paddingTop="@dimen/y192"
+                    android:background="@color/TRANSPARENT">
+
+                    <RelativeLayout
+                        android:id="@+id/layoutContactName"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/y150"
+                        android:background="@drawable/transparent_black_up_bg">
+
+                        <TextView
+                            android:id="@+id/txtFriendName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/y150"
+                            android:gravity="center"
+                            android:layout_marginLeft="@dimen/x24"
+                            android:layout_alignParentLeft="true"
+                            android:textColor="@color/TC_WHITE"
+                            android:textSize="@dimen/x48" />
+
+                    </RelativeLayout>
+
+                    <View
+                        android:id="@+id/viewWhite"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/y80"
+                        android:layout_below="@+id/layoutContactName"
+                        android:background="@color/COLOR_WHITE"/>
+
+                    <RelativeLayout
+                        android:layout_width="@dimen/x148"
+                        android:layout_height="@dimen/x148"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="@dimen/x16"
+                        android:layout_marginTop="@dimen/x80"
+                        android:gravity="top|center_horizontal"
+                        android:background="@mipmap/fab_shadow">
+
+                        <Button
+                            android:id="@+id/btnFocus"
+                            style="@style/TextLarge"
+                            android:layout_width="@dimen/x128"
+                            android:layout_height="@dimen/x128"
+                            android:background="@drawable/btn_focus_normal_bg"
+                            android:text="关注"
+                            android:textColor="@color/TC_WHITE" />
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/layoutAutograph"
+                        style="@style/MatchWrap"
+                        android:layout_below="@+id/viewWhite"
+                        android:background="@color/COLOR_WHITE"
+                        android:paddingLeft="@dimen/x24"
+                        android:paddingTop="@dimen/x24"
+                        android:paddingRight="@dimen/x24"
+                        android:paddingBottom="@dimen/x48">
+
+                        <TextView
+                            style="@style/TextMiddle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="个性签名"
+                            android:textColor="@color/TC_8A8A8A" />
+
+                        <com.bili.diushoujuaner.widget.aligntextview.AlignTextView
+                            android:id="@+id/txtFriendAutograph"
+                            style="@style/TextMiddle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/x176"
+                            android:layout_marginRight="@dimen/x50"
+                            android:ellipsize="marquee"
+                            android:maxLines="3"
+                            android:textColor="@color/TC_333333" />
+
+                    </RelativeLayout>
+
+                    <View
+                        android:id="@+id/line1"
+                        style="@style/line"
+                        android:layout_alignBottom="@+id/layoutAutograph"/>
+
+                    <RelativeLayout
+                        android:id="@+id/layoutRecent"
+                        style="@style/MatchWrap"
+                        android:layout_below="@+id/layoutAutograph"
+                        android:background="@color/COLOR_WHITE"
+                        android:gravity="center_vertical"
+                        android:padding="@dimen/y24">
+
+                        <TextView
+                            style="@style/TextMiddle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="最近发表"
+                            android:textColor="@color/TC_8A8A8A" />
+
+                        <com.bili.diushoujuaner.widget.CustomGridView
+                            android:id="@+id/customGridView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/x168"
+                            android:layout_marginRight="@dimen/x50"
+                            android:numColumns="3">
+
+                        </com.bili.diushoujuaner.widget.CustomGridView>
+
+                        <TextView
+                            android:id="@+id/txtRecent"
+                            style="@style/TextMiddle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/x176"
+                            android:layout_marginRight="@dimen/x50"
+                            android:ellipsize="end"
+                            android:maxLines="2"
+                            android:textColor="@color/TC_8A8A8A"
+                            android:visibility="gone" />
+
+                        <ImageView
+                            android:id="@+id/ivArrowRight"
+                            android:layout_width="@dimen/x50"
+                            android:layout_height="@dimen/y50"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"/>
+
+                    </RelativeLayout>
+
+                    <View
+                        android:id="@+id/line2"
+                        style="@style/line"
+                        android:layout_below="@+id/layoutRecent" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/y200"
+                        android:layout_below="@+id/line2"
+                        android:background="@color/COLOR_WHITE"/>
+
+                </RelativeLayout>
+
+            </com.bili.diushoujuaner.widget.ReboundScrollView>
+
+            <RelativeLayout
+                android:id="@+id/layoutBottom"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y132"
+                android:layout_alignParentBottom="true"
+                android:background="@color/COLOR_WHITE">
+
+                <View
+                    style="@style/line"
+                    android:layout_alignParentTop="true" />
+
+                <Button
+                    android:id="@+id/btnStartMsg"
+                    style="@style/BtnXLongGreen"
+                    android:layout_centerVertical="true"
+                    android:text="@string/contact_start_msg" />
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layoutTip"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/COLOR_WHITE"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/ivTip"
+                android:layout_width="@dimen/x108"
+                android:layout_height="@dimen/y108"
+                android:layout_centerInParent="true"/>
+
+            <TextView
+                style="@style/TextMiddle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ivTip"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/y32"
+                android:text="暂无数据"
+                android:textColor="@color/TC_BFBFBF" />
+
+        </RelativeLayout>
+
+    </FrameLayout>
+
+
 
 </com.bili.diushoujuaner.widget.CustomRelativeLayout>

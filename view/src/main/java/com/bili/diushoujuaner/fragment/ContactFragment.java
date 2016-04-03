@@ -92,9 +92,7 @@ public class ContactFragment extends BaseFragment<ContactFragmentPresenter> impl
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getContext(), ContactDetailActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putParcelable(ContactDetailActivity.TAG, contactAdapter.getItem(position));
-                intent.putExtras(bundle);
+                intent.putExtra(ContactDetailActivity.TAG, contactAdapter.getItem(position).getFriendNo());
                 startActivity(intent);
             }
         });

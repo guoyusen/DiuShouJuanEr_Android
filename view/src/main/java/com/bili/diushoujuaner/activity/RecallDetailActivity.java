@@ -302,6 +302,7 @@ public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActiv
         layoutGood.setOnClickListener(this);
         layoutComment.setOnClickListener(this);
         layoutSend.setOnClickListener(this);
+        ivNavHead.setOnClickListener(this);
 
         layoutParent.setOnTouchListener(new CustomTouchListener());
         scrollView.setOnTouchListener(new CustomTouchListener());
@@ -397,6 +398,9 @@ public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActiv
             case R.id.layoutSend:
                 executeClickForSend();
                 break;
+            case R.id.ivNavHead:
+                startActivity(new Intent(context, ContactDetailActivity.class).putExtra(ContactDetailActivity.TAG, getBindPresenter().getRecallDtoByRecallNo(recallNo).getUserNo()));
+                break;
         }
     }
 
@@ -439,7 +443,7 @@ public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActiv
 
     @Override
     public void showGooderDetail(Long userNo) {
-        showWarning(userNo + "");
+        startActivity(new Intent(context, ContactDetailActivity.class).putExtra(ContactDetailActivity.TAG, userNo));
     }
 
     @Override
@@ -464,7 +468,7 @@ public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActiv
                 if(responEvent.getCommentNo() == null){
                     return;
                 }
-                if(responEvent.getToNo() == getBindPresenter().getUserNoFromLocal()){
+                if(responEvent.getToNo() == getBindPresenter().getLoginedUserNo()){
                     showFooterDialog(responEvent.getCommentNo(), -1, Constant.DELETE_COMMENT);
                     return;
                 }else{
@@ -478,7 +482,7 @@ public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActiv
                 if(responEvent.getResponNo() == null){
                     return;
                 }
-                if(responEvent.getToNo() == getBindPresenter().getUserNoFromLocal()){
+                if(responEvent.getToNo() == getBindPresenter().getLoginedUserNo()){
                     showFooterDialog(responEvent.getCommentNo(),responEvent.getResponNo(), Constant.DELETE_RESPON);
                     return;
                 }else{

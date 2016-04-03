@@ -3,6 +3,8 @@ package com.bili.diushoujuaner.model.apihelper.api;
 import com.bili.diushoujuaner.model.apihelper.callback.ApiCallbackListener;
 import com.bili.diushoujuaner.model.apihelper.request.CommentAddReq;
 import com.bili.diushoujuaner.model.apihelper.request.CommentRemoveReq;
+import com.bili.diushoujuaner.model.apihelper.request.ContactInfoReq;
+import com.bili.diushoujuaner.model.apihelper.request.RecentRecallReq;
 import com.bili.diushoujuaner.model.apihelper.request.ResponAddReq;
 import com.bili.diushoujuaner.model.apihelper.request.ResponRemoveReq;
 import com.bili.diushoujuaner.utils.Constant;
@@ -24,6 +26,8 @@ public interface Api {
     String getCommentRemove = Constant.HOST_ADDRESS + "1.0/comments/remove";
     String getResponAdd = Constant.HOST_ADDRESS + "1.0/respons/add";
     String getResponRemove = Constant.HOST_ADDRESS + "1.0/respons/remove";
+    String getContactInfo = Constant.HOST_ADDRESS + "1.0/users/info/user?";
+    String getRecentRecall = Constant.HOST_ADDRESS + "1.0/recalls/recent?";
 
     /**
      * 用户登录
@@ -90,5 +94,19 @@ public interface Api {
      * @param apiCallbackListener
      */
     void getResponRemove(ResponRemoveReq responRemoveReq, ApiCallbackListener apiCallbackListener);
+
+    /**
+     * 获取用户的个人信息
+     * @param contactInfoReq
+     * @param apiCallbackListener
+     */
+    void getContactInfo(ContactInfoReq contactInfoReq, ApiCallbackListener apiCallbackListener);
+
+    /**
+     * 获取用户最新的Recall
+     * @param recentRecallReq
+     * @param apiCallbackListener
+     */
+    void getRecentRecall(RecentRecallReq recentRecallReq, ApiCallbackListener apiCallbackListener);
 
 }

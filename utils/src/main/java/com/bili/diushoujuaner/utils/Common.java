@@ -20,6 +20,7 @@ import android.widget.EditText;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.lang.reflect.Field;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -53,6 +54,18 @@ public class Common {
         return (int)Math.abs(((c1.getTimeInMillis() - c2.getTimeInMillis())/24/3600000));
     }
 
+    public static int getHourDifferenceBetweenTime(String start, String end){
+        Calendar c1 = Calendar.getInstance();
+        Calendar c2 = Calendar.getInstance();
+        try{
+            c1.setTime(sdf_YYMMDD_HHMMSS.parse(start));
+            c2.setTime(sdf_YYMMDD_HHMMSS.parse(end));
+            return (int)Math.abs(((c1.getTimeInMillis() - c2.getTimeInMillis())/3600000));
+        }catch(ParseException pe){
+            return 0;
+        }
+    }
+
     private static int getYearFromTime(String time){
         return Integer.valueOf(time.substring(0, 4));
     }
@@ -63,6 +76,18 @@ public class Common {
 
     private static int getDayFromTime(String time){
         return Integer.valueOf(time.substring(8, 10));
+    }
+
+    private static int getHourFromTime(String time){
+        return Integer.valueOf(time.substring(13, 15));
+    }
+
+    private static int getMinuteFromTime(String time){
+        return Integer.valueOf(time.substring(16, 18));
+    }
+
+    private static int getSecondFromTime(String time){
+        return Integer.valueOf(time.substring(19));
     }
 
     /**

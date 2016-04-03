@@ -1,6 +1,7 @@
 package com.bili.diushoujuaner.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bili.diushoujuaner.R;
+import com.bili.diushoujuaner.activity.ContactDetailActivity;
 import com.bili.diushoujuaner.adapter.viewholder.ViewHolder;
 import com.bili.diushoujuaner.event.RecallGoodEvent;
 import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
@@ -35,9 +37,16 @@ public class RecallAdapter extends CommonAdapter<RecallDto> {
     }
 
     @Override
-    public void convert(final ViewHolder holder, RecallDto recallDto, final int position) throws Exception {
+    public void convert(final ViewHolder holder, final RecallDto recallDto, final int position) throws Exception {
         if(recallDto != null){
             Common.displayDraweeView(recallDto.getUserPicPath(), (SimpleDraweeView) holder.getView(R.id.ivItemHead));
+            holder.getView(R.id.ivItemHead).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    context.startActivity(new Intent(context, ContactDetailActivity.class).putExtra(ContactDetailActivity.TAG, recallDto.getUserNo()));
+                }
+            });
+
             if(recallDto.getPictureList().size() > 0){
                 holder.getView(R.id.layoutItemPic).setVisibility(View.VISIBLE);
                 Common.displayDraweeView(recallDto.getPictureList().get(0).getPicPath(), (SimpleDraweeView) holder.getView(R.id.ivItemPic));

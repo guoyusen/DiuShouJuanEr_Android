@@ -14,11 +14,11 @@
         android:background="@color/BG_F6F6F6"
         android:paddingLeft="@dimen/x24"
         android:paddingRight="@dimen/x24"
-        android:paddingTop="@dimen/y22"
-        android:paddingBottom="@dimen/y22">
+        android:paddingTop="@dimen/y32"
+        android:paddingBottom="@dimen/y32">
 
         <EditText
-            android:id="@+id/textAutograph"
+            android:id="@+id/edtEditor"
             style="@style/TextMiddle"
             android:layout_width="match_parent"
             android:layout_height="@dimen/y240"
@@ -38,8 +38,8 @@
             android:layout_height="wrap_content"
             android:textColor="@color/TC_ADADBB"
             android:text="50"
-            android:layout_alignBottom="@+id/textAutograph"
-            android:layout_alignRight="@+id/textAutograph"
+            android:layout_alignBottom="@+id/edtEditor"
+            android:layout_alignRight="@+id/edtEditor"
             android:layout_margin="@dimen/x16"/>
 
     </RelativeLayout>
