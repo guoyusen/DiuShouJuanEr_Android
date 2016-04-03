@@ -86,7 +86,7 @@ public class DBManager {
                 .where(UserDao.Properties.UserNo.eq(Common.getLongValue(user.getUserNo())))
                 .build()
                 .list();
-        if (userList.size() <= 0) {
+        if (userList.isEmpty()) {
             daoSession.getUserDao().insertOrReplace(user);
         } else {
             for(User item : userList){
@@ -105,10 +105,7 @@ public class DBManager {
                 .where(UserDao.Properties.UserNo.eq(userNo))
                 .build()
                 .list();
-        if(userList.size() > 0){
-            return userList.get(0);
-        }
-        return null;
+        return userList.isEmpty() ? null : userList.get(0);
     }
 
     /**
@@ -197,7 +194,7 @@ public class DBManager {
                         , FriendDao.Properties.FriendNo.eq(Common.getLongValue(friend.getFriendNo())))
                 .build()
                 .list();
-        if (friendList.size() <= 0) {
+        if (friendList.isEmpty()) {
             daoSession.getFriendDao().insertOrReplace(friend);
         } else {
             for(Friend item : friendList){
@@ -221,7 +218,7 @@ public class DBManager {
                 .where(PartyDao.Properties.PartyNo.eq(Common.getLongValue(party.getPartyNo())))
                 .build()
                 .list();
-        if (partyList.size() <= 0) {
+        if (partyList.isEmpty()) {
             daoSession.getPartyDao().insertOrReplace(party);
         } else {
             for(Party item : partyList){
@@ -271,7 +268,7 @@ public class DBManager {
                         , MemberDao.Properties.UserNo.eq(Common.getLongValue(member.getUserNo())))
                 .build()
                 .list();
-        if (memberList.size() <= 0) {
+        if (memberList.isEmpty()) {
             daoSession.getMemberDao().insertOrReplace(member);
         } else {
             for(Member item : memberList){

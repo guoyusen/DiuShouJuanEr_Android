@@ -96,7 +96,7 @@ public class RecallTemper {
         RecallDto recallDto = recallList.get(position);
         if(recallDto != null){
             List<GoodDto> goodDtoList = recallDto.getGoodList();
-            if(goodDtoList.size() <= 0){
+            if(goodDtoList.isEmpty()){
                 return;
             }
             for(GoodDto goodDto : goodDtoList){
@@ -108,9 +108,6 @@ public class RecallTemper {
             if(isACache){
                 saveRecallListToCache();
             }
-        }
-        if(isACache){
-            saveRecallListToCache();
         }
     }
 
@@ -128,7 +125,7 @@ public class RecallTemper {
         RecallDto recallDto = recallDtoHashtable.get(recallNo);
         if(recallDto != null){
             List<GoodDto> goodDtoList = recallDto.getGoodList();
-            if(goodDtoList.size() <= 0){
+            if(goodDtoList.isEmpty()){
                 return;
             }
             for(GoodDto goodDto : goodDtoList){

@@ -14,17 +14,11 @@ public class GoodTemper {
     }
 
     public static boolean isExists(Long recallNo){
-        if(booleanHashtable.get(recallNo) != null){
-            return true;
-        }
-        return false;
+        return booleanHashtable.get(recallNo) != null;
     }
 
     public static boolean getGoodStatus(Long recallNo){
-        if(booleanHashtable.get(recallNo) != null){
-            return booleanHashtable.get(recallNo);
-        }
-        return false;
+        return booleanHashtable.get(recallNo) != null ? booleanHashtable.get(recallNo) : false;
     }
 
     public static void clear(){

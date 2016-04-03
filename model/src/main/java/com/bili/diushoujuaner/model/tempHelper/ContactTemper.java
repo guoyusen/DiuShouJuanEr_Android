@@ -7,6 +7,8 @@ import java.util.Hashtable;
 
 /**
  * Created by BiLi on 2016/3/23.
+ * 一级缓存
+ * 存放联系人的信息
  */
 public class ContactTemper {
 
@@ -17,32 +19,26 @@ public class ContactTemper {
         friendVoHashtable.put(friendVo.getFriendNo(), friendVo);
     }
 
-    public static FriendVo getFriendVo(Long friendNo){
-        return friendVoHashtable.get(friendNo);
-    }
-
-    public static String getFriendRemark(Long friendNo){
-        FriendVo friendVo = getFriendVo(friendNo);
-        if(friendVo != null){
-            return friendVo.getDisplayName();
-        }
-        return null;
-    }
-
     public static void addPartyVo(PartyVo partyVo){
         partyVoHashtable.put(partyVo.getPartyNo(), partyVo);
+    }
+
+    public static FriendVo getFriendVo(Long friendNo){
+        return friendVoHashtable.get(friendNo);
     }
 
     public static PartyVo getPartyNo(Long partyNo){
         return partyVoHashtable.get(partyNo);
     }
 
+    public static String getFriendRemark(Long friendNo){
+        FriendVo friendVo = getFriendVo(friendNo);
+        return friendVo != null ? friendVo.getDisplayName() : null;
+    }
+
     public static String getPartyName(Long partyNo){
         PartyVo partyVo = getPartyNo(partyNo);
-        if(partyVo != null){
-            return partyVo.getDisplayName();
-        }
-        return null;
+        return partyVo != null ? partyVo.getDisplayName() : null;
     }
 
     public static void clearFriend(){
