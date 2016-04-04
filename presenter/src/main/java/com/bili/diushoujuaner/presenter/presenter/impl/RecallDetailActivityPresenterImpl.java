@@ -339,7 +339,7 @@ public class RecallDetailActivityPresenterImpl extends BasePresenter<IRecallDeta
     private void addGoodDtoToTemper(long recallNo){
         GoodDto goodDto = new GoodDto();
         goodDto.setUserNo(CustomSessionPreference.getInstance().getCustomSession().getUserNo());
-        goodDto.setNickName(DBManager.getInstance().getUser(CustomSessionPreference.getInstance().getCustomSession().getUserNo()).getRealName());
+        goodDto.setNickName(DBManager.getInstance().getUser(CustomSessionPreference.getInstance().getCustomSession().getUserNo()).getNickName());
         RecallTemper.addGood(goodDto, recallNo);
     }
 

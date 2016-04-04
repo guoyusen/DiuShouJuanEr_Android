@@ -32,7 +32,6 @@ public class CustomGenerator {
         Entity user = schema.addEntity("User");
         user.addIdProperty().autoincrement().primaryKey();
         user.addLongProperty("userNo").notNull();
-        user.addStringProperty("realName");
         user.addStringProperty("nickName");
         user.addStringProperty("mobile");
         user.addStringProperty("autograph");
@@ -43,6 +42,7 @@ public class CustomGenerator {
         user.addStringProperty("picPath");
         user.addStringProperty("smallNick");
         user.addStringProperty("registTime");
+        user.addStringProperty("wallPaper");
         user.addStringProperty("updateTime");
     }
 

@@ -68,4 +68,9 @@ public interface IBaseActivity {
      */
     void showPageHead(String titleText, Integer iconId, String rightText);
 
+    /**
+     * == 在Api19之上，需要重新设置一些控件的位置
+     */
+    void resetStatus();
+
 }

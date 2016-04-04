@@ -47,7 +47,7 @@ public class ContentEditActivity extends BaseActivity {
                 edtEditor.setHint("尽情吐槽吧...");
                 break;
             default:
-                showPageHead("", null, "");
+                showPageHead(null, null, "");
                 textLeftCount.setText("");
                 break;
         }

@@ -17,6 +17,15 @@ public class UserRes {
     private String picPath;
     private String smallNick;
     private String registTime;
+    private String wallPaper;
+
+    public String getWallPaper() {
+        return wallPaper;
+    }
+
+    public void setWallPaper(String wallPaper) {
+        this.wallPaper = wallPaper;
+    }
 
     public String getRegistTime() {
         return registTime;

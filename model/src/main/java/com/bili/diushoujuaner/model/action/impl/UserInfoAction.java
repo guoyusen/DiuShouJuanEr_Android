@@ -9,6 +9,7 @@ import com.bili.diushoujuaner.model.callback.ActionCallbackListener;
 import com.bili.diushoujuaner.model.databasehelper.DBManager;
 import com.bili.diushoujuaner.model.databasehelper.dao.User;
 import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
+import com.bili.diushoujuaner.utils.Common;
 import com.bili.diushoujuaner.utils.Constant;
 import com.bili.diushoujuaner.utils.GsonParser;
 import com.bili.diushoujuaner.model.apihelper.response.UserRes;
@@ -39,27 +40,31 @@ public class UserInfoAction implements IUserInfoAction {
 
     @Override
     public void getUserInfo(final ActionCallbackListener<ActionRespon<User>> actionCallbackListener){
-        //先展示本地数据
-        actionCallbackListener.onSuccess(ActionRespon.getActionRespon(Constant.ACTION_LOAD_LOCAL_SUCCESS, Constant.RETCODE_SUCCESS, getUserFromLocal()));
-        //TODO 增加判断，看是否需要进行全量拿取，开发阶段允许全量拿取
-        ApiAction.getInstance().getUserInfo(new ApiCallbackListener() {
-            @Override
-            public void onSuccess(final String data) {
-                ApiRespon<UserRes> result = GsonParser.getInstance().fromJson(data, new TypeToken<ApiRespon<UserRes>>() {
-                }.getType());
-                if(result.getIsLegal()){
-                    DBManager.getInstance().saveUser(result.getData());
-                    user = DBManager.getInstance().getUser(CustomSessionPreference.getInstance().getCustomSession().getUserNo());
-                    actionCallbackListener.onSuccess(ActionRespon.getActionRespon(result.getMessage(), result.getRetCode(), getUserFromLocal()));
-                }else{
-                    actionCallbackListener.onSuccess(ActionRespon.getActionRespon(result.getMessage(), result.getRetCode(), (User)null));
+        User tmpUser = getUserFromLocal();
+        if(tmpUser != null){
+            actionCallbackListener.onSuccess(ActionRespon.getActionRespon(Constant.ACTION_LOAD_LOCAL_SUCCESS, Constant.RETCODE_SUCCESS, getUserFromLocal()));
+        }
+        // 超过一天，重新获取全量用户数据
+        if(tmpUser == null || Common.isEmpty(tmpUser.getUpdateTime()) || Common.getHourDifferenceBetweenTime(tmpUser.getUpdateTime(), Common.getCurrentTimeYYMMDD_HHMMSS()) > 24){
+            ApiAction.getInstance().getUserInfo(new ApiCallbackListener() {
+                @Override
+                public void onSuccess(final String data) {
+                    ApiRespon<UserRes> result = GsonParser.getInstance().fromJson(data, new TypeToken<ApiRespon<UserRes>>() {
+                    }.getType());
+                    if(result.getIsLegal()){
+                        DBManager.getInstance().saveUser(result.getData());
+                        user = DBManager.getInstance().getUser(CustomSessionPreference.getInstance().getCustomSession().getUserNo());
+                        actionCallbackListener.onSuccess(ActionRespon.getActionRespon(result.getMessage(), result.getRetCode(), getUserFromLocal()));
+                    }else{
+                        actionCallbackListener.onSuccess(ActionRespon.getActionRespon(result.getMessage(), result.getRetCode(), (User)null));
+                    }
                 }
-            }
 
-            @Override
-            public void onFailure(int errorCode) {
-                actionCallbackListener.onFailure(errorCode);
-            }
-        });
+                @Override
+                public void onFailure(int errorCode) {
+                    actionCallbackListener.onFailure(errorCode);
+                }
+            });
+        }
     }
 }

@@ -1,16 +1,20 @@
-package com.bili.diushoujuaner.widget;
+package com.bili.diushoujuaner.widget.scrollview;
 
 /**
  * Created by BiLi on 2016/3/3.
  */
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Rect;
+import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.TranslateAnimation;
 import android.widget.ScrollView;
+
+import com.bili.diushoujuaner.R;
 
 /**
  * 有弹性的ScrollView
@@ -48,12 +52,30 @@ public class ReboundScrollView extends ScrollView {
     //在手指滑动的过程中记录是否移动了布局
     private boolean isMoved = false;
 
+    private boolean scrollCanDown = false;
+
+    private ChangeHeadStatusListener changeHeadStatusListener;
+
     public ReboundScrollView(Context context) {
-        super(context);
+        this(context, null);
     }
 
     public ReboundScrollView(Context context, AttributeSet attrs) {
-        super(context, attrs);
+        this(context, attrs, 0);
+    }
+
+    public ReboundScrollView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        TypedArray t = null;
+        try {
+            t = context.obtainStyledAttributes(attrs, R.styleable.ReboundScrollView,
+                    0, defStyleAttr);
+            scrollCanDown = t.getBoolean(R.styleable.ReboundScrollView_rs_scrollCanDown, true);
+        } finally {
+            if (t != null) {
+                t.recycle();
+            }
+        }
     }
 
     @Override
@@ -164,8 +186,24 @@ public class ReboundScrollView extends ScrollView {
      * 判断是否滚动到顶部
      */
     private boolean isCanPullDown() {
-        return getScrollY() == 0 ||
-                contentView.getHeight() < getHeight() + getScrollY();
+        if(scrollCanDown){
+            return getScrollY() == 0 ||
+                    contentView.getHeight() < getHeight() + getScrollY();
+        }else{
+            if(getScrollY() == 0){
+                return false;
+            }else{
+                return contentView.getHeight() < getHeight() + getScrollY();
+            }
+        }
+    }
+
+    public ChangeHeadStatusListener getChangeHeadStatusListener() {
+        return changeHeadStatusListener;
+    }
+
+    public void setChangeHeadStatusListener(ChangeHeadStatusListener changeHeadStatusListener) {
+        this.changeHeadStatusListener = changeHeadStatusListener;
     }
 
     /**
@@ -175,4 +213,16 @@ public class ReboundScrollView extends ScrollView {
         return  contentView.getHeight() <= getHeight() + getScrollY();
     }
 
+    @Override
+    protected void onScrollChanged(int l, int t, int oldl, int oldt) {
+        super.onScrollChanged(l, t, oldl, oldt);
+        if (changeHeadStatusListener != null) {
+            if(t > getResources().getDimension(R.dimen.y200)){
+                changeHeadStatusListener.onHeadStatusChanged(true);
+            }else{
+                changeHeadStatusListener.onHeadStatusChanged(false);
+            }
+
+        }
+    }
 }

@@ -39,7 +39,7 @@ import com.bili.diushoujuaner.model.apihelper.response.RecallDto;
 import com.bili.diushoujuaner.widget.CustomEditText;
 import com.bili.diushoujuaner.widget.CustomGridView;
 import com.bili.diushoujuaner.widget.CustomListView;
-import com.bili.diushoujuaner.widget.ReboundScrollView;
+import com.bili.diushoujuaner.widget.scrollview.ReboundScrollView;
 import com.bili.diushoujuaner.widget.TintedBitmapDrawable;
 import com.bili.diushoujuaner.widget.aligntextview.CBAlignTextView;
 import com.facebook.drawee.view.SimpleDraweeView;

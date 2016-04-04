@@ -20,6 +20,7 @@ public class FriendVo extends SortVo implements Parcelable {
     private String smallNick;
     private String registTime;
     private String updateTime;
+    private String wallPaper;
 
     public long getFriendNo() {
         return friendNo;
@@ -117,6 +118,15 @@ public class FriendVo extends SortVo implements Parcelable {
         this.updateTime = updateTime;
     }
 
+    public String getWallPaper() {
+        return wallPaper;
+    }
+
+    public void setWallPaper(String wallPaper) {
+        this.wallPaper = wallPaper;
+    }
+
+
     @Override
     public int describeContents() {
         return 0;
@@ -137,6 +147,7 @@ public class FriendVo extends SortVo implements Parcelable {
         dest.writeString(this.smallNick);
         dest.writeString(this.registTime);
         dest.writeString(this.updateTime);
+        dest.writeString(this.wallPaper);
     }
 
     public FriendVo() {
@@ -156,9 +167,10 @@ public class FriendVo extends SortVo implements Parcelable {
         this.smallNick = in.readString();
         this.registTime = in.readString();
         this.updateTime = in.readString();
+        this.wallPaper = in.readString();
     }
 
-    public static final Parcelable.Creator<FriendVo> CREATOR = new Parcelable.Creator<FriendVo>() {
+    public static final Creator<FriendVo> CREATOR = new Creator<FriendVo>() {
         @Override
         public FriendVo createFromParcel(Parcel source) {
             return new FriendVo(source);

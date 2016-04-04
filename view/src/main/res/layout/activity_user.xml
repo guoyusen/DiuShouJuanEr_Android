@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/tools"
+    style="@style/MatchMatch">
+
+    <com.bili.diushoujuaner.widget.scrollview.ReboundScrollView
+        android:id="@+id/reboundScrollView"
+        style="@style/MatchMatch"
+        android:background="@color/COLOR_WHITE"
+        android:overScrollMode="never"
+        fab:rs_scrollCanDown="false"
+        android:scrollbars="none">
+
+        <RelativeLayout
+            style="@style/MatchMatch"
+            android:background="@color/TRANSPARENT">
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/ivWallPaper"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y480"
+                app:actualImageScaleType="centerCrop"
+                app:placeholderImage="@mipmap/bg_menu_head" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/COLOR_WHITE"
+                android:layout_below="@+id/ivWallPaper"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/y200"
+                android:paddingTop="@dimen/y64">
+
+                <RelativeLayout
+                    style="@style/MatchWrap"
+                    android:layout_height="@dimen/y128"
+                    android:background="@color/COLOR_WHITE">
+
+                    <ImageView
+                        android:id="@+id/ivUserName"
+                        style="@style/menu_item_icon_user" />
+
+                    <EditText
+                        android:id="@+id/edtUserName"
+                        style="@style/menu_item_edt_user"
+                        android:layout_marginRight="@dimen/x178"
+                        android:hint="我的昵称"
+                        android:maxLength="24"
+                        android:maxLines="1" />
+
+                    <LinearLayout
+                        android:id="@+id/layoutGender"
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/y72"
+                        android:orientation="horizontal"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:gravity="center_vertical"
+                        android:paddingRight="@dimen/x24"
+                        android:paddingLeft="@dimen/x24">
+
+                        <TextView
+                            android:id="@+id/txtGender"
+                            android:layout_width="wrap_content"
+                            android:layout_height="@dimen/y72"
+                            android:textColor="@color/TC_333333"
+                            style="@style/TextMiddle"
+                            android:layout_marginRight="@dimen/x12"
+                            android:gravity="center"
+                            android:text="男"/>
+
+                        <ImageView
+                            android:id="@+id/ivArrowDown"
+                            android:layout_width="@dimen/x50"
+                            android:layout_height="@dimen/y50"/>
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+                <View
+                    style="@style/line"
+                    android:layout_marginLeft="@dimen/x152" />
+
+                <RelativeLayout
+                    style="@style/MatchWrap"
+                    android:layout_height="@dimen/y128"
+                    android:background="@color/COLOR_WHITE">
+
+                    <ImageView
+                        android:id="@+id/ivTimer"
+                        style="@style/menu_item_icon_user" />
+
+                    <EditText
+                        android:id="@+id/edtEmail"
+                        style="@style/menu_item_edt_user"
+                        android:hint="我的Email"
+                        android:maxLines="1" />
+
+                </RelativeLayout>
+
+                <View
+                    style="@style/line"
+                    android:layout_marginLeft="@dimen/x152" />
+
+                <RelativeLayout
+                    android:id="@+id/layoutSmallName"
+                    style="@style/MatchWrap"
+                    android:layout_height="@dimen/y128"
+                    android:background="@color/COLOR_WHITE">
+
+                    <ImageView
+                        android:id="@+id/ivSmallName"
+                        style="@style/menu_item_icon_user" />
+
+                    <TextView
+                        android:id="@+id/txtSmallName"
+                        style="@style/menu_item_txt_user"
+                        android:hint="那时的绰号"
+                        android:maxLines="1" />
+
+                    <ImageView
+                        android:id="@+id/ivArrowRightSmallName"
+                        android:layout_width="@dimen/x50"
+                        android:layout_height="@dimen/y50"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="@dimen/x24"
+                        android:layout_centerVertical="true"/>
+
+                </RelativeLayout>
+
+
+                <View
+                    style="@style/line"
+                    android:layout_marginLeft="@dimen/x152" />
+
+                <RelativeLayout
+                    android:id="@+id/layoutBirth"
+                    style="@style/MatchWrap"
+                    android:layout_height="@dimen/y128"
+                    android:background="@color/COLOR_WHITE">
+
+                    <ImageView
+                        android:id="@+id/ivEmail"
+                        style="@style/menu_item_icon_user" />
+
+                    <TextView
+                        android:id="@+id/txtTimer"
+                        style="@style/menu_item_txt_user"
+                        android:hint="我的生日"
+                        android:maxLines="1" />
+
+                    <ImageView
+                        android:id="@+id/ivArrowRightTime"
+                        android:layout_width="@dimen/x50"
+                        android:layout_height="@dimen/y50"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="@dimen/x24"
+                        android:layout_centerVertical="true"/>
+
+                </RelativeLayout>
+
+                <View
+                    style="@style/line"
+                    android:layout_marginLeft="@dimen/x152" />
+
+                <RelativeLayout
+                    style="@style/MatchWrap"
+                    android:layout_height="@dimen/y128"
+                    android:background="@color/COLOR_WHITE">
+
+                    <ImageView
+                        android:id="@+id/ivLocation"
+                        style="@style/menu_item_icon_user" />
+
+                    <TextView
+                        android:id="@+id/txtLocation"
+                        style="@style/menu_item_txt_user"
+                        android:hint="我的住址"
+                        android:maxLines="1" />
+
+                    <ImageView
+                        android:id="@+id/ivArrowRightLocation"
+                        android:layout_width="@dimen/x50"
+                        android:layout_height="@dimen/y50"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="@dimen/x24"
+                        android:layout_centerVertical="true"/>
+
+                </RelativeLayout>
+
+                <View
+                    style="@style/line"
+                    android:layout_marginLeft="@dimen/x152" />
+
+                <RelativeLayout
+                    style="@style/MatchWrap"
+                    android:layout_height="@dimen/y128"
+                    android:background="@color/COLOR_WHITE">
+
+                    <ImageView
+                        android:id="@+id/ivHomeTown"
+                        style="@style/menu_item_icon_user" />
+
+                    <TextView
+                        android:id="@+id/txtHomeTown"
+                        style="@style/menu_item_txt_user"
+                        android:hint="我的故乡"
+                        android:maxLines="1" />
+
+                    <ImageView
+                        android:id="@+id/ivArrowRightHome"
+                        android:layout_width="@dimen/x50"
+                        android:layout_height="@dimen/y50"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="@dimen/x24"
+                        android:layout_centerVertical="true"/>
+
+                </RelativeLayout>
+
+                <View
+                    style="@style/line"
+                    android:layout_marginLeft="@dimen/x152" />
+
+            </LinearLayout>
+
+            <com.bili.diushoujuaner.widget.floatingactionbutton.FloatingActionButton
+                android:id="@+id/btnCamera"
+                android:layout_width="@dimen/x128"
+                android:layout_height="@dimen/x128"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/x24"
+                android:layout_marginTop="@dimen/x416"
+                android:src="@mipmap/icon_camera"
+                fab:fab_colorNormal="@color/accent"
+                fab:fab_colorPressed="@color/accent_pressed"
+                fab:fab_colorRipple="@color/ripple" />
+
+        </RelativeLayout>
+
+    </com.bili.diushoujuaner.widget.scrollview.ReboundScrollView>
+
+    <include
+        android:id="@+id/layoutHead"
+        layout="@layout/include_head_transparent" />
+
+</FrameLayout>

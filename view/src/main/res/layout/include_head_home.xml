@@ -33,7 +33,7 @@
         android:id="@+id/btnRight"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:src="@mipmap/icon_recall_add"
+        android:src="@mipmap/icon_editor"
         android:background="@null"
         android:layout_alignParentRight="true"
         android:layout_marginRight="@dimen/x24"

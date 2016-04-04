@@ -9,9 +9,6 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -33,14 +30,8 @@ public abstract class AbstractBaseFragmentActivity extends FragmentActivity impl
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(R.style.AppTheme);
-        context = this;
         super.onCreate(savedInstanceState);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            setTranslucentStatus(true);
-        }
-        tintStatusColor();
+        context = this;
         ActivityManager.getInstance().addActivity(this);
         customApplication = (CustomApplication) this.getApplication();
 
@@ -48,7 +39,20 @@ public abstract class AbstractBaseFragmentActivity extends FragmentActivity impl
         beforeInitView();
         initView();
         ButterKnife.bind(this);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            setTranslucentStatus(true);
+            tintStatusColor();
+            resetStatus();
+        }
         setViewStatus();
+    }
+
+    public void setTintStatusColor(int colorId){
+        if(tintManager == null){
+            return;
+        }
+        tintManager.setStatusBarTintResource(colorId);
     }
 
     /**
@@ -75,10 +79,12 @@ public abstract class AbstractBaseFragmentActivity extends FragmentActivity impl
 
     @Override
     protected void onDestroy() {
+        if(basePresenter != null) {
+            basePresenter.detachView();
+        }
         onPageDestroy();
         ButterKnife.unbind(this);
         super.onDestroy();
-        basePresenter.detachView();
         ActivityManager.getInstance().removeActivity(this);
     }
 
@@ -92,23 +98,6 @@ public abstract class AbstractBaseFragmentActivity extends FragmentActivity impl
     protected void onResume() {
         super.onResume();
         onPageResume();
-    }
-
-    @Override
-    public void setContentView(int layout) {
-        ViewGroup mainView = (ViewGroup) LayoutInflater.from(this).inflate(
-                layout, null);
-        setContentView(mainView);
-    }
-
-    @Override
-    public void setContentView(View view) {
-        super.setContentView(view);
-    }
-
-    @Override
-    public void setContentView(View view, ViewGroup.LayoutParams params) {
-        super.setContentView(view, params);
     }
 
 }

@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/layoutHead">
 
-        <com.bili.diushoujuaner.widget.ReboundScrollView
+        <com.bili.diushoujuaner.widget.scrollview.ReboundScrollView
             android:id="@+id/reboundScrollView"
             android:overScrollMode="never"
             style="@style/MatchMatch">
@@ -103,7 +103,7 @@
 
             </LinearLayout>
 
-        </com.bili.diushoujuaner.widget.ReboundScrollView>
+        </com.bili.diushoujuaner.widget.scrollview.ReboundScrollView>
 
     </FrameLayout>
 

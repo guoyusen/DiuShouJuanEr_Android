@@ -17,22 +17,15 @@ import com.orhanobut.logger.Logger;
  */
 public class CustomApplication extends Application {
 
-    private static CustomApplication instance;
-
-    public static CustomApplication getInstance() {
-        return instance;
-    }
-
     @Override
     public void onCreate() {
         super.onCreate();
-        instance = this;
         initHtpp();// 初始化网络请求
         initFresco(); // 初始化Fresco
         initAcache();// 初始化ACache
         initPrefs(); // 初始化SharedPreference
         initDatabase();// 初始化DBManager
-        initLogger();
+        initLogger(); //初始化日志处理
         Stetho.initializeWithDefaults(this);
     }
 

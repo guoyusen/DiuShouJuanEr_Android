@@ -22,10 +22,10 @@ public class DataTypeUtil {
         user.setNickName(userRes.getNickName());
         user.setGender(userRes.getGender());
         user.setPicPath(userRes.getPicPath());
-        user.setRealName(userRes.getRealName());
         user.setSmallNick(userRes.getSmallNick());
         user.setUserNo(userRes.getUserNo());
         user.setRegistTime(userRes.getRegistTime());
+        user.setWallPaper(userRes.getWallPaper());
 
         return user;
     }
@@ -38,11 +38,11 @@ public class DataTypeUtil {
         older.setLocation(Common.isEmpty(newer.getLocation()) ? older.getLocation() : newer.getLocation());
         older.setNickName(Common.isEmpty(newer.getNickName()) ? older.getNickName() : newer.getNickName());
         older.setPicPath(Common.isEmpty(newer.getPicPath()) ? older.getPicPath() : newer.getPicPath());
-        older.setRealName(Common.isEmpty(newer.getRealName()) ? older.getRealName() : newer.getRealName());
         older.setSmallNick(Common.isEmpty(newer.getSmallNick()) ? older.getSmallNick() : newer.getSmallNick());
         older.setRegistTime(Common.isEmpty(newer.getRegistTime()) ? older.getRegistTime() : newer.getRegistTime());
         older.setGender(newer.getGender());
         older.setUpdateTime((Common.isEmpty(newer.getUpdateTime()) ? older.getUpdateTime() : newer.getUpdateTime()));
+        older.setWallPaper((Common.isEmpty(newer.getWallPaper()) ? older.getWallPaper() : newer.getWallPaper()));
 
         return older;
     }

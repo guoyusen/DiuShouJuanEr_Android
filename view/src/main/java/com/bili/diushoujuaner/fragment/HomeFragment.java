@@ -95,7 +95,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
 
     @Override
     public void setViewStatus() {
-        showPageHead("首页", R.mipmap.icon_recall_add, null);
+        showPageHead("首页", R.mipmap.icon_editor, null);
 
         waveSwipeRefreshLayout.setColorSchemeColors(Color.WHITE, Color.WHITE);
         waveSwipeRefreshLayout.setWaveColor(ContextCompat.getColor(context, R.color.COLOR_THEME));

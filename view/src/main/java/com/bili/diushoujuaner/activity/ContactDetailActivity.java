@@ -1,9 +1,13 @@
 package com.bili.diushoujuaner.activity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -15,12 +19,15 @@ import com.bili.diushoujuaner.model.apihelper.response.RecallDto;
 import com.bili.diushoujuaner.presenter.presenter.ContactDetailActivityPresenter;
 import com.bili.diushoujuaner.presenter.presenter.impl.ContactDetailActivityPresenterImpl;
 import com.bili.diushoujuaner.presenter.view.IContactDetailView;
+import com.bili.diushoujuaner.utils.Common;
 import com.bili.diushoujuaner.utils.entity.FriendVo;
 import com.bili.diushoujuaner.model.apihelper.response.PictureDto;
 import com.bili.diushoujuaner.widget.CustomGridView;
 import com.bili.diushoujuaner.widget.CustomRelativeLayout;
 import com.bili.diushoujuaner.widget.TintedBitmapDrawable;
 import com.bili.diushoujuaner.widget.aligntextview.AlignTextView;
+import com.bili.diushoujuaner.widget.floatingactionbutton.FloatingActionButton;
+import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,14 +43,10 @@ public class ContactDetailActivity extends BaseActivity<ContactDetailActivityPre
     CustomGridView customGridView;
     @Bind(R.id.layoutHead)
     RelativeLayout layoutHead;
-    @Bind(R.id.layoutParent)
-    CustomRelativeLayout layoutParent;
     @Bind(R.id.txtFriendName)
     TextView txtFriendName;
     @Bind(R.id.txtRecent)
     TextView txtRecent;
-    @Bind(R.id.btnFocus)
-    Button btnFocus;
     @Bind(R.id.txtFriendAutograph)
     AlignTextView txtFriendAutograph;
     @Bind(R.id.btnStartMsg)
@@ -58,6 +61,10 @@ public class ContactDetailActivity extends BaseActivity<ContactDetailActivityPre
     RelativeLayout layoutTip;
     @Bind(R.id.ivTip)
     ImageView ivTip;
+    @Bind(R.id.btnFocus)
+    FloatingActionButton btnFocus;
+    @Bind(R.id.ivWallPaper)
+    SimpleDraweeView ivWallPaper;
 
     private ContactRecentGalleryAdapter contactRecentGalleryAdapter;
     private List<PictureDto> pictureList;
@@ -71,12 +78,6 @@ public class ContactDetailActivity extends BaseActivity<ContactDetailActivityPre
     }
 
     @Override
-    public void tintStatusColor() {
-        super.tintStatusColor();
-        tintManager.setStatusBarTintResource(R.color.COLOR_THEME);
-    }
-
-    @Override
     public void beforeInitView() {
         pictureList = new ArrayList<>();
     }
@@ -84,6 +85,19 @@ public class ContactDetailActivity extends BaseActivity<ContactDetailActivityPre
     @Override
     public void initView() {
         setContentView(R.layout.activity_contact_detail);
+    }
+
+    @Override
+    public void resetStatus() {
+        FrameLayout.LayoutParams lpHead = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, (int)getResources().getDimension(R.dimen.y100));
+        lpHead.setMargins(0, tintManager.getConfig().getStatusBarHeight(), 0, 0);
+        layoutHead.setLayoutParams(lpHead);
+
+        RelativeLayout.LayoutParams lpFocus = new RelativeLayout.LayoutParams((int)getResources().getDimension(R.dimen.x128), (int)getResources().getDimension(R.dimen.x128));
+        lpFocus.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        lpFocus.setMargins(0, tintManager.getConfig().getStatusBarHeight() + (int)getResources().getDimension(R.dimen.x416), (int)getResources().getDimension(R.dimen.x24), 0);
+        btnFocus.setLayoutParams(lpFocus);
+        btnFocus.setPadding(0, 0, 0, 0);
     }
 
     @Override
@@ -99,14 +113,14 @@ public class ContactDetailActivity extends BaseActivity<ContactDetailActivityPre
     @Override
     public void showContact(FriendVo friendVo) {
         this.friendVo = friendVo;
-        if(friendVo != null){
+        if (friendVo != null) {
+            layoutHead.setBackground(ContextCompat.getDrawable(context, R.drawable.transparent_black_down_bg));
             layoutDetail.setVisibility(View.VISIBLE);
             layoutTip.setVisibility(View.GONE);
-            tintManager.setStatusBarTintResource(R.color.TRANSPARENT_HALF);
-            layoutHead.setBackground(ContextCompat.getDrawable(context, R.drawable.transparent_black_down_bg));
+            setTintStatusColor(R.color.TRANSPARENT_HALF);
 
+            Common.displayDraweeView(friendVo.getPicPath(), ivWallPaper);
             ivArrowRight.setImageDrawable(new TintedBitmapDrawable(getResources(), R.mipmap.icon_arrow_right, ContextCompat.getColor(context, R.color.COLOR_8A8A8A)));
-            layoutParent.setBgUrl(friendVo.getPicPath());
             txtFriendName.setText(friendVo.getDisplayName());
             txtFriendAutograph.setText(friendVo.getAutograph());
         }else{

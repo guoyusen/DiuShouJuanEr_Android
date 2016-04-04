@@ -29,12 +29,6 @@ public class LoginActivity extends BaseActivity<LoginActivityPresenter> implemen
     EditText edtPassword;
 
     @Override
-    public void tintStatusColor() {
-        super.tintStatusColor();
-        tintManager.setStatusBarTintResource(R.color.TRANSPARENT);
-    }
-
-    @Override
     public void initView() {
         setContentView(R.layout.activity_login);
     }
@@ -42,6 +36,7 @@ public class LoginActivity extends BaseActivity<LoginActivityPresenter> implemen
     @Override
     public void setViewStatus() {
         showPageHead(null, null, "新用户");
+        setTintStatusColor(R.color.TRANSPARENT);
 
         btnLogin.setOnClickListener(this);
         basePresenter = new LoginActivityPresenterImpl(this, getApplicationContext());

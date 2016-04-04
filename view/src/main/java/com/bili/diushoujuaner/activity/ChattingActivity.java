@@ -10,7 +10,6 @@ public class ChattingActivity extends BaseActivity {
 
     @Override
     public void beforeInitView() {
-
     }
 
     @Override

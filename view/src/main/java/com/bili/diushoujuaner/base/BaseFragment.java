@@ -1,5 +1,6 @@
 package com.bili.diushoujuaner.base;
 
+import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
@@ -15,7 +16,6 @@ import com.bili.diushoujuaner.presenter.base.BasePresenter;
 import com.bili.diushoujuaner.utils.Constant;
 import com.bili.diushoujuaner.widget.CustomProgress;
 import com.bili.diushoujuaner.widget.CustomToast;
-import com.bili.diushoujuaner.widget.MaterialCircleView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -49,12 +49,17 @@ public class BaseFragment<T> extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(getLayout(), container, false);
         ButterKnife.bind(this, view);
-        initCircleLoder(view);
+        initCircleLoader(view);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+            resetStatus();
+        }
         setViewStatus();
         return view;
     }
 
-    private void initCircleLoder(View view){
+    public void resetStatus(){}
+
+    private void initCircleLoader(View view){
         defaultCircle = view.findViewById(R.id.defaultCircle);
     }
 

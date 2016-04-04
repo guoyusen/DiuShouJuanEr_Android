@@ -149,4 +149,37 @@
         <item name="android:windowNoTitle">true</item>
     </style>
 
+    <style name="menu_item_icon_user">
+        <item name="android:layout_width">@dimen/x54</item>
+        <item name="android:layout_height">@dimen/y54</item>
+        <item name="android:layout_marginLeft">@dimen/x24</item>
+        <item name="android:layout_centerVertical">true</item>
+    </style>
+
+    <style name="menu_item_content_user">
+        <item name="android:textSize">@dimen/x30</item>
+        <item name="android:layout_marginLeft">@dimen/x152</item>
+        <item name="android:layout_height">@dimen/y72</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:textColor">@color/TC_333333</item>
+        <item name="android:gravity">center_vertical</item>
+    </style>
+
+    <style name="menu_item_edt_user" parent="menu_item_content_user">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_marginRight">@dimen/x24</item>
+        <item name="android:textColorHint">@color/TC_ADADBB</item>
+        <item name="android:enabled">false</item>
+        <item name="android:background">@null</item>
+    </style>
+
+    <style name="menu_item_txt_user" parent="menu_item_content_user">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:textColorHint">@color/TC_ADADBB</item>
+    </style>
+
+    <style name="icon_arrow_right">
+
+    </style>
+
 </resources>

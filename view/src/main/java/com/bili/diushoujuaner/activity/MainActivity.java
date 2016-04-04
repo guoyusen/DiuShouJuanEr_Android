@@ -54,6 +54,8 @@ public class MainActivity extends BaseFragmentActivity<MainActivityPresenterImpl
     CustomViewPager customViewPager;
     @Bind(R.id.menuHead)
     SimpleDraweeView menuHead;
+    @Bind(R.id.menuBg)
+    SimpleDraweeView menuBg;
     @Bind(R.id.drawerLayout)
     DrawerLayout drawerLayout;
     @Bind(R.id.btnMenuExit)
@@ -72,8 +74,14 @@ public class MainActivity extends BaseFragmentActivity<MainActivityPresenterImpl
     LinearLayout layoutAutograph;
     @Bind(R.id.layoutFeedback)
     LinearLayout layoutFeedback;
-    @Bind(R.id.layoutParent)
-    CustomRelativeLayout layoutParent;
+    @Bind(R.id.layoutSpace)
+    LinearLayout layoutSpace;
+    @Bind(R.id.layoutFocus)
+    LinearLayout layoutFocus;
+    @Bind(R.id.layoutFile)
+    LinearLayout layoutFile;
+    @Bind(R.id.layoutNotice)
+    LinearLayout layoutNotice;
     @Bind(R.id.ivUser)
     ImageView ivUser;
     @Bind(R.id.ivFocus)
@@ -101,12 +109,6 @@ public class MainActivity extends BaseFragmentActivity<MainActivityPresenterImpl
     private int badgeContCount = 0;
 
     @Override
-    public void tintStatusColor() {
-        super.tintStatusColor();
-        tintManager.setStatusBarTintResource(R.color.TRANSPARENT);
-    }
-
-    @Override
     public void beforeInitView() {
         fragmentList = new ArrayList<>();
     }
@@ -119,6 +121,7 @@ public class MainActivity extends BaseFragmentActivity<MainActivityPresenterImpl
     @Override
     public void setViewStatus() {
         EventBus.getDefault().register(this);
+        setTintStatusColor(R.color.TRANSPARENT);
         initOnClickListner();
         initFragment();
         initBottomButton();
@@ -177,6 +180,10 @@ public class MainActivity extends BaseFragmentActivity<MainActivityPresenterImpl
         btnMenuSetting.setOnClickListener(this);
         layoutAutograph.setOnClickListener(this);
         layoutFeedback.setOnClickListener(this);
+        layoutNotice.setOnClickListener(this);
+        layoutFile.setOnClickListener(this);
+        layoutFocus.setOnClickListener(this);
+        layoutSpace.setOnClickListener(this);
     }
 
     private void initBottomButton() {
@@ -208,13 +215,25 @@ public class MainActivity extends BaseFragmentActivity<MainActivityPresenterImpl
                 ActivityManager.getInstance().exit();
                 break;
             case R.id.menuHead:
-                startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                startActivity(new Intent(MainActivity.this, UserActivity.class));
                 break;
             case R.id.layoutAutograph:
                 startActivity(new Intent(MainActivity.this, ContentEditActivity.class).putExtra(ContentEditActivity.TAG, Constant.EDIT_CONTENT_AUTOGRAPH));
                 break;
             case R.id.layoutFeedback:
                 startActivity(new Intent(MainActivity.this, ContentEditActivity.class).putExtra(ContentEditActivity.TAG, Constant.EDIT_CONTENT_FEEDBACK));
+                break;
+            case R.id.layoutNotice:
+                startActivity(new Intent(MainActivity.this, NoticeActivity.class));
+                break;
+            case R.id.layoutFile:
+                startActivity(new Intent(MainActivity.this, FileActivity.class));
+                break;
+            case R.id.layoutFocus:
+                startActivity(new Intent(MainActivity.this, FocusActivity.class));
+                break;
+            case R.id.layoutSpace:
+                startActivity(new Intent(MainActivity.this, SpaceActivity.class));
                 break;
             case R.id.btnMenuSetting:
                 startActivity(new Intent(MainActivity.this, SettingActivity.class));
@@ -253,6 +272,7 @@ public class MainActivity extends BaseFragmentActivity<MainActivityPresenterImpl
     @Override
     public void showUserInfo(User user) {
         Common.displayDraweeView(user.getPicPath(), menuHead);
+        Common.displayDraweeView(user.getWallPaper(),menuBg);
         txtAutograph.setText(user.getAutograph());
         txtUserName.setText(user.getNickName());
         EventBus.getDefault().post(new ShowHeadEvent(user.getPicPath()));

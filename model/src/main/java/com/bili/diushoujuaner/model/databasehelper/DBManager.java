@@ -121,7 +121,7 @@ public class DBManager {
 
     public FriendVo getFriendVo(long userNo){
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("select user_No, nick_Name, mobile, autograph, gender, birthday,home_Town, location, pic_Path, small_Nick, regist_Time, update_Time ");
+        stringBuilder.append("select user_No, nick_Name, mobile, autograph, gender, birthday,home_Town, location, pic_Path, small_Nick, regist_Time, update_Time, wall_Paper ");
         stringBuilder.append("from User ");
         stringBuilder.append("where user_No = " + userNo);
 
@@ -144,6 +144,7 @@ public class DBManager {
                 friendVo.setSmallNick(cursor.getString(cursor.getColumnIndex("SMALL_NICK")));
                 friendVo.setRegistTime(cursor.getString(cursor.getColumnIndex("REGIST_TIME")));
                 friendVo.setUpdateTime(cursor.getString(cursor.getColumnIndex("UPDATE_TIME")));
+                friendVo.setWallPaper(cursor.getString(cursor.getColumnIndex("WALL_PAPER")));
 
                 friendVoList.add(friendVo);
             } while (cursor.moveToNext());
@@ -153,7 +154,7 @@ public class DBManager {
 
     public List<FriendVo> getFriendVoList(){
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("select user_No, nick_Name, remark, mobile, autograph, gender, birthday,home_Town, location, pic_Path, small_Nick, regist_Time, update_Time ");
+        stringBuilder.append("select user_No, nick_Name, remark, mobile, autograph, gender, birthday,home_Town, location, pic_Path, small_Nick, regist_Time, update_Time, wall_Paper ");
         stringBuilder.append("from User, Friend ");
         stringBuilder.append("where owner_No = " + CustomSessionPreference.getInstance().getCustomSession().getUserNo() + " ");
         stringBuilder.append("and user_No = friend_No");
@@ -179,6 +180,7 @@ public class DBManager {
                 friendVo.setSmallNick(cursor.getString(cursor.getColumnIndex("SMALL_NICK")));
                 friendVo.setRegistTime(cursor.getString(cursor.getColumnIndex("REGIST_TIME")));
                 friendVo.setUpdateTime(cursor.getString(cursor.getColumnIndex("UPDATE_TIME")));
+                friendVo.setWallPaper(cursor.getString(cursor.getColumnIndex("WALL_PAPER")));
 
                 friendVoList.add(friendVo);
                 ContactTemper.addFriendVo(friendVo);

@@ -24,13 +24,9 @@ import com.bili.diushoujuaner.utils.entity.PictureVo;
 import com.bili.diushoujuaner.widget.CircleIndicator;
 import com.bili.diushoujuaner.widget.photodraweeview.MultiTouchViewPager;
 import com.bili.diushoujuaner.widget.photodraweeview.PhotoDraweeView;
-import com.bili.diushoujuaner.widget.zoomfresco.zoomable.ZoomableDraweeView;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.backends.pipeline.PipelineDraweeControllerBuilder;
 import com.facebook.drawee.controller.BaseControllerListener;
-import com.facebook.drawee.drawable.ScalingUtils;
-import com.facebook.drawee.generic.GenericDraweeHierarchy;
-import com.facebook.drawee.generic.GenericDraweeHierarchyBuilder;
 import com.facebook.imagepipeline.image.ImageInfo;
 
 import java.util.ArrayList;

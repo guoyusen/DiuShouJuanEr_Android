@@ -31,14 +31,8 @@ public abstract class AbstractBaseActivity extends Activity implements IBaseActi
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(R.style.AppTheme);
-        context = this;
         super.onCreate(savedInstanceState);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            setTranslucentStatus(true);
-        }
-        tintStatusColor();
+        context = this;
         ActivityManager.getInstance().addActivity(this);
         customApplication = (CustomApplication) this.getApplication();
 
@@ -46,13 +40,25 @@ public abstract class AbstractBaseActivity extends Activity implements IBaseActi
         beforeInitView();
         initView();
         ButterKnife.bind(this);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            setTranslucentStatus(true);
+            tintStatusColor();
+            resetStatus();
+        }
         setViewStatus();
     }
 
+    public void setTintStatusColor(int colorId){
+        if(tintManager == null){
+            return;
+        }
+        tintManager.setStatusBarTintResource(colorId);
+    }
     /**
      * 为状态栏着色
      */
-    public void tintStatusColor() {
+    private void tintStatusColor() {
         tintManager = new SystemBarTintManager(this);
         tintManager.setStatusBarTintEnabled(true);
         tintManager.setStatusBarTintResource(R.color.COLOR_THEME);
@@ -73,12 +79,12 @@ public abstract class AbstractBaseActivity extends Activity implements IBaseActi
 
     @Override
     protected void onDestroy() {
-        onPageDestroy();
-        ButterKnife.unbind(this);
-        super.onDestroy();
         if(basePresenter != null){
             basePresenter.detachView();
         }
+        onPageDestroy();
+        ButterKnife.unbind(this);
+        super.onDestroy();
         ActivityManager.getInstance().removeActivity(this);
     }
 

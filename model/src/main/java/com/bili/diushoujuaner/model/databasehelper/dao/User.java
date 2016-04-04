@@ -8,7 +8,6 @@ public class User {
 
     private Long id;
     private long userNo;
-    private String realName;
     private String nickName;
     private String mobile;
     private String autograph;
@@ -19,6 +18,7 @@ public class User {
     private String picPath;
     private String smallNick;
     private String registTime;
+    private String wallPaper;
     private String updateTime;
 
     public User() {
@@ -28,10 +28,9 @@ public class User {
         this.id = id;
     }
 
-    public User(Long id, long userNo, String realName, String nickName, String mobile, String autograph, Integer gender, String birthday, String homeTown, String location, String picPath, String smallNick, String registTime, String updateTime) {
+    public User(Long id, long userNo, String nickName, String mobile, String autograph, Integer gender, String birthday, String homeTown, String location, String picPath, String smallNick, String registTime, String wallPaper, String updateTime) {
         this.id = id;
         this.userNo = userNo;
-        this.realName = realName;
         this.nickName = nickName;
         this.mobile = mobile;
         this.autograph = autograph;
@@ -42,6 +41,7 @@ public class User {
         this.picPath = picPath;
         this.smallNick = smallNick;
         this.registTime = registTime;
+        this.wallPaper = wallPaper;
         this.updateTime = updateTime;
     }
 
@@ -59,14 +59,6 @@ public class User {
 
     public void setUserNo(long userNo) {
         this.userNo = userNo;
-    }
-
-    public String getRealName() {
-        return realName;
-    }
-
-    public void setRealName(String realName) {
-        this.realName = realName;
     }
 
     public String getNickName() {
@@ -147,6 +139,14 @@ public class User {
 
     public void setRegistTime(String registTime) {
         this.registTime = registTime;
+    }
+
+    public String getWallPaper() {
+        return wallPaper;
+    }
+
+    public void setWallPaper(String wallPaper) {
+        this.wallPaper = wallPaper;
     }
 
     public String getUpdateTime() {

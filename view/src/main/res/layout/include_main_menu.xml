@@ -1,28 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.bili.diushoujuaner.widget.CustomRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:fresco="http://schemas.android.com/tools"
-    android:id="@+id/layoutParent"
     style="@style/MatchMatch.FitWindow"
     android:clickable="true">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/y80"
-        android:layout_alignParentTop="true"
-        android:background="@drawable/transparent_black_down_bg" />
-
-    <com.bili.diushoujuaner.widget.ReboundScrollView
+    <com.bili.diushoujuaner.widget.scrollview.ReboundScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/COLOR_WHITE"
         android:layout_above="@+id/menuLayoutFooter"
-        android:layout_below="@+id/menuLayoutHeader"
-        android:background="@color/TRANSPARENT"
+        app:rs_scrollCanDown="false"
         android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/TRANSPARENT"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -30,6 +24,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/y400"
                 android:background="@color/TRANSPARENT">
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/menuBg"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/y400"
+                    android:layout_centerHorizontal="true"
+                    app:actualImageScaleType="centerCrop"
+                    app:placeholderImage="@mipmap/bg_menu_head" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/y80"
+                    android:layout_alignParentTop="true"
+                    android:background="@drawable/transparent_black_down_bg" />
 
                 <com.facebook.drawee.view.SimpleDraweeView
                     android:id="@+id/menuHead"
@@ -91,12 +99,13 @@
                 android:background="@color/COLOR_WHITE"
                 android:orientation="vertical">
 
-                <LinearLayout style="@style/menu_item_layout">
+                <LinearLayout
+                    android:id="@+id/layoutSpace"
+                    style="@style/menu_item_layout">
 
                     <ImageView
                         android:id="@+id/ivUser"
-                        style="@style/menu_item_icon"
-                        android:src="@mipmap/icon_menu_user" />
+                        style="@style/menu_item_icon" />
 
                     <TextView
                         style="@style/menu_item_text"
@@ -104,12 +113,13 @@
 
                 </LinearLayout>
 
-                <LinearLayout style="@style/menu_item_layout">
+                <LinearLayout
+                    android:id="@+id/layoutFocus"
+                    style="@style/menu_item_layout">
 
                     <ImageView
                         android:id="@+id/ivFocus"
-                        style="@style/menu_item_icon"
-                        android:src="@mipmap/icon_menu_focus" />
+                        style="@style/menu_item_icon" />
 
                     <TextView
                         style="@style/menu_item_text"
@@ -117,12 +127,13 @@
 
                 </LinearLayout>
 
-                <LinearLayout style="@style/menu_item_layout">
+                <LinearLayout
+                    android:id="@+id/layoutFile"
+                    style="@style/menu_item_layout">
 
                     <ImageView
                         android:id="@+id/ivFolder"
-                        style="@style/menu_item_icon"
-                        android:src="@mipmap/icon_menu_folder" />
+                        style="@style/menu_item_icon" />
 
                     <TextView
                         style="@style/menu_item_text"
@@ -135,12 +146,13 @@
                     android:layout_marginLeft="@dimen/x24"
                     android:layout_marginRight="@dimen/x24" />
 
-                <LinearLayout style="@style/menu_item_layout">
+                <LinearLayout
+                    android:id="@+id/layoutNotice"
+                    style="@style/menu_item_layout">
 
                     <ImageView
                         android:id="@+id/ivNotice"
-                        style="@style/menu_item_icon"
-                        android:src="@mipmap/icon_menu_notice" />
+                        style="@style/menu_item_icon" />
 
                     <com.bili.diushoujuaner.widget.badgeview.BGABadgeTextView
                         android:id="@+id/txtSystemNotice"
@@ -156,8 +168,7 @@
 
                     <ImageView
                         android:id="@+id/ivFeedBack"
-                        style="@style/menu_item_icon"
-                        android:src="@mipmap/icon_menu_feedback" />
+                        style="@style/menu_item_icon" />
 
                     <TextView
                         android:id="@+id/textFeedBack"
@@ -167,9 +178,10 @@
                 </LinearLayout>
 
             </LinearLayout>
+
         </LinearLayout>
 
-    </com.bili.diushoujuaner.widget.ReboundScrollView>
+    </com.bili.diushoujuaner.widget.scrollview.ReboundScrollView>
 
 
     <LinearLayout
@@ -208,4 +220,4 @@
             android:text="退出"
             android:textColor="@color/TC_F55555" />
     </LinearLayout>
-</com.bili.diushoujuaner.widget.CustomRelativeLayout>
+</RelativeLayout>

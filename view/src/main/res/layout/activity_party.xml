@@ -7,7 +7,7 @@
     <include android:id="@+id/layoutHead"
         layout="@layout/include_head_custom"/>
 
-    <com.bili.diushoujuaner.widget.ReboundScrollView
+    <com.bili.diushoujuaner.widget.scrollview.ReboundScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -36,6 +36,6 @@
 
         </LinearLayout>
 
-    </com.bili.diushoujuaner.widget.ReboundScrollView>
+    </com.bili.diushoujuaner.widget.scrollview.ReboundScrollView>
 
 </LinearLayout>

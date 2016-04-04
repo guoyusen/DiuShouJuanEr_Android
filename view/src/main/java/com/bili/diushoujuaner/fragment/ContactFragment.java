@@ -22,7 +22,7 @@ import com.bili.diushoujuaner.presenter.view.IContactView;
 import com.bili.diushoujuaner.utils.Common;
 import com.bili.diushoujuaner.utils.entity.FriendVo;
 import com.bili.diushoujuaner.widget.CustomListView;
-import com.bili.diushoujuaner.widget.ReboundScrollView;
+import com.bili.diushoujuaner.widget.scrollview.ReboundScrollView;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import org.greenrobot.eventbus.EventBus;
