@@ -13,9 +13,8 @@ import com.bili.diushoujuaner.activity.ContactSearchActivity;
 import com.bili.diushoujuaner.activity.PartyActivity;
 import com.bili.diushoujuaner.adapter.ContactAdapter;
 import com.bili.diushoujuaner.base.BaseFragment;
-import com.bili.diushoujuaner.event.RefreshRecallEvent;
-import com.bili.diushoujuaner.event.ShowHeadEvent;
-import com.bili.diushoujuaner.event.ShowMainMenuEvent;
+import com.bili.diushoujuaner.utils.event.ShowHeadEvent;
+import com.bili.diushoujuaner.utils.event.ShowMainMenuEvent;
 import com.bili.diushoujuaner.presenter.presenter.ContactFragmentPresenter;
 import com.bili.diushoujuaner.presenter.presenter.impl.ContactFragmentPresenterImpl;
 import com.bili.diushoujuaner.presenter.view.IContactView;
@@ -74,6 +73,7 @@ public class ContactFragment extends BaseFragment<ContactFragmentPresenter> impl
     @Override
     public void beforeInitView() {
         friendVoList = new ArrayList<>();
+        basePresenter = new ContactFragmentPresenterImpl(this, getContext());
     }
 
     @Override
@@ -97,7 +97,6 @@ public class ContactFragment extends BaseFragment<ContactFragmentPresenter> impl
             }
         });
 
-        basePresenter = new ContactFragmentPresenterImpl(this, getContext());
         getBindPresenter().getContactList();
     }
 
@@ -119,12 +118,12 @@ public class ContactFragment extends BaseFragment<ContactFragmentPresenter> impl
     @Override
     public void showContactList(List<FriendVo> friendVoList) {
         contactAdapter.refresh(friendVoList);
-        if(friendVoList.size() <= 0){
+        if(Common.isEmpty(friendVoList)){
             txtPartyCount.setText("暂无联系人");
+            return;
         } else{
             txtPartyCount.setText(friendVoList.size() + "个联系人");
         }
-        EventBus.getDefault().post(new RefreshRecallEvent());
     }
 
     @Subscribe

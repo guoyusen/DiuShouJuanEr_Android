@@ -8,6 +8,7 @@ import com.bili.diushoujuaner.base.BaseActivity;
 import com.bili.diushoujuaner.presenter.presenter.PartyActivityPresenter;
 import com.bili.diushoujuaner.presenter.presenter.impl.PartyActivityPresenterImpl;
 import com.bili.diushoujuaner.presenter.view.IPartyView;
+import com.bili.diushoujuaner.utils.Common;
 import com.bili.diushoujuaner.utils.entity.PartyVo;
 import com.bili.diushoujuaner.widget.CustomListViewRefresh;
 
@@ -33,6 +34,7 @@ public class PartyActivity extends BaseActivity<PartyActivityPresenter> implemen
     @Override
     public void beforeInitView() {
         partyVoList = new ArrayList<>();
+        basePresenter = new PartyActivityPresenterImpl(this, context);
     }
 
     @Override
@@ -46,15 +48,16 @@ public class PartyActivity extends BaseActivity<PartyActivityPresenter> implemen
 
         partyAdapter = new PartyAdapter(this, partyVoList);
         customListViewRefresh.setAdapter(partyAdapter);
-        basePresenter = new PartyActivityPresenterImpl(this, context);
+
         getBindPresenter().getPartyList();
     }
 
     @Override
     public void showPartyList(List<PartyVo> partyVoList) {
         partyAdapter.refresh(partyVoList);
-        if(partyVoList.size() <= 0){
+        if(Common.isEmpty(partyVoList)){
             txtPartyCount.setText("暂无群组");
+            return;
         } else{
             txtPartyCount.setText(partyVoList.size() + "个群组");
         }

@@ -95,7 +95,7 @@ public class HomeFragmentPresenterImpl extends BasePresenter<IHomeView> implemen
             @Override
             public void onSuccess(ActionRespon<List<RecallDto>> result) {
                 if (showMessage(result.getRetCode(), result.getMessage())) {
-                    if (result.getData() != null) {
+                    if (result.getData() != null && isBindViewValid()) {
                         updateRequestParam(result.getData());
                         getBindView().showRecallList(result.getData());
 
@@ -124,7 +124,9 @@ public class HomeFragmentPresenterImpl extends BasePresenter<IHomeView> implemen
                 if (showMessage(result.getRetCode(), result.getMessage())) {
                     RecallTemper.clear();
                     RecallTemper.addRecallDtoList(result.getData());
-                    getBindView().showRecallList(result.getData());
+                    if(isBindViewValid()){
+                        getBindView().showRecallList(result.getData());
+                    }
                 }
             }
 
@@ -141,21 +143,25 @@ public class HomeFragmentPresenterImpl extends BasePresenter<IHomeView> implemen
             @Override
             public void onSuccess(ActionRespon<List<RecallDto>> result) {
                 if (showMessage(result.getRetCode(), result.getMessage())) {
-                    if(result.getData() != null){
+                    if(result.getData() != null && isBindViewValid()){
                         updateRequestParam(result.getData());
                         getBindView().showMoreRecallList(result.getData());
 
                         RecallTemper.addRecallDtoList(result.getData());
                     }
                 }else{
-                    getBindView().setLoadMoreEnd();
+                    if(isBindViewValid()){
+                        getBindView().setLoadMoreEnd();
+                    }
                 }
             }
 
             @Override
             public void onFailure(int errorCode) {
                 showError(errorCode);
-                getBindView().setLoadMoreEnd();
+                if(isBindViewValid()){
+                    getBindView().setLoadMoreEnd();
+                }
             }
         });
     }
@@ -182,7 +188,9 @@ public class HomeFragmentPresenterImpl extends BasePresenter<IHomeView> implemen
 
     private void hideLoading(){
         hideLoading(Constant.LOADING_DEFAULT);
-        getBindView().setRefreshingEnd();
+        if(isBindViewValid()){
+            getBindView().setRefreshingEnd();
+        }
     }
 
     private void updateRequestParam(List<RecallDto> recallDtoList){

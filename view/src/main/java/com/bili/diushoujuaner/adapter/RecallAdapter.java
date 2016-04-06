@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.activity.ContactDetailActivity;
 import com.bili.diushoujuaner.adapter.viewholder.ViewHolder;
-import com.bili.diushoujuaner.event.RecallGoodEvent;
+import com.bili.diushoujuaner.utils.event.RecallGoodEvent;
 import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
 import com.bili.diushoujuaner.model.tempHelper.ContactTemper;
 import com.bili.diushoujuaner.model.tempHelper.GoodTemper;

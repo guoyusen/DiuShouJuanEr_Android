@@ -10,6 +10,10 @@ import com.bili.diushoujuaner.presenter.presenter.ContactFragmentPresenter;
 import com.bili.diushoujuaner.presenter.view.IContactView;
 import com.bili.diushoujuaner.utils.Constant;
 import com.bili.diushoujuaner.utils.entity.FriendVo;
+import com.bili.diushoujuaner.utils.event.RefreshRecallEvent;
+
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.List;
 
 /**
@@ -27,7 +31,10 @@ public class ContactFragmentPresenterImpl extends BasePresenter<IContactView> im
             @Override
             public void onSuccess(ActionRespon<List<FriendVo>> result) {
                 if (showMessage(result.getRetCode(), result.getMessage())) {
-                    getBindView().showContactList(result.getData());
+                    if(isBindViewValid()){
+                        getBindView().showContactList(result.getData());
+                    }
+                    EventBus.getDefault().post(new RefreshRecallEvent());
                 }
                 hideLoading(Constant.LOADING_DEFAULT);
             }

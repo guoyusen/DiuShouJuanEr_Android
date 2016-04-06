@@ -84,6 +84,7 @@ public class UserActivity extends BaseActivity<UserActivityPresenter> implements
     @Override
     public void beforeInitView() {
         arrowRightDrawable = new TintedBitmapDrawable(getResources(), R.mipmap.icon_arrow_right, ContextCompat.getColor(context, R.color.COLOR_8A8A8A));
+        basePresenter = new UserActivityPresenterImpl(this, context);
     }
 
     @Override
@@ -123,7 +124,6 @@ public class UserActivity extends BaseActivity<UserActivityPresenter> implements
 
         reboundScrollView.setChangeHeadStatusListener(this);
 
-        basePresenter = new UserActivityPresenterImpl(this, context);
         getBindPresenter().getUserInfo();
     }
 

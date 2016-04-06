@@ -33,7 +33,9 @@ public class ContactDetailActivityPresenterImpl extends BasePresenter<IContactDe
             @Override
             public void onSuccess(ActionRespon<RecallDto> result) {
                 if (showMessage(result.getRetCode(), result.getMessage())) {
-                    getBindView().showRecent(result.getData());
+                    if (isBindViewValid()) {
+                        getBindView().showRecent(result.getData());
+                    }
                 }
             }
 
@@ -55,14 +57,16 @@ public class ContactDetailActivityPresenterImpl extends BasePresenter<IContactDe
                     //TODO 更新获取联系人全量信息的时间间隔
                     if (result.getData() == null || Common.isEmpty(result.getData().getUpdateTime()) || Common.getHourDifferenceBetweenTime(result.getData().getUpdateTime(), Common.getCurrentTimeYYMMDD_HHMMSS()) > 1) {
                         //数据已经无效，则在不为空的情况下，先进行显示，在进行更新获取
-                        if (result.getData() != null) {
+                        if (result.getData() != null && isBindViewValid()) {
                             getBindView().showContact(result.getData());
                         }
                         getFriendVoFromApi(userNo);
                     }else{
                         //数据仍在有效期内，直接显示，无需更新
-                        getBindView().showContact(result.getData());
-                        getBindView().hideLoading(Constant.LOADING_DEFAULT);
+                        if(isBindViewValid()){
+                            getBindView().showContact(result.getData());
+                        }
+                        hideLoading(Constant.LOADING_DEFAULT);
                     }
                 }
             }
@@ -81,17 +85,21 @@ public class ContactDetailActivityPresenterImpl extends BasePresenter<IContactDe
             @Override
             public void onSuccess(ActionRespon<FriendVo> result) {
                 if(showMessage(result.getRetCode(), result.getMessage())){
-                    getBindView().showContact(result.getData());
+                    if(isBindViewValid()){
+                        getBindView().showContact(result.getData());
+                    }
                 }
-                getBindView().hideLoading(Constant.LOADING_DEFAULT);
+                    hideLoading(Constant.LOADING_DEFAULT);
             }
 
             @Override
             public void onFailure(int errorCode) {
                 //最不可能出现的情况，本地失败，API获取失败
+                if(isBindViewValid()){
+                    getBindView().showContact(null);
+                }
                 showError(errorCode);
-                getBindView().showContact(null);
-                getBindView().hideLoading(Constant.LOADING_DEFAULT);
+                hideLoading(Constant.LOADING_DEFAULT);
             }
         });
     }

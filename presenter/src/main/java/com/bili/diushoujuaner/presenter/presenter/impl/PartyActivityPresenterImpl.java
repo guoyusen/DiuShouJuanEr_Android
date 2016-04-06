@@ -20,7 +20,9 @@ public class PartyActivityPresenterImpl extends BasePresenter<IPartyView> implem
     @Override
     public void getPartyList(){
         showLoading(Constant.LOADING_DEFAULT, "");
-        getBindView().showPartyList(ContactAction.getInstance(context).getPartyVoList());
+        if(isBindViewValid()){
+            getBindView().showPartyList(ContactAction.getInstance(context).getPartyVoList());
+        }
         hideLoading(Constant.LOADING_DEFAULT);
     }
 }

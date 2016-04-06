@@ -7,26 +7,33 @@ import com.bili.diushoujuaner.model.action.respon.ActionRespon;
 import com.bili.diushoujuaner.model.callback.ActionCallbackListener;
 import com.bili.diushoujuaner.model.databasehelper.dao.User;
 import com.bili.diushoujuaner.presenter.base.BasePresenter;
-import com.bili.diushoujuaner.presenter.presenter.MainActivityPresenter;
-import com.bili.diushoujuaner.presenter.view.IMainView;
+import com.bili.diushoujuaner.presenter.presenter.ContentEditActivityPresenter;
+import com.bili.diushoujuaner.presenter.view.IContentEditView;
+
+import org.greenrobot.eventbus.EventBus;
 
 /**
- * Created by BiLi on 2016/3/13.
+ * Created by BiLi on 2016/4/6.
  */
-public class MainActivityPresenterImpl extends BasePresenter<IMainView> implements MainActivityPresenter {
+public class ContentEditActivityPresenterImpl extends BasePresenter<IContentEditView> implements ContentEditActivityPresenter {
 
-    public MainActivityPresenterImpl(IMainView baseView, Context context) {
+    public ContentEditActivityPresenterImpl(IContentEditView baseView, Context context) {
         super(baseView, context);
     }
 
     @Override
-    public void getUserInfo(){
+    public void putNewAutograph(String autograph) {
+
+    }
+
+    @Override
+    public void getOldAutograph() {
         UserInfoAction.getInstance(context).getUserInfo(new ActionCallbackListener<ActionRespon<User>>() {
             @Override
             public void onSuccess(ActionRespon<User> result) {
                 if(showMessage(result.getRetCode(), result.getMessage())){
                     if(result.getData()!= null && isBindViewValid()){
-                        getBindView().showUserInfo(result.getData());
+                        getBindView().showHint(result.getData().getAutograph());
                     }
                 }
             }

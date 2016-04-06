@@ -25,7 +25,7 @@ public class UserActivityPresenterImpl extends BasePresenter<IUserView> implemen
             @Override
             public void onSuccess(ActionRespon<User> result) {
                 if(showMessage(result.getRetCode(), result.getMessage())){
-                    if(result.getData()!= null){
+                    if(result.getData()!= null && isBindViewValid()){
                         getBindView().showUserInfo(result.getData());
                     }
                 }

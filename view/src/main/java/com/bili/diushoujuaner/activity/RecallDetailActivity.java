@@ -23,7 +23,7 @@ import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.adapter.CommentAdapter;
 import com.bili.diushoujuaner.adapter.ImageAdapter;
 import com.bili.diushoujuaner.base.BaseFragmentActivity;
-import com.bili.diushoujuaner.event.ResponEvent;
+import com.bili.diushoujuaner.utils.event.ResponEvent;
 import com.bili.diushoujuaner.fragment.PictureFragment;
 import com.bili.diushoujuaner.presenter.presenter.RecallDetailActivityPresenter;
 import com.bili.diushoujuaner.presenter.presenter.impl.RecallDetailActivityPresenterImpl;
@@ -290,11 +290,6 @@ public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActiv
     }
 
     @Override
-    public void initView() {
-        setContentView(R.layout.activity_recall_detail);
-    }
-
-    @Override
     public void beforeInitView() {
         commentDtoList = new ArrayList<>();
         handler = new Handler();
@@ -307,6 +302,13 @@ public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActiv
         commentNormalDrawable = new TintedBitmapDrawable(context.getResources(),R.mipmap.icon_comment,ContextCompat.getColor(context, R.color.COLOR_BFBFBF));
         thumbDownDrawable = new TintedBitmapDrawable(context.getResources(),R.mipmap.icon_good,ContextCompat.getColor(context, R.color.COLOR_BFBFBF));
         thumbUpDrawable = new TintedBitmapDrawable(context.getResources(),R.mipmap.icon_good,ContextCompat.getColor(context, R.color.COLOR_388ECD));
+
+        basePresenter = new RecallDetailActivityPresenterImpl(this, context);
+    }
+
+    @Override
+    public void initView() {
+        setContentView(R.layout.activity_recall_detail);
     }
 
     @Override
@@ -344,7 +346,6 @@ public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActiv
         commentAdapter = new CommentAdapter(this, commentDtoList);
         listViewComment.setAdapter(commentAdapter);
 
-        basePresenter = new RecallDetailActivityPresenterImpl(this, context);
         getBindPresenter().showRecallDetailByRecallNo(recallNo);
 
         goodStatus = getBindPresenter().getGoodStatus(recallNo);
@@ -391,8 +392,9 @@ public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActiv
      * @param goodDtoList
      */
     private void showGoodDetail(List<GoodDto> goodDtoList) {
-        if (goodDtoList.size() <= 0) {
+        if (Common.isEmpty(goodDtoList)) {
             layoutGoodContent.setVisibility(View.GONE);
+            return;
         } else {
             layoutGoodContent.setVisibility(View.VISIBLE);
         }

@@ -14,10 +14,10 @@ import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.activity.RecallDetailActivity;
 import com.bili.diushoujuaner.adapter.RecallAdapter;
 import com.bili.diushoujuaner.base.BaseFragment;
-import com.bili.diushoujuaner.event.RecallGoodEvent;
-import com.bili.diushoujuaner.event.RefreshRecallEvent;
-import com.bili.diushoujuaner.event.ShowHeadEvent;
-import com.bili.diushoujuaner.event.ShowMainMenuEvent;
+import com.bili.diushoujuaner.utils.event.RecallGoodEvent;
+import com.bili.diushoujuaner.utils.event.RefreshRecallEvent;
+import com.bili.diushoujuaner.utils.event.ShowHeadEvent;
+import com.bili.diushoujuaner.utils.event.ShowMainMenuEvent;
 import com.bili.diushoujuaner.presenter.presenter.HomeFragmentPresenter;
 import com.bili.diushoujuaner.utils.Common;
 import com.bili.diushoujuaner.utils.Constant;
@@ -91,6 +91,8 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
         recallDtoList = new ArrayList<>();
         handler = new Handler();
         customRunnable = new CustomRunnable();
+
+        basePresenter = new HomeFragmentPresenterImpl(this, getContext());
     }
 
     @Override
@@ -120,7 +122,6 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
             }
         });
 
-        basePresenter = new HomeFragmentPresenterImpl(this, getContext());
         getBindPresenter().showRecallFromCache();
         getBindPresenter().getRecallList(Constant.REFRESH_DEFAULT);
     }
@@ -153,9 +154,11 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
 
     @Override
     public void showRecallList(List<RecallDto> recallDtoList) {
-        if(recallDtoList.isEmpty()){
+        recallAdapter.refresh(recallDtoList);
+        if(Common.isEmpty(recallDtoList)){
             layoutTip.setVisibility(View.VISIBLE);
             customListViewRefresh.setVisibility(View.GONE);
+            return;
         }else{
             layoutTip.setVisibility(View.GONE);
             customListViewRefresh.setVisibility(View.VISIBLE);
@@ -165,12 +168,12 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
         }else{
             customListViewRefresh.setListViewStateFinished();
         }
-        recallAdapter.refresh(recallDtoList);
     }
 
     @Override
     public void showMoreRecallList(List<RecallDto> recallDtoList) {
-        if(recallDtoList.isEmpty()){
+        recallAdapter.add(recallDtoList);
+        if(Common.isEmpty(recallDtoList)){
             customListViewRefresh.setListViewStateComplete();
             return;
         }
@@ -179,7 +182,6 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
         }else{
             customListViewRefresh.setListViewStateFinished();
         }
-        recallAdapter.add(recallDtoList);
     }
 
     @Override

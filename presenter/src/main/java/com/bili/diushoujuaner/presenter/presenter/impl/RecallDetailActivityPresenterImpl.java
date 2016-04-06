@@ -51,7 +51,9 @@ public class RecallDetailActivityPresenterImpl extends BasePresenter<IRecallDeta
 
         @Override
         public void onClick(View widget) {
-            getBindView().showGooderDetail(userNo);
+            if(isBindViewValid()){
+                getBindView().showGooderDetail(userNo);
+            }
         }
 
         @Override
@@ -78,11 +80,15 @@ public class RecallDetailActivityPresenterImpl extends BasePresenter<IRecallDeta
     public List<GoodDto> changeGoodStatusToLocal(long recallNo) {
         if(GoodTemper.getGoodStatus(recallNo)){
             GoodTemper.setGoodStatus(recallNo, false);
-            getBindView().setGoodStatus(false);
+            if(isBindViewValid()){
+                getBindView().setGoodStatus(false);
+            }
             removeGoodDtoFromTemper(recallNo);
         }else{
             GoodTemper.setGoodStatus(recallNo, true);
-            getBindView().setGoodStatus(true);
+            if(isBindViewValid()){
+                getBindView().setGoodStatus(true);
+            }
             addGoodDtoToTemper(recallNo);
         }
         return  getRecallDtoByRecallNo(recallNo).getGoodList();
@@ -90,7 +96,9 @@ public class RecallDetailActivityPresenterImpl extends BasePresenter<IRecallDeta
 
     @Override
     public void showRecallDetailByRecallNo(long recallNo) {
-        getBindView().showRecallDetail(getRecallDtoByRecallNo(recallNo));
+        if(isBindViewValid()){
+            getBindView().showRecallDetail(getRecallDtoByRecallNo(recallNo));
+        }
     }
 
     @Override
@@ -222,7 +230,9 @@ public class RecallDetailActivityPresenterImpl extends BasePresenter<IRecallDeta
     @Override
     public void getCommentPublish(long recallNo, String content){
         CommentDto commentDto = addCommentDtoToLocal(recallNo, content);
-        getBindView().refreshComment();
+        if(isBindViewValid()){
+            getBindView().refreshComment();
+        }
 
         CommentAddReq commentAddReq = new CommentAddReq();
         commentAddReq.setContent(commentDto.getContent());
@@ -304,7 +314,9 @@ public class RecallDetailActivityPresenterImpl extends BasePresenter<IRecallDeta
             public void onSuccess(ActionRespon<Long> result) {
                 if(showMessage(result.getRetCode(), result.getMessage())){
                     RecallTemper.removeCommentByRecalllNo(recallNo, result.getData());
-                    getBindView().refreshComment();
+                    if(isBindViewValid()){
+                        getBindView().refreshComment();
+                    }
                 }
             }
 
@@ -325,7 +337,9 @@ public class RecallDetailActivityPresenterImpl extends BasePresenter<IRecallDeta
             public void onSuccess(ActionRespon<Long> result) {
                 if (showMessage(result.getRetCode(), result.getMessage())) {
                     RecallTemper.removeResponByRecallNo(recallNo, commentNo, result.getData());
-                    getBindView().refreshComment();
+                    if(isBindViewValid()){
+                        getBindView().refreshComment();
+                    }
                 }
             }
 

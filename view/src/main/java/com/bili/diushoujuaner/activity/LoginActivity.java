@@ -29,6 +29,11 @@ public class LoginActivity extends BaseActivity<LoginActivityPresenter> implemen
     EditText edtPassword;
 
     @Override
+    public void beforeInitView() {
+        basePresenter = new LoginActivityPresenterImpl(this, getApplicationContext());
+    }
+
+    @Override
     public void initView() {
         setContentView(R.layout.activity_login);
     }
@@ -39,7 +44,6 @@ public class LoginActivity extends BaseActivity<LoginActivityPresenter> implemen
         setTintStatusColor(R.color.TRANSPARENT);
 
         btnLogin.setOnClickListener(this);
-        basePresenter = new LoginActivityPresenterImpl(this, getApplicationContext());
     }
 
     @Override

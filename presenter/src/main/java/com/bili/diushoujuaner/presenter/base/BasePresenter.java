@@ -25,6 +25,11 @@ public class BasePresenter<T extends IBaseView> {
         return (T)baseView;
     }
 
+    protected boolean isBindViewValid(){
+        //每次调用getBindView()进行方法调用时，需要判断当前绑定view的状态，不可用，则不进行调用
+        return this.baseView != null;
+    }
+
     protected void showError(int errorCode) {
         if(this.baseView == null){
             return;

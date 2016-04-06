@@ -37,7 +37,9 @@ public class LoginActivityPresenterImpl extends BasePresenter<ILoginView> implem
             @Override
             public void onSuccess(ActionRespon<CustomSession> result) {
                 if(showMessage(result.getRetCode(), result.getMessage())){
-                    getBindView().loginSuccess();
+                    if(isBindViewValid()){
+                        getBindView().loginSuccess();
+                    }
                 }
                 hideLoading(Constant.LOADING_TOP);
             }

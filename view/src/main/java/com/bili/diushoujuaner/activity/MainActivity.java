@@ -17,8 +17,8 @@ import android.widget.Toast;
 
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.base.BaseFragmentActivity;
-import com.bili.diushoujuaner.event.ShowHeadEvent;
-import com.bili.diushoujuaner.event.ShowMainMenuEvent;
+import com.bili.diushoujuaner.utils.event.ShowHeadEvent;
+import com.bili.diushoujuaner.utils.event.ShowMainMenuEvent;
 import com.bili.diushoujuaner.fragment.ContactFragment;
 import com.bili.diushoujuaner.fragment.HomeFragment;
 import com.bili.diushoujuaner.fragment.MessageFragment;
@@ -28,7 +28,6 @@ import com.bili.diushoujuaner.presenter.view.IMainView;
 import com.bili.diushoujuaner.utils.Common;
 import com.bili.diushoujuaner.utils.Constant;
 import com.bili.diushoujuaner.utils.manager.ActivityManager;
-import com.bili.diushoujuaner.widget.CustomRelativeLayout;
 import com.bili.diushoujuaner.widget.CustomViewPager;
 import com.bili.diushoujuaner.widget.TintedBitmapDrawable;
 import com.bili.diushoujuaner.widget.badgeview.BGABadgeTextView;
@@ -111,6 +110,7 @@ public class MainActivity extends BaseFragmentActivity<MainActivityPresenterImpl
     @Override
     public void beforeInitView() {
         fragmentList = new ArrayList<>();
+        basePresenter = new MainActivityPresenterImpl(this, context);
     }
 
     @Override
@@ -128,8 +128,6 @@ public class MainActivity extends BaseFragmentActivity<MainActivityPresenterImpl
         initMenuIv();
 
         txtSystemNotice.showTextBadge("2");
-
-        basePresenter = new MainActivityPresenterImpl(this, getApplicationContext());
         getBindPresenter().getUserInfo();
     }
 

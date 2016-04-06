@@ -17,14 +17,19 @@ import com.bili.diushoujuaner.widget.RevealTextView;
 public class SplashActivity extends BaseActivity<SplashActivityPresenter> implements ISplashView {
 
     @Override
+    public void beforeInitView() {
+        super.beforeInitView();
+    }
+
+    @Override
     public void initView() {
         setContentView(R.layout.activity_splash);
+        basePresenter = new SplashActivityPresenterImpl(this,context);
     }
 
     @Override
     public void setViewStatus() {
         setTintStatusColor(R.color.TRANSPARENT);
-        basePresenter = new SplashActivityPresenterImpl(this, getApplicationContext());
 
         new Handler().postDelayed(new Runnable() {
             @Override

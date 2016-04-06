@@ -80,6 +80,7 @@ public class ContactDetailActivity extends BaseActivity<ContactDetailActivityPre
     @Override
     public void beforeInitView() {
         pictureList = new ArrayList<>();
+        basePresenter = new ContactDetailActivityPresenterImpl(this, context);
     }
 
     @Override
@@ -105,7 +106,6 @@ public class ContactDetailActivity extends BaseActivity<ContactDetailActivityPre
         showPageHead(null, null, "更多");
         layoutHead.setBackgroundColor(ContextCompat.getColor(context, R.color.COLOR_THEME));
 
-        basePresenter = new ContactDetailActivityPresenterImpl(this, context);
         getBindPresenter().getFriendVo(userNo);
         getBindPresenter().getRecentRecall(userNo);
     }
