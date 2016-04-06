@@ -39,7 +39,9 @@ public class RecallTemper {
     }
 
     public static void addRecallDtoList(List<RecallDto> recallDtoList, boolean isACache){
-        recallList.addAll(recallDtoList);
+        if(recallDtoList != null){
+            recallList.addAll(recallDtoList);
+        }
         if(isACache){
             saveRecallListToCache();
         }

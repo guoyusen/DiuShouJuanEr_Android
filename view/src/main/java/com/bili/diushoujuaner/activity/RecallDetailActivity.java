@@ -251,11 +251,25 @@ public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActiv
     }
 
     class CustomTouchListener implements View.OnTouchListener{
+        private boolean isResponForFocus = true;
         @Override
         public boolean onTouch(View v, MotionEvent event) {
-            layoutParent.setFocusable(true);
-            layoutParent.setFocusableInTouchMode(true);
-            layoutParent.requestFocus();
+            switch (event.getAction()){
+                case MotionEvent.ACTION_DOWN:
+                    isResponForFocus = true;
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    isResponForFocus = false;
+                    break;
+                case MotionEvent.ACTION_UP:
+                    if(isResponForFocus){
+                        layoutParent.setFocusable(true);
+                        layoutParent.setFocusableInTouchMode(true);
+                        layoutParent.requestFocus();
+                    }
+                    break;
+            }
+
             return false;
         }
     }
@@ -417,9 +431,7 @@ public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActiv
 
         commentConfig.setReceiveNo(getBindPresenter().getRecallDtoByRecallNo(recallNo).getUserNo());
         commentConfig.setType(CommentConfig.TYPE_COMMENT);
-        if(commentConfig.getDraft() != null){
-            txtComment.setText(commentConfig.getDraft());
-        }
+        txtComment.setText(commentConfig.getDraft());
         Common.showSoftInputFromWindow(this, txtComment);
     }
 
@@ -495,6 +507,7 @@ public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActiv
                 break;
         }
         txtComment.requestFocus();
+        txtComment.setHint("回复" + commentConfig.getNickNameTo() + ":");
         txtComment.setText(commentConfig.getDraft());
         Common.showSoftInputFromWindow(context, txtComment);
         layoutBottom.setVisibility(View.VISIBLE);

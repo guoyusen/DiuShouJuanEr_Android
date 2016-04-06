@@ -89,7 +89,7 @@
                     android:background="@color/COLOR_WHITE">
 
                     <ImageView
-                        android:id="@+id/ivTimer"
+                        android:id="@+id/ivEmail"
                         style="@style/menu_item_icon_user" />
 
                     <EditText
@@ -142,7 +142,7 @@
                     android:background="@color/COLOR_WHITE">
 
                     <ImageView
-                        android:id="@+id/ivEmail"
+                        android:id="@+id/ivTimer"
                         style="@style/menu_item_icon_user" />
 
                     <TextView

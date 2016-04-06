@@ -1,5 +1,7 @@
 package com.bili.diushoujuaner.model.action.impl;
 
+import android.content.Context;
+
 import com.bili.diushoujuaner.model.action.IContactAction;
 import com.bili.diushoujuaner.model.action.respon.ActionRespon;
 import com.bili.diushoujuaner.model.apihelper.ApiRespon;
@@ -9,13 +11,13 @@ import com.bili.diushoujuaner.model.apihelper.request.ContactInfoReq;
 import com.bili.diushoujuaner.model.apihelper.response.UserRes;
 import com.bili.diushoujuaner.model.callback.ActionCallbackListener;
 import com.bili.diushoujuaner.model.databasehelper.DBManager;
-import com.bili.diushoujuaner.model.databasehelper.DataTypeUtil;
 import com.bili.diushoujuaner.model.databasehelper.dao.Friend;
 import com.bili.diushoujuaner.model.databasehelper.dao.Member;
 import com.bili.diushoujuaner.model.databasehelper.dao.Party;
 import com.bili.diushoujuaner.model.databasehelper.dao.User;
 import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
 import com.bili.diushoujuaner.model.tempHelper.ContactTemper;
+import com.bili.diushoujuaner.utils.Common;
 import com.bili.diushoujuaner.utils.Constant;
 import com.bili.diushoujuaner.utils.GsonParser;
 import com.bili.diushoujuaner.utils.entity.FriendVo;
@@ -25,6 +27,9 @@ import com.bili.diushoujuaner.utils.pinyin.PinyinUtil;
 import com.bili.diushoujuaner.model.apihelper.response.ContactDto;
 import com.bili.diushoujuaner.model.apihelper.response.MemberDto;
 import com.google.gson.reflect.TypeToken;
+import com.nanotasks.BackgroundWork;
+import com.nanotasks.Completion;
+import com.nanotasks.Tasks;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,23 +41,44 @@ import java.util.List;
 public class ContactAction implements IContactAction{
 
     private static ContactAction contactAction;
+    private Context context;
 
-    public static synchronized ContactAction getInstance(){
+    public ContactAction(Context context) {
+        this.context = context;
+    }
+
+    public static synchronized ContactAction getInstance(Context context){
         if(contactAction == null){
-            contactAction = new ContactAction();
+            contactAction = new ContactAction(context);
         }
         return contactAction;
     }
 
     @Override
     public void getContactFromApi(final ContactInfoReq contactInfoReq, final ActionCallbackListener<ActionRespon<FriendVo>> actionCallbackListener) {
+
         ApiAction.getInstance().getContactInfo(contactInfoReq, new ApiCallbackListener() {
             @Override
-            public void onSuccess(String data) {
-                ApiRespon<UserRes> result = GsonParser.getInstance().fromJson(data, new TypeToken<ApiRespon<UserRes>>() {
-                }.getType());
-                DBManager.getInstance().saveUser(result.getData());
-                actionCallbackListener.onSuccess(ActionRespon.getActionRespon(result.getMessage(), result.getRetCode(), DBManager.getInstance().getFriendVo(contactInfoReq.getUserNo())));
+            public void onSuccess(final String data) {
+                Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<FriendVo>>() {
+                    @Override
+                    public ActionRespon<FriendVo> doInBackground() throws Exception {
+                        ApiRespon<UserRes> result = GsonParser.getInstance().fromJson(data, new TypeToken<ApiRespon<UserRes>>() {
+                        }.getType());
+                        DBManager.getInstance().saveUser(result.getData());
+                        return ActionRespon.getActionRespon(result.getMessage(), result.getRetCode(), DBManager.getInstance().getFriendVo(contactInfoReq.getUserNo()));
+                    }
+                }, new Completion<ActionRespon<FriendVo>>() {
+                    @Override
+                    public void onSuccess(Context context, ActionRespon<FriendVo> result) {
+                        actionCallbackListener.onSuccess(result);
+                    }
+                    @Override
+                    public void onError(Context context, Exception e) {
+                        actionCallbackListener.onSuccess(ActionRespon.<FriendVo>getActionResponError());
+                    }
+                });
+
             }
 
             @Override
@@ -63,12 +89,29 @@ public class ContactAction implements IContactAction{
     }
 
     @Override
-    public FriendVo getContactFromLocal(long userNo) {
+    public void getContactFromLocal(final long userNo,  final ActionCallbackListener<ActionRespon<FriendVo>> actionCallbackListener) {
         FriendVo friendVo = ContactTemper.getFriendVo(userNo);
         if(friendVo == null){
-            friendVo = DBManager.getInstance().getFriendVo(userNo);
+            Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<FriendVo>>() {
+                @Override
+                public ActionRespon<FriendVo> doInBackground() throws Exception {
+                    FriendVo f = DBManager.getInstance().getFriendVo(userNo);
+                    return ActionRespon.getActionRespon(f);
+                }
+            }, new Completion<ActionRespon<FriendVo>>() {
+                @Override
+                public void onSuccess(Context context, ActionRespon<FriendVo> result) {
+                    actionCallbackListener.onSuccess(result);
+                }
+
+                @Override
+                public void onError(Context context, Exception e) {
+                    actionCallbackListener.onSuccess(ActionRespon.<FriendVo>getActionResponError());
+                }
+            });
+        }else{
+            actionCallbackListener.onSuccess(ActionRespon.getActionRespon(friendVo));
         }
-        return friendVo;
     }
 
     @Override
@@ -85,19 +128,57 @@ public class ContactAction implements IContactAction{
     @Override
     public void getContactList(final ActionCallbackListener<ActionRespon<List<FriendVo>>> actionCallbackListener){
         //先从本地加载并显示
-        actionCallbackListener.onSuccess(ActionRespon.getActionRespon(Constant.ACTION_LOAD_LOCAL_SUCCESS,Constant.RETCODE_SUCCESS, getFriendVoListFromDB()));
-        //TODO 判断是否需要进行全量加载
+        Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<List<FriendVo>>>() {
+            @Override
+            public ActionRespon<List<FriendVo>> doInBackground() throws Exception {
+                return ActionRespon.getActionRespon(getFriendVoListFromDB());
+            }
+        }, new Completion<ActionRespon<List<FriendVo>>>() {
+            @Override
+            public void onSuccess(Context context, ActionRespon<List<FriendVo>> result) {
+                actionCallbackListener.onSuccess(result);
+                String updateTime = DBManager.getInstance().getUpdateTimeContact();
+                //TODO 完善后，更改全量获取联系人的时间间隔
+                if(Common.isEmpty(updateTime) || Common.getHourDifferenceBetweenTime(updateTime) > 1){
+                    getContactListFromApi(actionCallbackListener);
+                }
+            }
+
+            @Override
+            public void onError(Context context, Exception e) {
+                actionCallbackListener.onSuccess(ActionRespon.<List<FriendVo>>getActionResponError());
+            }
+        });
+    }
+
+    private void getContactListFromApi(final ActionCallbackListener<ActionRespon<List<FriendVo>>> actionCallbackListener){
         ApiAction.getInstance().getContactList(new ApiCallbackListener() {
             @Override
             public void onSuccess(final String data) {
-                ApiRespon<List<ContactDto>> result = GsonParser.getInstance().fromJson(data, new TypeToken<ApiRespon<List<ContactDto>>>() {
-                }.getType());
-                if(result.getIsLegal()){
-                    saveContactsFromList(result.getData());
-                    actionCallbackListener.onSuccess(ActionRespon.getActionRespon(result.getMessage(), result.getRetCode(), getFriendVoListFromDB()));
-                }else{
-                    actionCallbackListener.onSuccess(ActionRespon.getActionRespon(result.getMessage(), result.getRetCode(), (List<FriendVo>)null));
-                }
+                Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<List<FriendVo>>>() {
+                    @Override
+                    public ActionRespon<List<FriendVo>> doInBackground() throws Exception {
+                        ApiRespon<List<ContactDto>> result = GsonParser.getInstance().fromJson(data, new TypeToken<ApiRespon<List<ContactDto>>>() {
+                        }.getType());
+                        if(result.getIsLegal()){
+                            saveContactsFromList(result.getData());
+                            return ActionRespon.getActionRespon(result.getMessage(), result.getRetCode(), getFriendVoListFromDB());
+                        }else{
+                            return ActionRespon.getActionRespon(result.getMessage(), result.getRetCode(), (List<FriendVo>)null);
+                        }
+                    }
+                }, new Completion<ActionRespon<List<FriendVo>>>() {
+                    @Override
+                    public void onSuccess(Context context, ActionRespon<List<FriendVo>> result) {
+                        DBManager.getInstance().updateTimeContactToNow();
+                        actionCallbackListener.onSuccess(result);
+                    }
+
+                    @Override
+                    public void onError(Context context, Exception e) {
+                        actionCallbackListener.onSuccess(ActionRespon.<List<FriendVo>>getActionResponError());
+                    }
+                });
             }
 
             @Override

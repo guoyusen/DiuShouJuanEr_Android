@@ -54,6 +54,10 @@ public class Common {
         return (int)Math.abs(((c1.getTimeInMillis() - c2.getTimeInMillis())/24/3600000));
     }
 
+    public static int getHourDifferenceBetweenTime(String start){
+        return getHourDifferenceBetweenTime(start, getCurrentTimeYYMMDD_HHMMSS());
+    }
+
     public static int getHourDifferenceBetweenTime(String start, String end){
         Calendar c1 = Calendar.getInstance();
         Calendar c2 = Calendar.getInstance();

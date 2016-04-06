@@ -5,7 +5,6 @@ import android.content.Context;
 import com.bili.diushoujuaner.model.action.impl.GoodAction;
 import com.bili.diushoujuaner.model.action.impl.UserInfoAction;
 import com.bili.diushoujuaner.model.action.respon.ActionRespon;
-import com.bili.diushoujuaner.model.apihelper.ApiRespon;
 import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
 import com.bili.diushoujuaner.model.tempHelper.GoodTemper;
 import com.bili.diushoujuaner.model.tempHelper.RecallTemper;
@@ -42,7 +41,7 @@ public class HomeFragmentPresenterImpl extends BasePresenter<IHomeView> implemen
 
             GoodDto goodDto = new GoodDto();
             goodDto.setUserNo(CustomSessionPreference.getInstance().getCustomSession().getUserNo());
-            goodDto.setNickName(UserInfoAction.getInstance().getUserFromLocal().getNickName());
+            goodDto.setNickName(UserInfoAction.getInstance(context).getUserFromLocal().getNickName());
             RecallTemper.addGood(goodDto, position);
         }
     }
@@ -59,9 +58,9 @@ public class HomeFragmentPresenterImpl extends BasePresenter<IHomeView> implemen
 
     @Override
     public void getGoodAdd(long recallNo){
-        GoodAction.getInstance().getGoodAdd(recallNo, new ActionCallbackListener<ApiRespon<String>>() {
+        GoodAction.getInstance(context).getGoodAdd(recallNo, new ActionCallbackListener<ActionRespon<String>>() {
             @Override
-            public void onSuccess(ApiRespon<String> result) {
+            public void onSuccess(ActionRespon<String> result) {
                 showMessage(result.getRetCode(), result.getMessage());
             }
 
@@ -74,9 +73,9 @@ public class HomeFragmentPresenterImpl extends BasePresenter<IHomeView> implemen
 
     @Override
     public void getGoodRemove(long recallNo){
-        GoodAction.getInstance().getGoodRemove(recallNo, new ActionCallbackListener<ApiRespon<String>>() {
+        GoodAction.getInstance(context).getGoodRemove(recallNo, new ActionCallbackListener<ActionRespon<String>>() {
             @Override
-            public void onSuccess(ApiRespon<String> result) {
+            public void onSuccess(ActionRespon<String> result) {
                 showMessage(result.getRetCode(), result.getMessage());
             }
 
@@ -92,7 +91,7 @@ public class HomeFragmentPresenterImpl extends BasePresenter<IHomeView> implemen
         showLoadingByRefreshType(refreshType);
         initRecallListReq();
 
-        RecallAction.getInstance().getRecallList(recallListReq, new ActionCallbackListener<ActionRespon<List<RecallDto>>>() {
+        RecallAction.getInstance(context).getRecallList(recallListReq, new ActionCallbackListener<ActionRespon<List<RecallDto>>>() {
             @Override
             public void onSuccess(ActionRespon<List<RecallDto>> result) {
                 if (showMessage(result.getRetCode(), result.getMessage())) {
@@ -119,17 +118,26 @@ public class HomeFragmentPresenterImpl extends BasePresenter<IHomeView> implemen
 
     @Override
     public void showRecallFromCache(){
-        List<RecallDto> recallDtoList = RecallAction.getInstance().getRecallListFromACache();
-        if(recallDtoList != null){
-            RecallTemper.clear();
-            RecallTemper.addRecallDtoList(recallDtoList);
-            getBindView().showRecallList(recallDtoList);
-        }
+        RecallAction.getInstance(context).getRecallListFromACache(new ActionCallbackListener<ActionRespon<List<RecallDto>>>() {
+            @Override
+            public void onSuccess(ActionRespon<List<RecallDto>> result) {
+                if (showMessage(result.getRetCode(), result.getMessage())) {
+                    RecallTemper.clear();
+                    RecallTemper.addRecallDtoList(result.getData());
+                    getBindView().showRecallList(result.getData());
+                }
+            }
+
+            @Override
+            public void onFailure(int errorCode) {
+                showError(errorCode);
+            }
+        });
     }
 
     @Override
     public void getMoreRecallList(){
-        RecallAction.getInstance().getRecallList(recallListReq, new ActionCallbackListener<ActionRespon<List<RecallDto>>>() {
+        RecallAction.getInstance(context).getRecallList(recallListReq, new ActionCallbackListener<ActionRespon<List<RecallDto>>>() {
             @Override
             public void onSuccess(ActionRespon<List<RecallDto>> result) {
                 if (showMessage(result.getRetCode(), result.getMessage())) {

@@ -23,7 +23,7 @@ public class ContactFragmentPresenterImpl extends BasePresenter<IContactView> im
 
     public void getContactList(){
         showLoading(Constant.LOADING_DEFAULT, "");
-        ContactAction.getInstance().getContactList(new ActionCallbackListener<ActionRespon<List<FriendVo>>>() {
+        ContactAction.getInstance(context).getContactList(new ActionCallbackListener<ActionRespon<List<FriendVo>>>() {
             @Override
             public void onSuccess(ActionRespon<List<FriendVo>> result) {
                 if (showMessage(result.getRetCode(), result.getMessage())) {

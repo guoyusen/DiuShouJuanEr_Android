@@ -13,7 +13,7 @@ import java.util.List;
  */
 public interface IRecallAction {
 
-    List<RecallDto> getRecallListFromACache();
+    void getRecallListFromACache(final ActionCallbackListener<ActionRespon<List<RecallDto>>> actionCallbackListener);
 
     void getRecallList(RecallListReq recallListReq, final ActionCallbackListener<ActionRespon<List<RecallDto>>> actionCallbackListener);
 

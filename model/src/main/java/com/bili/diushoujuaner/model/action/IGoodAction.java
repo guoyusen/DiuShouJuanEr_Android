@@ -1,6 +1,6 @@
 package com.bili.diushoujuaner.model.action;
 
-import com.bili.diushoujuaner.model.apihelper.ApiRespon;
+import com.bili.diushoujuaner.model.action.respon.ActionRespon;
 import com.bili.diushoujuaner.model.callback.ActionCallbackListener;
 
 /**
@@ -8,7 +8,7 @@ import com.bili.diushoujuaner.model.callback.ActionCallbackListener;
  */
 public interface IGoodAction {
 
-    void getGoodAdd(long recallNo, final ActionCallbackListener<ApiRespon<String>> actionCallbackListener);
+    void getGoodAdd(long recallNo, final ActionCallbackListener<ActionRespon<String>> actionCallbackListener);
 
-    void getGoodRemove(long recallNo, final ActionCallbackListener<ApiRespon<String>> actionCallbackListener);
+    void getGoodRemove(long recallNo, final ActionCallbackListener<ActionRespon<String>> actionCallbackListener);
 }

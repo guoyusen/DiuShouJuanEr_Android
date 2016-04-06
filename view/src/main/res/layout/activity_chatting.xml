@@ -21,7 +21,7 @@
         android:background="@color/BG_ECECEC"
         android:padding="@dimen/x16">
 
-        <EditText
+        <com.bili.diushoujuaner.widget.CustomEditText
             android:id="@+id/txtComment"
             style="@style/TextMiddle"
             android:layout_width="match_parent"
@@ -37,13 +37,13 @@
             android:textColorHint="@color/TC_ADADBB" />
 
         <RelativeLayout
-            android:id="@+id/btnSend"
+            android:id="@+id/layoutSend"
             android:layout_width="@dimen/x80"
             android:layout_height="@dimen/x80"
             android:layout_alignBottom="@+id/txtComment"
             android:layout_alignParentRight="true"
             android:gravity="center"
-            android:background="@drawable/layout_send_ready_bg">
+            android:background="@drawable/layout_send_close_bg">
 
             <ImageView
                 android:layout_width="@dimen/x48"

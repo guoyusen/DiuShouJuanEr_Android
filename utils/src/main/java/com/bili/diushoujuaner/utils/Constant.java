@@ -64,4 +64,6 @@ public interface Constant {
     int EDIT_CONTENT_AUTOGRAPH = 1;
     int EDIT_CONTENT_FEEDBACK = 2;
 
+    int DB_UPDATE_TABLE_CONTACT = 2;
+
 }

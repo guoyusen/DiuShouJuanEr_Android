@@ -33,7 +33,7 @@ public class LoginActivityPresenterImpl extends BasePresenter<ILoginView> implem
         UserAccountReq userAccountReq = new UserAccountReq();
         userAccountReq.setMobile(mobile);
         userAccountReq.setPassword(psd);
-        CustomSessionAction.getInstance().getUserLogin(userAccountReq, new ActionCallbackListener<ActionRespon<CustomSession>>() {
+        CustomSessionAction.getInstance(context).getUserLogin(userAccountReq, new ActionCallbackListener<ActionRespon<CustomSession>>() {
             @Override
             public void onSuccess(ActionRespon<CustomSession> result) {
                 if(showMessage(result.getRetCode(), result.getMessage())){

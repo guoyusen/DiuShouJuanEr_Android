@@ -1,6 +1,7 @@
 package com.bili.diushoujuaner.model.action.respon;
 
 import com.bili.diushoujuaner.model.apihelper.ApiRespon;
+import com.bili.diushoujuaner.utils.Constant;
 
 /**
  * Created by BiLi on 2016/3/31.
@@ -45,7 +46,25 @@ public class ActionRespon<T> {
         return actionRespon;
     }
 
-    public static <T> ActionRespon<T> getActionRespon(ApiRespon<T> value){
+    public static <T> ActionRespon<T> getActionResponError(){
+        ActionRespon<T> actionRespon = new ActionRespon<>();
+        actionRespon.setData(null);
+        actionRespon.setMessage("数据解析异常");
+        actionRespon.setRetCode(Constant.RETCODE_ERROR);
+
+        return actionRespon;
+    }
+
+    public static <T> ActionRespon<T> getActionRespon(T data){
+        ActionRespon<T> actionRespon = new ActionRespon<>();
+        actionRespon.setData(data);
+        actionRespon.setMessage("本地数据获取成功");
+        actionRespon.setRetCode(Constant.RETCODE_SUCCESS);
+
+        return actionRespon;
+    }
+
+    public static <T> ActionRespon<T> getActionResponFromApiRespon(ApiRespon<T> value){
         ActionRespon<T> actionRespon = new ActionRespon<>();
 
         actionRespon.setData(value.getData());

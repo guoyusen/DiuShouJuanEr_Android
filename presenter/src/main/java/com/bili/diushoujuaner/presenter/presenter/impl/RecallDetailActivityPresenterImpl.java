@@ -147,9 +147,9 @@ public class RecallDetailActivityPresenterImpl extends BasePresenter<IRecallDeta
 
     @Override
     public void getGoodAdd(long recallNo){
-        GoodAction.getInstance().getGoodAdd(recallNo, new ActionCallbackListener<ApiRespon<String>>() {
+        GoodAction.getInstance(context).getGoodAdd(recallNo, new ActionCallbackListener<ActionRespon<String>>() {
             @Override
-            public void onSuccess(ApiRespon<String> result) {
+            public void onSuccess(ActionRespon<String> result) {
                 showMessage(result.getRetCode(), result.getMessage());
             }
 
@@ -162,9 +162,9 @@ public class RecallDetailActivityPresenterImpl extends BasePresenter<IRecallDeta
 
     @Override
     public void getGoodRemove(long recallNo){
-        GoodAction.getInstance().getGoodRemove(recallNo, new ActionCallbackListener<ApiRespon<String>>() {
+        GoodAction.getInstance(context).getGoodRemove(recallNo, new ActionCallbackListener<ActionRespon<String>>() {
             @Override
-            public void onSuccess(ApiRespon<String> result) {
+            public void onSuccess(ActionRespon<String> result) {
                 showMessage(result.getRetCode(), result.getMessage());
             }
 
@@ -190,7 +190,7 @@ public class RecallDetailActivityPresenterImpl extends BasePresenter<IRecallDeta
         responAddReq.setCommentNo(responDto.getCommentNo());
         responAddReq.setContent(responDto.getContent());
 
-        ResponAction.getInstance().getResponAdd(responAddReq, new ActionCallbackListener<ActionRespon<ResponDto>>() {
+        ResponAction.getInstance(context).getResponAdd(responAddReq, new ActionCallbackListener<ActionRespon<ResponDto>>() {
             @Override
             public void onSuccess(ActionRespon<ResponDto> result) {
                 if (showMessage(result.getRetCode(), result.getMessage())) {
@@ -229,7 +229,7 @@ public class RecallDetailActivityPresenterImpl extends BasePresenter<IRecallDeta
         commentAddReq.setRecallNo(commentDto.getRecallNo());
         commentAddReq.setTimeStamp(commentDto.getTimeStamp());
 
-        CommentAction.getInstance().getCommentAdd(commentAddReq, new ActionCallbackListener<ActionRespon<CommentDto>>() {
+        CommentAction.getInstance(context).getCommentAdd(commentAddReq, new ActionCallbackListener<ActionRespon<CommentDto>>() {
             @Override
             public void onSuccess(ActionRespon<CommentDto> result) {
                 if (showMessage(result.getRetCode(), result.getMessage())) {
@@ -258,7 +258,7 @@ public class RecallDetailActivityPresenterImpl extends BasePresenter<IRecallDeta
         responDto.setToNo(toNo);
         responDto.setContent(content);
         responDto.setNickNameTo(nickNameTo);
-        responDto.setNickNameFrom(UserInfoAction.getInstance().getUserFromLocal().getNickName());
+        responDto.setNickNameFrom(UserInfoAction.getInstance(context).getUserFromLocal().getNickName());
         responDto.setTimeStamp(System.currentTimeMillis() + "");
 
         RecallTemper.addResponDtoByRecallNo(recallNo, commentNo, responDto);
@@ -271,10 +271,10 @@ public class RecallDetailActivityPresenterImpl extends BasePresenter<IRecallDeta
         commentDto.setTimeStamp(System.currentTimeMillis() + "");
         commentDto.setContent(content);
         commentDto.setRecallNo(recallNo);
-        commentDto.setNickName(UserInfoAction.getInstance().getUserFromLocal().getNickName());
+        commentDto.setNickName(UserInfoAction.getInstance(context).getUserFromLocal().getNickName());
         commentDto.setAddTime(Common.getCurrentTimeYYMMDD_HHMMSS());
-        commentDto.setFromNo(UserInfoAction.getInstance().getUserFromLocal().getUserNo());
-        commentDto.setFromPicPath(UserInfoAction.getInstance().getUserFromLocal().getPicPath());
+        commentDto.setFromNo(UserInfoAction.getInstance(context).getUserFromLocal().getUserNo());
+        commentDto.setFromPicPath(UserInfoAction.getInstance(context).getUserFromLocal().getPicPath());
         commentDto.setResponList(new ArrayList<ResponDto>());
 
         RecallTemper.addCommentDtoByRecallNo(recallNo, commentDto);
@@ -299,7 +299,7 @@ public class RecallDetailActivityPresenterImpl extends BasePresenter<IRecallDeta
         CommentRemoveReq commentRemoveReq = new CommentRemoveReq();
         commentRemoveReq.setCommentNo(commentNo);
 
-        CommentAction.getInstance().getCommentRemove(commentRemoveReq, new ActionCallbackListener<ActionRespon<Long>>() {
+        CommentAction.getInstance(context).getCommentRemove(commentRemoveReq, new ActionCallbackListener<ActionRespon<Long>>() {
             @Override
             public void onSuccess(ActionRespon<Long> result) {
                 if(showMessage(result.getRetCode(), result.getMessage())){
@@ -320,7 +320,7 @@ public class RecallDetailActivityPresenterImpl extends BasePresenter<IRecallDeta
         ResponRemoveReq responRemoveReq = new ResponRemoveReq();
         responRemoveReq.setResponNo(responNo);
 
-        ResponAction.getInstance().getResponRemove(responRemoveReq, new ActionCallbackListener<ActionRespon<Long>>() {
+        ResponAction.getInstance(context).getResponRemove(responRemoveReq, new ActionCallbackListener<ActionRespon<Long>>() {
             @Override
             public void onSuccess(ActionRespon<Long> result) {
                 if (showMessage(result.getRetCode(), result.getMessage())) {

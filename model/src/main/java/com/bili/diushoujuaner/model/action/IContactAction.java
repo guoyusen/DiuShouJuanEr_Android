@@ -18,7 +18,7 @@ public interface IContactAction {
 
     void getContactList(final ActionCallbackListener<ActionRespon<List<FriendVo>>> actionCallbackListener);
 
-    FriendVo getContactFromLocal(long userNo);
+    void getContactFromLocal(final long userNo, final ActionCallbackListener<ActionRespon<FriendVo>> actionCallbackListener);
 
     void getContactFromApi(ContactInfoReq contactInfoReq, final ActionCallbackListener<ActionRespon<FriendVo>> actionCallbackListener);
 

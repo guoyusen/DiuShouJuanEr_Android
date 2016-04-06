@@ -21,7 +21,7 @@ public class UserActivityPresenterImpl extends BasePresenter<IUserView> implemen
 
     @Override
     public void getUserInfo() {
-        UserInfoAction.getInstance().getUserInfo(new ActionCallbackListener<ActionRespon<User>>() {
+        UserInfoAction.getInstance(context).getUserInfo(new ActionCallbackListener<ActionRespon<User>>() {
             @Override
             public void onSuccess(ActionRespon<User> result) {
                 if(showMessage(result.getRetCode(), result.getMessage())){
