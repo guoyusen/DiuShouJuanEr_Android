@@ -12,13 +12,12 @@ import com.bili.diushoujuaner.base.BaseActivity;
 import com.bili.diushoujuaner.presenter.presenter.LoginActivityPresenter;
 import com.bili.diushoujuaner.presenter.presenter.impl.LoginActivityPresenterImpl;
 import com.bili.diushoujuaner.presenter.view.ILoginView;
+import com.bili.diushoujuaner.utils.manager.ActivityManager;
 
 import butterknife.Bind;
 
 public class LoginActivity extends BaseActivity<LoginActivityPresenter> implements ILoginView, View.OnClickListener {
 
-    @Bind(R.id.txtRight)
-    TextView txtRight;
     @Bind(R.id.btnLogin)
     Button btnLogin;
     @Bind(R.id.txtForgetPsd)
@@ -31,6 +30,7 @@ public class LoginActivity extends BaseActivity<LoginActivityPresenter> implemen
     @Override
     public void beforeInitView() {
         basePresenter = new LoginActivityPresenterImpl(this, getApplicationContext());
+        ActivityManager.getInstance().finishBefore();
     }
 
     @Override
@@ -40,7 +40,6 @@ public class LoginActivity extends BaseActivity<LoginActivityPresenter> implemen
 
     @Override
     public void setViewStatus() {
-        showPageHead(null, null, "新用户");
         setTintStatusColor(R.color.TRANSPARENT);
 
         btnLogin.setOnClickListener(this);
@@ -49,6 +48,7 @@ public class LoginActivity extends BaseActivity<LoginActivityPresenter> implemen
     @Override
     public void loginSuccess() {
         startActivity(new Intent(this, MainActivity.class));
+        finish();
     }
 
     @Override

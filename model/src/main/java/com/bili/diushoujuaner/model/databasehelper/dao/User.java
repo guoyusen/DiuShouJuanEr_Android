@@ -10,6 +10,7 @@ public class User {
     private long userNo;
     private String nickName;
     private String mobile;
+    private String email;
     private String autograph;
     private Integer gender;
     private String birthday;
@@ -28,11 +29,12 @@ public class User {
         this.id = id;
     }
 
-    public User(Long id, long userNo, String nickName, String mobile, String autograph, Integer gender, String birthday, String homeTown, String location, String picPath, String smallNick, String registTime, String wallPaper, String updateTime) {
+    public User(Long id, long userNo, String nickName, String mobile, String email, String autograph, Integer gender, String birthday, String homeTown, String location, String picPath, String smallNick, String registTime, String wallPaper, String updateTime) {
         this.id = id;
         this.userNo = userNo;
         this.nickName = nickName;
         this.mobile = mobile;
+        this.email = email;
         this.autograph = autograph;
         this.gender = gender;
         this.birthday = birthday;
@@ -75,6 +77,14 @@ public class User {
 
     public void setMobile(String mobile) {
         this.mobile = mobile;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getAutograph() {

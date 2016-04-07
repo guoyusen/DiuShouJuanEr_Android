@@ -3,11 +3,11 @@ package com.bili.diushoujuaner.utils.event;
 /**
  * Created by BiLi on 2016/4/1.
  */
-public class RecallGoodEvent {
+public class GoodRecallEvent {
 
     private int position;
 
-    public RecallGoodEvent(int position) {
+    public GoodRecallEvent(int position) {
         this.position = position;
     }
 

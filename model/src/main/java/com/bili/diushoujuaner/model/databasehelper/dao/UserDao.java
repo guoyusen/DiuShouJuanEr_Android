@@ -27,16 +27,17 @@ public class UserDao extends AbstractDao<User, Long> {
         public final static Property UserNo = new Property(1, long.class, "userNo", false, "USER_NO");
         public final static Property NickName = new Property(2, String.class, "nickName", false, "NICK_NAME");
         public final static Property Mobile = new Property(3, String.class, "mobile", false, "MOBILE");
-        public final static Property Autograph = new Property(4, String.class, "autograph", false, "AUTOGRAPH");
-        public final static Property Gender = new Property(5, Integer.class, "gender", false, "GENDER");
-        public final static Property Birthday = new Property(6, String.class, "birthday", false, "BIRTHDAY");
-        public final static Property HomeTown = new Property(7, String.class, "homeTown", false, "HOME_TOWN");
-        public final static Property Location = new Property(8, String.class, "location", false, "LOCATION");
-        public final static Property PicPath = new Property(9, String.class, "picPath", false, "PIC_PATH");
-        public final static Property SmallNick = new Property(10, String.class, "smallNick", false, "SMALL_NICK");
-        public final static Property RegistTime = new Property(11, String.class, "registTime", false, "REGIST_TIME");
-        public final static Property WallPaper = new Property(12, String.class, "wallPaper", false, "WALL_PAPER");
-        public final static Property UpdateTime = new Property(13, String.class, "updateTime", false, "UPDATE_TIME");
+        public final static Property Email = new Property(4, String.class, "email", false, "EMAIL");
+        public final static Property Autograph = new Property(5, String.class, "autograph", false, "AUTOGRAPH");
+        public final static Property Gender = new Property(6, Integer.class, "gender", false, "GENDER");
+        public final static Property Birthday = new Property(7, String.class, "birthday", false, "BIRTHDAY");
+        public final static Property HomeTown = new Property(8, String.class, "homeTown", false, "HOME_TOWN");
+        public final static Property Location = new Property(9, String.class, "location", false, "LOCATION");
+        public final static Property PicPath = new Property(10, String.class, "picPath", false, "PIC_PATH");
+        public final static Property SmallNick = new Property(11, String.class, "smallNick", false, "SMALL_NICK");
+        public final static Property RegistTime = new Property(12, String.class, "registTime", false, "REGIST_TIME");
+        public final static Property WallPaper = new Property(13, String.class, "wallPaper", false, "WALL_PAPER");
+        public final static Property UpdateTime = new Property(14, String.class, "updateTime", false, "UPDATE_TIME");
     };
 
 
@@ -56,16 +57,17 @@ public class UserDao extends AbstractDao<User, Long> {
                 "\"USER_NO\" INTEGER NOT NULL ," + // 1: userNo
                 "\"NICK_NAME\" TEXT," + // 2: nickName
                 "\"MOBILE\" TEXT," + // 3: mobile
-                "\"AUTOGRAPH\" TEXT," + // 4: autograph
-                "\"GENDER\" INTEGER," + // 5: gender
-                "\"BIRTHDAY\" TEXT," + // 6: birthday
-                "\"HOME_TOWN\" TEXT," + // 7: homeTown
-                "\"LOCATION\" TEXT," + // 8: location
-                "\"PIC_PATH\" TEXT," + // 9: picPath
-                "\"SMALL_NICK\" TEXT," + // 10: smallNick
-                "\"REGIST_TIME\" TEXT," + // 11: registTime
-                "\"WALL_PAPER\" TEXT," + // 12: wallPaper
-                "\"UPDATE_TIME\" TEXT);"); // 13: updateTime
+                "\"EMAIL\" TEXT," + // 4: email
+                "\"AUTOGRAPH\" TEXT," + // 5: autograph
+                "\"GENDER\" INTEGER," + // 6: gender
+                "\"BIRTHDAY\" TEXT," + // 7: birthday
+                "\"HOME_TOWN\" TEXT," + // 8: homeTown
+                "\"LOCATION\" TEXT," + // 9: location
+                "\"PIC_PATH\" TEXT," + // 10: picPath
+                "\"SMALL_NICK\" TEXT," + // 11: smallNick
+                "\"REGIST_TIME\" TEXT," + // 12: registTime
+                "\"WALL_PAPER\" TEXT," + // 13: wallPaper
+                "\"UPDATE_TIME\" TEXT);"); // 14: updateTime
     }
 
     /** Drops the underlying database table. */
@@ -95,54 +97,59 @@ public class UserDao extends AbstractDao<User, Long> {
             stmt.bindString(4, mobile);
         }
  
+        String email = entity.getEmail();
+        if (email != null) {
+            stmt.bindString(5, email);
+        }
+ 
         String autograph = entity.getAutograph();
         if (autograph != null) {
-            stmt.bindString(5, autograph);
+            stmt.bindString(6, autograph);
         }
  
         Integer gender = entity.getGender();
         if (gender != null) {
-            stmt.bindLong(6, gender);
+            stmt.bindLong(7, gender);
         }
  
         String birthday = entity.getBirthday();
         if (birthday != null) {
-            stmt.bindString(7, birthday);
+            stmt.bindString(8, birthday);
         }
  
         String homeTown = entity.getHomeTown();
         if (homeTown != null) {
-            stmt.bindString(8, homeTown);
+            stmt.bindString(9, homeTown);
         }
  
         String location = entity.getLocation();
         if (location != null) {
-            stmt.bindString(9, location);
+            stmt.bindString(10, location);
         }
  
         String picPath = entity.getPicPath();
         if (picPath != null) {
-            stmt.bindString(10, picPath);
+            stmt.bindString(11, picPath);
         }
  
         String smallNick = entity.getSmallNick();
         if (smallNick != null) {
-            stmt.bindString(11, smallNick);
+            stmt.bindString(12, smallNick);
         }
  
         String registTime = entity.getRegistTime();
         if (registTime != null) {
-            stmt.bindString(12, registTime);
+            stmt.bindString(13, registTime);
         }
  
         String wallPaper = entity.getWallPaper();
         if (wallPaper != null) {
-            stmt.bindString(13, wallPaper);
+            stmt.bindString(14, wallPaper);
         }
  
         String updateTime = entity.getUpdateTime();
         if (updateTime != null) {
-            stmt.bindString(14, updateTime);
+            stmt.bindString(15, updateTime);
         }
     }
 
@@ -160,16 +167,17 @@ public class UserDao extends AbstractDao<User, Long> {
             cursor.getLong(offset + 1), // userNo
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // nickName
             cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // mobile
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // autograph
-            cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5), // gender
-            cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // birthday
-            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // homeTown
-            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // location
-            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // picPath
-            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // smallNick
-            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // registTime
-            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // wallPaper
-            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13) // updateTime
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // email
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // autograph
+            cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6), // gender
+            cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // birthday
+            cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // homeTown
+            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // location
+            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // picPath
+            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // smallNick
+            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12), // registTime
+            cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13), // wallPaper
+            cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14) // updateTime
         );
         return entity;
     }
@@ -181,16 +189,17 @@ public class UserDao extends AbstractDao<User, Long> {
         entity.setUserNo(cursor.getLong(offset + 1));
         entity.setNickName(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
         entity.setMobile(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
-        entity.setAutograph(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
-        entity.setGender(cursor.isNull(offset + 5) ? null : cursor.getInt(offset + 5));
-        entity.setBirthday(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
-        entity.setHomeTown(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
-        entity.setLocation(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
-        entity.setPicPath(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
-        entity.setSmallNick(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
-        entity.setRegistTime(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
-        entity.setWallPaper(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
-        entity.setUpdateTime(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
+        entity.setEmail(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setAutograph(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setGender(cursor.isNull(offset + 6) ? null : cursor.getInt(offset + 6));
+        entity.setBirthday(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
+        entity.setHomeTown(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
+        entity.setLocation(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
+        entity.setPicPath(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
+        entity.setSmallNick(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
+        entity.setRegistTime(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
+        entity.setWallPaper(cursor.isNull(offset + 13) ? null : cursor.getString(offset + 13));
+        entity.setUpdateTime(cursor.isNull(offset + 14) ? null : cursor.getString(offset + 14));
      }
     
     /** @inheritdoc */

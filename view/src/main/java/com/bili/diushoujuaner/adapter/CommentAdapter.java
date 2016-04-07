@@ -13,7 +13,7 @@ import android.widget.TextView;
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.activity.ContactDetailActivity;
 import com.bili.diushoujuaner.adapter.viewholder.ViewHolder;
-import com.bili.diushoujuaner.utils.event.ResponEvent;
+import com.bili.diushoujuaner.utils.event.ExecuteResponEvent;
 import com.bili.diushoujuaner.model.tempHelper.ContactTemper;
 import com.bili.diushoujuaner.utils.Common;
 import com.bili.diushoujuaner.model.apihelper.response.CommentDto;
@@ -82,7 +82,7 @@ public class CommentAdapter extends CommonAdapter<CommentDto> {
                             break;
                         case MotionEvent.ACTION_UP:
                             v.setBackgroundColor(ContextCompat.getColor(context, R.color.COLOR_WHITE));
-                            EventBus.getDefault().post(ResponEvent.getResponEvent(commentDto.getCommentNo(), null, commentDto.getFromNo(), Constant.COMMENT_CLICK_COMMENT_CONTENT, commentDto.getNickName()));
+                            EventBus.getDefault().post(ExecuteResponEvent.getResponEvent(commentDto.getCommentNo(), null, commentDto.getFromNo(), Constant.COMMENT_CLICK_COMMENT_CONTENT, commentDto.getNickName()));
                             break;
                         case MotionEvent.ACTION_CANCEL:
                             v.setBackgroundColor(ContextCompat.getColor(context, R.color.COLOR_WHITE));
@@ -94,7 +94,7 @@ public class CommentAdapter extends CommonAdapter<CommentDto> {
             holder.getView(R.id.layoutRespon).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    EventBus.getDefault().post(ResponEvent.getResponEvent(commentDto.getCommentNo(), null, commentDto.getFromNo(), Constant.COMMENT_CLICK_LAYOUT_RESPON, commentDto.getNickName()));
+                    EventBus.getDefault().post(ExecuteResponEvent.getResponEvent(commentDto.getCommentNo(), null, commentDto.getFromNo(), Constant.COMMENT_CLICK_LAYOUT_RESPON, commentDto.getNickName()));
                 }
             });
             if(responAdapterHashtable.get(commentDto.getCommentNo()) == null){

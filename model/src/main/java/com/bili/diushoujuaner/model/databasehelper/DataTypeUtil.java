@@ -26,23 +26,25 @@ public class DataTypeUtil {
         user.setUserNo(userRes.getUserNo());
         user.setRegistTime(userRes.getRegistTime());
         user.setWallPaper(userRes.getWallPaper());
+        user.setEmail(userRes.getEmail());
 
         return user;
     }
 
     public static User updateUserByUser(User older, User newer){
-        older.setMobile(Common.isEmpty(newer.getMobile()) ? older.getMobile() : newer.getMobile());
-        older.setAutograph(Common.isEmpty(newer.getAutograph()) ? older.getAutograph() : newer.getAutograph());
-        older.setBirthday(Common.isEmpty(newer.getBirthday()) ? older.getBirthday() : newer.getBirthday());
-        older.setHomeTown(Common.isEmpty(newer.getHomeTown()) ? older.getHomeTown() : newer.getHomeTown());
-        older.setLocation(Common.isEmpty(newer.getLocation()) ? older.getLocation() : newer.getLocation());
-        older.setNickName(Common.isEmpty(newer.getNickName()) ? older.getNickName() : newer.getNickName());
-        older.setPicPath(Common.isEmpty(newer.getPicPath()) ? older.getPicPath() : newer.getPicPath());
-        older.setSmallNick(Common.isEmpty(newer.getSmallNick()) ? older.getSmallNick() : newer.getSmallNick());
-        older.setRegistTime(Common.isEmpty(newer.getRegistTime()) ? older.getRegistTime() : newer.getRegistTime());
+        older.setMobile(newer.getMobile());
+        older.setAutograph(newer.getAutograph());
+        older.setBirthday(newer.getBirthday());
+        older.setHomeTown(newer.getHomeTown());
+        older.setLocation(newer.getLocation());
+        older.setNickName(newer.getNickName());
+        older.setPicPath(newer.getPicPath());
+        older.setSmallNick(newer.getSmallNick());
+        older.setRegistTime(newer.getRegistTime());
         older.setGender(newer.getGender());
-        older.setUpdateTime((Common.isEmpty(newer.getUpdateTime()) ? older.getUpdateTime() : newer.getUpdateTime()));
-        older.setWallPaper((Common.isEmpty(newer.getWallPaper()) ? older.getWallPaper() : newer.getWallPaper()));
+        older.setUpdateTime(newer.getUpdateTime());
+        older.setWallPaper(newer.getWallPaper());
+        older.setEmail(newer.getEmail());
 
         return older;
     }

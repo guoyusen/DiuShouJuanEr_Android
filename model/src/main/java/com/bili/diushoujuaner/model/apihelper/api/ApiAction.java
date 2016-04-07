@@ -3,14 +3,17 @@ package com.bili.diushoujuaner.model.apihelper.api;
 import com.android.volley.Request;
 import com.bili.diushoujuaner.model.apihelper.DataLoader;
 import com.bili.diushoujuaner.model.apihelper.callback.ApiCallbackListener;
+import com.bili.diushoujuaner.model.apihelper.request.AutographModifyReq;
 import com.bili.diushoujuaner.model.apihelper.request.CommentAddReq;
 import com.bili.diushoujuaner.model.apihelper.request.CommentRemoveReq;
 import com.bili.diushoujuaner.model.apihelper.request.ContactInfoReq;
+import com.bili.diushoujuaner.model.apihelper.request.FeedBackReq;
 import com.bili.diushoujuaner.model.apihelper.request.RecallListReq;
 import com.bili.diushoujuaner.model.apihelper.request.RecentRecallReq;
 import com.bili.diushoujuaner.model.apihelper.request.ResponAddReq;
 import com.bili.diushoujuaner.model.apihelper.request.ResponRemoveReq;
 import com.bili.diushoujuaner.model.apihelper.request.UserAccountReq;
+import com.bili.diushoujuaner.model.apihelper.request.UserInfoReq;
 import com.bili.diushoujuaner.utils.Common;
 
 import java.util.HashMap;
@@ -100,5 +103,20 @@ public class ApiAction implements Api {
     @Override
     public void getRecentRecall(RecentRecallReq recentRecallReq, ApiCallbackListener apiCallbackListener) {
         dataLoader.processStringRequest(Request.Method.GET, Common.getCompleteUrl(Api.getRecentRecall, recentRecallReq), null, apiCallbackListener);
+    }
+
+    @Override
+    public void getAutographModify(AutographModifyReq autographModifyReq, ApiCallbackListener apiCallbackListener) {
+        dataLoader.processStringRequest(Request.Method.POST, Api.getAutographModify, Common.ConvertObjToMap(autographModifyReq), apiCallbackListener);
+    }
+
+    @Override
+    public void getFeedBackAdd(FeedBackReq feedBackReq, ApiCallbackListener apiCallbackListener) {
+        dataLoader.processStringRequest(Request.Method.POST, Api.getFeedBackAdd, Common.ConvertObjToMap(feedBackReq), apiCallbackListener);
+    }
+
+    @Override
+    public void getUserInfoUpdate(UserInfoReq userInfoReq, ApiCallbackListener apiCallbackListener) {
+        dataLoader.processStringRequest(Request.Method.POST, Api.getUserInfoUpdate, Common.ConvertObjToMap(userInfoReq), apiCallbackListener);
     }
 }

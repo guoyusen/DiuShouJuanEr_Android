@@ -1,6 +1,5 @@
 package com.bili.diushoujuaner.activity;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -9,10 +8,8 @@ import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
-import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -23,7 +20,7 @@ import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.adapter.CommentAdapter;
 import com.bili.diushoujuaner.adapter.ImageAdapter;
 import com.bili.diushoujuaner.base.BaseFragmentActivity;
-import com.bili.diushoujuaner.utils.event.ResponEvent;
+import com.bili.diushoujuaner.utils.event.ExecuteResponEvent;
 import com.bili.diushoujuaner.fragment.PictureFragment;
 import com.bili.diushoujuaner.presenter.presenter.RecallDetailActivityPresenter;
 import com.bili.diushoujuaner.presenter.presenter.impl.RecallDetailActivityPresenterImpl;
@@ -39,6 +36,8 @@ import com.bili.diushoujuaner.model.apihelper.response.RecallDto;
 import com.bili.diushoujuaner.widget.CustomEditText;
 import com.bili.diushoujuaner.widget.CustomGridView;
 import com.bili.diushoujuaner.widget.CustomListView;
+import com.bili.diushoujuaner.widget.dialog.DialogTool;
+import com.bili.diushoujuaner.widget.dialog.OnDialogPositiveClickListener;
 import com.bili.diushoujuaner.widget.scrollview.ReboundScrollView;
 import com.bili.diushoujuaner.widget.TintedBitmapDrawable;
 import com.bili.diushoujuaner.widget.aligntextview.CBAlignTextView;
@@ -106,7 +105,6 @@ public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActiv
     private ImageAdapter imageAdapter;
     private Drawable thumbUpDrawable, thumbDownDrawable, commentNormalDrawable;
     private CommentConfig commentConfig;
-    private AlertDialog dialog;
 
     public static final String TAG = "RecallDetailActivity";
 
@@ -297,8 +295,6 @@ public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActiv
         pictureVoList = new ArrayList<>();
         commentConfig = new CommentConfig();
 
-        dialog = new AlertDialog.Builder(context).create();
-
         commentNormalDrawable = new TintedBitmapDrawable(context.getResources(),R.mipmap.icon_comment,ContextCompat.getColor(context, R.color.COLOR_BFBFBF));
         thumbDownDrawable = new TintedBitmapDrawable(context.getResources(),R.mipmap.icon_good,ContextCompat.getColor(context, R.color.COLOR_BFBFBF));
         thumbUpDrawable = new TintedBitmapDrawable(context.getResources(),R.mipmap.icon_good,ContextCompat.getColor(context, R.color.COLOR_388ECD));
@@ -467,44 +463,44 @@ public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActiv
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onResponEvent(ResponEvent responEvent){
-        switch (responEvent.getType()){
+    public void onResponEvent(ExecuteResponEvent executeResponEvent){
+        switch (executeResponEvent.getType()){
             case Constant.COMMENT_CLICK_LAYOUT_RESPON:
-                if(responEvent.getCommentNo() == null){
+                if(executeResponEvent.getCommentNo() == null){
                     return;
                 }
                 commentConfig.setType(CommentConfig.TYPE_RESPON_FIRST);
-                commentConfig.setCommentNo(responEvent.getCommentNo());
-                commentConfig.setReceiveNo(responEvent.getToNo());
-                commentConfig.setNickNameTo(responEvent.getNickName());
+                commentConfig.setCommentNo(executeResponEvent.getCommentNo());
+                commentConfig.setReceiveNo(executeResponEvent.getToNo());
+                commentConfig.setNickNameTo(executeResponEvent.getNickName());
                 break;
             case Constant.COMMENT_CLICK_COMMENT_CONTENT:
-                if(responEvent.getCommentNo() == null){
+                if(executeResponEvent.getCommentNo() == null){
                     return;
                 }
-                if(responEvent.getToNo() == getBindPresenter().getLoginedUserNo()){
-                    showFooterDialog(responEvent.getCommentNo(), -1, Constant.DELETE_COMMENT);
+                if(executeResponEvent.getToNo() == getBindPresenter().getLoginedUserNo()){
+                    showFooterDialog(executeResponEvent.getCommentNo(), -1, Constant.DELETE_COMMENT);
                     return;
                 }else{
                     commentConfig.setType(CommentConfig.TYPE_RESPON_FIRST);
-                    commentConfig.setCommentNo(responEvent.getCommentNo());
-                    commentConfig.setReceiveNo(responEvent.getToNo());
-                    commentConfig.setNickNameTo(responEvent.getNickName());
+                    commentConfig.setCommentNo(executeResponEvent.getCommentNo());
+                    commentConfig.setReceiveNo(executeResponEvent.getToNo());
+                    commentConfig.setNickNameTo(executeResponEvent.getNickName());
                 }
                 break;
             case Constant.COMMENT_CLICK_SUB_RESPON:
-                if(responEvent.getResponNo() == null){
+                if(executeResponEvent.getResponNo() == null){
                     return;
                 }
-                if(responEvent.getToNo() == getBindPresenter().getLoginedUserNo()){
-                    showFooterDialog(responEvent.getCommentNo(),responEvent.getResponNo(), Constant.DELETE_RESPON);
+                if(executeResponEvent.getToNo() == getBindPresenter().getLoginedUserNo()){
+                    showFooterDialog(executeResponEvent.getCommentNo(), executeResponEvent.getResponNo(), Constant.DELETE_RESPON);
                     return;
                 }else{
                     commentConfig.setType(CommentConfig.TYPE_RESPON_SECOND);
-                    commentConfig.setCommentNo(responEvent.getCommentNo());
-                    commentConfig.setReceiveNo(responEvent.getToNo());
-                    commentConfig.setResponNo(responEvent.getResponNo());
-                    commentConfig.setNickNameTo(responEvent.getNickName());
+                    commentConfig.setCommentNo(executeResponEvent.getCommentNo());
+                    commentConfig.setReceiveNo(executeResponEvent.getToNo());
+                    commentConfig.setResponNo(executeResponEvent.getResponNo());
+                    commentConfig.setNickNameTo(executeResponEvent.getNickName());
                 }
                 break;
         }
@@ -516,31 +512,17 @@ public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActiv
     }
 
     private void showFooterDialog(final long commentNo, final long responNo, final int type){
-        dialog.show();
-        Window window = dialog.getWindow();
-        window.setWindowAnimations(R.style.dialogWindowAnim);
-        window.setBackgroundDrawableResource(R.color.TRANSPARENT);
-        window.setContentView(R.layout.layout_comment_delete);
-        window.setGravity(Gravity.BOTTOM);
-        RelativeLayout layoutCancel = (RelativeLayout) window.findViewById(R.id.layoutCancle);
-        layoutCancel.setOnClickListener(new View.OnClickListener() {
+        DialogTool.createDeleteCommentDialog(context, new OnDialogPositiveClickListener() {
             @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-        RelativeLayout layoutDelete = (RelativeLayout) window.findViewById(R.id.layoutDelete);
-        layoutDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+            public void onPositiveClicked() {
                 if(type == Constant.DELETE_COMMENT){
                     getBindPresenter().getCommentRemove(recallNo, commentNo);
                 }else if(type == Constant.DELETE_RESPON){
                     getBindPresenter().getResponRemove(recallNo, commentNo, responNo);
                 }
-                dialog.dismiss();
             }
         });
+
     }
 
     @Override

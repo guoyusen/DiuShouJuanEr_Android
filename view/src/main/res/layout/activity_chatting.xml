@@ -3,15 +3,16 @@
     style="@style/MatchMatch.FitWindow"
     android:background="@color/COLOR_WHITE">
 
-    <include android:id="@+id/layoutHead"
-        layout="@layout/include_head_custom"/>
+    <include
+        android:id="@+id/layoutHead"
+        layout="@layout/include_head_custom" />
 
     <ListView
         android:id="@+id/listView"
-        android:layout_below="@+id/layoutHead"
-        android:layout_above="@+id/layoutBottom"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_above="@+id/layoutBottom"
+        android:layout_below="@+id/layoutHead" />
 
     <RelativeLayout
         android:id="@+id/layoutBottom"
@@ -34,7 +35,8 @@
             android:paddingLeft="@dimen/x5"
             android:paddingRight="@dimen/x5"
             android:textColor="@color/TC_040404"
-            android:textColorHint="@color/TC_ADADBB" />
+            android:textColorHint="@color/TC_ADADBB"
+            android:textCursorDrawable="@drawable/common_cursor_blue" />
 
         <RelativeLayout
             android:id="@+id/layoutSend"
@@ -42,13 +44,13 @@
             android:layout_height="@dimen/x80"
             android:layout_alignBottom="@+id/txtComment"
             android:layout_alignParentRight="true"
-            android:gravity="center"
-            android:background="@drawable/layout_send_close_bg">
+            android:background="@drawable/layout_send_close_bg"
+            android:gravity="center">
 
             <ImageView
                 android:layout_width="@dimen/x48"
                 android:layout_height="@dimen/x48"
-                android:src="@mipmap/icon_send"/>
+                android:src="@mipmap/icon_send" />
 
         </RelativeLayout>
 

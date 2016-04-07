@@ -65,8 +65,8 @@ public interface Constant {
     int EDIT_CONTENT_FEEDBACK = 2;
 
     int EDIT_CONTENT_LENGTH_AUTOGRAPH = 50;
-    int EDIT_CONTENT_LENGTH_FEEDBACK = 50;
+    int EDIT_CONTENT_LENGTH_FEEDBACK = 200;
 
-    int DB_UPDATE_TABLE_CONTACT = 2;
+    String ACACHE_LAST_TIME_CONTACT = "UpdateTimeContact";
 
 }

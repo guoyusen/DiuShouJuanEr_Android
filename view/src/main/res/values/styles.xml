@@ -69,8 +69,12 @@
         <item name="android:background">@drawable/btn_green_selector</item>
     </style>
 
-    <style name="BtnXLongGreen" parent="BtnXLong">
+    <style name="BtnXLongBlue" parent="BtnXLong">
         <item name="android:background">@drawable/btn_blue_selector</item>
+    </style>
+
+    <style name="BtnXLongRed" parent="BtnXLong">
+        <item name="android:background">@drawable/btn_red_selector</item>
     </style>
 
     <style name="TextNavRight" parent="TextMiddle">
@@ -86,8 +90,8 @@
     <style name="TextNavTitle" parent="TextLarge">
         <item name="android:textColor">@color/COLOR_WHITE</item>
         <item name="android:layout_centerInParent">true</item>
-        <item name="android:paddingLeft">@dimen/x30</item>
-        <item name="android:paddingRight">@dimen/x30</item>
+        <item name="android:paddingLeft">@dimen/x45</item>
+        <item name="android:paddingRight">@dimen/x45</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">match_parent</item>
         <item name="android:gravity">center</item>

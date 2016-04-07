@@ -10,6 +10,8 @@ import android.widget.EditText;
  */
 public class CustomEditText extends EditText {
 
+    private EmojiFilter emojiFilter;
+
     public CustomEditText(Context context) {
         super(context);
         init();
@@ -26,6 +28,11 @@ public class CustomEditText extends EditText {
     }
 
     private void init(){
-        this.setFilters(new InputFilter[]{new EmojiFilter()});
+        emojiFilter = new EmojiFilter();
+        this.setFilters(new InputFilter[]{emojiFilter});
+    }
+
+    public void setMaxLength(int maxLength) {
+        this.setFilters(new InputFilter[]{emojiFilter, new InputFilter.LengthFilter(maxLength)});
     }
 }

@@ -13,10 +13,10 @@
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/layoutHead"
         android:layout_above="@+id/layoutBottom"
-        android:scrollbars="vertical"
-        android:clickable="true">
+        android:layout_below="@+id/layoutHead"
+        android:clickable="true"
+        android:scrollbars="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -92,7 +92,7 @@
                     <ImageView
                         android:id="@+id/ivGood"
                         android:layout_width="@dimen/x32"
-                        android:layout_height="@dimen/y32"/>
+                        android:layout_height="@dimen/y32" />
 
                     <TextView
                         android:id="@+id/txtGood"
@@ -115,7 +115,7 @@
                 <ImageView
                     android:id="@+id/ivGoodSum"
                     android:layout_width="@dimen/x32"
-                    android:layout_height="@dimen/y32"/>
+                    android:layout_height="@dimen/y32" />
 
                 <TextView
                     android:id="@+id/txtGoodDetail"
@@ -132,9 +132,9 @@
                 android:id="@+id/listViewComment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:scrollbars="none"
+                android:divider="@null"
                 android:dividerHeight="0dp"
-                android:divider="@null" />
+                android:scrollbars="none" />
 
         </LinearLayout>
 
@@ -145,9 +145,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:visibility="gone"
         android:background="@color/BG_ECECEC"
-        android:padding="@dimen/x16">
+        android:padding="@dimen/x16"
+        android:visibility="gone">
 
         <com.bili.diushoujuaner.widget.CustomEditText
             android:id="@+id/txtComment"
@@ -162,7 +162,8 @@
             android:paddingLeft="@dimen/x5"
             android:paddingRight="@dimen/x5"
             android:textColor="@color/TC_040404"
-            android:textColorHint="@color/TC_ADADBB" />
+            android:textColorHint="@color/TC_ADADBB"
+            android:textCursorDrawable="@drawable/common_cursor_blue" />
 
         <RelativeLayout
             android:id="@+id/layoutSend"
@@ -170,13 +171,13 @@
             android:layout_height="@dimen/x80"
             android:layout_alignBottom="@+id/txtComment"
             android:layout_alignParentRight="true"
-            android:gravity="center"
-            android:background="@drawable/layout_send_close_bg">
+            android:background="@drawable/layout_send_close_bg"
+            android:gravity="center">
 
             <ImageView
                 android:layout_width="@dimen/x48"
                 android:layout_height="@dimen/x48"
-                android:src="@mipmap/icon_send"/>
+                android:src="@mipmap/icon_send" />
 
         </RelativeLayout>
 

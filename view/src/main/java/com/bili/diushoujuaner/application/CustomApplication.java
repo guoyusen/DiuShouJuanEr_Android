@@ -7,10 +7,13 @@ import com.bili.diushoujuaner.model.apihelper.api.ApiAction;
 import com.bili.diushoujuaner.model.cachehelper.ACache;
 import com.bili.diushoujuaner.model.databasehelper.DBManager;
 import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
+import com.bili.diushoujuaner.model.preferhelper.SettingPreference;
 import com.bili.diushoujuaner.utils.Common;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.stetho.Stetho;
 import com.orhanobut.logger.Logger;
+
+import cat.ereza.customactivityoncrash.CustomActivityOnCrash;
 
 /**
  * Created by BiLi on 2016/2/27.
@@ -27,6 +30,7 @@ public class CustomApplication extends Application {
         initDatabase();// 初始化DBManager
         initLogger(); //初始化日志处理
         Stetho.initializeWithDefaults(this);
+        CustomActivityOnCrash.install(this);
     }
 
     private void initLogger(){
@@ -50,6 +54,7 @@ public class CustomApplication extends Application {
 
     private void initPrefs() {
         CustomSessionPreference.initialize(this);
+        SettingPreference.initialize(this);
     }
 
     private void initDatabase(){

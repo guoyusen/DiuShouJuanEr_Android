@@ -1,9 +1,182 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:shSwitch="http://schemas.android.com/apk/res-auto"
     style="@style/MatchMatch.FitWindow"
-    android:background="@color/COLOR_WHITE">
+    android:background="@color/BG_F6F6F6"
+    android:orientation="vertical">
 
-    <include android:id="@+id/layoutHead"
-        layout="@layout/include_head_custom"/>
+    <include
+        android:id="@+id/layoutHead"
+        layout="@layout/include_head_custom" />
 
-</RelativeLayout>
+    <com.bili.diushoujuaner.widget.scrollview.ReboundScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/y24"
+                android:orientation="vertical"
+                android:background="@color/COLOR_WHITE">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/y100">
+
+                    <TextView
+                        style="@style/TextMiddle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/x24"
+                        android:text="消息提醒声音"
+                        android:textColor="@color/TC_2D2D2D" />
+
+                    <com.bili.diushoujuaner.widget.ShSwitchView
+                        android:id="@+id/switchVoice"
+                        android:layout_width="@dimen/x118"
+                        android:layout_height="@dimen/y64"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/x24"
+                        shSwitch:outerStrokeWidth="@dimen/x2"
+                        shSwitch:shadowSpace="@dimen/x2"
+                        shSwitch:tintColor="@color/COLOR_4DD965" />
+
+                </RelativeLayout>
+
+                <View
+                    style="@style/line"
+                    android:layout_marginLeft="@dimen/x24" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/y100"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        style="@style/TextMiddle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/x24"
+                        android:text="消息提醒振动"
+                        android:textColor="@color/TC_2D2D2D" />
+
+                    <com.bili.diushoujuaner.widget.ShSwitchView
+                        android:id="@+id/switchFriend"
+                        android:layout_width="@dimen/x118"
+                        android:layout_height="@dimen/y64"
+                        android:layout_alignParentRight="true"
+                        shSwitch:outerStrokeWidth="@dimen/x2"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="@dimen/x24"
+                        shSwitch:shadowSpace="@dimen/x2"
+                        shSwitch:tintColor="@color/COLOR_4DD965" />
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y100"
+                android:layout_marginTop="@dimen/y64"
+                android:background="@color/COLOR_WHITE"
+                android:gravity="center_vertical">
+
+                <TextView
+                    style="@style/TextMiddle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/x24"
+                    android:text="首页只看朋友圈"
+                    android:textColor="@color/TC_2D2D2D" />
+
+                <com.bili.diushoujuaner.widget.ShSwitchView
+                    android:id="@+id/switchVibrate"
+                    android:layout_width="@dimen/x118"
+                    android:layout_height="@dimen/y64"
+                    android:layout_alignParentRight="true"
+                    shSwitch:outerStrokeWidth="@dimen/x2"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/x24"
+                    shSwitch:shadowSpace="@dimen/x2"
+                    shSwitch:tintColor="@color/COLOR_4DD965" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y100"
+                android:layout_marginTop="@dimen/y32"
+                android:background="@color/COLOR_WHITE"
+                android:gravity="center_vertical">
+
+                <TextView
+                    style="@style/TextMiddle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/x24"
+                    android:text="移动网络不加载图片"
+                    android:textColor="@color/TC_2D2D2D" />
+
+                <com.bili.diushoujuaner.widget.ShSwitchView
+                    android:id="@+id/switchGPRS"
+                    android:layout_width="@dimen/x118"
+                    android:layout_height="@dimen/y64"
+                    android:layout_alignParentRight="true"
+                    shSwitch:outerStrokeWidth="@dimen/x2"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/x24"
+                    shSwitch:shadowSpace="@dimen/x2"
+                    shSwitch:tintColor="@color/COLOR_4DD965" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/layoutAbout"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y100"
+                android:layout_marginTop="@dimen/y64"
+                android:background="@color/COLOR_WHITE"
+                android:gravity="center_vertical">
+
+                <TextView
+                    style="@style/TextMiddle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/x24"
+                    android:text="关于丢丢"
+                    android:textColor="@color/TC_2D2D2D" />
+
+                <ImageView
+                    android:id="@+id/ivArrowAbout"
+                    android:layout_width="@dimen/x50"
+                    android:layout_height="@dimen/y50"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/x24" />
+
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/btnExit"
+                android:layout_marginTop="@dimen/y128"
+                style="@style/BtnXLongRed"
+                android:text="@string/acount_exit" />
+
+        </LinearLayout>
+
+    </com.bili.diushoujuaner.widget.scrollview.ReboundScrollView>
+
+</LinearLayout>

@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.base.BaseFragmentActivity;
+import com.bili.diushoujuaner.utils.event.UpdateAutographEvent;
 import com.bili.diushoujuaner.utils.event.ShowHeadEvent;
 import com.bili.diushoujuaner.utils.event.ShowMainMenuEvent;
 import com.bili.diushoujuaner.fragment.ContactFragment;
@@ -27,6 +28,7 @@ import com.bili.diushoujuaner.presenter.presenter.impl.MainActivityPresenterImpl
 import com.bili.diushoujuaner.presenter.view.IMainView;
 import com.bili.diushoujuaner.utils.Common;
 import com.bili.diushoujuaner.utils.Constant;
+import com.bili.diushoujuaner.utils.event.UpdateUserInfoEvent;
 import com.bili.diushoujuaner.utils.manager.ActivityManager;
 import com.bili.diushoujuaner.widget.CustomViewPager;
 import com.bili.diushoujuaner.widget.TintedBitmapDrawable;
@@ -145,7 +147,7 @@ public class MainActivity extends BaseFragmentActivity<MainActivityPresenterImpl
         ivFeedBack.setImageDrawable(new TintedBitmapDrawable(getResources(),R.mipmap.icon_menu_feedback,ContextCompat.getColor(context,R.color.COLOR_388ECD)));
         ivFocus.setImageDrawable(new TintedBitmapDrawable(getResources(),R.mipmap.icon_menu_focus,ContextCompat.getColor(context,R.color.COLOR_388ECD)));
         ivFolder.setImageDrawable(new TintedBitmapDrawable(getResources(),R.mipmap.icon_menu_folder,ContextCompat.getColor(context,R.color.COLOR_388ECD)));
-        ivNotice.setImageDrawable(new TintedBitmapDrawable(getResources(),R.mipmap.icon_menu_notice,ContextCompat.getColor(context,R.color.COLOR_388ECD)));
+        ivNotice.setImageDrawable(new TintedBitmapDrawable(getResources(), R.mipmap.icon_menu_notice, ContextCompat.getColor(context, R.color.COLOR_388ECD)));
     }
 
     private void initFragment() {
@@ -244,6 +246,16 @@ public class MainActivity extends BaseFragmentActivity<MainActivityPresenterImpl
         drawerLayout.openDrawer(GravityCompat.START);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void showNewAutograph(UpdateAutographEvent updateAutographEvent){
+        txtAutograph.setText(updateAutographEvent.getAutograph());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void updateUserInfo(UpdateUserInfoEvent updateUserInfoEvent){
+        getBindPresenter().getUserInfo();
+    }
+
     @Override
     public boolean onKeyDown(int key, KeyEvent event) {
         switch (key) {
@@ -270,7 +282,7 @@ public class MainActivity extends BaseFragmentActivity<MainActivityPresenterImpl
     @Override
     public void showUserInfo(User user) {
         Common.displayDraweeView(user.getPicPath(), menuHead);
-        Common.displayDraweeView(user.getWallPaper(),menuBg);
+        Common.displayDraweeView(user.getWallPaper(), menuBg);
         txtAutograph.setText(user.getAutograph());
         txtUserName.setText(user.getNickName());
         EventBus.getDefault().post(new ShowHeadEvent(user.getPicPath()));

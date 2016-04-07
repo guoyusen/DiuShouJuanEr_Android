@@ -31,7 +31,8 @@
                     android:layout_height="@dimen/y400"
                     android:layout_centerHorizontal="true"
                     app:actualImageScaleType="centerCrop"
-                    app:placeholderImage="@mipmap/bg_menu_head" />
+                    app:placeholderImage="@mipmap/bg_menu_head"
+                    app:placeholderImageScaleType="centerCrop"/>
 
                 <View
                     android:layout_width="match_parent"

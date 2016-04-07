@@ -1,6 +1,7 @@
 package com.bili.diushoujuaner.base;
 
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.ImageButton;
@@ -109,6 +110,9 @@ public class BaseFragmentActivity<T> extends AbstractBaseFragmentActivity {
             case Constant.LOADING_DEFAULT:
                 if(findViewById(R.id.defaultCircle) != null){
                     findViewById(R.id.defaultCircle).setVisibility(View.VISIBLE);
+                    if(TextUtils.isEmpty(((TextView) findViewById(R.id.txtNavTitle)).getText())){
+                        findViewById(R.id.txtNavTitle).setVisibility(View.GONE);
+                    }
                 }
                 break;
         }

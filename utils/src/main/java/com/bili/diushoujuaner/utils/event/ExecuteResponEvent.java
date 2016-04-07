@@ -3,7 +3,7 @@ package com.bili.diushoujuaner.utils.event;
 /**
  * Created by BiLi on 2016/4/1.
  */
-public class ResponEvent {
+public class ExecuteResponEvent {
 
     private Long commentNo;
     private Long responNo;
@@ -51,18 +51,18 @@ public class ResponEvent {
         this.toNo = toNo;
     }
 
-    public static ResponEvent getResponEvent(Long commentNo, Long responNo, Long toNo, int type, String nickName){
-        ResponEvent responEvent = new ResponEvent();
+    public static ExecuteResponEvent getResponEvent(Long commentNo, Long responNo, Long toNo, int type, String nickName){
+        ExecuteResponEvent executeResponEvent = new ExecuteResponEvent();
         if(commentNo != null){
-            responEvent.setCommentNo(commentNo);
+            executeResponEvent.setCommentNo(commentNo);
         }
         if(responNo != null){
-            responEvent.setResponNo(responNo);
+            executeResponEvent.setResponNo(responNo);
         }
-        responEvent.setToNo(toNo);
-        responEvent.setType(type);
-        responEvent.setNickName(nickName);
+        executeResponEvent.setToNo(toNo);
+        executeResponEvent.setType(type);
+        executeResponEvent.setNickName(nickName);
 
-        return responEvent;
+        return executeResponEvent;
     }
 }

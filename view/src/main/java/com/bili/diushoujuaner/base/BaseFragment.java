@@ -4,6 +4,7 @@ import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,17 +26,14 @@ import butterknife.ButterKnife;
  */
 public class BaseFragment<T> extends Fragment {
 
-    @Bind(R.id.txtNavTitle)
-    TextView txtNavTitle;
-    @Bind(R.id.txtRight)
-    TextView txtRight;
-    @Bind(R.id.btnRight)
-    ImageButton btnRight;
+    private TextView txtNavTitle;
+    private TextView txtRight;
+    private View defaultCircle;
+    private ImageButton btnRight;
 
     protected Context context;
-    public CustomApplication customApplication;
     protected BasePresenter basePresenter;
-    private View defaultCircle;
+    public CustomApplication customApplication;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -49,7 +47,7 @@ public class BaseFragment<T> extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(getLayout(), container, false);
         ButterKnife.bind(this, view);
-        initCircleLoader(view);
+        initComponent(view);
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
             resetStatus();
         }
@@ -59,8 +57,11 @@ public class BaseFragment<T> extends Fragment {
 
     public void resetStatus(){}
 
-    private void initCircleLoader(View view){
+    private void initComponent(View view){
         defaultCircle = view.findViewById(R.id.defaultCircle);
+        txtNavTitle = (TextView)view.findViewById(R.id.txtNavTitle);
+        txtRight = (TextView)view.findViewById(R.id.txtRight);
+        btnRight = (ImageButton)view.findViewById(R.id.btnRight);
     }
 
     public void beforeInitView(){
@@ -121,6 +122,9 @@ public class BaseFragment<T> extends Fragment {
             case Constant.LOADING_DEFAULT:
                 if(defaultCircle != null){
                     defaultCircle.setVisibility(View.VISIBLE);
+                }
+                if(txtNavTitle != null && TextUtils.isEmpty(txtNavTitle.getText())){
+                    txtNavTitle.setVisibility(View.GONE);
                 }
                 break;
             default:break;

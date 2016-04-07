@@ -53,4 +53,12 @@ public class ActivityManager extends Application {
         }
     }
 
+    public void finishBefore(){
+        for(int i = 0, len = activityList.size(); i < len - 1; i++){
+            if(!activityList.get(i).isFinishing()){
+                activityList.get(i).finish();
+            }
+        }
+    }
+
 }

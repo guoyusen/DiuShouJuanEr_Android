@@ -9,6 +9,7 @@ public class UserRes {
     private String realName;
     private String nickName;
     private String mobile;
+    private String email;
     private String autograph;
     private Integer gender;
     private String birthday;
@@ -18,6 +19,14 @@ public class UserRes {
     private String smallNick;
     private String registTime;
     private String wallPaper;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public String getWallPaper() {
         return wallPaper;

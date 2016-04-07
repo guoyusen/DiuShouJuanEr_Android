@@ -17,17 +17,17 @@
         android:paddingTop="@dimen/y32"
         android:paddingBottom="@dimen/y32">
 
-        <EditText
+        <com.bili.diushoujuaner.widget.CustomEditText
             android:id="@+id/edtEditor"
             style="@style/TextMiddle"
             android:layout_width="match_parent"
             android:layout_height="@dimen/y240"
             android:padding="@dimen/x10"
             android:gravity="left"
-            android:singleLine="true"
             android:layout_centerVertical="true"
             android:background="@drawable/common_rectangle_solid_white"
             android:textColor="@color/TC_333333"
+            android:textCursorDrawable="@drawable/common_cursor_blue"
             android:hint="新的生活状态"
             android:textColorHint="@color/TC_ADADBB"/>
 

@@ -45,4 +45,9 @@ public class ContactTemper {
         friendVoHashtable.clear();
     }
 
+    public static void clear(){
+        friendVoHashtable.clear();
+        partyVoHashtable.clear();
+    }
+
 }

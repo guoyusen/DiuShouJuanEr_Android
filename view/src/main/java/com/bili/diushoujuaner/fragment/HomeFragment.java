@@ -14,7 +14,7 @@ import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.activity.RecallDetailActivity;
 import com.bili.diushoujuaner.adapter.RecallAdapter;
 import com.bili.diushoujuaner.base.BaseFragment;
-import com.bili.diushoujuaner.utils.event.RecallGoodEvent;
+import com.bili.diushoujuaner.utils.event.GoodRecallEvent;
 import com.bili.diushoujuaner.utils.event.RefreshRecallEvent;
 import com.bili.diushoujuaner.utils.event.ShowHeadEvent;
 import com.bili.diushoujuaner.utils.event.ShowMainMenuEvent;
@@ -203,14 +203,14 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onRecallGoodEvent(RecallGoodEvent recallGoodEvent){
+    public void onRecallGoodEvent(GoodRecallEvent goodRecallEvent){
         if(!isGoodStatusInited){
             isGoodStatusInited = true;
-            goodStatus = getBindPresenter().getGoodStatusByRecallNo(recallAdapter.getItem(recallGoodEvent.getPosition()).getRecallNo());
-            goodRecallNo = recallAdapter.getItem(recallGoodEvent.getPosition()).getRecallNo();
+            goodStatus = getBindPresenter().getGoodStatusByRecallNo(recallAdapter.getItem(goodRecallEvent.getPosition()).getRecallNo());
+            goodRecallNo = recallAdapter.getItem(goodRecallEvent.getPosition()).getRecallNo();
         }
 
-        getBindPresenter().changeGoodStatusToLocal(goodRecallNo, recallGoodEvent.getPosition());
+        getBindPresenter().changeGoodStatusToLocal(goodRecallNo, goodRecallEvent.getPosition());
         recallAdapter.notifyDataSetChanged();
         handler.removeCallbacks(customRunnable);
         handler.postDelayed(customRunnable, 1500);

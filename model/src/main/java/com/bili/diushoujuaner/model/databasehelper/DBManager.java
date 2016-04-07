@@ -11,8 +11,6 @@ import com.bili.diushoujuaner.model.databasehelper.dao.Member;
 import com.bili.diushoujuaner.model.databasehelper.dao.MemberDao;
 import com.bili.diushoujuaner.model.databasehelper.dao.Party;
 import com.bili.diushoujuaner.model.databasehelper.dao.PartyDao;
-import com.bili.diushoujuaner.model.databasehelper.dao.UpdateMark;
-import com.bili.diushoujuaner.model.databasehelper.dao.UpdateMarkDao;
 import com.bili.diushoujuaner.model.databasehelper.dao.User;
 import com.bili.diushoujuaner.model.databasehelper.dao.UserDao;
 import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
@@ -108,6 +106,18 @@ public class DBManager {
                 .build()
                 .list();
         return userList.isEmpty() ? null : userList.get(0);
+    }
+
+    public void updateAutograph(String autograph){
+        List<User> userList = daoSession.getUserDao().queryBuilder()
+                .where(UserDao.Properties.UserNo.eq(CustomSessionPreference.getInstance().getCustomSession().getUserNo()))
+                .build()
+                .list();
+        if(!userList.isEmpty()){
+            User user = userList.get(0);
+            user.setAutograph(autograph);
+            daoSession.getUserDao().insertOrReplace(user);
+        }
     }
 
     /**
@@ -277,41 +287,6 @@ public class DBManager {
         } else {
             for(Member item : memberList){
                 daoSession.getMemberDao().insertOrReplace(DataTypeUtil.updateMemberByMember(item, member));
-            }
-        }
-    }
-
-    public String getUpdateTimeContact(){
-        StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("select update_Time ");
-        stringBuilder.append("from Update_Mark ");
-        stringBuilder.append("where TABLE_NO = " + Constant.DB_UPDATE_TABLE_CONTACT);
-
-        List<String> list = new ArrayList<>();
-        Cursor cursor = daoSession.getDatabase().rawQuery(stringBuilder.toString(), null);
-        cursor.moveToFirst();
-        if(cursor.getCount() > 0) {
-            do {
-                list.add(cursor.getString(cursor.getColumnIndex("update_Time")));
-            } while (cursor.moveToNext());
-        }
-        return list.isEmpty() ? null : list.get(0);
-    }
-
-    public void updateTimeContactToNow(){
-        UpdateMark updateMark = new UpdateMark();
-        updateMark.setTableNo(Constant.DB_UPDATE_TABLE_CONTACT);
-        updateMark.setUpdateTime(Common.getCurrentTimeYYMMDD_HHMMSS());
-        List<UpdateMark> updateMarkList = daoSession.getUpdateMarkDao().queryBuilder()
-                .where(UpdateMarkDao.Properties.TableNo.eq(Constant.DB_UPDATE_TABLE_CONTACT))
-                .build()
-                .list();
-        if (updateMarkList.isEmpty()) {
-            daoSession.getUpdateMarkDao().insertOrReplace(updateMark);
-        } else {
-            for(UpdateMark item : updateMarkList){
-                item.setUpdateTime(updateMark.getUpdateTime());
-                daoSession.getUpdateMarkDao().insertOrReplace(item);
             }
         }
     }

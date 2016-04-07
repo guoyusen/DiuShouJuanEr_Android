@@ -9,6 +9,7 @@ import com.bili.diushoujuaner.model.apihelper.api.ApiAction;
 import com.bili.diushoujuaner.model.apihelper.callback.ApiCallbackListener;
 import com.bili.diushoujuaner.model.apihelper.request.ContactInfoReq;
 import com.bili.diushoujuaner.model.apihelper.response.UserRes;
+import com.bili.diushoujuaner.model.cachehelper.ACache;
 import com.bili.diushoujuaner.model.callback.ActionCallbackListener;
 import com.bili.diushoujuaner.model.databasehelper.DBManager;
 import com.bili.diushoujuaner.model.databasehelper.dao.Friend;
@@ -137,7 +138,7 @@ public class ContactAction implements IContactAction{
             @Override
             public void onSuccess(Context context, ActionRespon<List<FriendVo>> result) {
                 actionCallbackListener.onSuccess(result);
-                String updateTime = DBManager.getInstance().getUpdateTimeContact();
+                String updateTime = ACache.getInstance().getAsString(Constant.ACACHE_LAST_TIME_CONTACT);
                 //TODO 完善后，更改全量获取联系人的时间间隔
                 if(Common.isEmpty(updateTime) || Common.getHourDifferenceBetweenTime(updateTime) > 1){
                     getContactListFromApi(actionCallbackListener);
@@ -170,7 +171,7 @@ public class ContactAction implements IContactAction{
                 }, new Completion<ActionRespon<List<FriendVo>>>() {
                     @Override
                     public void onSuccess(Context context, ActionRespon<List<FriendVo>> result) {
-                        DBManager.getInstance().updateTimeContactToNow();
+                        ACache.getInstance().put(Constant.ACACHE_LAST_TIME_CONTACT, Common.getCurrentTimeYYMMDD_HHMMSS());
                         actionCallbackListener.onSuccess(result);
                     }
 

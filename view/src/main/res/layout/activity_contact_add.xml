@@ -21,7 +21,7 @@
             android:layout_marginLeft="@dimen/x24"
             android:layout_centerVertical="true"/>
 
-        <EditText
+        <com.bili.diushoujuaner.widget.CustomEditText
             style="@style/TextMiddle"
             android:layout_width="match_parent"
             android:layout_height="@dimen/y56"
@@ -34,6 +34,7 @@
             android:background="@color/COLOR_WHITE"
             android:textColor="@color/TC_333333"
             android:layout_marginLeft="@dimen/x10"
+            android:textCursorDrawable="@drawable/common_cursor_blue"
             android:hint="输入手机号/群号"
             android:textColorHint="@color/TC_ADADBB"/>
 

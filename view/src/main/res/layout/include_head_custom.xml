@@ -27,7 +27,7 @@
     <TextView
         android:id="@+id/txtNavTitle"
         style="@style/TextNavTitle"/>
-    
+
     <TextView
         android:id="@+id/txtRight"
         style="@style/TextNavRight"/>
@@ -36,9 +36,9 @@
         android:id="@+id/btnRight"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:background="@null"
         android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
         android:layout_marginRight="@dimen/x24"
-        android:layout_centerVertical="true"/>
+        android:background="@null" />
 
 </RelativeLayout>

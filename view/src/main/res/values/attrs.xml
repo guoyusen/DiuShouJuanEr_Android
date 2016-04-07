@@ -78,4 +78,10 @@
         <attr name="rs_scrollCanDown" format="boolean"/>
     </declare-styleable>
 
+    <declare-styleable name="ShSwitchView">
+        <attr name="tintColor" format="reference|color" />
+        <attr name="outerStrokeWidth" format="reference|dimension" />
+        <attr name="shadowSpace" format="reference|dimension" />
+    </declare-styleable>
+
 </resources>

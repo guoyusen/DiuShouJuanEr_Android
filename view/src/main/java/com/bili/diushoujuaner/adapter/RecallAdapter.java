@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.activity.ContactDetailActivity;
 import com.bili.diushoujuaner.adapter.viewholder.ViewHolder;
-import com.bili.diushoujuaner.utils.event.RecallGoodEvent;
+import com.bili.diushoujuaner.utils.event.GoodRecallEvent;
 import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
 import com.bili.diushoujuaner.model.tempHelper.ContactTemper;
 import com.bili.diushoujuaner.model.tempHelper.GoodTemper;
@@ -88,7 +88,7 @@ public class RecallAdapter extends CommonAdapter<RecallDto> {
             holder.getView(R.id.layoutItemGood).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    EventBus.getDefault().post(new RecallGoodEvent(position));
+                    EventBus.getDefault().post(new GoodRecallEvent(position));
                 }
             });
         }

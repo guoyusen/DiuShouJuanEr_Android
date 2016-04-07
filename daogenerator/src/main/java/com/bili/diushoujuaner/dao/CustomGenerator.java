@@ -13,16 +13,8 @@ public class CustomGenerator {
         addParty(schema);
         addMember(schema);
         addChat(schema);
-        addUpdateMark(schema);
 
         new DaoGenerator().generateAll(schema, "../diushoujuaner/model/src/main/java");
-    }
-
-    private static void addUpdateMark(Schema schema){
-        Entity updateMark = schema.addEntity("UpdateMark");
-        updateMark.addIdProperty().autoincrement().primaryKey();
-        updateMark.addIntProperty("tableNo").notNull();
-        updateMark.addStringProperty("updateTime");
     }
 
     /**
@@ -34,6 +26,7 @@ public class CustomGenerator {
         user.addLongProperty("userNo").notNull();
         user.addStringProperty("nickName");
         user.addStringProperty("mobile");
+        user.addStringProperty("email");
         user.addStringProperty("autograph");
         user.addIntProperty("gender");
         user.addStringProperty("birthday");

@@ -71,27 +71,27 @@ public class Common {
         }
     }
 
-    private static int getYearFromTime(String time){
+    public static int getYearFromTime(String time){
         return Integer.valueOf(time.substring(0, 4));
     }
 
-    private static int getMonthFromTime(String time){
+    public static int getMonthFromTime(String time){
         return Integer.valueOf(time.substring(5, 7));
     }
 
-    private static int getDayFromTime(String time){
+    public static int getDayFromTime(String time){
         return Integer.valueOf(time.substring(8, 10));
     }
 
-    private static int getHourFromTime(String time){
+    public static int getHourFromTime(String time){
         return Integer.valueOf(time.substring(13, 15));
     }
 
-    private static int getMinuteFromTime(String time){
+    public static int getMinuteFromTime(String time){
         return Integer.valueOf(time.substring(16, 18));
     }
 
-    private static int getSecondFromTime(String time){
+    public static int getSecondFromTime(String time){
         return Integer.valueOf(time.substring(19));
     }
 

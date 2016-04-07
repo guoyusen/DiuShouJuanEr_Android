@@ -17,6 +17,8 @@
     <string name="contact_start_msg">发消息</string>
     <string name="loging_status">登录中...</string>
 
+    <string name="acount_exit">退出当前账号</string>
+
     <string name="warning_net">网不好，好捉急...</string>
     <string name="warning_401">错误代码 E-H 401</string>
     <string name="warning_403">错误代码 E-H 403</string>

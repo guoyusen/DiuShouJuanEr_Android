@@ -4,11 +4,16 @@ import android.content.Context;
 
 import com.bili.diushoujuaner.model.action.impl.UserInfoAction;
 import com.bili.diushoujuaner.model.action.respon.ActionRespon;
+import com.bili.diushoujuaner.model.apihelper.request.UserInfoReq;
 import com.bili.diushoujuaner.model.callback.ActionCallbackListener;
 import com.bili.diushoujuaner.model.databasehelper.dao.User;
 import com.bili.diushoujuaner.presenter.base.BasePresenter;
 import com.bili.diushoujuaner.presenter.presenter.UserActivityPresenter;
 import com.bili.diushoujuaner.presenter.view.IUserView;
+import com.bili.diushoujuaner.utils.Constant;
+import com.bili.diushoujuaner.utils.event.UpdateUserInfoEvent;
+
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by BiLi on 2016/4/4.
@@ -17,6 +22,30 @@ public class UserActivityPresenterImpl extends BasePresenter<IUserView> implemen
 
     public UserActivityPresenterImpl(IUserView baseView, Context context) {
         super(baseView, context);
+    }
+
+    @Override
+    public void updateUserInfo(UserInfoReq userInfoReq) {
+        showLoading(Constant.LOADING_TOP, "正在保存资料");
+        UserInfoAction.getInstance(context).getUserInfoUpdate(userInfoReq, new ActionCallbackListener<ActionRespon<User>>() {
+            @Override
+            public void onSuccess(ActionRespon<User> result) {
+                if(showMessage(result.getRetCode(), result.getMessage())){
+                    EventBus.getDefault().post(new UpdateUserInfoEvent());
+                }
+                showWarning("资料保存成功");
+                hideLoading(Constant.LOADING_TOP);
+                if(isBindViewValid()){
+                    getBindView().finishView();
+                }
+            }
+
+            @Override
+            public void onFailure(int errorCode) {
+                showError(errorCode);
+                hideLoading(Constant.LOADING_TOP);
+            }
+        });
     }
 
     @Override

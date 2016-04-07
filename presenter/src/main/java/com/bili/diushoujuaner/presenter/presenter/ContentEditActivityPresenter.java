@@ -5,7 +5,9 @@ package com.bili.diushoujuaner.presenter.presenter;
  */
 public interface ContentEditActivityPresenter {
 
-    void putNewAutograph(String autograph);
+    void publishNewAutograph(String autograph);
+
+    void publishNewFeedBack(String feedBack);
 
     void getOldAutograph();
 

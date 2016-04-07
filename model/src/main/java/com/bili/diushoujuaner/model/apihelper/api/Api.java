@@ -1,12 +1,15 @@
 package com.bili.diushoujuaner.model.apihelper.api;
 
 import com.bili.diushoujuaner.model.apihelper.callback.ApiCallbackListener;
+import com.bili.diushoujuaner.model.apihelper.request.AutographModifyReq;
 import com.bili.diushoujuaner.model.apihelper.request.CommentAddReq;
 import com.bili.diushoujuaner.model.apihelper.request.CommentRemoveReq;
 import com.bili.diushoujuaner.model.apihelper.request.ContactInfoReq;
+import com.bili.diushoujuaner.model.apihelper.request.FeedBackReq;
 import com.bili.diushoujuaner.model.apihelper.request.RecentRecallReq;
 import com.bili.diushoujuaner.model.apihelper.request.ResponAddReq;
 import com.bili.diushoujuaner.model.apihelper.request.ResponRemoveReq;
+import com.bili.diushoujuaner.model.apihelper.request.UserInfoReq;
 import com.bili.diushoujuaner.utils.Constant;
 import com.bili.diushoujuaner.model.apihelper.request.RecallListReq;
 import com.bili.diushoujuaner.model.apihelper.request.UserAccountReq;
@@ -28,6 +31,9 @@ public interface Api {
     String getResponRemove = Constant.HOST_ADDRESS + "1.0/respons/remove";
     String getContactInfo = Constant.HOST_ADDRESS + "1.0/users/info/user?";
     String getRecentRecall = Constant.HOST_ADDRESS + "1.0/recalls/recent?";
+    String getAutographModify = Constant.HOST_ADDRESS + "1.0/users/modify/autograph";
+    String getFeedBackAdd = Constant.HOST_ADDRESS + "/1.0/feedback/add";
+    String getUserInfoUpdate = Constant.HOST_ADDRESS + "/1.0/users/info/update";
 
     /**
      * 用户登录
@@ -108,5 +114,26 @@ public interface Api {
      * @param apiCallbackListener
      */
     void getRecentRecall(RecentRecallReq recentRecallReq, ApiCallbackListener apiCallbackListener);
+
+    /**
+     * 更新用户签名
+     * @param autographModifyReq
+     * @param apiCallbackListener
+     */
+    void getAutographModify(AutographModifyReq autographModifyReq, ApiCallbackListener apiCallbackListener);
+
+    /**
+     * 提交用户意见反馈
+     * @param feedBackReq
+     * @param apiCallbackListener
+     */
+    void getFeedBackAdd(FeedBackReq feedBackReq, ApiCallbackListener apiCallbackListener);
+
+    /**
+     * 更新用户资料
+     * @param userInfoReq
+     * @param apiCallbackListener
+     */
+    void getUserInfoUpdate(UserInfoReq userInfoReq, ApiCallbackListener apiCallbackListener);
 
 }
