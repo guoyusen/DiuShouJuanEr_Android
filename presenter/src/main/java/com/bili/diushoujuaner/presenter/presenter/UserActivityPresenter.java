@@ -11,4 +11,6 @@ public interface UserActivityPresenter {
 
     void updateUserInfo(UserInfoReq userInfoReq);
 
+    void updateHeadPic(String path);
+
 }

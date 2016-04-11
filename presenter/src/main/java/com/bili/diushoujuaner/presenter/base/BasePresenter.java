@@ -52,6 +52,9 @@ public class BasePresenter<T extends IBaseView> {
             case Constant.ERROR_PARSE:
                 baseView.showWarning(Constant.WARNING_PARSE);
                 break;
+            case Constant.WARNING_FILE:
+                baseView.showWarning(Constant.WARNING_FILE);
+                break;
             default:
                 break;
         }

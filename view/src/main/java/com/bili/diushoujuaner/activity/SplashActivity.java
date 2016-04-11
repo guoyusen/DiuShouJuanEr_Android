@@ -18,13 +18,12 @@ public class SplashActivity extends BaseActivity<SplashActivityPresenter> implem
 
     @Override
     public void beforeInitView() {
-        super.beforeInitView();
+        basePresenter = new SplashActivityPresenterImpl(this,context);
     }
 
     @Override
     public void initView() {
         setContentView(R.layout.activity_splash);
-        basePresenter = new SplashActivityPresenterImpl(this,context);
     }
 
     @Override

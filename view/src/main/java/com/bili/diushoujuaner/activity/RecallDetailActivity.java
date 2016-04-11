@@ -20,7 +20,7 @@ import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.adapter.CommentAdapter;
 import com.bili.diushoujuaner.adapter.ImageAdapter;
 import com.bili.diushoujuaner.base.BaseFragmentActivity;
-import com.bili.diushoujuaner.utils.event.ExecuteResponEvent;
+import com.bili.diushoujuaner.utils.event.ResponEvent;
 import com.bili.diushoujuaner.fragment.PictureFragment;
 import com.bili.diushoujuaner.presenter.presenter.RecallDetailActivityPresenter;
 import com.bili.diushoujuaner.presenter.presenter.impl.RecallDetailActivityPresenterImpl;
@@ -297,7 +297,7 @@ public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActiv
 
         commentNormalDrawable = new TintedBitmapDrawable(context.getResources(),R.mipmap.icon_comment,ContextCompat.getColor(context, R.color.COLOR_BFBFBF));
         thumbDownDrawable = new TintedBitmapDrawable(context.getResources(),R.mipmap.icon_good,ContextCompat.getColor(context, R.color.COLOR_BFBFBF));
-        thumbUpDrawable = new TintedBitmapDrawable(context.getResources(),R.mipmap.icon_good,ContextCompat.getColor(context, R.color.COLOR_388ECD));
+        thumbUpDrawable = new TintedBitmapDrawable(context.getResources(),R.mipmap.icon_good,ContextCompat.getColor(context, R.color.COLOR_THEME_SUB));
 
         basePresenter = new RecallDetailActivityPresenterImpl(this, context);
     }
@@ -331,12 +331,7 @@ public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActiv
         customGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Bundle bundle = new Bundle();
-                bundle.putParcelableArrayList("PictureVoList", pictureVoList);
-                bundle.putInt("Position", position);
-                parent.getChildAt(position);
-                getSupportFragmentManager().beginTransaction().add(android.R.id.content, PictureFragment.getInstance(bundle), "PictureFragment")
-                        .addToBackStack(null).commit();
+                PictureFragment.showPictureDetail(getSupportFragmentManager(), pictureVoList, position, true);
             }
         });
         commentAdapter = new CommentAdapter(this, commentDtoList);
@@ -370,12 +365,12 @@ public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActiv
     @Override
     public void setGoodStatus(boolean isGood) {
         if (isGood) {
-            layoutGood.setBackground(ContextCompat.getDrawable(context, R.drawable.common_rectangle_388ecd));
+            layoutGood.setBackground(ContextCompat.getDrawable(context, R.drawable.rectangle_themesub));
             ivGood.setImageDrawable(thumbUpDrawable);
             txtGood.setText("已赞");
             txtGood.setTextColor(ContextCompat.getColor(context, R.color.TC_388ECD));
         } else {
-            layoutGood.setBackground(ContextCompat.getDrawable(context, R.drawable.common_rectangle_bfbfbf));
+            layoutGood.setBackground(ContextCompat.getDrawable(context, R.drawable.rectangle_bfbfbf));
             ivGood.setImageDrawable(thumbDownDrawable);
             txtGood.setText("赞");
             txtGood.setTextColor(ContextCompat.getColor(context, R.color.TC_BFBFBF));
@@ -384,7 +379,6 @@ public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActiv
 
     /**
      * 显示点赞列表
-     *
      * @param goodDtoList
      */
     private void showGoodDetail(List<GoodDto> goodDtoList) {
@@ -411,7 +405,7 @@ public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActiv
                 executeClickForSend();
                 break;
             case R.id.ivNavHead:
-                startActivity(new Intent(context, ContactDetailActivity.class).putExtra(ContactDetailActivity.TAG, getBindPresenter().getRecallDtoByRecallNo(recallNo).getUserNo()));
+                SpaceActivity.showSpaceActivity(this,this,getBindPresenter().getRecallDtoByRecallNo(recallNo).getUserNo());
                 break;
         }
     }
@@ -452,8 +446,8 @@ public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActiv
     }
 
     @Override
-    public void showGooderDetail(Long userNo) {
-        startActivity(new Intent(context, ContactDetailActivity.class).putExtra(ContactDetailActivity.TAG, userNo));
+    public void showGooderSpace(Long userNo) {
+        startActivity(new Intent(context, SpaceActivity.class).putExtra(SpaceActivity.TAG, userNo));
     }
 
     @Override
@@ -463,44 +457,44 @@ public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActiv
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onResponEvent(ExecuteResponEvent executeResponEvent){
-        switch (executeResponEvent.getType()){
+    public void onResponEvent(ResponEvent responEvent){
+        switch (responEvent.getType()){
             case Constant.COMMENT_CLICK_LAYOUT_RESPON:
-                if(executeResponEvent.getCommentNo() == null){
+                if(responEvent.getCommentNo() == null){
                     return;
                 }
                 commentConfig.setType(CommentConfig.TYPE_RESPON_FIRST);
-                commentConfig.setCommentNo(executeResponEvent.getCommentNo());
-                commentConfig.setReceiveNo(executeResponEvent.getToNo());
-                commentConfig.setNickNameTo(executeResponEvent.getNickName());
+                commentConfig.setCommentNo(responEvent.getCommentNo());
+                commentConfig.setReceiveNo(responEvent.getToNo());
+                commentConfig.setNickNameTo(responEvent.getNickName());
                 break;
             case Constant.COMMENT_CLICK_COMMENT_CONTENT:
-                if(executeResponEvent.getCommentNo() == null){
+                if(responEvent.getCommentNo() == null){
                     return;
                 }
-                if(executeResponEvent.getToNo() == getBindPresenter().getLoginedUserNo()){
-                    showFooterDialog(executeResponEvent.getCommentNo(), -1, Constant.DELETE_COMMENT);
+                if(responEvent.getToNo() == getBindPresenter().getLoginedUserNo()){
+                    showFooterDialog(responEvent.getCommentNo(), -1, Constant.DELETE_COMMENT);
                     return;
                 }else{
                     commentConfig.setType(CommentConfig.TYPE_RESPON_FIRST);
-                    commentConfig.setCommentNo(executeResponEvent.getCommentNo());
-                    commentConfig.setReceiveNo(executeResponEvent.getToNo());
-                    commentConfig.setNickNameTo(executeResponEvent.getNickName());
+                    commentConfig.setCommentNo(responEvent.getCommentNo());
+                    commentConfig.setReceiveNo(responEvent.getToNo());
+                    commentConfig.setNickNameTo(responEvent.getNickName());
                 }
                 break;
             case Constant.COMMENT_CLICK_SUB_RESPON:
-                if(executeResponEvent.getResponNo() == null){
+                if(responEvent.getResponNo() == null){
                     return;
                 }
-                if(executeResponEvent.getToNo() == getBindPresenter().getLoginedUserNo()){
-                    showFooterDialog(executeResponEvent.getCommentNo(), executeResponEvent.getResponNo(), Constant.DELETE_RESPON);
+                if(responEvent.getToNo() == getBindPresenter().getLoginedUserNo()){
+                    showFooterDialog(responEvent.getCommentNo(), responEvent.getResponNo(), Constant.DELETE_RESPON);
                     return;
                 }else{
                     commentConfig.setType(CommentConfig.TYPE_RESPON_SECOND);
-                    commentConfig.setCommentNo(executeResponEvent.getCommentNo());
-                    commentConfig.setReceiveNo(executeResponEvent.getToNo());
-                    commentConfig.setResponNo(executeResponEvent.getResponNo());
-                    commentConfig.setNickNameTo(executeResponEvent.getNickName());
+                    commentConfig.setCommentNo(responEvent.getCommentNo());
+                    commentConfig.setReceiveNo(responEvent.getToNo());
+                    commentConfig.setResponNo(responEvent.getResponNo());
+                    commentConfig.setNickNameTo(responEvent.getNickName());
                 }
                 break;
         }
@@ -527,8 +521,6 @@ public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActiv
 
     @Override
     public void onPageDestroy() {
-        //退出时，移除在缓存中的RecallDto
-        getBindPresenter().removeRecallDto(recallNo);
         EventBus.getDefault().unregister(this);
     }
 

@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.bili.diushoujuaner.model.action.impl.ContactAction;
 import com.bili.diushoujuaner.model.action.respon.ActionRespon;
-import com.bili.diushoujuaner.model.callback.ActionCallbackListener;
+import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
 import com.bili.diushoujuaner.presenter.base.BasePresenter;
 import com.bili.diushoujuaner.presenter.presenter.ContactFragmentPresenter;
 import com.bili.diushoujuaner.presenter.view.IContactView;
@@ -27,7 +27,7 @@ public class ContactFragmentPresenterImpl extends BasePresenter<IContactView> im
 
     public void getContactList(){
         showLoading(Constant.LOADING_DEFAULT, "");
-        ContactAction.getInstance(context).getContactList(new ActionCallbackListener<ActionRespon<List<FriendVo>>>() {
+        ContactAction.getInstance(context).getContactList(new ActionStringCallbackListener<ActionRespon<List<FriendVo>>>() {
             @Override
             public void onSuccess(ActionRespon<List<FriendVo>> result) {
                 if (showMessage(result.getRetCode(), result.getMessage())) {

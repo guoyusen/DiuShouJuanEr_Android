@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="TRANSPARENT">#00FFFFFF</color>
-    <color name="TRANSPARENT_HALF">#55000000</color>
+    <color name="TRANSPARENT_BLACK">#55000000</color>
+    <color name="TRANSPARENT_WHITE">#55ADADBB</color>
 
     <!-- 常用颜色 -->
     <color name="COLOR_WHITE">#FFFFFF</color>
-    <color name="COLOR_THEME">#12B7F5</color>
+    <color name="COLOR_THEME_MAIN">#12B7F5</color>
+    <color name="COLOR_THEME_SUB">#388ECD</color>
     <color name="COLOR_BLACK">#000000</color>
     <color name="COLOR_BFBFBF">#BFBFBF</color>
-    <color name="COLOR_388ECD">#388ECD</color>
     <color name="COLOR_8A8A8A">#8A8A8A</color>
     <color name="COLOR_4DD965">#4DD965</color>
 
@@ -19,6 +20,7 @@
     <color name="BG_333645">#333645</color>
     <color name="BG_ADADBB">#ADADBB</color>
     <color name="BG_DDDEE2">#DDDEE2</color>
+    <color name="BG_CC22292C">#CC22292C</color>
 
     <color name="SELECT_HLIGHT">#88E67F22</color>
 
@@ -27,6 +29,7 @@
     <color name="LC_BFBFBF">#BFBFBF</color>
     <color name="LC_12B7F5">#12b7f5</color>
     <color name="LC_388ECD">#388ECD</color>
+    <color name="LC_CC111111">#CC111111</color>
 
     <!-- 字体常用颜色 -->
     <color name="TC_WHITE_HINT">#AAFFFFFF</color>
@@ -59,5 +62,11 @@
     <color name="colorInactive">#747474</color>
     <color name="colorActiveSmall">#FFFFFF</color>
     <color name="colorInactiveSmall">#50FFFFFF</color>
+
+    <color name="theme_body">#cc22292c</color>
+    <color name="black">#000000</color>
+    <color name="status_bar">#303135</color>
+    <color name="top_bar">#9f556061</color>
+    <color name="transparenta">#00000000</color>
 
 </resources>

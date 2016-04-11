@@ -1,11 +1,8 @@
 package com.bili.diushoujuaner.activity;
 
 import android.content.Intent;
-import android.os.Build;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -23,7 +20,6 @@ import com.bili.diushoujuaner.utils.Common;
 import com.bili.diushoujuaner.utils.entity.FriendVo;
 import com.bili.diushoujuaner.model.apihelper.response.PictureDto;
 import com.bili.diushoujuaner.widget.CustomGridView;
-import com.bili.diushoujuaner.widget.CustomRelativeLayout;
 import com.bili.diushoujuaner.widget.TintedBitmapDrawable;
 import com.bili.diushoujuaner.widget.aligntextview.AlignTextView;
 import com.bili.diushoujuaner.widget.floatingactionbutton.FloatingActionButton;
@@ -37,7 +33,7 @@ import butterknife.Bind;
 /**
  * Created by BiLi on 2016/3/9.
  */
-public class ContactDetailActivity extends BaseActivity<ContactDetailActivityPresenter> implements IContactDetailView {
+public class ContactDetailActivity extends BaseActivity<ContactDetailActivityPresenter> implements IContactDetailView, View.OnClickListener {
 
     @Bind(R.id.customGridView)
     CustomGridView customGridView;
@@ -104,20 +100,31 @@ public class ContactDetailActivity extends BaseActivity<ContactDetailActivityPre
     @Override
     public void setViewStatus() {
         showPageHead(null, null, "更多");
-        layoutHead.setBackgroundColor(ContextCompat.getColor(context, R.color.COLOR_THEME));
+        layoutHead.setBackgroundColor(ContextCompat.getColor(context, R.color.COLOR_THEME_MAIN));
+
+        layoutRecent.setOnClickListener(this);
 
         getBindPresenter().getFriendVo(userNo);
         getBindPresenter().getRecentRecall(userNo);
     }
 
     @Override
-    public void showContact(FriendVo friendVo) {
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.layoutRecent:
+                startActivity(new Intent(ContactDetailActivity.this, SpaceActivity.class).putExtra(SpaceActivity.TAG,this.friendVo.getFriendNo()));
+                break;
+        }
+    }
+
+    @Override
+    public void showContactInfo(FriendVo friendVo) {
         this.friendVo = friendVo;
         if (friendVo != null) {
             layoutHead.setBackground(ContextCompat.getDrawable(context, R.drawable.transparent_black_down_bg));
             layoutDetail.setVisibility(View.VISIBLE);
             layoutTip.setVisibility(View.GONE);
-            setTintStatusColor(R.color.TRANSPARENT_HALF);
+            setTintStatusColor(R.color.TRANSPARENT_BLACK);
 
             Common.displayDraweeView(friendVo.getPicPath(), ivWallPaper);
             ivArrowRight.setImageDrawable(new TintedBitmapDrawable(getResources(), R.mipmap.icon_arrow_right, ContextCompat.getColor(context, R.color.COLOR_8A8A8A)));
@@ -132,6 +139,7 @@ public class ContactDetailActivity extends BaseActivity<ContactDetailActivityPre
 
     @Override
     public void showRecent(RecallDto recallDto) {
+        layoutRecent.setVisibility(View.VISIBLE);
         if(recallDto != null){
             if(recallDto.getPictureList() != null && !recallDto.getPictureList().isEmpty()){
                 customGridView.setVisibility(View.VISIBLE);

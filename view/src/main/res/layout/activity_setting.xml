@@ -41,7 +41,7 @@
                     <com.bili.diushoujuaner.widget.ShSwitchView
                         android:id="@+id/switchVoice"
                         android:layout_width="@dimen/x118"
-                        android:layout_height="@dimen/y64"
+                        android:layout_height="@dimen/y60"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="@dimen/x24"
@@ -72,7 +72,7 @@
                     <com.bili.diushoujuaner.widget.ShSwitchView
                         android:id="@+id/switchFriend"
                         android:layout_width="@dimen/x118"
-                        android:layout_height="@dimen/y64"
+                        android:layout_height="@dimen/y60"
                         android:layout_alignParentRight="true"
                         shSwitch:outerStrokeWidth="@dimen/x2"
                         android:layout_centerVertical="true"
@@ -87,7 +87,7 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/y100"
-                android:layout_marginTop="@dimen/y64"
+                android:layout_marginTop="@dimen/y48"
                 android:background="@color/COLOR_WHITE"
                 android:gravity="center_vertical">
 
@@ -103,7 +103,7 @@
                 <com.bili.diushoujuaner.widget.ShSwitchView
                     android:id="@+id/switchVibrate"
                     android:layout_width="@dimen/x118"
-                    android:layout_height="@dimen/y64"
+                    android:layout_height="@dimen/y60"
                     android:layout_alignParentRight="true"
                     shSwitch:outerStrokeWidth="@dimen/x2"
                     android:layout_centerVertical="true"
@@ -132,7 +132,7 @@
                 <com.bili.diushoujuaner.widget.ShSwitchView
                     android:id="@+id/switchGPRS"
                     android:layout_width="@dimen/x118"
-                    android:layout_height="@dimen/y64"
+                    android:layout_height="@dimen/y60"
                     android:layout_alignParentRight="true"
                     shSwitch:outerStrokeWidth="@dimen/x2"
                     android:layout_centerVertical="true"
@@ -146,7 +146,7 @@
                 android:id="@+id/layoutAbout"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/y100"
-                android:layout_marginTop="@dimen/y64"
+                android:layout_marginTop="@dimen/y48"
                 android:background="@color/COLOR_WHITE"
                 android:gravity="center_vertical">
 

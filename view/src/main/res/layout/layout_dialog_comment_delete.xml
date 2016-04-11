@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/TRANSPARENT">
+
+    <RelativeLayout
+        android:id="@+id/layoutDelete"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y92"
+        android:layout_marginLeft="@dimen/x8"
+        android:layout_marginRight="@dimen/x8"
+        android:background="@drawable/rectangle_solid_white"
+        android:gravity="center">
+
+        <TextView
+            style="@style/TextLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/TC_F55555"
+            android:text="删除"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/layoutCancle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y92"
+        android:layout_marginLeft="@dimen/x8"
+        android:layout_marginRight="@dimen/x8"
+        android:layout_marginTop="@dimen/x16"
+        android:layout_marginBottom="@dimen/x16"
+        android:background="@drawable/rectangle_solid_white"
+        android:gravity="center">
+
+        <TextView
+            style="@style/TextLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/TC_388ECD"
+            android:text="取消"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

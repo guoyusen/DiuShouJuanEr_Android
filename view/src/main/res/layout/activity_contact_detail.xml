@@ -25,6 +25,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/y480"
                     app:actualImageScaleType="centerCrop"
+                    app:placeholderImageScaleType="centerCrop"
                     app:placeholderImage="@mipmap/bg_menu_head" />
 
                 <RelativeLayout
@@ -95,6 +96,7 @@
                         android:layout_below="@+id/layoutAutograph"
                         android:background="@color/COLOR_WHITE"
                         android:gravity="center_vertical"
+                        android:visibility="gone"
                         android:padding="@dimen/y24">
 
                         <TextView

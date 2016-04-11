@@ -64,6 +64,11 @@ public abstract class CommonAdapter<T> extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    public void remove(int position){
+        this.list.remove(position);
+        notifyDataSetChanged();
+    }
+
     /**
      * 清空数据
      */

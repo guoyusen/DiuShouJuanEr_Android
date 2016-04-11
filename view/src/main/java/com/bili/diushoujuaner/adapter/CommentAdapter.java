@@ -1,7 +1,6 @@
 package com.bili.diushoujuaner.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.view.MotionEvent;
@@ -11,9 +10,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.bili.diushoujuaner.R;
-import com.bili.diushoujuaner.activity.ContactDetailActivity;
+import com.bili.diushoujuaner.activity.SpaceActivity;
 import com.bili.diushoujuaner.adapter.viewholder.ViewHolder;
-import com.bili.diushoujuaner.utils.event.ExecuteResponEvent;
+import com.bili.diushoujuaner.model.action.impl.UserInfoAction;
+import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
+import com.bili.diushoujuaner.presenter.base.IBaseView;
+import com.bili.diushoujuaner.utils.event.ResponEvent;
 import com.bili.diushoujuaner.model.tempHelper.ContactTemper;
 import com.bili.diushoujuaner.utils.Common;
 import com.bili.diushoujuaner.model.apihelper.response.CommentDto;
@@ -42,17 +44,19 @@ public class CommentAdapter extends CommonAdapter<CommentDto> {
     public void convert(ViewHolder holder, final CommentDto commentDto, int position) throws Exception {
         if(commentDto != null){
             if(commentFocusDrawable == null){
-                commentFocusDrawable = new TintedBitmapDrawable(context.getResources(),R.mipmap.icon_comment,ContextCompat.getColor(context, R.color.COLOR_388ECD));
+                commentFocusDrawable = new TintedBitmapDrawable(context.getResources(),R.mipmap.icon_comment,ContextCompat.getColor(context, R.color.COLOR_THEME_SUB));
             }
             ((ImageView)holder.getView(R.id.ivComment)).setImageDrawable(commentFocusDrawable);
 
-            Common.displayDraweeView(commentDto.getFromPicPath(), (SimpleDraweeView) holder.getView(R.id.ivItemHead));
+            if(commentDto.getFromNo() == CustomSessionPreference.getInstance().getCustomSession().getUserNo()){
+                Common.displayDraweeView(UserInfoAction.getInstance(context).getUserFromLocal().getPicPath(), (SimpleDraweeView) holder.getView(R.id.ivItemHead));
+            }else{
+                Common.displayDraweeView(commentDto.getFromPicPath(), (SimpleDraweeView) holder.getView(R.id.ivItemHead));
+            }
             holder.getView(R.id.ivItemHead).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(context, ContactDetailActivity.class);
-                    intent.putExtra(ContactDetailActivity.TAG, commentDto.getFromNo());
-                    context.startActivity(intent);
+                    SpaceActivity.showSpaceActivity(context,(IBaseView)context,commentDto.getFromNo());
                 }
             });
 
@@ -65,9 +69,7 @@ public class CommentAdapter extends CommonAdapter<CommentDto> {
             holder.getView(R.id.itemCommentUserName).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent = new Intent(context, ContactDetailActivity.class);
-                    intent.putExtra(ContactDetailActivity.TAG, commentDto.getFromNo());
-                    context.startActivity(intent);
+                    SpaceActivity.showSpaceActivity(context,(IBaseView)context,commentDto.getFromNo());
                 }
             });
 
@@ -82,7 +84,7 @@ public class CommentAdapter extends CommonAdapter<CommentDto> {
                             break;
                         case MotionEvent.ACTION_UP:
                             v.setBackgroundColor(ContextCompat.getColor(context, R.color.COLOR_WHITE));
-                            EventBus.getDefault().post(ExecuteResponEvent.getResponEvent(commentDto.getCommentNo(), null, commentDto.getFromNo(), Constant.COMMENT_CLICK_COMMENT_CONTENT, commentDto.getNickName()));
+                            EventBus.getDefault().post(ResponEvent.getResponEvent(commentDto.getCommentNo(), null, commentDto.getFromNo(), Constant.COMMENT_CLICK_COMMENT_CONTENT, commentDto.getNickName()));
                             break;
                         case MotionEvent.ACTION_CANCEL:
                             v.setBackgroundColor(ContextCompat.getColor(context, R.color.COLOR_WHITE));
@@ -94,7 +96,7 @@ public class CommentAdapter extends CommonAdapter<CommentDto> {
             holder.getView(R.id.layoutRespon).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    EventBus.getDefault().post(ExecuteResponEvent.getResponEvent(commentDto.getCommentNo(), null, commentDto.getFromNo(), Constant.COMMENT_CLICK_LAYOUT_RESPON, commentDto.getNickName()));
+                    EventBus.getDefault().post(ResponEvent.getResponEvent(commentDto.getCommentNo(), null, commentDto.getFromNo(), Constant.COMMENT_CLICK_LAYOUT_RESPON, commentDto.getNickName()));
                 }
             });
             if(responAdapterHashtable.get(commentDto.getCommentNo()) == null){

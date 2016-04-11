@@ -12,13 +12,12 @@ import com.bili.diushoujuaner.model.action.impl.GoodAction;
 import com.bili.diushoujuaner.model.action.impl.ResponAction;
 import com.bili.diushoujuaner.model.action.impl.UserInfoAction;
 import com.bili.diushoujuaner.model.action.respon.ActionRespon;
-import com.bili.diushoujuaner.model.apihelper.ApiRespon;
 import com.bili.diushoujuaner.model.apihelper.request.CommentAddReq;
 import com.bili.diushoujuaner.model.apihelper.request.CommentRemoveReq;
 import com.bili.diushoujuaner.model.apihelper.request.ResponAddReq;
 import com.bili.diushoujuaner.model.apihelper.request.ResponRemoveReq;
 import com.bili.diushoujuaner.model.apihelper.response.PictureDto;
-import com.bili.diushoujuaner.model.callback.ActionCallbackListener;
+import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
 import com.bili.diushoujuaner.model.databasehelper.DBManager;
 import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
 import com.bili.diushoujuaner.model.tempHelper.ContactTemper;
@@ -52,7 +51,7 @@ public class RecallDetailActivityPresenterImpl extends BasePresenter<IRecallDeta
         @Override
         public void onClick(View widget) {
             if(isBindViewValid()){
-                getBindView().showGooderDetail(userNo);
+                getBindView().showGooderSpace(userNo);
             }
         }
 
@@ -155,7 +154,7 @@ public class RecallDetailActivityPresenterImpl extends BasePresenter<IRecallDeta
 
     @Override
     public void getGoodAdd(long recallNo){
-        GoodAction.getInstance(context).getGoodAdd(recallNo, new ActionCallbackListener<ActionRespon<String>>() {
+        GoodAction.getInstance(context).getGoodAdd(recallNo, new ActionStringCallbackListener<ActionRespon<String>>() {
             @Override
             public void onSuccess(ActionRespon<String> result) {
                 showMessage(result.getRetCode(), result.getMessage());
@@ -170,7 +169,7 @@ public class RecallDetailActivityPresenterImpl extends BasePresenter<IRecallDeta
 
     @Override
     public void getGoodRemove(long recallNo){
-        GoodAction.getInstance(context).getGoodRemove(recallNo, new ActionCallbackListener<ActionRespon<String>>() {
+        GoodAction.getInstance(context).getGoodRemove(recallNo, new ActionStringCallbackListener<ActionRespon<String>>() {
             @Override
             public void onSuccess(ActionRespon<String> result) {
                 showMessage(result.getRetCode(), result.getMessage());
@@ -198,7 +197,7 @@ public class RecallDetailActivityPresenterImpl extends BasePresenter<IRecallDeta
         responAddReq.setCommentNo(responDto.getCommentNo());
         responAddReq.setContent(responDto.getContent());
 
-        ResponAction.getInstance(context).getResponAdd(responAddReq, new ActionCallbackListener<ActionRespon<ResponDto>>() {
+        ResponAction.getInstance(context).getResponAdd(responAddReq, new ActionStringCallbackListener<ActionRespon<ResponDto>>() {
             @Override
             public void onSuccess(ActionRespon<ResponDto> result) {
                 if (showMessage(result.getRetCode(), result.getMessage())) {
@@ -239,7 +238,7 @@ public class RecallDetailActivityPresenterImpl extends BasePresenter<IRecallDeta
         commentAddReq.setRecallNo(commentDto.getRecallNo());
         commentAddReq.setTimeStamp(commentDto.getTimeStamp());
 
-        CommentAction.getInstance(context).getCommentAdd(commentAddReq, new ActionCallbackListener<ActionRespon<CommentDto>>() {
+        CommentAction.getInstance(context).getCommentAdd(commentAddReq, new ActionStringCallbackListener<ActionRespon<CommentDto>>() {
             @Override
             public void onSuccess(ActionRespon<CommentDto> result) {
                 if (showMessage(result.getRetCode(), result.getMessage())) {
@@ -309,7 +308,7 @@ public class RecallDetailActivityPresenterImpl extends BasePresenter<IRecallDeta
         CommentRemoveReq commentRemoveReq = new CommentRemoveReq();
         commentRemoveReq.setCommentNo(commentNo);
 
-        CommentAction.getInstance(context).getCommentRemove(commentRemoveReq, new ActionCallbackListener<ActionRespon<Long>>() {
+        CommentAction.getInstance(context).getCommentRemove(commentRemoveReq, new ActionStringCallbackListener<ActionRespon<Long>>() {
             @Override
             public void onSuccess(ActionRespon<Long> result) {
                 if(showMessage(result.getRetCode(), result.getMessage())){
@@ -332,7 +331,7 @@ public class RecallDetailActivityPresenterImpl extends BasePresenter<IRecallDeta
         ResponRemoveReq responRemoveReq = new ResponRemoveReq();
         responRemoveReq.setResponNo(responNo);
 
-        ResponAction.getInstance(context).getResponRemove(responRemoveReq, new ActionCallbackListener<ActionRespon<Long>>() {
+        ResponAction.getInstance(context).getResponRemove(responRemoveReq, new ActionStringCallbackListener<ActionRespon<Long>>() {
             @Override
             public void onSuccess(ActionRespon<Long> result) {
                 if (showMessage(result.getRetCode(), result.getMessage())) {

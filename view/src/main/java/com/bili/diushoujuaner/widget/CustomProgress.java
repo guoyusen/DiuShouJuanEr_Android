@@ -62,7 +62,7 @@ public class CustomProgress extends Dialog {
      */
     public void showTop(CharSequence message, boolean cancelable, OnCancelListener cancelListener) {
         dialog.setTitle("");
-        dialog.setContentView(R.layout.progress_custom_top);
+        dialog.setContentView(R.layout.layout_progress_custom_top);
         if (message == null || message.length() == 0) {
             dialog.findViewById(R.id.message).setVisibility(View.GONE);
         } else {
@@ -87,7 +87,7 @@ public class CustomProgress extends Dialog {
 
     public void showCenter(CharSequence message, boolean cancelable, OnCancelListener cancelListener) {
         dialog.setTitle("");
-        dialog.setContentView(R.layout.progress_custom_center);
+        dialog.setContentView(R.layout.layout_progress_custom_center);
         if (message == null || message.length() == 0) {
             dialog.findViewById(R.id.message).setVisibility(View.GONE);
         } else {

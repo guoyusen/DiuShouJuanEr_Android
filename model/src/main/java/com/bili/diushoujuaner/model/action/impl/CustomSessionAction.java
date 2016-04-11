@@ -7,12 +7,12 @@ import com.bili.diushoujuaner.model.action.ICustomSessionAction;
 import com.bili.diushoujuaner.model.action.respon.ActionRespon;
 import com.bili.diushoujuaner.model.apihelper.ApiRespon;
 import com.bili.diushoujuaner.model.apihelper.api.ApiAction;
-import com.bili.diushoujuaner.model.apihelper.callback.ApiCallbackListener;
+import com.bili.diushoujuaner.model.apihelper.callback.ApiStringCallbackListener;
 import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
 import com.bili.diushoujuaner.utils.GsonParser;
 import com.bili.diushoujuaner.model.apihelper.response.CustomSession;
 import com.bili.diushoujuaner.model.apihelper.request.UserAccountReq;
-import com.bili.diushoujuaner.model.callback.ActionCallbackListener;
+import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
 import com.google.gson.reflect.TypeToken;
 import com.nanotasks.BackgroundWork;
 import com.nanotasks.Completion;
@@ -43,34 +43,36 @@ public class CustomSessionAction implements ICustomSessionAction {
     }
 
     @Override
-    public void getUserLogin(UserAccountReq userAccountReq, final ActionCallbackListener<ActionRespon<CustomSession>> actionCallbackListener){
-        ApiAction.getInstance().getUserLogin(userAccountReq, new ApiCallbackListener() {
+    public void getUserLogin(UserAccountReq userAccountReq, final ActionStringCallbackListener<ActionRespon<Void>> actionStringCallbackListener){
+        ApiAction.getInstance().getUserLogin(userAccountReq, new ApiStringCallbackListener() {
             @Override
             public void onSuccess(final String data) {
-                Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<CustomSession>>() {
-                    @Override
-                    public ActionRespon<CustomSession> doInBackground() throws Exception {
-                        ApiRespon<CustomSession> result = GsonParser.getInstance().fromJson(data, new TypeToken<ApiRespon<CustomSession>>() {
-                        }.getType());
+                Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<Void>>() {
+                @Override
+                public ActionRespon<Void> doInBackground() throws Exception {
+                    ApiRespon<CustomSession> result = GsonParser.getInstance().fromJson(data, new TypeToken<ApiRespon<CustomSession>>() {
+                    }.getType());
+                    if(result.getIsLegal()){
                         CustomSessionPreference.getInstance().saveCustomSession(result.getData());
-                        return ActionRespon.getActionResponFromApiRespon(result);
                     }
-                }, new Completion<ActionRespon<CustomSession>>() {
-                    @Override
-                    public void onSuccess(Context context, ActionRespon<CustomSession> result) {
-                        actionCallbackListener.onSuccess(result);
-                    }
+                    return ActionRespon.getActionRespon(result.getMessage(), result.getRetCode(), (Void)null);
+                }
+            }, new Completion<ActionRespon<Void>>() {
+                @Override
+                public void onSuccess(Context context, ActionRespon<Void> result) {
+                    actionStringCallbackListener.onSuccess(result);
+                }
 
-                    @Override
-                    public void onError(Context context, Exception e) {
-                        actionCallbackListener.onSuccess(ActionRespon.<CustomSession>getActionResponError());
-                    }
-                });
-            }
+                @Override
+                public void onError(Context context, Exception e) {
+                    actionStringCallbackListener.onSuccess(ActionRespon.<Void>getActionResponError());
+                }
+            });
+        }
 
             @Override
             public void onFailure(int errorCode) {
-                actionCallbackListener.onFailure(errorCode);
+                actionStringCallbackListener.onFailure(errorCode);
             }
         });
     }

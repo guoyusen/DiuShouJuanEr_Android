@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.adapter.viewholder.ViewHolder;
-import com.bili.diushoujuaner.utils.event.ExecuteResponEvent;
+import com.bili.diushoujuaner.utils.event.ResponEvent;
 import com.bili.diushoujuaner.model.tempHelper.ContactTemper;
 import com.bili.diushoujuaner.model.apihelper.response.ResponDto;
 import com.bili.diushoujuaner.utils.Constant;
@@ -42,7 +42,7 @@ public class ResponAdapter extends CommonAdapter<ResponDto> {
                             break;
                         case MotionEvent.ACTION_UP:
                             v.setBackgroundColor(ContextCompat.getColor(context, R.color.COLOR_WHITE));
-                            EventBus.getDefault().post(ExecuteResponEvent.getResponEvent(responDto.getCommentNo(), responDto.getResponNo(), responDto.getFromNo(), Constant.COMMENT_CLICK_SUB_RESPON, responDto.getNickNameFrom()));
+                            EventBus.getDefault().post(ResponEvent.getResponEvent(responDto.getCommentNo(), responDto.getResponNo(), responDto.getFromNo(), Constant.COMMENT_CLICK_SUB_RESPON, responDto.getNickNameFrom()));
                             break;
                         case MotionEvent.ACTION_CANCEL:
                             v.setBackgroundColor(ContextCompat.getColor(context, R.color.COLOR_WHITE));

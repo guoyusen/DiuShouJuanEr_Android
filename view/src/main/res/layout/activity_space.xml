@@ -1,9 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/MatchMatch.FitWindow"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fab="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/tools"
+    style="@style/MatchMatch"
     android:background="@color/COLOR_WHITE">
 
-    <include android:id="@+id/layoutHead"
-        layout="@layout/include_head_custom"/>
+    <RelativeLayout
+        android:id="@+id/layoutDetail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-</RelativeLayout>
+        <com.bili.diushoujuaner.widget.scrollview.ReboundScrollView
+            android:id="@+id/reboundScrollView"
+            style="@style/MatchMatch"
+            android:layout_above="@+id/layoutBottom"
+            android:overScrollMode="never"
+            android:scrollbars="none">
+
+            <RelativeLayout
+                style="@style/MatchMatch"
+                android:background="@color/BG_F6F6F6">
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/ivWallPaper"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/y480"
+                    app:actualImageScaleType="centerCrop"
+                    app:placeholderImage="@mipmap/bg_menu_head"
+                    app:placeholderImageScaleType="centerCrop" />
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/userHead"
+                    android:layout_width="@dimen/x160"
+                    android:layout_height="@dimen/y160"
+                    android:layout_alignBottom="@+id/ivWallPaper"
+                    android:layout_marginBottom="@dimen/x24"
+                    android:layout_marginLeft="@dimen/x24"
+                    app:actualImageScaleType="focusCrop"
+                    app:roundAsCircle="true" />
+
+                <RelativeLayout
+                    android:id="@+id/layoutTip"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/ivWallPaper"
+                    android:layout_marginTop="@dimen/y64"
+                    android:background="@color/COLOR_WHITE"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/ivTip"
+                        android:layout_width="@dimen/x108"
+                        android:layout_height="@dimen/y108"
+                        android:layout_centerInParent="true" />
+
+                    <TextView
+                        style="@style/TextMiddle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/ivTip"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/y32"
+                        android:text="暂无数据"
+                        android:textColor="@color/TC_BFBFBF" />
+
+                </RelativeLayout>
+
+                <com.bili.diushoujuaner.widget.CustomListViewRefresh
+                    android:id="@+id/listviewRecall"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/ivWallPaper"
+                    android:layout_marginTop="@dimen/y80"
+                    android:divider="@color/LC_F6F6F6"
+                    android:dividerHeight="@dimen/y20" />
+
+                <com.bili.diushoujuaner.widget.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/btnFloat"
+                    android:layout_width="@dimen/x128"
+                    android:layout_height="@dimen/x128"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="@dimen/x24"
+                    android:layout_marginTop="@dimen/y416"
+                    android:src="@mipmap/icon_editor"
+                    fab:fab_colorNormal="@color/accent"
+                    fab:fab_colorPressed="@color/accent_pressed"
+                    fab:fab_colorRipple="@color/ripple" />
+
+
+            </RelativeLayout>
+
+        </com.bili.diushoujuaner.widget.scrollview.ReboundScrollView>
+
+    </RelativeLayout>
+
+    <include
+        android:id="@+id/layoutHead"
+        layout="@layout/include_head_transparent" />
+
+</FrameLayout>

@@ -47,7 +47,6 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/y70"
                     app:actualImageScaleType="focusCrop"
-                    app:placeholderImage="@mipmap/shin"
                     app:roundAsCircle="true"
                     app:roundingBorderWidth="@dimen/x2"
                     fresco:roundingBorderColor="@color/BG_F6F6F6" />
@@ -60,7 +59,6 @@
                     android:layout_below="@+id/menuHead"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/y10"
-                    android:text="三木同学"
                     android:textColor="@color/TC_WHITE"
                     android:textStyle="bold" />
 
@@ -87,7 +85,8 @@
                         android:layout_marginRight="@dimen/x24"
                         android:ellipsize="marquee"
                         android:singleLine="true"
-                        android:text="就让大雨冲刷记忆中的沙,让我了无牵挂浪迹在天涯"
+                        android:hint="个性签名"
+                        android:textColorHint="@color/TC_WHITE_HINT"
                         android:textColor="@color/TC_WHITE" />
 
                 </LinearLayout>
@@ -110,7 +109,7 @@
 
                     <TextView
                         style="@style/menu_item_text"
-                        android:text="个人空间" />
+                        android:text="我的发表" />
 
                 </LinearLayout>
 

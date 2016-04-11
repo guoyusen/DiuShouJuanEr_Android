@@ -95,13 +95,17 @@ public class SettingActivity extends BaseActivity<SettingActivityPresenter> impl
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btnExit:
-                getBindPresenter().clearCurrentUserData();
-                startActivity(new Intent(this, LoginActivity.class));
+                getBindPresenter().getLogout();
                 break;
             case R.id.layoutAbout:
                 startActivity(new Intent(this, AboutActivity.class));
                 break;
         }
+    }
+
+    @Override
+    public void exitActivity() {
+        startActivity(new Intent(this, LoginActivity.class));
     }
 
     @Override

@@ -60,7 +60,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/x20"
                     android:layout_toLeftOf="@+id/layoutGood"
-                    android:background="@drawable/common_rectangle_bfbfbf"
+                    android:background="@drawable/rectangle_bfbfbf"
                     android:gravity="center"
                     android:orientation="horizontal">
 
@@ -85,7 +85,7 @@
                     android:layout_height="@dimen/y54"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:background="@drawable/common_rectangle_bfbfbf"
+                    android:background="@drawable/rectangle_bfbfbf"
                     android:gravity="center"
                     android:orientation="horizontal">
 
@@ -155,7 +155,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/x108"
-            android:background="@drawable/common_rectangle_solid_white"
+            android:background="@drawable/rectangle_solid_white"
             android:hint="说点什么呗..."
             android:maxLines="6"
             android:minHeight="@dimen/y80"
@@ -163,7 +163,7 @@
             android:paddingRight="@dimen/x5"
             android:textColor="@color/TC_040404"
             android:textColorHint="@color/TC_ADADBB"
-            android:textCursorDrawable="@drawable/common_cursor_blue" />
+            android:textCursorDrawable="@drawable/cursor_blue" />
 
         <RelativeLayout
             android:id="@+id/layoutSend"

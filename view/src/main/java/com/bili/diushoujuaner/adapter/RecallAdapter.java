@@ -1,7 +1,6 @@
 package com.bili.diushoujuaner.adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
@@ -9,8 +8,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bili.diushoujuaner.R;
-import com.bili.diushoujuaner.activity.ContactDetailActivity;
+import com.bili.diushoujuaner.activity.SpaceActivity;
 import com.bili.diushoujuaner.adapter.viewholder.ViewHolder;
+import com.bili.diushoujuaner.model.action.impl.UserInfoAction;
+import com.bili.diushoujuaner.presenter.base.IBaseView;
+import com.bili.diushoujuaner.utils.Constant;
+import com.bili.diushoujuaner.utils.event.RemoveRecallEvent;
 import com.bili.diushoujuaner.utils.event.GoodRecallEvent;
 import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
 import com.bili.diushoujuaner.model.tempHelper.ContactTemper;
@@ -30,23 +33,33 @@ import java.util.List;
  */
 public class RecallAdapter extends CommonAdapter<RecallDto> {
 
-    private Drawable thumbUpDrawable, thumbDownDrawable, commentDrawable, frienddrawable;
+    private Drawable thumbUpDrawable, thumbDownDrawable, commentDrawable, frienddrawable, deleteDrawable;
+    private int type, index;
+    private long currentUserNo;
 
-    public RecallAdapter(Context context, List<RecallDto> list){
+    public RecallAdapter(Context context, List<RecallDto> list, int type, int index){
         super(context, list, R.layout.item_main_recall);
+        this.type = type;
+        this.index = index;
+        this.currentUserNo = CustomSessionPreference.getInstance().getCustomSession().getUserNo();
     }
 
     @Override
     public void convert(final ViewHolder holder, final RecallDto recallDto, final int position) throws Exception {
         if(recallDto != null){
-            Common.displayDraweeView(recallDto.getUserPicPath(), (SimpleDraweeView) holder.getView(R.id.ivItemHead));
+            //头像展示和头像点击事件
+            if(recallDto.getUserNo() == CustomSessionPreference.getInstance().getCustomSession().getUserNo()){
+                Common.displayDraweeView(UserInfoAction.getInstance(context).getUserFromLocal().getPicPath(), (SimpleDraweeView) holder.getView(R.id.ivItemHead));
+            }else{
+                Common.displayDraweeView(recallDto.getUserPicPath(), (SimpleDraweeView) holder.getView(R.id.ivItemHead));
+            }
             holder.getView(R.id.ivItemHead).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    context.startActivity(new Intent(context, ContactDetailActivity.class).putExtra(ContactDetailActivity.TAG, recallDto.getUserNo()));
+                    SpaceActivity.showSpaceActivity(context,(IBaseView)context,recallDto.getUserNo());
                 }
             });
-
+            //显示展示的主图片
             if(recallDto.getPictureList().size() > 0){
                 holder.getView(R.id.layoutItemPic).setVisibility(View.VISIBLE);
                 Common.displayDraweeView(recallDto.getPictureList().get(0).getPicPath(), (SimpleDraweeView) holder.getView(R.id.ivItemPic));
@@ -59,19 +72,46 @@ public class RecallAdapter extends CommonAdapter<RecallDto> {
             }else{
                 holder.getView(R.id.layoutItemPic).setVisibility(View.GONE);
             }
-            //设置好友标志和昵称
+            //设置昵称
             String userName = ContactTemper.getFriendRemark(recallDto.getUserNo());
             if(userName != null){
                 ((TextView) holder.getView(R.id.txtItemUserName)).setText(userName);
-                if(frienddrawable == null){
-                    frienddrawable = new TintedBitmapDrawable(context.getResources(),R.mipmap.icon_friend,ContextCompat.getColor(context, R.color.COLOR_BFBFBF));
-                }
-                ((ImageView)holder.getView(R.id.ivItemFriend)).setVisibility(View.VISIBLE);
-                ((ImageView)holder.getView(R.id.ivItemFriend)).setImageDrawable(frienddrawable);
             }else{
                 ((TextView) holder.getView(R.id.txtItemUserName)).setText(recallDto.getUserName());
-                holder.getView(R.id.ivItemFriend).setVisibility(View.GONE);
             }
+            //根据Adapter的类型设置右侧的图标
+            if(type == Constant.RECALL_ADAPTER_SPACE){
+                // 空间类型，根据是否是用户自己，来设置是否显示删除按钮，并设置删除点击事件
+                holder.getView(R.id.ivItemFriend).setVisibility(View.GONE);
+                if(recallDto.getUserNo() == this.currentUserNo){
+                    holder.getView(R.id.layoutDelete).setVisibility(View.VISIBLE);
+                    if(deleteDrawable == null){
+                        deleteDrawable = new TintedBitmapDrawable(context.getResources(),R.mipmap.icon_delete,ContextCompat.getColor(context, R.color.COLOR_BFBFBF));
+                    }
+                    ((ImageView)holder.getView(R.id.ivItemDelete)).setImageDrawable(deleteDrawable);
+                    holder.getView(R.id.ivItemDelete).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            EventBus.getDefault().post(new RemoveRecallEvent(index, position, recallDto.getRecallNo()));
+                        }
+                    });
+                }else{
+                    holder.getView(R.id.layoutDelete).setVisibility(View.GONE);
+                }
+            }else if(type == Constant.RECALL_ADAPTER_HOME){
+                // 首页类型，根据该该用户是否是好友类型，来设置时候显示好友标签
+                holder.getView(R.id.layoutDelete).setVisibility(View.GONE);
+                if(userName != null){
+                    if(frienddrawable == null){
+                        frienddrawable = new TintedBitmapDrawable(context.getResources(),R.mipmap.icon_friend,ContextCompat.getColor(context, R.color.COLOR_BFBFBF));
+                    }
+                    holder.getView(R.id.ivItemFriend).setVisibility(View.VISIBLE);
+                    ((ImageView)holder.getView(R.id.ivItemFriend)).setImageDrawable(frienddrawable);
+                }else{
+                    holder.getView(R.id.ivItemFriend).setVisibility(View.GONE);
+                }
+            }
+
             // 设置评论图标
             if(commentDrawable == null){
                 commentDrawable = new TintedBitmapDrawable(context.getResources(),R.mipmap.icon_comment,ContextCompat.getColor(context, R.color.COLOR_BFBFBF));
@@ -88,7 +128,7 @@ public class RecallAdapter extends CommonAdapter<RecallDto> {
             holder.getView(R.id.layoutItemGood).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    EventBus.getDefault().post(new GoodRecallEvent(position));
+                    EventBus.getDefault().post(new GoodRecallEvent(index, position, type));
                 }
             });
         }
@@ -112,10 +152,10 @@ public class RecallAdapter extends CommonAdapter<RecallDto> {
         }
     }
 
-    private void setGoodStatus(ViewHolder holder, boolean goodStatus){
+    private void  setGoodStatus(ViewHolder holder, boolean goodStatus){
         if(goodStatus){
             if(thumbUpDrawable == null){
-                thumbUpDrawable = new TintedBitmapDrawable(context.getResources(),R.mipmap.icon_good,ContextCompat.getColor(context, R.color.COLOR_388ECD));
+                thumbUpDrawable = new TintedBitmapDrawable(context.getResources(),R.mipmap.icon_good,ContextCompat.getColor(context, R.color.COLOR_THEME_SUB));
             }
             ((ImageView)holder.getView(R.id.ivItemGood)).setImageDrawable(thumbUpDrawable);
             ((TextView)holder.getView(R.id.txtGoodCount)).setTextColor(ContextCompat.getColor(context, R.color.TC_388ECD));

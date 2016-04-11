@@ -20,9 +20,13 @@ public class SplashActivityPresenterImpl extends BasePresenter<ISplashView> impl
     @Override
     public void getNextActivity() {
         if(CustomSessionAction.getInstance(context).getIsLogined()){
-            getBindView().showNextActivity(Constant.SHOW_TYPE_MAIN);
+            if(isBindViewValid()){
+                getBindView().showNextActivity(Constant.SHOW_TYPE_MAIN);
+            }
         }else{
-            getBindView().showNextActivity(Constant.SHOW_TYPE_LOGIN);
+            if(isBindViewValid()){
+                getBindView().showNextActivity(Constant.SHOW_TYPE_LOGIN);
+            }
         }
     }
 }

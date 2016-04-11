@@ -14,6 +14,7 @@ public class CustomSessionPreference {
     private static String FILENAME = "ACCESS_TOKEN";
     private static Context mContext;
     private static CustomSessionPreference customSessionPreference;
+    private static CustomSession customSession;
 
     public static void initialize(Context context){
         mContext = context;
@@ -40,15 +41,18 @@ public class CustomSessionPreference {
             editor.putLong("userNo", customSession.getUserNo());
         }
         editor.apply();
+        this.customSession = null;
     }
 
     public CustomSession getCustomSession(){
-        SharedPreferences preferences = mContext.getSharedPreferences(FILENAME, Context.MODE_PRIVATE);
-        CustomSession customSession = new CustomSession();
+        if(customSession == null){
+            SharedPreferences preferences = mContext.getSharedPreferences(FILENAME, Context.MODE_PRIVATE);
+            customSession = new CustomSession();
 
-        customSession.setAccessToken(preferences.getString("accessToken", ""));
-        customSession.setLastTime(preferences.getString("lastTime", ""));
-        customSession.setUserNo(preferences.getLong("userNo", 0));
+            customSession.setAccessToken(preferences.getString("accessToken", ""));
+            customSession.setLastTime(preferences.getString("lastTime", ""));
+            customSession.setUserNo(preferences.getLong("userNo", 0));
+        }
 
         return customSession;
     }
@@ -66,6 +70,7 @@ public class CustomSessionPreference {
         SharedPreferences.Editor editor = preferences.edit();
         editor.clear();
         editor.apply();
+        customSession = null;
     }
 
 }

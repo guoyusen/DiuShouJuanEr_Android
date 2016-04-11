@@ -6,14 +6,17 @@ import com.bili.diushoujuaner.model.action.IRecallAction;
 import com.bili.diushoujuaner.model.action.respon.ActionRespon;
 import com.bili.diushoujuaner.model.apihelper.ApiRespon;
 import com.bili.diushoujuaner.model.apihelper.api.ApiAction;
-import com.bili.diushoujuaner.model.apihelper.callback.ApiCallbackListener;
+import com.bili.diushoujuaner.model.apihelper.callback.ApiStringCallbackListener;
+import com.bili.diushoujuaner.model.apihelper.request.RecallRemoveReq;
 import com.bili.diushoujuaner.model.apihelper.request.RecentRecallReq;
 import com.bili.diushoujuaner.model.cachehelper.ACache;
+import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
+import com.bili.diushoujuaner.utils.Common;
 import com.bili.diushoujuaner.utils.Constant;
 import com.bili.diushoujuaner.utils.GsonParser;
 import com.bili.diushoujuaner.model.apihelper.request.RecallListReq;
 import com.bili.diushoujuaner.model.apihelper.response.RecallDto;
-import com.bili.diushoujuaner.model.callback.ActionCallbackListener;
+import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
 import com.google.gson.reflect.TypeToken;
 import com.nanotasks.BackgroundWork;
 import com.nanotasks.Completion;
@@ -41,34 +44,92 @@ public class RecallAction implements IRecallAction {
     }
 
     @Override
-    public void getRecentRecall(final RecentRecallReq recentRecallReq, final ActionCallbackListener<ActionRespon<RecallDto>> actionCallbackListener) {
+    public void getRecallRemove(RecallRemoveReq recallRemoveReq, final ActionStringCallbackListener<ActionRespon<Long>> actionStringCallbackListener) {
+        ApiAction.getInstance().getRecallRemove(recallRemoveReq, new ApiStringCallbackListener() {
+            @Override
+            public void onSuccess(final String data) {
+                Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<Long>>() {
+                    @Override
+                    public ActionRespon<Long> doInBackground() throws Exception {
+                        ApiRespon<Long> result = GsonParser.getInstance().fromJson(data, new TypeToken<ApiRespon<Long>>() {
+                        }.getType());
+                        return ActionRespon.getActionResponFromApiRespon(result);
+                    }
+                }, new Completion<ActionRespon<Long>>() {
+                    @Override
+                    public void onSuccess(Context context, ActionRespon<Long> result) {
+                        actionStringCallbackListener.onSuccess(result);
+                    }
+
+                    @Override
+                    public void onError(Context context, Exception e) {
+                        actionStringCallbackListener.onSuccess(ActionRespon.getActionRespon(Long.parseLong("-1")));
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(int errorCode) {
+                actionStringCallbackListener.onFailure(errorCode);
+            }
+        });
+    }
+
+    @Override
+    public void getRecentRecall(final RecentRecallReq recentRecallReq, final ActionStringCallbackListener<ActionRespon<RecallDto>> actionStringCallbackListener) {
         //获取十分钟内的缓存
-        RecallDto recallDto = GsonParser.getInstance().fromJson(ACache.getInstance().getAsString("RECENT_RECALL_" + recentRecallReq.getUserNo()), new TypeToken<RecallDto>() {
+        RecallDto recallDto = GsonParser.getInstance().fromJson(ACache.getInstance().getAsString(Constant.ACACHE_RECENT_RECALL_PREFIX + recentRecallReq.getUserNo()), new TypeToken<RecallDto>() {
         }.getType());
         if(recallDto != null){
-            actionCallbackListener.onSuccess(ActionRespon.getActionRespon(Constant.ACTION_LOAD_LOCAL_SUCCESS,Constant.RETCODE_SUCCESS,recallDto));
+            actionStringCallbackListener.onSuccess(ActionRespon.getActionRespon(Constant.ACTION_LOAD_LOCAL_SUCCESS,Constant.RETCODE_SUCCESS,recallDto));
         }else{
-            ApiAction.getInstance().getRecentRecall(recentRecallReq, new ApiCallbackListener() {
+            ApiAction.getInstance().getRecentRecall(recentRecallReq, new ApiStringCallbackListener() {
                 @Override
                 public void onSuccess(String data) {
                     ApiRespon<RecallDto> result = GsonParser.getInstance().fromJson(data, new TypeToken<ApiRespon<RecallDto>>() {
                     }.getType());
                     if(result.getIsLegal()){
-                        ACache.getInstance().put("RECENT_RECALL_" + recentRecallReq.getUserNo(),GsonParser.getInstance().toJson(result.getData()),Constant.ACACHE_TIME_RECENT_RECALL);
+                        ACache.getInstance().put(Constant.ACACHE_RECENT_RECALL_PREFIX + recentRecallReq.getUserNo(),GsonParser.getInstance().toJson(result.getData()),Constant.ACACHE_TIME_RECENT_RECALL);
                     }
-                    actionCallbackListener.onSuccess(ActionRespon.getActionRespon(result.getMessage(),result.getRetCode(),result.getData()));
+                    actionStringCallbackListener.onSuccess(ActionRespon.getActionRespon(result.getMessage(),result.getRetCode(),result.getData()));
                 }
 
                 @Override
                 public void onFailure(int errorCode) {
-                    actionCallbackListener.onFailure(errorCode);
+                    actionStringCallbackListener.onFailure(errorCode);
                 }
             });
         }
     }
 
     @Override
-    public void getRecallListFromACache(final ActionCallbackListener<ActionRespon<List<RecallDto>>> actionCallbackListener){
+    public void getUserRecallListFromACache(final long userNo, final ActionStringCallbackListener<ActionRespon<List<RecallDto>>> actionStringCallbackListener) {
+        Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<List<RecallDto>>>() {
+            @Override
+            public ActionRespon<List<RecallDto>> doInBackground() throws Exception {
+                String data = ACache.getInstance().getAsString(Constant.ACACHE_USER_RECALL_PREFIX + userNo);
+                if(!Common.isEmpty(data)){
+                    List<RecallDto> recallDtoList = GsonParser.getInstance().fromJson(data, new TypeToken<List<RecallDto>>() {
+                    }.getType());
+                    return ActionRespon.getActionRespon(recallDtoList);
+                }
+                return ActionRespon.getActionRespon((List<RecallDto>)null);
+            }
+        }, new Completion<ActionRespon<List<RecallDto>>>() {
+            @Override
+            public void onSuccess(Context context, ActionRespon<List<RecallDto>> result) {
+                actionStringCallbackListener.onSuccess(result);
+            }
+
+            @Override
+            public void onError(Context context, Exception e) {
+                actionStringCallbackListener.onSuccess(ActionRespon.<List<RecallDto>>getActionResponError());
+            }
+        });
+    }
+
+    @Override
+    public void getRecallListFromACache(final ActionStringCallbackListener<ActionRespon<List<RecallDto>>> actionStringCallbackListener){
         Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<List<RecallDto>>>() {
             @Override
             public ActionRespon<List<RecallDto>> doInBackground() throws Exception {
@@ -79,19 +140,19 @@ public class RecallAction implements IRecallAction {
         }, new Completion<ActionRespon<List<RecallDto>>>() {
             @Override
             public void onSuccess(Context context, ActionRespon<List<RecallDto>> result) {
-                actionCallbackListener.onSuccess(result);
+                actionStringCallbackListener.onSuccess(result);
             }
 
             @Override
             public void onError(Context context, Exception e) {
-                actionCallbackListener.onSuccess(ActionRespon.<List<RecallDto>>getActionResponError());
+                actionStringCallbackListener.onSuccess(ActionRespon.<List<RecallDto>>getActionResponError());
             }
         });
     }
 
     @Override
-    public void getRecallList(RecallListReq recallListReq, final ActionCallbackListener<ActionRespon<List<RecallDto>>> actionCallbackListener){
-        ApiAction.getInstance().getRecallList(recallListReq, new ApiCallbackListener() {
+    public void getRecallList(final RecallListReq recallListReq, final ActionStringCallbackListener<ActionRespon<List<RecallDto>>> actionStringCallbackListener){
+        ApiAction.getInstance().getRecallList(recallListReq, new ApiStringCallbackListener() {
             @Override
             public void onSuccess(final String data) {
                 Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<List<RecallDto>>>() {
@@ -99,24 +160,28 @@ public class RecallAction implements IRecallAction {
                     public ActionRespon<List<RecallDto>> doInBackground() throws Exception {
                         ApiRespon<List<RecallDto>> result = GsonParser.getInstance().fromJson(data, new TypeToken<ApiRespon<List<RecallDto>>>() {
                         }.getType());
+                        if(recallListReq.getUserNo() == CustomSessionPreference.getInstance().getCustomSession().getUserNo()){
+                            //如果是当前用户自己的请求，那么表明用户在查看自己的空间，进行缓存
+                            ACache.getInstance().put(Constant.ACACHE_USER_RECALL_PREFIX + CustomSessionPreference.getInstance().getCustomSession().getUserNo(),GsonParser.getInstance().toJson(result.getData()));
+                        }
                         return ActionRespon.getActionResponFromApiRespon(result);
                     }
                 }, new Completion<ActionRespon<List<RecallDto>>>() {
                     @Override
                     public void onSuccess(Context context, ActionRespon<List<RecallDto>> result) {
-                        actionCallbackListener.onSuccess(result);
+                        actionStringCallbackListener.onSuccess(result);
                     }
 
                     @Override
                     public void onError(Context context, Exception e) {
-                        actionCallbackListener.onSuccess(ActionRespon.<List<RecallDto>>getActionResponError());
+                        actionStringCallbackListener.onSuccess(ActionRespon.<List<RecallDto>>getActionResponError());
                     }
                 });
             }
 
             @Override
             public void onFailure(int errorCode) {
-                actionCallbackListener.onFailure(errorCode);
+                actionStringCallbackListener.onFailure(errorCode);
             }
         });
     }

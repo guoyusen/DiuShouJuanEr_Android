@@ -25,11 +25,11 @@ public class RecallTemper {
         recallDtoHashtable.put(recallDto.getRecallNo(), recallDto);
     }
 
-    public static void removeRecallDto(long recallNo){
+    public static void removeRecallDto(Long recallNo){
         recallDtoHashtable.remove(recallNo);
     }
 
-    public static RecallDto getRecallDto(long recallNo){
+    public static RecallDto getRecallDto(Long recallNo){
         return recallDtoHashtable.get(recallNo);
     }
 
@@ -39,8 +39,12 @@ public class RecallTemper {
     }
 
     public static void addRecallDtoList(List<RecallDto> recallDtoList, boolean isACache){
-        if(recallDtoList != null){
-            recallList.addAll(recallDtoList);
+        if(recallDtoList == null){
+            return;
+        }
+        recallList.addAll(recallDtoList);
+        for(RecallDto recallDto : recallDtoList){
+            recallDtoHashtable.put(recallDto.getRecallNo(), recallDto);
         }
         if(isACache){
             saveRecallListToCache();
@@ -50,14 +54,14 @@ public class RecallTemper {
     /**
      * 通过索引值来添加点赞 默认更新缓存
      */
-    public static void addGood(GoodDto goodDto, int position){
+    public static void addGood(GoodDto goodDto, Integer position){
         addGood(goodDto, position, true);
     }
 
     /**
      * 通过索引值来添加点赞 设置是否更新缓存
      */
-    public static void addGood(GoodDto goodDto, int position, boolean isACache){
+    public static void addGood(GoodDto goodDto, Integer position, boolean isACache){
         RecallDto recallDto = recallList.get(position);
         if(recallDto != null){
             recallDto.getGoodList().add(0, goodDto);
@@ -70,14 +74,14 @@ public class RecallTemper {
     /**
      * 通过recallNo来添加点赞 默认更新缓存
      */
-    public static void addGood(GoodDto goodDto, long recallNo){
+    public static void addGood(GoodDto goodDto, Long recallNo){
         addGood(goodDto, recallNo, true);
     }
 
     /**
      * 通过recallNo来添加点赞 设置是否更新缓存
      */
-    public static void addGood(GoodDto goodDto, long recallNo, boolean isACache){
+    public static void addGood(GoodDto goodDto, Long recallNo, boolean isACache){
         recallDtoHashtable.get(recallNo).getGoodList().add(0, goodDto);
         if(isACache){
             saveRecallListToCache();
@@ -87,14 +91,14 @@ public class RecallTemper {
     /**
      * 通过索引值来删除点赞 默认更新缓存
      */
-    public static void removeGood(int position){
+    public static void removeGood(Integer position){
         removeGood(position, true);
     }
 
     /**
      * 通过索引值来删除点赞 设置是否更新缓存
      */
-    public static void removeGood(int position, boolean isACache){
+    public static void removeGood(Integer position, boolean isACache){
         RecallDto recallDto = recallList.get(position);
         if(recallDto != null){
             List<GoodDto> goodDtoList = recallDto.getGoodList();
@@ -116,14 +120,14 @@ public class RecallTemper {
     /**
      * 通过recallNo来删除点赞 默认更新缓存
      */
-    public static void removeGood(long recallNo){
+    public static void removeGood(Long recallNo){
         removeGood(recallNo, true);
     }
 
     /**
      * 通过recallNo来删除点赞 设置是否更新缓存
      */
-    public static void removeGood(long recallNo, boolean isACache){
+    public static void removeGood(Long recallNo, boolean isACache){
         RecallDto recallDto = recallDtoHashtable.get(recallNo);
         if(recallDto != null){
             List<GoodDto> goodDtoList = recallDto.getGoodList();
@@ -151,22 +155,22 @@ public class RecallTemper {
         }
     }
 
-    public static void addCommentDtoByRecallNo(long recallNo, CommentDto commentDto){
+    public static void addCommentDtoByRecallNo(Long recallNo, CommentDto commentDto){
         addCommentDtoByRecallNo(recallNo, commentDto, true);
     }
 
-    public static void addCommentDtoByRecallNo(long recallNo, CommentDto commentDto, boolean isACache){
+    public static void addCommentDtoByRecallNo(Long recallNo, CommentDto commentDto, boolean isACache){
         recallDtoHashtable.get(recallNo).getCommentList().add(commentDto);
         if(isACache){
             saveRecallListToCache();
         }
     }
 
-    public static void addResponDtoByRecallNo(long recallNo, long commentNo, ResponDto responDto){
+    public static void addResponDtoByRecallNo(Long recallNo, Long commentNo, ResponDto responDto){
         addResponDtoByRecallNo(recallNo, commentNo, responDto, true);
     }
 
-    public static void addResponDtoByRecallNo(long recallNo, long commentNo, ResponDto responDto, boolean isACache){
+    public static void addResponDtoByRecallNo(Long recallNo, Long commentNo, ResponDto responDto, boolean isACache){
         for(CommentDto commentDto : recallDtoHashtable.get(recallNo).getCommentList()){
             if(commentDto.getCommentNo() == commentNo){
                 commentDto.getResponList().add(responDto);
@@ -178,11 +182,11 @@ public class RecallTemper {
         }
     }
 
-    public static void removeCommentByRecalllNo(long recallNo, long commentNo){
+    public static void removeCommentByRecalllNo(Long recallNo, Long commentNo){
         removeCommentByRecalllNo(recallNo, commentNo, true);
     }
 
-    public static void removeCommentByRecalllNo(long recallNo, long commentNo, boolean isACache){
+    public static void removeCommentByRecalllNo(Long recallNo, Long commentNo, boolean isACache){
         for(CommentDto commentDto : recallDtoHashtable.get(recallNo).getCommentList()){
             if(commentDto.getCommentNo() == commentNo){
                 recallDtoHashtable.get(recallNo).getCommentList().remove(commentDto);
@@ -194,11 +198,11 @@ public class RecallTemper {
         }
     }
 
-    public static void removeResponByRecallNo(long recallNo, long commentNo, long responNo){
+    public static void removeResponByRecallNo(Long recallNo, Long commentNo, Long responNo){
         removeResponByRecallNo(recallNo, commentNo, responNo, true);
     }
 
-    public static void removeResponByRecallNo(long recallNo, long commentNo, long responNo, boolean isACache){
+    public static void removeResponByRecallNo(Long recallNo, Long commentNo, Long responNo, boolean isACache){
         for(CommentDto commentDto : recallDtoHashtable.get(recallNo).getCommentList()){
             if(commentDto.getCommentNo() == commentNo){
                 for(ResponDto responDto : commentDto.getResponList()){

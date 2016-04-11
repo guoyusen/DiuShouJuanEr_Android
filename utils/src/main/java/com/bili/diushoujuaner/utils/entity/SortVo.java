@@ -27,6 +27,7 @@ public class SortVo implements Parcelable {
         this.displayName = displayName;
     }
 
+
     @Override
     public int describeContents() {
         return 0;
@@ -46,4 +47,15 @@ public class SortVo implements Parcelable {
         this.displayName = in.readString();
     }
 
+    public static final Creator<SortVo> CREATOR = new Creator<SortVo>() {
+        @Override
+        public SortVo createFromParcel(Parcel source) {
+            return new SortVo(source);
+        }
+
+        @Override
+        public SortVo[] newArray(int size) {
+            return new SortVo[size];
+        }
+    };
 }

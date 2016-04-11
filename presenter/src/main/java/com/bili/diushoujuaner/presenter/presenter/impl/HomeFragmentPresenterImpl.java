@@ -14,7 +14,7 @@ import com.bili.diushoujuaner.model.apihelper.request.RecallListReq;
 import com.bili.diushoujuaner.model.apihelper.response.GoodDto;
 import com.bili.diushoujuaner.model.apihelper.response.RecallDto;
 import com.bili.diushoujuaner.model.action.impl.RecallAction;
-import com.bili.diushoujuaner.model.callback.ActionCallbackListener;
+import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
 import com.bili.diushoujuaner.presenter.base.BasePresenter;
 import com.bili.diushoujuaner.presenter.view.IHomeView;
 
@@ -58,7 +58,7 @@ public class HomeFragmentPresenterImpl extends BasePresenter<IHomeView> implemen
 
     @Override
     public void getGoodAdd(long recallNo){
-        GoodAction.getInstance(context).getGoodAdd(recallNo, new ActionCallbackListener<ActionRespon<String>>() {
+        GoodAction.getInstance(context).getGoodAdd(recallNo, new ActionStringCallbackListener<ActionRespon<String>>() {
             @Override
             public void onSuccess(ActionRespon<String> result) {
                 showMessage(result.getRetCode(), result.getMessage());
@@ -73,7 +73,7 @@ public class HomeFragmentPresenterImpl extends BasePresenter<IHomeView> implemen
 
     @Override
     public void getGoodRemove(long recallNo){
-        GoodAction.getInstance(context).getGoodRemove(recallNo, new ActionCallbackListener<ActionRespon<String>>() {
+        GoodAction.getInstance(context).getGoodRemove(recallNo, new ActionStringCallbackListener<ActionRespon<String>>() {
             @Override
             public void onSuccess(ActionRespon<String> result) {
                 showMessage(result.getRetCode(), result.getMessage());
@@ -91,18 +91,18 @@ public class HomeFragmentPresenterImpl extends BasePresenter<IHomeView> implemen
         showLoadingByRefreshType(refreshType);
         initRecallListReq();
 
-        RecallAction.getInstance(context).getRecallList(recallListReq, new ActionCallbackListener<ActionRespon<List<RecallDto>>>() {
+        RecallAction.getInstance(context).getRecallList(recallListReq, new ActionStringCallbackListener<ActionRespon<List<RecallDto>>>() {
             @Override
             public void onSuccess(ActionRespon<List<RecallDto>> result) {
-                if (showMessage(result.getRetCode(), result.getMessage())) {
-                    if (result.getData() != null && isBindViewValid()) {
-                        updateRequestParam(result.getData());
+                if (showMessage(result.getRetCode(), result.getMessage()) && isBindViewValid()) {
+                    if(result.getData() != null){
                         getBindView().showRecallList(result.getData());
-
-                        RecallTemper.clear();
-                        GoodTemper.clear();
-                        RecallTemper.addRecallDtoList(result.getData());
                     }
+
+                    updateRequestParam(result.getData());
+                    RecallTemper.clear();
+                    GoodTemper.clear();
+                    RecallTemper.addRecallDtoList(result.getData());
                 }
                 hideLoading();
             }
@@ -118,15 +118,13 @@ public class HomeFragmentPresenterImpl extends BasePresenter<IHomeView> implemen
 
     @Override
     public void showRecallFromCache(){
-        RecallAction.getInstance(context).getRecallListFromACache(new ActionCallbackListener<ActionRespon<List<RecallDto>>>() {
+        RecallAction.getInstance(context).getRecallListFromACache(new ActionStringCallbackListener<ActionRespon<List<RecallDto>>>() {
             @Override
             public void onSuccess(ActionRespon<List<RecallDto>> result) {
-                if (showMessage(result.getRetCode(), result.getMessage())) {
+                if (showMessage(result.getRetCode(), result.getMessage()) && isBindViewValid()) {
                     RecallTemper.clear();
                     RecallTemper.addRecallDtoList(result.getData());
-                    if(isBindViewValid()){
-                        getBindView().showRecallList(result.getData());
-                    }
+                    getBindView().showRecallList(result.getData());
                 }
             }
 
@@ -139,16 +137,13 @@ public class HomeFragmentPresenterImpl extends BasePresenter<IHomeView> implemen
 
     @Override
     public void getMoreRecallList(){
-        RecallAction.getInstance(context).getRecallList(recallListReq, new ActionCallbackListener<ActionRespon<List<RecallDto>>>() {
+        RecallAction.getInstance(context).getRecallList(recallListReq, new ActionStringCallbackListener<ActionRespon<List<RecallDto>>>() {
             @Override
             public void onSuccess(ActionRespon<List<RecallDto>> result) {
-                if (showMessage(result.getRetCode(), result.getMessage())) {
-                    if(result.getData() != null && isBindViewValid()){
-                        updateRequestParam(result.getData());
-                        getBindView().showMoreRecallList(result.getData());
-
-                        RecallTemper.addRecallDtoList(result.getData());
-                    }
+                if (showMessage(result.getRetCode(), result.getMessage()) && isBindViewValid()) {
+                    updateRequestParam(result.getData());
+                    getBindView().showMoreRecallList(result.getData());
+                    RecallTemper.addRecallDtoList(result.getData());
                 }else{
                     if(isBindViewValid()){
                         getBindView().setLoadMoreEnd();
@@ -194,6 +189,9 @@ public class HomeFragmentPresenterImpl extends BasePresenter<IHomeView> implemen
     }
 
     private void updateRequestParam(List<RecallDto> recallDtoList){
+        if(recallDtoList == null){
+            return;
+        }
         if(recallDtoList.size() >= recallListReq.getPageSize()){
             recallListReq.setPageIndex(recallListReq.getPageIndex() + 1);
             recallListReq.setLastRecall(recallDtoList.get(0).getRecallNo());
@@ -204,7 +202,8 @@ public class HomeFragmentPresenterImpl extends BasePresenter<IHomeView> implemen
         recallListReq.setType(Constant.RECALL_ALL);
         recallListReq.setPageIndex(1);
         recallListReq.setPageSize(20);
-        recallListReq.setUserNo(CustomSessionPreference.getInstance().getCustomSession().getUserNo());
+        //此处为查询所有用户的，为了和用户个人空间区分，这里设置userNo为-1  无效
+        recallListReq.setUserNo(-1);
         recallListReq.setLastRecall(-1);
     }
 

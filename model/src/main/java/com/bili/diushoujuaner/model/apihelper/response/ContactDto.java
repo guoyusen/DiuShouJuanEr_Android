@@ -17,10 +17,20 @@ public class ContactDto {
     private Integer gender;
     private String homeTown;
     private String smallNick;
+    private String wallPaper;
     // party
     private Long ownerNo;
     private String information;
     private List<MemberDto> memberList;
+
+    public String getWallPaper() {
+        return wallPaper;
+    }
+
+    public void setWallPaper(String wallPaper) {
+        this.wallPaper = wallPaper;
+    }
+
     public Long getContNo() {
         return contNo;
     }

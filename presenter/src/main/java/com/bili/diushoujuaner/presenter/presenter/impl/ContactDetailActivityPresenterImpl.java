@@ -8,7 +8,7 @@ import com.bili.diushoujuaner.model.action.respon.ActionRespon;
 import com.bili.diushoujuaner.model.apihelper.request.ContactInfoReq;
 import com.bili.diushoujuaner.model.apihelper.request.RecentRecallReq;
 import com.bili.diushoujuaner.model.apihelper.response.RecallDto;
-import com.bili.diushoujuaner.model.callback.ActionCallbackListener;
+import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
 import com.bili.diushoujuaner.presenter.base.BasePresenter;
 import com.bili.diushoujuaner.presenter.presenter.ContactDetailActivityPresenter;
 import com.bili.diushoujuaner.presenter.view.IContactDetailView;
@@ -29,7 +29,7 @@ public class ContactDetailActivityPresenterImpl extends BasePresenter<IContactDe
     public void getRecentRecall(long userNo) {
         RecentRecallReq recentRecallReq = new RecentRecallReq();
         recentRecallReq.setUserNo(userNo);
-        RecallAction.getInstance(context).getRecentRecall(recentRecallReq, new ActionCallbackListener<ActionRespon<RecallDto>>() {
+        RecallAction.getInstance(context).getRecentRecall(recentRecallReq, new ActionStringCallbackListener<ActionRespon<RecallDto>>() {
             @Override
             public void onSuccess(ActionRespon<RecallDto> result) {
                 if (showMessage(result.getRetCode(), result.getMessage())) {
@@ -49,7 +49,7 @@ public class ContactDetailActivityPresenterImpl extends BasePresenter<IContactDe
     @Override
     public void getFriendVo(final long userNo) {
         showLoading(Constant.LOADING_DEFAULT, "");
-        ContactAction.getInstance(context).getContactFromLocal(userNo, new ActionCallbackListener<ActionRespon<FriendVo>>() {
+        ContactAction.getInstance(context).getContactFromLocal(userNo, new ActionStringCallbackListener<ActionRespon<FriendVo>>() {
             @Override
             public void onSuccess(ActionRespon<FriendVo> result) {
                 //数据不合法，不去做界面处理，走api
@@ -58,13 +58,13 @@ public class ContactDetailActivityPresenterImpl extends BasePresenter<IContactDe
                     if (result.getData() == null || Common.isEmpty(result.getData().getUpdateTime()) || Common.getHourDifferenceBetweenTime(result.getData().getUpdateTime(), Common.getCurrentTimeYYMMDD_HHMMSS()) > 1) {
                         //数据已经无效，则在不为空的情况下，先进行显示，在进行更新获取
                         if (result.getData() != null && isBindViewValid()) {
-                            getBindView().showContact(result.getData());
+                            getBindView().showContactInfo(result.getData());
                         }
                         getFriendVoFromApi(userNo);
                     }else{
                         //数据仍在有效期内，直接显示，无需更新
                         if(isBindViewValid()){
-                            getBindView().showContact(result.getData());
+                            getBindView().showContactInfo(result.getData());
                         }
                         hideLoading(Constant.LOADING_DEFAULT);
                     }
@@ -81,12 +81,12 @@ public class ContactDetailActivityPresenterImpl extends BasePresenter<IContactDe
         ContactInfoReq contactInfoReq = new ContactInfoReq();
         contactInfoReq.setUserNo(userNo);
 
-        ContactAction.getInstance(context).getContactFromApi(contactInfoReq, new ActionCallbackListener<ActionRespon<FriendVo>>() {
+        ContactAction.getInstance(context).getContactFromApi(contactInfoReq, new ActionStringCallbackListener<ActionRespon<FriendVo>>() {
             @Override
             public void onSuccess(ActionRespon<FriendVo> result) {
                 if(showMessage(result.getRetCode(), result.getMessage())){
                     if(isBindViewValid()){
-                        getBindView().showContact(result.getData());
+                        getBindView().showContactInfo(result.getData());
                     }
                 }
                     hideLoading(Constant.LOADING_DEFAULT);
@@ -96,7 +96,7 @@ public class ContactDetailActivityPresenterImpl extends BasePresenter<IContactDe
             public void onFailure(int errorCode) {
                 //最不可能出现的情况，本地失败，API获取失败
                 if(isBindViewValid()){
-                    getBindView().showContact(null);
+                    getBindView().showContactInfo(null);
                 }
                 showError(errorCode);
                 hideLoading(Constant.LOADING_DEFAULT);

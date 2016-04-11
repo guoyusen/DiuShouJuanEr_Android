@@ -3,7 +3,9 @@ package com.bili.diushoujuaner.presenter.presenter.impl;
 import android.content.Context;
 
 import com.bili.diushoujuaner.model.action.impl.UserInfoAction;
+import com.bili.diushoujuaner.model.action.respon.ActionRespon;
 import com.bili.diushoujuaner.model.cachehelper.ACache;
+import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
 import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
 import com.bili.diushoujuaner.model.preferhelper.SettingPreference;
 import com.bili.diushoujuaner.model.tempHelper.ContactTemper;
@@ -25,13 +27,32 @@ public class SettingActivityPresenterImpl extends BasePresenter<ISettingView> im
     }
 
     @Override
-    public void clearCurrentUserData() {
-        RecallTemper.clear();
-        GoodTemper.clear();
-        ContactTemper.clear();
-        CustomSessionPreference.getInstance().clear();
-        UserInfoAction.getInstance(context).clearUser();
-        ACache.getInstance().put(Constant.ACACHE_LAST_TIME_CONTACT,"");
+    public void getLogout() {
+        showLoading(Constant.LOADING_TOP,"正在退出账号");
+        UserInfoAction.getInstance(context).getLogout(new ActionStringCallbackListener<ActionRespon<Void>>() {
+            @Override
+            public void onSuccess(ActionRespon<Void> result) {
+                hideLoading(Constant.LOADING_TOP);
+                if(showMessage(result.getRetCode(), result.getMessage())){
+                    RecallTemper.clear();
+                    GoodTemper.clear();
+                    ContactTemper.clear();
+                    ACache.getInstance().remove(Constant.ACACHE_LAST_TIME_CONTACT);
+                    ACache.getInstance().remove(Constant.ACACHE_USER_RECALL_PREFIX + CustomSessionPreference.getInstance().getCustomSession().getUserNo());
+                    CustomSessionPreference.getInstance().clear();
+                    UserInfoAction.getInstance(context).clearUser();
+                    if(isBindViewValid()){
+                        getBindView().exitActivity();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(int errorCode) {
+                showError(errorCode);
+                hideLoading(Constant.LOADING_TOP);
+            }
+        });
     }
 
     @Override

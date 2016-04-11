@@ -5,6 +5,7 @@
 
     <com.bili.diushoujuaner.widget.scrollview.ReboundScrollView
         style="@style/MatchMatch"
+        android:layout_above="@+id/layoutBottom"
         android:scrollbars="none">
 
         <LinearLayout
@@ -15,15 +16,15 @@
             <ImageView
                 android:layout_width="@dimen/x200"
                 android:layout_height="@dimen/y200"
-                android:layout_marginTop="@dimen/y160"
+                android:layout_marginTop="@dimen/y180"
                 android:src="@mipmap/logo_default" />
 
             <LinearLayout
                 style="@style/MatchWrap"
-                android:layout_marginLeft="@dimen/x60"
-                android:layout_marginRight="@dimen/x60"
-                android:layout_marginTop="@dimen/y60"
-                android:background="@drawable/common_rectangle_white"
+                android:layout_marginLeft="@dimen/x72"
+                android:layout_marginRight="@dimen/x72"
+                android:layout_marginTop="@dimen/y100"
+                android:background="@drawable/rectangle_white"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -49,7 +50,7 @@
                         android:maxLength="11"
                         android:textColor="@color/TC_WHITE"
                         android:textColorHint="@color/TC_WHITE_HINT"
-                        android:textCursorDrawable="@drawable/common_cursor_white"
+                        android:textCursorDrawable="@drawable/cursor_white"
                         android:textSize="@dimen/x35"
                         android:textStyle="bold" />
 
@@ -79,7 +80,7 @@
                         android:inputType="textPassword"
                         android:textColor="@color/TC_WHITE"
                         android:textColorHint="@color/TC_WHITE_HINT"
-                        android:textCursorDrawable="@drawable/common_cursor_white"
+                        android:textCursorDrawable="@drawable/cursor_white"
                         android:textSize="@dimen/x35"
                         android:textStyle="bold" />
 
@@ -91,48 +92,75 @@
                 android:id="@+id/btnLogin"
                 style="@style/BtnLongGreen"
                 android:layout_marginTop="@dimen/y80"
+                android:textStyle="bold"
                 android:text="@string/btn_login" />
-
-            <TextView
-                android:id="@+id/txtForgetPsd"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_marginTop="@dimen/y60"
-                android:text="@string/btn_forget"
-                android:textColor="@color/TC_WHITE"
-                android:textSize="@dimen/x30" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/y40"
-                android:layout_margin="@dimen/y60"
-                android:orientation="horizontal">
-
-                <View
-                    style="@style/line"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1" />
-
-                <TextView
-                    android:id="@+id/txtRegist"
-                    style="@style/TextLarge"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="@dimen/x24"
-                    android:paddingRight="@dimen/x24"
-                    android:text="@string/btn_register"
-                    android:textColor="@color/TC_WHITE" />
-
-                <View
-                    style="@style/line"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1" />
-
-            </LinearLayout>
 
         </LinearLayout>
 
     </com.bili.diushoujuaner.widget.scrollview.ReboundScrollView>
+
+    <LinearLayout
+        android:id="@+id/layoutBottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/TRANSPARENT"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/layoutReset"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y96"
+            android:layout_marginBottom="@dimen/y2"
+            android:background="@drawable/rectangle_solid_transparent_white">
+
+            <TextView
+                style="@style/TextLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x76"
+                android:layout_marginStart="@dimen/x76"
+                android:text="@string/btn_forget"
+                android:textColor="@color/TC_WHITE" />
+
+            <ImageView
+                android:layout_width="@dimen/x64"
+                android:layout_height="@dimen/y64"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/x64"
+                android:src="@mipmap/icon_arrow_right" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/layoutRegister"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y96"
+            android:background="@drawable/rectangle_solid_transparent_white">
+
+            <TextView
+                style="@style/TextLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x76"
+                android:text="@string/btn_register"
+                android:textColor="@color/TC_WHITE" />
+
+            <ImageView
+                android:layout_width="@dimen/x64"
+                android:layout_height="@dimen/y64"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/x64"
+                android:src="@mipmap/icon_arrow_right" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
 
 </RelativeLayout>

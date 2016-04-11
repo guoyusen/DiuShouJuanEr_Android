@@ -2,8 +2,8 @@
     <string name="app_name">丢丢</string>
     <string name="slogon">分享快乐  寻找曾经的你</string>
 
-    <string name="btn_register">新用户</string>
-    <string name="btn_login">登录</string>
+    <string name="btn_register">新用户？快来注册吧...</string>
+    <string name="btn_login">登 录</string>
     <string name="btn_forget">忘记密码?</string>
     <string name="hint_mobile">手机号</string>
     <string name="hint_password">密码</string>
@@ -25,9 +25,24 @@
     <string name="warning_500">服务器维护中...</string>
     <string name="warning_503">服务器维护中...</string>
     <string name="warning_parse">数据解析失败</string>
+    <string name="warning_file">文件上传失败</string>
 
-<string name="tip_nodata">暂无数据</string>
+    <string name="tip_nodata">暂无数据</string>
     <string name="tip_nomess">客官，最近没消息哦</string>
-    
+
     <string name="send_hint">说点什么呗...</string>
+
+    <string name="next_step">下一步</string>
+
+    <string name="all_images">全部图片</string>
+    <string name="folder_image_count">共%1$d张</string>
+    <string name="preview_image_count">%1$s/%2$s</string>
+    <string name="select_limit">最多选择%1$s张图片</string>
+    <string name="complete">完成</string>
+    <string name="select_complete">完成(%1$s/%2$s)</string>
+    <string name="preview_count">预览(%1$s)</string>
+    <string name="photo_crop">图片裁剪</string>
+    <string name="origin">原图</string>
+    <string name="origin_size">原图(%1$s)</string>
+
 </resources>

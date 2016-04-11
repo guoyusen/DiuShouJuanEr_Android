@@ -15,8 +15,8 @@
         android:id="@+id/txtItemMark"
         android:layout_width="@dimen/x60"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/x24"
         android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/x24"
         android:gravity="center"
         android:text="A"
         android:textColor="@color/TC_FF4081"
@@ -29,7 +29,7 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="@dimen/x24"
-        app:placeholderImage="@mipmap/shin"
+        app:actualImageScaleType="focusCrop"
         app:roundAsCircle="true" />
 
     <TextView
@@ -37,8 +37,8 @@
         style="@style/TextMiddle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/x144"
         android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/x144"
         android:text="三木同学"
         android:textColor="@color/TC_040404" />
 

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="@dimen/actionbar_height"
-    android:background="@color/COLOR_THEME">
+    android:background="@color/COLOR_THEME_MAIN">
 
     <ImageButton
         android:id="@+id/back"

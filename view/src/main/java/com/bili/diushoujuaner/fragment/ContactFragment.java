@@ -26,6 +26,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -73,7 +74,7 @@ public class ContactFragment extends BaseFragment<ContactFragmentPresenter> impl
     @Override
     public void beforeInitView() {
         friendVoList = new ArrayList<>();
-        basePresenter = new ContactFragmentPresenterImpl(this, getContext());
+        basePresenter = new ContactFragmentPresenterImpl(this, context);
     }
 
     @Override
@@ -126,8 +127,8 @@ public class ContactFragment extends BaseFragment<ContactFragmentPresenter> impl
         }
     }
 
-    @Subscribe
-    public void showHead(ShowHeadEvent showHeadEvent) {
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onShowHeadEvent(ShowHeadEvent showHeadEvent) {
         this.headPicUrl = showHeadEvent.getHeadPicUrl();
         if(ivNavHead != null){
             Common.displayDraweeView(this.headPicUrl, ivNavHead);

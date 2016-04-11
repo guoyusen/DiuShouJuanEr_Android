@@ -120,6 +120,30 @@ public class DBManager {
         }
     }
 
+    public void updateHeadPic(String headPic){
+        List<User> userList = daoSession.getUserDao().queryBuilder()
+                .where(UserDao.Properties.UserNo.eq(CustomSessionPreference.getInstance().getCustomSession().getUserNo()))
+                .build()
+                .list();
+        if(!userList.isEmpty()){
+            User user = userList.get(0);
+            user.setPicPath(headPic);
+            daoSession.getUserDao().insertOrReplace(user);
+        }
+    }
+
+    public void updateWallpaper(String wallpaper){
+        List<User> userList = daoSession.getUserDao().queryBuilder()
+                .where(UserDao.Properties.UserNo.eq(CustomSessionPreference.getInstance().getCustomSession().getUserNo()))
+                .build()
+                .list();
+        if(!userList.isEmpty()){
+            User user = userList.get(0);
+            user.setWallPaper(wallpaper);
+            daoSession.getUserDao().insertOrReplace(user);
+        }
+    }
+
     /**
      * 保存好友列表
      * @param friendList

@@ -12,4 +12,6 @@ public interface IUserView extends IBaseView {
 
     void finishView();
 
+    void updateHeadPic(String headPath);
+
 }

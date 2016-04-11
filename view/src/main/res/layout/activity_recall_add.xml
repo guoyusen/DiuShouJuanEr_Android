@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/MatchMatch.FitWindow"
+    android:background="@color/COLOR_WHITE"
+    android:orientation="vertical">
+
+    <include android:id="@+id/layoutHead"
+        layout="@layout/include_head_custom"/>
+
+    <com.bili.diushoujuaner.widget.scrollview.ReboundScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.bili.diushoujuaner.widget.CustomEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/y24"
+                android:background="@color/COLOR_WHITE"
+                android:layout_marginLeft="@dimen/x24"
+                android:layout_marginRight="@dimen/x24"
+                android:gravity="start"
+                android:padding="@dimen/x5"
+                style="@style/TextLarge"
+                android:textCursorDrawable="@drawable/cursor_blue"
+                android:textColorHint="@color/TC_ADADBB"
+                android:hint="写点什么呗..."
+                android:textColor="@color/TC_040404"
+                android:minHeight="@dimen/y300"/>
+
+            <View
+                style="@style/line"
+                android:layout_marginLeft="@dimen/x24"
+                android:layout_marginRight="@dimen/x24"/>
+
+                <com.bili.diushoujuaner.widget.CustomGridView
+                    android:id="@+id/gridview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:numColumns="3"/>
+
+        </LinearLayout>
+
+    </com.bili.diushoujuaner.widget.scrollview.ReboundScrollView>
+
+</LinearLayout>

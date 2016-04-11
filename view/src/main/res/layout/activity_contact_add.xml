@@ -34,8 +34,8 @@
             android:background="@color/COLOR_WHITE"
             android:textColor="@color/TC_333333"
             android:layout_marginLeft="@dimen/x10"
-            android:textCursorDrawable="@drawable/common_cursor_blue"
             android:hint="输入手机号/群号"
+            android:textCursorDrawable="@drawable/cursor_blue"
             android:textColorHint="@color/TC_ADADBB"/>
 
         <TextView

@@ -6,9 +6,7 @@ package com.bili.diushoujuaner.widget.scrollview;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Rect;
-import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.TranslateAnimation;
@@ -28,7 +26,7 @@ public class ReboundScrollView extends ScrollView {
 
     //移动因子, 是一个百分比, 比如手指移动了100px, 那么View就只移动50px
     //目的是达到一个延迟的效果
-    private static final float MOVE_FACTOR = 0.18f;
+    private static final float MOVE_FACTOR = 0.4f;
 
     //松开手指后, 界面回到正常位置需要的动画时间
     private static final int ANIM_TIME = 300;
@@ -52,9 +50,14 @@ public class ReboundScrollView extends ScrollView {
     //在手指滑动的过程中记录是否移动了布局
     private boolean isMoved = false;
 
-    private boolean scrollCanDown = false;
+    //是否支持下拉
+    private boolean scrollCanDown = true;
 
-    private ChangeHeadStatusListener changeHeadStatusListener;
+    private int startAlpha, endAlpha;
+
+    private OnScrollRefreshListener scrollRefreshListener;
+
+    private OnChangeHeadStatusListener changeHeadStatusListener;
 
     public ReboundScrollView(Context context) {
         this(context, null);
@@ -66,6 +69,9 @@ public class ReboundScrollView extends ScrollView {
 
     public ReboundScrollView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        if(isInEditMode()){
+            return;
+        }
         TypedArray t = null;
         try {
             t = context.obtainStyledAttributes(attrs, R.styleable.ReboundScrollView,
@@ -76,6 +82,8 @@ public class ReboundScrollView extends ScrollView {
                 t.recycle();
             }
         }
+        startAlpha = (int)getResources().getDimension(R.dimen.y100);
+        endAlpha = (int)getResources().getDimension(R.dimen.y200);
     }
 
     @Override
@@ -123,6 +131,10 @@ public class ReboundScrollView extends ScrollView {
             case MotionEvent.ACTION_UP:
 
                 if(!isMoved) break;  //如果没有移动布局， 则跳过执行
+
+                if(contentView.getTop() > 150 && scrollRefreshListener != null){
+                    scrollRefreshListener.onScrollRefresh();
+                }
 
 //                 开启动画
                 TranslateAnimation anim = new TranslateAnimation(0, 0, contentView.getTop(),
@@ -198,12 +210,20 @@ public class ReboundScrollView extends ScrollView {
         }
     }
 
-    public ChangeHeadStatusListener getChangeHeadStatusListener() {
+    public OnChangeHeadStatusListener getChangeHeadStatusListener() {
         return changeHeadStatusListener;
     }
 
-    public void setChangeHeadStatusListener(ChangeHeadStatusListener changeHeadStatusListener) {
+    public void setChangeHeadStatusListener(OnChangeHeadStatusListener changeHeadStatusListener) {
         this.changeHeadStatusListener = changeHeadStatusListener;
+    }
+
+    public OnScrollRefreshListener getScrollRefreshListener() {
+        return scrollRefreshListener;
+    }
+
+    public void setScrollRefreshListener(OnScrollRefreshListener scrollRefreshListener) {
+        this.scrollRefreshListener = scrollRefreshListener;
     }
 
     /**
@@ -217,10 +237,12 @@ public class ReboundScrollView extends ScrollView {
     protected void onScrollChanged(int l, int t, int oldl, int oldt) {
         super.onScrollChanged(l, t, oldl, oldt);
         if (changeHeadStatusListener != null) {
-            if(t > getResources().getDimension(R.dimen.y200)){
-                changeHeadStatusListener.onHeadStatusChanged(true);
+            if(t > endAlpha){
+                changeHeadStatusListener.onHeadStatusChanged(100);
+            }else if(t > startAlpha && t <= endAlpha){
+                changeHeadStatusListener.onHeadStatusChanged(100 * (t - startAlpha) / (endAlpha - startAlpha));
             }else{
-                changeHeadStatusListener.onHeadStatusChanged(false);
+                changeHeadStatusListener.onHeadStatusChanged(0);
             }
 
         }

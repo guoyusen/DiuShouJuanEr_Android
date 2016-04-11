@@ -11,7 +11,7 @@
         android:layout_centerHorizontal="true"
         android:layout_width="@dimen/x70"
         android:layout_height="@dimen/x70"
-        app:circleColor="@color/COLOR_THEME"/>
+        app:circleColor="@color/COLOR_THEME_MAIN"/>
 
     <TextView
         android:id="@+id/textLoadMore"

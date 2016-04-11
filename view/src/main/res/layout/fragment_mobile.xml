@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/MatchMatch.FitWindow"
+    android:background="@color/COLOR_WHITE"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/BG_F6F6F6">
+
+        <com.bili.diushoujuaner.widget.CustomEditText
+            android:id="@+id/edtMobile"
+            style="@style/TextMiddle"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y96"
+            android:layout_centerVertical="true"
+            android:layout_margin="@dimen/x24"
+            android:layout_marginLeft="@dimen/x24"
+            android:layout_marginStart="@dimen/x24"
+            android:background="@drawable/rectangle_solid_white"
+            android:gravity="center_vertical"
+            android:hint="请输入您的手机号"
+            android:inputType="number"
+            android:paddingLeft="@dimen/x5"
+            android:paddingRight="@dimen/x5"
+            android:singleLine="true"
+            android:textColor="@color/TC_333333"
+            android:textColorHint="@color/TC_ADADBB"
+            android:textCursorDrawable="@drawable/cursor_blue" />
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btnNext"
+        style="@style/BtnXLongGray"
+        android:layout_marginTop="@dimen/y64"
+        android:gravity="center"
+        android:text="@string/next_step"
+        android:textColor="@color/TC_ADADBB" />
+
+</LinearLayout>

@@ -15,6 +15,7 @@
         android:layout_width="@dimen/x80"
         android:layout_height="@dimen/x80"
         android:layout_centerVertical="true"
+        app:actualImageScaleType="focusCrop"
         app:roundAsCircle="true" />
 
     <LinearLayout
@@ -29,23 +30,23 @@
 
             <TextView
                 android:id="@+id/itemCommentUserName"
+                style="@style/TextMiddle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/TextMiddle"
-                android:textColor="@color/TC_388ECD"
                 android:text="三木同学"
-                android:textStyle="bold"/>
+                android:textColor="@color/TC_388ECD"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/itemCommentTime"
+                style="@style/TextSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignLeft="@+id/itemCommentUserName"
                 android:layout_alignParentBottom="true"
                 android:layout_marginTop="@dimen/y8"
-                style="@style/TextSmall"
-                android:textColor="@color/TC_BFBFBF"
-                android:text="03-23 12:20"/>
+                android:text="03-23 12:20"
+                android:textColor="@color/TC_BFBFBF" />
 
             <LinearLayout
                 android:id="@+id/layoutRespon"
@@ -76,21 +77,21 @@
 
         <TextView
             android:id="@+id/txtCommentContent"
-            android:layout_marginTop="@dimen/y6"
-            android:layout_marginLeft="@dimen/x24"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/TC_2D2D2D"/>
+            android:layout_marginLeft="@dimen/x24"
+            android:layout_marginTop="@dimen/y6"
+            android:textColor="@color/TC_2D2D2D" />
 
         <com.bili.diushoujuaner.widget.CustomListView
             android:id="@+id/listViewRespon"
-            android:layout_marginTop="@dimen/y6"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/x24"
-            android:scrollbars="none"
+            android:layout_marginTop="@dimen/y6"
+            android:divider="@null"
             android:dividerHeight="0dp"
-            android:divider="@null"/>
+            android:scrollbars="none" />
 
     </LinearLayout>
 

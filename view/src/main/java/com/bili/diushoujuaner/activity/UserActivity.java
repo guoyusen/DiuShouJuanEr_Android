@@ -1,6 +1,11 @@
 package com.bili.diushoujuaner.activity;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
+import android.util.TypedValue;
+import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -11,19 +16,26 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bili.diushoujuaner.R;
-import com.bili.diushoujuaner.base.BaseActivity;
+import com.bili.diushoujuaner.base.BaseFragmentActivity;
+import com.bili.diushoujuaner.fragment.PictureFragment;
 import com.bili.diushoujuaner.model.apihelper.request.UserInfoReq;
 import com.bili.diushoujuaner.model.databasehelper.dao.User;
 import com.bili.diushoujuaner.presenter.presenter.UserActivityPresenter;
 import com.bili.diushoujuaner.presenter.presenter.impl.UserActivityPresenterImpl;
 import com.bili.diushoujuaner.presenter.view.IUserView;
 import com.bili.diushoujuaner.utils.Common;
+import com.bili.diushoujuaner.utils.Constant;
+import com.bili.diushoujuaner.utils.entity.PictureVo;
 import com.bili.diushoujuaner.widget.TintedBitmapDrawable;
 import com.bili.diushoujuaner.widget.dialog.DialogTool;
 import com.bili.diushoujuaner.widget.dialog.OnDialogChoseListener;
 import com.bili.diushoujuaner.widget.dialog.OnDialogPositiveClickListener;
 import com.bili.diushoujuaner.widget.floatingactionbutton.FloatingActionButton;
-import com.bili.diushoujuaner.widget.scrollview.ChangeHeadStatusListener;
+import com.bili.diushoujuaner.widget.imagepicker.ImagePicker;
+import com.bili.diushoujuaner.widget.imagepicker.bean.ImageItem;
+import com.bili.diushoujuaner.widget.imagepicker.loader.GlideImageLoader;
+import com.bili.diushoujuaner.widget.imagepicker.view.CropImageView;
+import com.bili.diushoujuaner.widget.scrollview.OnChangeHeadStatusListener;
 import com.bili.diushoujuaner.widget.scrollview.ReboundScrollView;
 import com.bili.diushoujuaner.widget.wheel.DatePickerTool;
 import com.bili.diushoujuaner.widget.wheel.LocationPickerTool;
@@ -31,12 +43,14 @@ import com.bili.diushoujuaner.widget.wheel.OnDatePickerChoseListener;
 import com.bili.diushoujuaner.widget.wheel.OnLocationPickerChoseListener;
 import com.facebook.drawee.view.SimpleDraweeView;
 
+import java.util.ArrayList;
+
 import butterknife.Bind;
 
 /**
  * Created by BiLi on 2016/4/3.
  */
-public class UserActivity extends BaseActivity<UserActivityPresenter> implements IUserView, ChangeHeadStatusListener, View.OnClickListener, OnDatePickerChoseListener, OnLocationPickerChoseListener, OnDialogChoseListener {
+public class UserActivity extends BaseFragmentActivity<UserActivityPresenter> implements IUserView, OnChangeHeadStatusListener, View.OnClickListener, OnDatePickerChoseListener, OnLocationPickerChoseListener, OnDialogChoseListener {
 
     @Bind(R.id.ivUserName)
     ImageView ivUserName;
@@ -88,6 +102,12 @@ public class UserActivity extends BaseActivity<UserActivityPresenter> implements
     RelativeLayout layoutLocation;
     @Bind(R.id.layoutHomeTown)
     RelativeLayout layoutHomeTown;
+    @Bind(R.id.layoutUserName)
+    RelativeLayout layoutUserName;
+    @Bind(R.id.layoutEmail)
+    RelativeLayout layoutEmail;
+    @Bind(R.id.layoutSmallName)
+    RelativeLayout layoutSmallName;
     @Bind(R.id.btnRight)
     ImageButton btnRight;
 
@@ -101,12 +121,26 @@ public class UserActivity extends BaseActivity<UserActivityPresenter> implements
     private final static int ADDRESS_LOCATION = 1;
     private final static int ADDRESS_HOMETOWN = 2;
 
+    private ImagePicker imagePicker;
+
+    private User currentUser;
+
+    class CustomTouchLisener implements View.OnTouchListener{
+        @Override
+        public boolean onTouch(View v, MotionEvent event) {
+            isEditable = true;
+            return false;
+        }
+    }
+
     @Override
     public void beforeInitView() {
         arrowRightDrawable = new TintedBitmapDrawable(getResources(), R.mipmap.icon_arrow_right, ContextCompat.getColor(context, R.color.COLOR_8A8A8A));
         basePresenter = new UserActivityPresenterImpl(this, context);
         datePickerTool = new DatePickerTool();
         locationPickerTool = new LocationPickerTool(context);
+
+        imagePicker = ImagePicker.getInstance();
     }
 
     @Override
@@ -119,17 +153,17 @@ public class UserActivity extends BaseActivity<UserActivityPresenter> implements
         FrameLayout.LayoutParams lpHead = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, (int) getResources().getDimension(R.dimen.y100));
         lpHead.setMargins(0, tintManager.getConfig().getStatusBarHeight(), 0, 0);
         layoutHead.setLayoutParams(lpHead);
-        RelativeLayout.LayoutParams lpFocus = new RelativeLayout.LayoutParams((int) getResources().getDimension(R.dimen.x128), (int) getResources().getDimension(R.dimen.x128));
-        lpFocus.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-        lpFocus.setMargins(0, tintManager.getConfig().getStatusBarHeight() + (int) getResources().getDimension(R.dimen.x416), (int) getResources().getDimension(R.dimen.x24), 0);
-        btnCamera.setLayoutParams(lpFocus);
+        RelativeLayout.LayoutParams lpCamera = new RelativeLayout.LayoutParams((int) getResources().getDimension(R.dimen.x128), (int) getResources().getDimension(R.dimen.x128));
+        lpCamera.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        lpCamera.setMargins(0, tintManager.getConfig().getStatusBarHeight() + (int) getResources().getDimension(R.dimen.x416), (int) getResources().getDimension(R.dimen.x24), 0);
+        btnCamera.setLayoutParams(lpCamera);
         btnCamera.setPadding(0, 0, 0, 0);
     }
 
     @Override
     public void setViewStatus() {
-        setTintStatusColor(R.color.TRANSPARENT_HALF);
-        showPageHead(null, R.mipmap.icon_editor, null);
+        setTintStatusColor(R.color.TRANSPARENT_BLACK);
+        showPageHead(null, R.mipmap.icon_finish, null);
         layoutHead.setBackground(ContextCompat.getDrawable(context, R.drawable.transparent_black_down_bg));
 
         ivUserName.setImageDrawable(new TintedBitmapDrawable(getResources(), R.mipmap.icon_menu_user, ContextCompat.getColor(context, R.color.COLOR_8A8A8A)));
@@ -148,8 +182,22 @@ public class UserActivity extends BaseActivity<UserActivityPresenter> implements
         layoutBirth.setOnClickListener(this);
         layoutHomeTown.setOnClickListener(this);
         layoutLocation.setOnClickListener(this);
-        btnRight.setOnClickListener(this);
         layoutGender.setOnClickListener(this);
+        btnRight.setOnClickListener(this);
+        btnCamera.setOnClickListener(this);
+        ivWallPaper.setOnClickListener(this);
+
+        edtUserName.setOnTouchListener(new CustomTouchLisener());
+        edtEmail.setOnTouchListener(new CustomTouchLisener());
+        edtSmallName.setOnTouchListener(new CustomTouchLisener());
+
+        imagePicker.setImageLoader(new GlideImageLoader());
+        imagePicker.setMultiMode(false);
+        imagePicker.setStyle(CropImageView.Style.RECTANGLE);
+        imagePicker.setFocusWidth((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, Constant.CORP_IMAGE_HEAD_EAGE, getResources().getDisplayMetrics()));
+        imagePicker.setFocusHeight((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, Constant.CORP_IMAGE_HEAD_EAGE, getResources().getDisplayMetrics()));
+        imagePicker.setOutPutX(Constant.CORP_IMAGE_OUT_WIDTH);
+        imagePicker.setOutPutY(Constant.CORP_IMAGE_OUT_HEIGHT);
 
         getBindPresenter().getUserInfo();
     }
@@ -169,10 +217,14 @@ public class UserActivity extends BaseActivity<UserActivityPresenter> implements
                 locationPickerTool.locationPicKDialog(context, this, txtLocation.getText().toString(), this);
                 break;
             case R.id.layoutGender:
-                DialogTool.createGenderDialog(context,this);
+                DialogTool.createChoseGenderDialog(context,this);
                 break;
             case R.id.btnRight:
                 if(isEditable){
+                    if(edtUserName.getText().toString().length() <= 0){
+                        showWarning("用户昵称不能为空");
+                        return;
+                    }
                     UserInfoReq userInfoReq = new UserInfoReq();
                     userInfoReq.setBirthday(txtBirth.getText().toString());
                     userInfoReq.setEmail(edtEmail.getText().toString());
@@ -184,13 +236,29 @@ public class UserActivity extends BaseActivity<UserActivityPresenter> implements
                     getBindPresenter().updateUserInfo(userInfoReq);
                 }
                 break;
+            case R.id.btnCamera:
+                Intent intent = new Intent(this, ImageGridActivity.class).putExtra(ImageGridActivity.TAG,"更换头像");
+                startActivityForResult(intent, 100);
+                break;
+            case R.id.ivWallPaper:
+                if(currentUser != null){
+                    ArrayList<PictureVo> pictureVoList = new ArrayList<>();
+                    PictureVo pictureVo = new PictureVo();
+                    pictureVo.setPicPath(currentUser.getPicPath());
+                    pictureVoList.add(pictureVo);
+                    PictureFragment.showPictureDetail(getSupportFragmentManager(),pictureVoList,0, false);
+                }
+                break;
         }
-        isEditable = true;
-        showPageHead(null, R.mipmap.icon_finish, null);
-        edtUserName.setEnabled(true);
-        edtUserName.setSelection(edtUserName.getText().toString().trim().length());
-        edtEmail.setEnabled(true);
-        edtSmallName.setEnabled(true);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == ImagePicker.RESULT_CODE_ITEMS && data != null && requestCode == 100) {
+            ArrayList<ImageItem> images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
+            getBindPresenter().updateHeadPic(images.get(0).path);
+        }
     }
 
     @Override
@@ -204,18 +272,21 @@ public class UserActivity extends BaseActivity<UserActivityPresenter> implements
                 break;
         }
         typeAddress = ADDRESS_NONE;
+        isEditable = true;
     }
 
     @Override
     public void onDatePickerChosened(String str) {
         txtBirth.setText(str);
+        isEditable = true;
     }
 
     @Override
-    public void onHeadStatusChanged(boolean result) {
-        if (result) {
-            layoutHead.setBackgroundColor(ContextCompat.getColor(context, R.color.COLOR_THEME));
-            setTintStatusColor(R.color.COLOR_THEME);
+    public void onHeadStatusChanged(int alpha) {
+        if (alpha > 0) {
+            layoutHead.setBackgroundColor(Color.parseColor(Common.getThemeAlphaColor(alpha)));
+            setTintStatusColor(R.color.COLOR_THEME_MAIN);
+            setTineStatusAlpha((float)alpha / 100);
             if(isEditable){
                 showPageHead("个人资料", R.mipmap.icon_finish, null);
             }else{
@@ -223,8 +294,8 @@ public class UserActivity extends BaseActivity<UserActivityPresenter> implements
             }
         } else {
             layoutHead.setBackground(ContextCompat.getDrawable(context, R.drawable.transparent_black_down_bg));
-            setTintStatusColor(R.color.TRANSPARENT_HALF);
-            showPageHead(null, R.mipmap.icon_editor, null);
+            setTintStatusColor(R.color.TRANSPARENT_BLACK);
+            setTineStatusAlpha(1.0f);
             if(isEditable){
                 showPageHead(null, R.mipmap.icon_finish, null);
             }else{
@@ -236,11 +307,13 @@ public class UserActivity extends BaseActivity<UserActivityPresenter> implements
     @Override
     public void onDialogChose(String str) {
         txtGender.setText(str);
+        isEditable = true;
     }
 
     @Override
     public void showUserInfo(User user) {
         if (user != null) {
+            currentUser = user;
             edtUserName.setText(user.getNickName());
             txtGender.setText(user.getGender() == 1 ? "男" : "女");
             txtBirth.setText(user.getBirthday());
@@ -258,9 +331,14 @@ public class UserActivity extends BaseActivity<UserActivityPresenter> implements
     }
 
     @Override
+    public void updateHeadPic(String headPath) {
+        Common.displayDraweeView(headPath, ivWallPaper);
+    }
+
+    @Override
     public void back(View view) {
         if(isEditable){
-            DialogTool.createUserInfoExitDialog(context, new OnDialogPositiveClickListener() {
+            DialogTool.createDropInfoDialog(context, new OnDialogPositiveClickListener() {
                 @Override
                 public void onPositiveClicked() {
                     finish();
@@ -268,6 +346,39 @@ public class UserActivity extends BaseActivity<UserActivityPresenter> implements
             });
         }else{
             super.back(view);
+        }
+    }
+
+    @Override
+    public boolean onKeyDown(int key, KeyEvent event) {
+        switch (key) {
+            case KeyEvent.KEYCODE_BACK:
+                if(isEditable){
+                    DialogTool.createDropInfoDialog(context, new OnDialogPositiveClickListener() {
+                        @Override
+                        public void onPositiveClicked() {
+                            finish();
+                        }
+                    });
+                }else{
+                    finish();
+                }
+                return false;
+        }
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(isEditable){
+            DialogTool.createDropInfoDialog(context, new OnDialogPositiveClickListener() {
+                @Override
+                public void onPositiveClicked() {
+                    finish();
+                }
+            });
+        }else{
+            finish();
         }
     }
 }

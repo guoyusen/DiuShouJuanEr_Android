@@ -7,7 +7,7 @@ import com.bili.diushoujuaner.model.action.impl.UserInfoAction;
 import com.bili.diushoujuaner.model.action.respon.ActionRespon;
 import com.bili.diushoujuaner.model.apihelper.request.AutographModifyReq;
 import com.bili.diushoujuaner.model.apihelper.request.FeedBackReq;
-import com.bili.diushoujuaner.model.callback.ActionCallbackListener;
+import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
 import com.bili.diushoujuaner.model.databasehelper.dao.User;
 import com.bili.diushoujuaner.presenter.base.BasePresenter;
 import com.bili.diushoujuaner.presenter.presenter.ContentEditActivityPresenter;
@@ -30,7 +30,7 @@ public class ContentEditActivityPresenterImpl extends BasePresenter<IContentEdit
         FeedBackReq feedBackReq = new FeedBackReq();
         feedBackReq.setContent(feedBack);
 
-        FeedBackAction.getInstance(context).getFeedBackAdd(feedBackReq, new ActionCallbackListener<ActionRespon<Void>>() {
+        FeedBackAction.getInstance(context).getFeedBackAdd(feedBackReq, new ActionStringCallbackListener<ActionRespon<Void>>() {
             @Override
             public void onSuccess(ActionRespon<Void> result) {
                 if(showMessage(result.getRetCode(), result.getMessage())){
@@ -52,7 +52,7 @@ public class ContentEditActivityPresenterImpl extends BasePresenter<IContentEdit
     public void publishNewAutograph(String autograph) {
         AutographModifyReq autographModifyReq = new AutographModifyReq();
         autographModifyReq.setAutograph(autograph);
-        UserInfoAction.getInstance(context).getAutographModify(autographModifyReq, new ActionCallbackListener<ActionRespon<String>>() {
+        UserInfoAction.getInstance(context).getAutographModify(autographModifyReq, new ActionStringCallbackListener<ActionRespon<String>>() {
             @Override
             public void onSuccess(ActionRespon<String> result) {
                 if(showMessage(result.getRetCode(), result.getMessage())){
@@ -73,7 +73,7 @@ public class ContentEditActivityPresenterImpl extends BasePresenter<IContentEdit
 
     @Override
     public void getOldAutograph() {
-        UserInfoAction.getInstance(context).getUserInfo(new ActionCallbackListener<ActionRespon<User>>() {
+        UserInfoAction.getInstance(context).getUserInfo(new ActionStringCallbackListener<ActionRespon<User>>() {
             @Override
             public void onSuccess(ActionRespon<User> result) {
                 if(showMessage(result.getRetCode(), result.getMessage())){

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/labels_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <com.bili.diushoujuaner.widget.stepview.StepsViewIndicator
+        android:id="@+id/steps_indicator_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/y10"
+        android:layout_marginLeft="@dimen/x24"
+        android:layout_marginRight="@dimen/x24"/>
+
+</LinearLayout>

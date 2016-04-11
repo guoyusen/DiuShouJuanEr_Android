@@ -96,7 +96,7 @@ public class FloatingActionButton extends ImageButton {
             return;
         }
         mVisible = true;
-        mColorNormal = getColor(R.color.COLOR_THEME);
+        mColorNormal = getColor(R.color.COLOR_THEME_MAIN);
         mColorPressed = darkenColor(mColorNormal);
         mColorRipple = lightenColor(mColorNormal);
         mColorDisabled = getColor(android.R.color.darker_gray);
@@ -120,7 +120,7 @@ public class FloatingActionButton extends ImageButton {
         if (attr != null) {
             try {
                 mColorNormal = attr.getColor(R.styleable.FloatingActionButton_fab_colorNormal,
-                        getColor(R.color.COLOR_THEME));
+                        getColor(R.color.COLOR_THEME_MAIN));
                 mColorPressed = attr.getColor(R.styleable.FloatingActionButton_fab_colorPressed,
                         darkenColor(mColorNormal));
                 mColorRipple = attr.getColor(R.styleable.FloatingActionButton_fab_colorRipple,

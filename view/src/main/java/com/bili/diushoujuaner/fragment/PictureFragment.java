@@ -7,23 +7,23 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.AlphaAnimation;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.base.BaseFragmentActivity;
 import com.bili.diushoujuaner.utils.Common;
 import com.bili.diushoujuaner.utils.entity.PictureVo;
 import com.bili.diushoujuaner.widget.CircleIndicator;
+import com.bili.diushoujuaner.widget.dialog.DialogTool;
+import com.bili.diushoujuaner.widget.dialog.OnDialogPositiveClickListener;
 import com.bili.diushoujuaner.widget.photodraweeview.MultiTouchViewPager;
 import com.bili.diushoujuaner.widget.photodraweeview.PhotoDraweeView;
+import com.bili.diushoujuaner.widget.photodraweeview.listener.OnPhotoTapListener;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.backends.pipeline.PipelineDraweeControllerBuilder;
 import com.facebook.drawee.controller.BaseControllerListener;
@@ -38,7 +38,7 @@ import butterknife.ButterKnife;
 /**
  * Created by BiLi on 2016/3/25.
  */
-public class PictureFragment extends Fragment {
+public class PictureFragment extends Fragment{
 
     @Bind(R.id.viewPager)
     MultiTouchViewPager viewPager;
@@ -47,6 +47,7 @@ public class PictureFragment extends Fragment {
 
     private ArrayList<PictureVo> pictureVoList;
     private int position;
+    private boolean isStatusTheme = false;
 
     public static PictureFragment getInstance(Bundle bundle) {
         PictureFragment fragment = new PictureFragment();
@@ -70,6 +71,7 @@ public class PictureFragment extends Fragment {
         Bundle bundle = getArguments();
         pictureVoList = bundle.getParcelableArrayList("PictureVoList");
         position = bundle.getInt("Position", 0);
+        isStatusTheme = bundle.getBoolean("IsStatusTheme");
         viewPager.setAdapter(new DraweePagerAdapter());
         indicator.setViewPager(viewPager);
 
@@ -114,7 +116,7 @@ public class PictureFragment extends Fragment {
                     }
                 });
                 photoDraweeView.setController(controller.build());
-
+                photoDraweeView.setTag(Common.getCompleteUrl(pictureVoList.get(position).getPicPath()));
                 try {
                     viewGroup.addView(photoDraweeView, ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.MATCH_PARENT);
@@ -124,11 +126,13 @@ public class PictureFragment extends Fragment {
             }else{
                 photoDraweeView = hashMap.get(position);
             }
+            photoDraweeView.setOnPhotoTapListener(photoTapListener);
+            photoDraweeView.setOnLongClickListener(photoLongClickListener);
             return photoDraweeView;
         }
     }
 
-    private void exitFragment(View v) {
+    private void exitFragment() {
         if (!PictureFragment.this.isResumed()) {
             return;
         }
@@ -138,6 +142,30 @@ public class PictureFragment extends Fragment {
         }
     }
 
+    private View.OnLongClickListener photoLongClickListener = new View.OnLongClickListener() {
+        @Override
+        public boolean onLongClick(final View v) {
+            DialogTool.createPictureSaveDialog(getContext(), new OnDialogPositiveClickListener() {
+                @Override
+                public void onPositiveClicked() {
+                    if(Common.isImageDownloaded(Uri.parse(v.getTag().toString())) && Common.savePictureFromFresco(v.getTag().toString())){
+                        Toast.makeText(getContext(),"图片保存成功",Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(getContext(),"资源未获取，稍后再试",Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+            return false;
+        }
+    };
+
+    private OnPhotoTapListener photoTapListener = new OnPhotoTapListener() {
+        @Override
+        public void onPhotoTap(View view, float x, float y) {
+            exitFragment();
+        }
+    };
+
     private View.OnKeyListener pressKeyListener = new View.OnKeyListener() {
         @Override
         public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -145,7 +173,7 @@ public class PictureFragment extends Fragment {
                 if (event.getAction() != KeyEvent.ACTION_UP) {
                     return true;
                 }
-                exitFragment(v);
+                exitFragment();
                 return true;
             }
             return false;
@@ -155,7 +183,21 @@ public class PictureFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        ((BaseFragmentActivity) getActivity()).tintManager.setStatusBarTintResource(R.color.COLOR_THEME);
+        if(isStatusTheme){
+            ((BaseFragmentActivity) getActivity()).tintManager.setStatusBarTintResource(R.color.COLOR_THEME_MAIN);
+        }else{
+            ((BaseFragmentActivity) getActivity()).tintManager.setStatusBarTintResource(R.color.TRANSPARENT_BLACK);
+        }
+
         ButterKnife.unbind(this);
+    }
+
+    public static void showPictureDetail(FragmentManager fragmentManager, ArrayList<PictureVo> pictureVoList, int position, boolean isStatusTheme){
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList("PictureVoList", pictureVoList);
+        bundle.putInt("Position", position);
+        bundle.putBoolean("IsStatusTheme",isStatusTheme);
+        fragmentManager.beginTransaction().add(android.R.id.content, PictureFragment.getInstance(bundle), "PictureFragment")
+                .addToBackStack(null).commit();
     }
 }

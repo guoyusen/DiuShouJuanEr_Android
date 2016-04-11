@@ -56,8 +56,8 @@
     </style>
 
     <style name="BtnLong" parent="Btn">
-        <item name="android:layout_marginLeft">@dimen/x60</item>
-        <item name="android:layout_marginRight">@dimen/x60</item>
+        <item name="android:layout_marginLeft">@dimen/x72</item>
+        <item name="android:layout_marginRight">@dimen/x72</item>
     </style>
 
     <style name="BtnXLong" parent="Btn">
@@ -66,15 +66,19 @@
     </style>
 
     <style name="BtnLongGreen" parent="BtnLong">
-        <item name="android:background">@drawable/btn_green_selector</item>
+        <item name="android:background">@drawable/selector_btn_green</item>
     </style>
 
     <style name="BtnXLongBlue" parent="BtnXLong">
-        <item name="android:background">@drawable/btn_blue_selector</item>
+        <item name="android:background">@drawable/selector_btn_blue</item>
+    </style>
+
+    <style name="BtnXLongGray" parent="BtnXLong">
+        <item name="android:background">@drawable/rectangle_solid_gray</item>
     </style>
 
     <style name="BtnXLongRed" parent="BtnXLong">
-        <item name="android:background">@drawable/btn_red_selector</item>
+        <item name="android:background">@drawable/selector_btn_red</item>
     </style>
 
     <style name="TextNavRight" parent="TextMiddle">
@@ -87,7 +91,7 @@
         <item name="android:gravity">center</item>
     </style>
 
-    <style name="TextNavTitle" parent="TextLarge">
+    <style name="TextNavTitle" parent="TextXLarge">
         <item name="android:textColor">@color/COLOR_WHITE</item>
         <item name="android:layout_centerInParent">true</item>
         <item name="android:paddingLeft">@dimen/x45</item>
@@ -172,8 +176,9 @@
     <style name="menu_item_edt_user" parent="menu_item_content_user">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_marginRight">@dimen/x24</item>
+        <item name="android:focusableInTouchMode">true</item>
         <item name="android:textColorHint">@color/TC_ADADBB</item>
-        <item name="android:enabled">false</item>
+        <item name="android:textCursorDrawable">@drawable/cursor_blue</item>
         <item name="android:background">@null</item>
     </style>
 
@@ -182,8 +187,15 @@
         <item name="android:textColorHint">@color/TC_ADADBB</item>
     </style>
 
-    <style name="icon_arrow_right">
+    <style name="SuperCheckboxTheme" parent="@android:style/Widget.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/selector_check</item>
+    </style>
 
+    <style name="popupwindow_anim_style">
+        <!-- 指定显示的动画xml -->
+        <item name="android:windowEnterAnimation">@anim/show_from_bottom</item>
+        <!-- 指定消失的动画xml -->
+        <item name="android:windowExitAnimation">@anim/hide_to_bottom</item>
     </style>
 
 </resources>

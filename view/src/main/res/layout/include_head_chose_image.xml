@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/actionbar_height"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/BG_CC22292C">
+
+    <ImageButton
+        android:id="@+id/back"
+        android:layout_width="@dimen/x100"
+        android:layout_height="@dimen/y100"
+        android:background="@null"
+        android:onClick="back"
+        android:padding="@dimen/x10"
+        android:src="@mipmap/icon_nav_back" />
+
+    <View
+        android:layout_width="1px"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_toRightOf="@+id/back"
+        android:background="@color/LC_CC111111" />
+
+    <com.bili.diushoujuaner.widget.MaterialCircleView
+        android:id="@+id/defaultCircle"
+        android:layout_centerInParent="true"
+        android:layout_width="@dimen/x40"
+        android:layout_height="@dimen/x40"
+        app:circleColor="@color/COLOR_WHITE"
+        android:visibility="gone"
+        app:circleWidth="@dimen/x4"/>
+
+    <TextView
+        android:id="@+id/txtNavTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="8dp"
+        android:layout_toRightOf="@id/back"
+        android:text="选择图片"
+        android:textColor="#ffffff"
+        android:textSize="@dimen/x32" />
+
+    <ImageButton
+        android:id="@+id/btnRight"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="@dimen/x24"
+        android:layout_marginRight="@dimen/x24" />
+
+    <TextView
+        android:id="@+id/txtRight"
+        style="@style/TextNavRight"
+        android:layout_height="@dimen/y64"
+        android:paddingLeft="@dimen/x24"
+        android:paddingRight="@dimen/x24"
+        android:layout_marginRight="@dimen/x24"
+        android:layout_centerVertical="true"
+        android:background="@drawable/selector_btn_blue"
+        android:text="完成(3/9)" />
+
+</RelativeLayout>

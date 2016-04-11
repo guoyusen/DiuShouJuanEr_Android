@@ -47,7 +47,7 @@ public class BaseFragment<T> extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(getLayout(), container, false);
         ButterKnife.bind(this, view);
-        initComponent(view);
+        initHeader(view);
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
             resetStatus();
         }
@@ -57,7 +57,7 @@ public class BaseFragment<T> extends Fragment {
 
     public void resetStatus(){}
 
-    private void initComponent(View view){
+    private void initHeader(View view){
         defaultCircle = view.findViewById(R.id.defaultCircle);
         txtNavTitle = (TextView)view.findViewById(R.id.txtNavTitle);
         txtRight = (TextView)view.findViewById(R.id.txtRight);
@@ -76,6 +76,9 @@ public class BaseFragment<T> extends Fragment {
     }
 
     public void showPageHead(String titleText, Integer iconId, String rightText) {
+        if(defaultCircle == null || txtNavTitle == null || txtRight == null || btnRight == null){
+            return;
+        }
         if(titleText == null){
             txtNavTitle.setVisibility(View.INVISIBLE);
         }else{
@@ -169,6 +172,9 @@ public class BaseFragment<T> extends Fragment {
                 break;
             case Constant.WARNING_PARSE:
                 showWarning(context.getString(R.string.warning_parse));
+                break;
+            case Constant.WARNING_FILE:
+                showWarning(context.getString(R.string.warning_file));
                 break;
         }
     }

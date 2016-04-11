@@ -6,10 +6,9 @@ import android.text.TextUtils;
 import com.bili.diushoujuaner.model.action.respon.ActionRespon;
 import com.bili.diushoujuaner.presenter.presenter.LoginActivityPresenter;
 import com.bili.diushoujuaner.utils.Constant;
-import com.bili.diushoujuaner.model.apihelper.response.CustomSession;
 import com.bili.diushoujuaner.model.apihelper.request.UserAccountReq;
 import com.bili.diushoujuaner.model.action.impl.CustomSessionAction;
-import com.bili.diushoujuaner.model.callback.ActionCallbackListener;
+import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
 import com.bili.diushoujuaner.presenter.base.BasePresenter;
 import com.bili.diushoujuaner.presenter.view.ILoginView;
 import com.bili.diushoujuaner.utils.Common;
@@ -33,9 +32,9 @@ public class LoginActivityPresenterImpl extends BasePresenter<ILoginView> implem
         UserAccountReq userAccountReq = new UserAccountReq();
         userAccountReq.setMobile(mobile);
         userAccountReq.setPassword(psd);
-        CustomSessionAction.getInstance(context).getUserLogin(userAccountReq, new ActionCallbackListener<ActionRespon<CustomSession>>() {
+        CustomSessionAction.getInstance(context).getUserLogin(userAccountReq, new ActionStringCallbackListener<ActionRespon<Void>>() {
             @Override
-            public void onSuccess(ActionRespon<CustomSession> result) {
+            public void onSuccess(ActionRespon<Void> result) {
                 if(showMessage(result.getRetCode(), result.getMessage())){
                     if(isBindViewValid()){
                         getBindView().loginSuccess();

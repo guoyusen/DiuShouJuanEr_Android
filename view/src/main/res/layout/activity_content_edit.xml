@@ -25,9 +25,9 @@
             android:padding="@dimen/x10"
             android:gravity="left"
             android:layout_centerVertical="true"
-            android:background="@drawable/common_rectangle_solid_white"
+            android:background="@drawable/rectangle_solid_white"
             android:textColor="@color/TC_333333"
-            android:textCursorDrawable="@drawable/common_cursor_blue"
+            android:textCursorDrawable="@drawable/cursor_blue"
             android:hint="新的生活状态"
             android:textColorHint="@color/TC_ADADBB"/>
 

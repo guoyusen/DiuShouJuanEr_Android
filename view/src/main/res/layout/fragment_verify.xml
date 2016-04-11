@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/MatchMatch.FitWindow"
+    android:background="@color/COLOR_WHITE"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/BG_F6F6F6">
+
+        <com.bili.diushoujuaner.widget.CustomEditText
+            android:id="@+id/edtVerify"
+            style="@style/TextMiddle"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y96"
+            android:layout_marginBottom="@dimen/x24"
+            android:layout_marginLeft="@dimen/x24"
+            android:layout_marginStart="@dimen/x24"
+            android:layout_marginTop="@dimen/x24"
+            android:layout_toLeftOf="@+id/txtTimer"
+            android:background="@drawable/rectangle_solid_white"
+            android:gravity="center_vertical"
+            android:hint="请输入验证码"
+            android:inputType="number"
+            android:paddingLeft="@dimen/x5"
+            android:paddingRight="@dimen/x5"
+            android:singleLine="true"
+            android:textColor="@color/TC_333333"
+            android:textColorHint="@color/TC_ADADBB"
+            android:textCursorDrawable="@drawable/cursor_blue" />
+
+        <TextView
+            android:id="@+id/txtTimer"
+            style="@style/TextMiddle"
+            android:layout_width="@dimen/x200"
+            android:layout_height="@dimen/y96"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/x24"
+            android:layout_marginTop="@dimen/x24"
+            android:background="@null"
+            android:gravity="center|right"
+            android:textColor="@color/TC_ADADBB" />
+
+        <com.bili.diushoujuaner.widget.CustomEditText
+            android:id="@+id/edtPsd"
+            style="@style/TextMiddle"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y96"
+            android:layout_below="@+id/edtVerify"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="@dimen/x24"
+            android:layout_marginLeft="@dimen/x24"
+            android:layout_marginRight="@dimen/x24"
+            android:layout_marginStart="@dimen/x24"
+            android:background="@drawable/rectangle_solid_white"
+            android:gravity="center_vertical"
+            android:hint="请输入密码"
+            android:inputType="textPassword"
+            android:paddingLeft="@dimen/x5"
+            android:paddingRight="@dimen/x5"
+            android:singleLine="true"
+            android:textColor="@color/TC_333333"
+            android:textColorHint="@color/TC_ADADBB"
+            android:textCursorDrawable="@drawable/cursor_blue" />
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btnSubmit"
+        style="@style/BtnXLongGray"
+        android:layout_marginTop="@dimen/y64"
+        android:gravity="center"
+        android:textColor="@color/TC_ADADBB" />
+
+</LinearLayout>

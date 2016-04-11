@@ -6,11 +6,11 @@ import com.bili.diushoujuaner.model.action.IResponAction;
 import com.bili.diushoujuaner.model.action.respon.ActionRespon;
 import com.bili.diushoujuaner.model.apihelper.ApiRespon;
 import com.bili.diushoujuaner.model.apihelper.api.ApiAction;
-import com.bili.diushoujuaner.model.apihelper.callback.ApiCallbackListener;
+import com.bili.diushoujuaner.model.apihelper.callback.ApiStringCallbackListener;
 import com.bili.diushoujuaner.model.apihelper.request.ResponAddReq;
 import com.bili.diushoujuaner.model.apihelper.request.ResponRemoveReq;
 import com.bili.diushoujuaner.model.apihelper.response.ResponDto;
-import com.bili.diushoujuaner.model.callback.ActionCallbackListener;
+import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
 import com.bili.diushoujuaner.utils.GsonParser;
 import com.google.gson.reflect.TypeToken;
 import com.nanotasks.BackgroundWork;
@@ -37,8 +37,8 @@ public class ResponAction implements IResponAction {
     }
 
     @Override
-    public void getResponAdd(ResponAddReq responAddReq, final ActionCallbackListener<ActionRespon<ResponDto>> actionCallbackListener) {
-        ApiAction.getInstance().getResponAdd(responAddReq, new ApiCallbackListener() {
+    public void getResponAdd(ResponAddReq responAddReq, final ActionStringCallbackListener<ActionRespon<ResponDto>> actionStringCallbackListener) {
+        ApiAction.getInstance().getResponAdd(responAddReq, new ApiStringCallbackListener() {
             @Override
             public void onSuccess(final String data) {
                 Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<ResponDto>>() {
@@ -51,26 +51,26 @@ public class ResponAction implements IResponAction {
                 }, new Completion<ActionRespon<ResponDto>>() {
                     @Override
                     public void onSuccess(Context context, ActionRespon<ResponDto> result) {
-                        actionCallbackListener.onSuccess(result);
+                        actionStringCallbackListener.onSuccess(result);
                     }
 
                     @Override
                     public void onError(Context context, Exception e) {
-                        actionCallbackListener.onSuccess(ActionRespon.<ResponDto>getActionResponError());
+                        actionStringCallbackListener.onSuccess(ActionRespon.<ResponDto>getActionResponError());
                     }
                 });
             }
 
             @Override
             public void onFailure(int errorCode) {
-                actionCallbackListener.onFailure(errorCode);
+                actionStringCallbackListener.onFailure(errorCode);
             }
         });
     }
 
     @Override
-    public void getResponRemove(ResponRemoveReq responRemoveReq, final ActionCallbackListener<ActionRespon<Long>> actionCallbackListener) {
-        ApiAction.getInstance().getResponRemove(responRemoveReq, new ApiCallbackListener() {
+    public void getResponRemove(ResponRemoveReq responRemoveReq, final ActionStringCallbackListener<ActionRespon<Long>> actionStringCallbackListener) {
+        ApiAction.getInstance().getResponRemove(responRemoveReq, new ApiStringCallbackListener() {
             @Override
             public void onSuccess(final String data) {
                 Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<Long>>() {
@@ -83,19 +83,19 @@ public class ResponAction implements IResponAction {
                 }, new Completion<ActionRespon<Long>>() {
                     @Override
                     public void onSuccess(Context context, ActionRespon<Long> result) {
-                        actionCallbackListener.onSuccess(result);
+                        actionStringCallbackListener.onSuccess(result);
                     }
 
                     @Override
                     public void onError(Context context, Exception e) {
-                        actionCallbackListener.onSuccess(ActionRespon.<Long>getActionResponError());
+                        actionStringCallbackListener.onSuccess(ActionRespon.<Long>getActionResponError());
                     }
                 });
             }
 
             @Override
             public void onFailure(int errorCode) {
-                actionCallbackListener.onFailure(errorCode);
+                actionStringCallbackListener.onFailure(errorCode);
             }
         });
     }

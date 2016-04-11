@@ -15,11 +15,11 @@ import com.bili.diushoujuaner.R;
  */
 public class DialogTool {
 
-    public static void createUserInfoExitDialog(final Context context, final OnDialogPositiveClickListener onDialogPositiveClickListener) {
+    public static void createDropInfoDialog(final Context context, final OnDialogPositiveClickListener onDialogPositiveClickListener) {
         final AlertDialog dialog = new AlertDialog.Builder(context).create();
         dialog.show();
         Window window = dialog.getWindow();
-        window.setContentView(R.layout.layout_user_edit_exit_dialog);
+        window.setContentView(R.layout.layout_dialog_drop_info);
         Button btnCancle = (Button) window.findViewById(R.id.btnCancle);
         Button btnKeep = (Button) window.findViewById(R.id.btnKeep);
         btnCancle.setOnClickListener(new View.OnClickListener() {
@@ -43,7 +43,7 @@ public class DialogTool {
         Window window = dialog.getWindow();
         window.setWindowAnimations(R.style.dialogWindowAnim);
         window.setBackgroundDrawableResource(R.color.TRANSPARENT);
-        window.setContentView(R.layout.layout_comment_delete_dialog);
+        window.setContentView(R.layout.layout_dialog_comment_delete);
         window.setGravity(Gravity.BOTTOM);
         RelativeLayout layoutCancel = (RelativeLayout) window.findViewById(R.id.layoutCancle);
         layoutCancel.setOnClickListener(new View.OnClickListener() {
@@ -62,13 +62,13 @@ public class DialogTool {
         });
     }
 
-    public static void createGenderDialog(final Context context, final OnDialogChoseListener onDialogChoseListener){
+    public static void createChoseGenderDialog(final Context context, final OnDialogChoseListener onDialogChoseListener){
         final AlertDialog dialog = new AlertDialog.Builder(context).create();
         dialog.show();
         Window window = dialog.getWindow();
         window.setWindowAnimations(R.style.dialogWindowAnim);
         window.setBackgroundDrawableResource(R.color.TRANSPARENT);
-        window.setContentView(R.layout.layout_gender_dialog);
+        window.setContentView(R.layout.layout_dialog_chose_gender);
         window.setGravity(Gravity.BOTTOM);
         RelativeLayout layoutMale = (RelativeLayout) window.findViewById(R.id.layoutMale);
         layoutMale.setOnClickListener(new View.OnClickListener() {
@@ -84,6 +84,53 @@ public class DialogTool {
             public void onClick(View v) {
                 onDialogChoseListener.onDialogChose("女");
                 dialog.dismiss();
+            }
+        });
+    }
+
+    public static void createRemoveRecallDialog(final Context context, final OnDialogPositiveClickListener onDialogPositiveClickListener){
+        final AlertDialog dialog = new AlertDialog.Builder(context).create();
+        dialog.show();
+        Window window = dialog.getWindow();
+        window.setContentView(R.layout.layout_dialog_delete_recall);
+        Button btnCancle = (Button) window.findViewById(R.id.btnCancle);
+        Button btnSure = (Button) window.findViewById(R.id.btnSure);
+        btnCancle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        btnSure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                onDialogPositiveClickListener.onPositiveClicked();
+            }
+        });
+    }
+
+    public static void createPictureSaveDialog(final Context context, final OnDialogPositiveClickListener onDialogPositiveClickListener){
+        final AlertDialog dialog = new AlertDialog.Builder(context).create();
+        dialog.show();
+        Window window = dialog.getWindow();
+        window.setContentView(R.layout.layout_dialog_picture_save);
+        window.setBackgroundDrawableResource(R.color.TRANSPARENT);
+        window.setWindowAnimations(R.style.dialogWindowAnim);
+        window.setGravity(Gravity.BOTTOM);
+        RelativeLayout layoutCancle = (RelativeLayout) window.findViewById(R.id.layoutCancle);
+        RelativeLayout layoutSave = (RelativeLayout) window.findViewById(R.id.layoutSave);
+        layoutCancle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        layoutSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                onDialogPositiveClickListener.onPositiveClicked();
             }
         });
     }

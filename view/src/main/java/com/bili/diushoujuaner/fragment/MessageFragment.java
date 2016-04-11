@@ -22,6 +22,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,7 +83,7 @@ public class MessageFragment extends BaseFragment implements WaveSwipeRefreshLay
         });
 
         waveSwipeRefreshLayout.setColorSchemeColors(Color.WHITE, Color.WHITE);
-        waveSwipeRefreshLayout.setWaveColor(ContextCompat.getColor(context, R.color.COLOR_THEME));
+        waveSwipeRefreshLayout.setWaveColor(ContextCompat.getColor(context, R.color.COLOR_THEME_MAIN));
         waveSwipeRefreshLayout.setOnRefreshListener(this);
 
         Common.displayDraweeView(headPicUrl, ivNavHead);
@@ -107,8 +108,8 @@ public class MessageFragment extends BaseFragment implements WaveSwipeRefreshLay
         }, 3000);
     }
 
-    @Subscribe
-    public void showHead(ShowHeadEvent showHeadEvent) {
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onShowHeadEvent(ShowHeadEvent showHeadEvent) {
         this.headPicUrl = showHeadEvent.getHeadPicUrl();
         if(ivNavHead != null){
             Common.displayDraweeView(this.headPicUrl, ivNavHead);

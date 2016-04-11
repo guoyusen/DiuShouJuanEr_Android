@@ -17,6 +17,11 @@ import com.bili.diushoujuaner.widget.CustomToast;
  */
 public class BaseActivity<T> extends AbstractBaseActivity {
 
+    private TextView txtNavTitle;
+    private TextView txtRight;
+    private View defaultCircle;
+    private ImageButton btnRight;
+
     protected T getBindPresenter(){
         return (T)basePresenter;
     }
@@ -62,6 +67,14 @@ public class BaseActivity<T> extends AbstractBaseActivity {
     }
 
     @Override
+    public void initHeader() {
+        defaultCircle = findViewById(R.id.defaultCircle);
+        txtNavTitle = (TextView)findViewById(R.id.txtNavTitle);
+        txtRight = (TextView)findViewById(R.id.txtRight);
+        btnRight = (ImageButton)findViewById(R.id.btnRight);
+    }
+
+    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
             finish();
@@ -76,25 +89,28 @@ public class BaseActivity<T> extends AbstractBaseActivity {
 
     @Override
     public void showPageHead(String titleText, Integer iconId, String rightText) {
+        if(defaultCircle == null || txtNavTitle == null || txtRight == null || btnRight == null){
+            return;
+        }
         if(titleText == null){
-            findViewById(R.id.txtNavTitle).setVisibility(View.INVISIBLE);
+            txtNavTitle.setVisibility(View.INVISIBLE);
         }else{
-            findViewById(R.id.txtNavTitle).setVisibility(View.VISIBLE);
-            ((TextView)findViewById(R.id.txtNavTitle)).setText(titleText);
+            txtNavTitle.setVisibility(View.VISIBLE);
+            txtNavTitle.setText(titleText);
         }
 
         if(iconId == null){
-            findViewById(R.id.btnRight).setVisibility(View.GONE);
+            btnRight.setVisibility(View.GONE);
         }else{
-            findViewById(R.id.btnRight).setVisibility(View.VISIBLE);
-            ((ImageButton)findViewById(R.id.btnRight)).setImageResource(iconId);
+            btnRight.setVisibility(View.VISIBLE);
+            btnRight.setImageResource(iconId);
         }
 
         if(rightText == null){
-            findViewById(R.id.txtRight).setVisibility(View.INVISIBLE);
+            txtRight.setVisibility(View.INVISIBLE);
         }else{
-            findViewById(R.id.txtRight).setVisibility(View.VISIBLE);
-            ((TextView)findViewById(R.id.txtRight)).setText(rightText);
+            txtRight.setVisibility(View.VISIBLE);
+            txtRight.setText(rightText);
         }
     }
 
@@ -108,10 +124,10 @@ public class BaseActivity<T> extends AbstractBaseActivity {
                 CustomProgress.getInstance(context).showTop(message, true, null);
                 break;
             case Constant.LOADING_DEFAULT:
-                if(findViewById(R.id.defaultCircle) != null){
-                    findViewById(R.id.defaultCircle).setVisibility(View.VISIBLE);
-                    if(TextUtils.isEmpty(((TextView)findViewById(R.id.txtNavTitle)).getText())){
-                        findViewById(R.id.txtNavTitle).setVisibility(View.GONE);
+                if(defaultCircle != null){
+                    defaultCircle.setVisibility(View.VISIBLE);
+                    if(TextUtils.isEmpty(txtNavTitle.getText())){
+                        txtNavTitle.setVisibility(View.GONE);
                     }
                 }
                 break;
@@ -158,6 +174,9 @@ public class BaseActivity<T> extends AbstractBaseActivity {
                 break;
             case Constant.WARNING_PARSE:
                 showWarning(context.getString(R.string.warning_parse));
+                break;
+            case Constant.WARNING_FILE:
+                showWarning(context.getString(R.string.warning_file));
                 break;
         }
     }

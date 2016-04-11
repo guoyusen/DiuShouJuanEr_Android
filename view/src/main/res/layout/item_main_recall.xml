@@ -19,12 +19,27 @@
             android:layout_alignBottom="@+id/txtItemUserName"
             android:layout_alignParentRight="true"/>
 
+        <RelativeLayout
+            android:id="@+id/layoutDelete"
+            android:layout_width="@dimen/x100"
+            android:layout_height="@dimen/y100"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true">
+
+            <ImageView
+                android:id="@+id/ivItemDelete"
+                android:layout_width="@dimen/x48"
+                android:layout_height="@dimen/x48"
+                android:layout_centerInParent="true"/>
+
+        </RelativeLayout>
+
         <com.facebook.drawee.view.SimpleDraweeView
             android:id="@+id/ivItemHead"
             android:layout_width="@dimen/x80"
             android:layout_height="@dimen/x80"
             android:layout_centerVertical="true"
-            app:placeholderImage="@mipmap/shin"
+            app:actualImageScaleType="focusCrop"
             app:roundAsCircle="true" />
 
         <TextView

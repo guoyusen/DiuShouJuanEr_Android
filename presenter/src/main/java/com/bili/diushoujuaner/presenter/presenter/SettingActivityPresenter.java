@@ -7,10 +7,10 @@ import com.bili.diushoujuaner.utils.entity.SettingVo;
  */
 public interface SettingActivityPresenter {
 
-    void clearCurrentUserData();
-
     void getSettings();
 
     void saveSettings(SettingVo settingVo);
+
+    void getLogout();
 
 }

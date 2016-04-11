@@ -76,7 +76,7 @@ public class DatePickerTool {
         View dateTimeLayout;
         LayoutInflater mLayoutInflater = LayoutInflater.from(context);
         dateTimeLayout = mLayoutInflater.inflate(
-                R.layout.layout_popup_picker, null);
+                R.layout.layout_dialog_popup_picker, null);
         popDateTimePickDialog = new PopupWindow(dateTimeLayout,
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);

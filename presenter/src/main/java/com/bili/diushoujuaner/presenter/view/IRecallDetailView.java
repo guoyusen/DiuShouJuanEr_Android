@@ -10,7 +10,7 @@ public interface IRecallDetailView extends IBaseView{
 
     void showRecallDetail(RecallDto recallDto);
 
-    void showGooderDetail(Long userNo);
+    void showGooderSpace(Long userNo);
 
     void refreshComment();
 

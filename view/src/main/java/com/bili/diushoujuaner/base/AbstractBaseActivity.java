@@ -39,6 +39,7 @@ public abstract class AbstractBaseActivity extends Activity implements IBaseActi
         initIntentParam(getIntent());
         beforeInitView();
         initView();
+        initHeader();
         ButterKnife.bind(this);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -55,13 +56,20 @@ public abstract class AbstractBaseActivity extends Activity implements IBaseActi
         }
         tintManager.setStatusBarTintResource(colorId);
     }
+
+    public void setTineStatusAlpha(float alpha){
+        if(tintManager == null){
+            return;
+        }
+        tintManager.setStatusBarAlpha(alpha);
+    }
     /**
      * 为状态栏着色
      */
     private void tintStatusColor() {
         tintManager = new SystemBarTintManager(this);
         tintManager.setStatusBarTintEnabled(true);
-        tintManager.setStatusBarTintResource(R.color.COLOR_THEME);
+        tintManager.setStatusBarTintResource(R.color.COLOR_THEME_MAIN);
     }
 
     @TargetApi(19)

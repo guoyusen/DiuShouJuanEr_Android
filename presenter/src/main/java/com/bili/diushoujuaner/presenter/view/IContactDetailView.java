@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface IContactDetailView extends IBaseView {
 
-    void showContact(FriendVo friendVo);
+    void showContactInfo(FriendVo friendVo);
 
     void showRecent(RecallDto recallDto);
 

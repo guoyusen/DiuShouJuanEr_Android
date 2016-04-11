@@ -5,25 +5,29 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.bili.diushoujuaner.R;
+import com.bili.diushoujuaner.activity.RecallAddActivity;
 import com.bili.diushoujuaner.activity.RecallDetailActivity;
 import com.bili.diushoujuaner.adapter.RecallAdapter;
 import com.bili.diushoujuaner.base.BaseFragment;
+import com.bili.diushoujuaner.model.apihelper.response.RecallDto;
+import com.bili.diushoujuaner.presenter.presenter.HomeFragmentPresenter;
+import com.bili.diushoujuaner.presenter.presenter.impl.HomeFragmentPresenterImpl;
+import com.bili.diushoujuaner.presenter.view.IHomeView;
+import com.bili.diushoujuaner.utils.Common;
+import com.bili.diushoujuaner.utils.Constant;
 import com.bili.diushoujuaner.utils.event.GoodRecallEvent;
 import com.bili.diushoujuaner.utils.event.RefreshRecallEvent;
 import com.bili.diushoujuaner.utils.event.ShowHeadEvent;
 import com.bili.diushoujuaner.utils.event.ShowMainMenuEvent;
-import com.bili.diushoujuaner.presenter.presenter.HomeFragmentPresenter;
-import com.bili.diushoujuaner.utils.Common;
-import com.bili.diushoujuaner.utils.Constant;
-import com.bili.diushoujuaner.model.apihelper.response.RecallDto;
-import com.bili.diushoujuaner.presenter.presenter.impl.HomeFragmentPresenterImpl;
-import com.bili.diushoujuaner.presenter.view.IHomeView;
 import com.bili.diushoujuaner.widget.CustomListViewRefresh;
 import com.bili.diushoujuaner.widget.TintedBitmapDrawable;
 import com.bili.diushoujuaner.widget.waveswipe.WaveSwipeRefreshLayout;
@@ -37,14 +41,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * Created by BiLi on 2016/3/2.
  */
 public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements WaveSwipeRefreshLayout.OnRefreshListener, IHomeView, View.OnClickListener, CustomListViewRefresh.OnLoadMoreListener {
 
-    @Bind(R.id.customListViewRefresh)
-    CustomListViewRefresh customListViewRefresh;
+    @Bind(R.id.listviewRecall)
+    CustomListViewRefresh listviewRecall;
     @Bind(R.id.waveSwipeRefreshLayout)
     WaveSwipeRefreshLayout waveSwipeRefreshLayout;
     @Bind(R.id.ivNavHead)
@@ -53,6 +58,8 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
     RelativeLayout layoutTip;
     @Bind(R.id.ivTip)
     ImageView ivTip;
+    @Bind(R.id.btnRight)
+    ImageButton btnRight;
 
     private List<RecallDto> recallDtoList;
     private RecallAdapter recallAdapter;
@@ -63,7 +70,8 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
     private long goodRecallNo;
     private String headPicUrl;
 
-    class CustomRunnable implements Runnable{
+
+    class CustomRunnable implements Runnable {
         @Override
         public void run() {
             // 重置，允许再次进行点击，并发送请求
@@ -72,7 +80,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
         }
     }
 
-    public static HomeFragment instantiation(int position){
+    public static HomeFragment instantiation(int position) {
         HomeFragment fragment = new HomeFragment();
         EventBus.getDefault().register(fragment);
         Bundle args = new Bundle();
@@ -92,7 +100,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
         handler = new Handler();
         customRunnable = new CustomRunnable();
 
-        basePresenter = new HomeFragmentPresenterImpl(this, getContext());
+        basePresenter = new HomeFragmentPresenterImpl(this, context);
     }
 
     @Override
@@ -100,22 +108,21 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
         showPageHead("首页", R.mipmap.icon_editor, null);
 
         waveSwipeRefreshLayout.setColorSchemeColors(Color.WHITE, Color.WHITE);
-        waveSwipeRefreshLayout.setWaveColor(ContextCompat.getColor(context, R.color.COLOR_THEME));
+        waveSwipeRefreshLayout.setWaveColor(ContextCompat.getColor(context, R.color.COLOR_THEME_MAIN));
         waveSwipeRefreshLayout.setOnRefreshListener(this);
         ivNavHead.setOnClickListener(this);
+        btnRight.setOnClickListener(this);
 
         ivTip.setImageDrawable(new TintedBitmapDrawable(getResources(), R.mipmap.icon_nodata, ContextCompat.getColor(context, R.color.COLOR_BFBFBF)));
         Common.displayDraweeView(headPicUrl, ivNavHead);
 
-        recallAdapter = new RecallAdapter(getContext(), recallDtoList);
-        customListViewRefresh.setAdapter(recallAdapter);
-        customListViewRefresh.setCanLoadMore(true);
-        customListViewRefresh.setOnLoadMoreListener(this);
-        customListViewRefresh.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        recallAdapter = new RecallAdapter(getContext(), recallDtoList, Constant.RECALL_ADAPTER_HOME, Constant.RECALL_GOOD_HOME_INDEX);
+        listviewRecall.setAdapter(recallAdapter);
+        listviewRecall.setCanLoadMore(true);
+        listviewRecall.setOnLoadMoreListener(this);
+        listviewRecall.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                getBindPresenter().addRecallDtoToTemper(recallAdapter.getItem(position));
-
                 Intent intent = new Intent(getContext(), RecallDetailActivity.class);
                 intent.putExtra(RecallDetailActivity.TAG, recallAdapter.getItem(position).getRecallNo());
                 startActivity(intent);
@@ -128,9 +135,12 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.ivNavHead:
                 EventBus.getDefault().post(new ShowMainMenuEvent());
+                break;
+            case R.id.btnRight:
+                startActivity(new Intent(getContext(), RecallAddActivity.class));
                 break;
         }
     }
@@ -143,7 +153,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
 
     @Override
     public void onRefresh() {
-        customListViewRefresh.setListViewStateRefresh();
+        listviewRecall.setListViewStateRefresh();
         getBindPresenter().getRecallList(Constant.REFRESH_INTENT);
     }
 
@@ -155,32 +165,32 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
     @Override
     public void showRecallList(List<RecallDto> recallDtoList) {
         recallAdapter.refresh(recallDtoList);
-        if(Common.isEmpty(recallDtoList)){
+        if (Common.isEmpty(recallDtoList)) {
             layoutTip.setVisibility(View.VISIBLE);
-            customListViewRefresh.setVisibility(View.GONE);
+            listviewRecall.setVisibility(View.GONE);
             return;
-        }else{
+        } else {
             layoutTip.setVisibility(View.GONE);
-            customListViewRefresh.setVisibility(View.VISIBLE);
+            listviewRecall.setVisibility(View.VISIBLE);
         }
-        if(recallDtoList.size() < 20){
-            customListViewRefresh.setListViewStateComplete();
-        }else{
-            customListViewRefresh.setListViewStateFinished();
+        if (recallDtoList.size() < 20) {
+            listviewRecall.setListViewStateComplete();
+        } else {
+            listviewRecall.setListViewStateFinished();
         }
     }
 
     @Override
     public void showMoreRecallList(List<RecallDto> recallDtoList) {
         recallAdapter.add(recallDtoList);
-        if(Common.isEmpty(recallDtoList)){
-            customListViewRefresh.setListViewStateComplete();
+        if (Common.isEmpty(recallDtoList)) {
+            listviewRecall.setListViewStateComplete();
             return;
         }
-        if(recallDtoList.size() < 20){
-            customListViewRefresh.setListViewStateComplete();
-        }else{
-            customListViewRefresh.setListViewStateFinished();
+        if (recallDtoList.size() < 20) {
+            listviewRecall.setListViewStateComplete();
+        } else {
+            listviewRecall.setListViewStateFinished();
         }
     }
 
@@ -191,20 +201,23 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
 
     @Override
     public void setLoadMoreEnd() {
-        customListViewRefresh.setListViewStateFinished();
+        listviewRecall.setListViewStateFinished();
     }
 
-    @Subscribe
-    public void showHead(ShowHeadEvent showHeadEvent) {
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onShowHeadEvent(ShowHeadEvent showHeadEvent) {
         this.headPicUrl = showHeadEvent.getHeadPicUrl();
-        if(ivNavHead != null){
+        if (ivNavHead != null) {
             Common.displayDraweeView(this.headPicUrl, ivNavHead);
         }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onRecallGoodEvent(GoodRecallEvent goodRecallEvent){
-        if(!isGoodStatusInited){
+    public void onGoodRecallEvent(GoodRecallEvent goodRecallEvent) {
+        if (!(goodRecallEvent.getIndex() == Constant.RECALL_GOOD_HOME_INDEX && goodRecallEvent.getType() == Constant.RECALL_ADAPTER_HOME)) {
+            return;
+        }
+        if (!isGoodStatusInited) {
             isGoodStatusInited = true;
             goodStatus = getBindPresenter().getGoodStatusByRecallNo(recallAdapter.getItem(goodRecallEvent.getPosition()).getRecallNo());
             goodRecallNo = recallAdapter.getItem(goodRecallEvent.getPosition()).getRecallNo();
@@ -216,9 +229,10 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
         handler.postDelayed(customRunnable, 1500);
     }
 
+    // 通讯录更新之后，需要重新刷新recall的右侧标志
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onRecallRefresh(RefreshRecallEvent refreshRecallEvent){
-        if(recallAdapter != null){
+    public void onRefreshRecallEvent(RefreshRecallEvent refreshRecallEvent) {
+        if (recallAdapter != null) {
             recallAdapter.notifyDataSetChanged();
         }
     }
@@ -227,5 +241,6 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
     public void onDestroyView() {
         EventBus.getDefault().unregister(this);
         super.onDestroyView();
+        ButterKnife.unbind(this);
     }
 }

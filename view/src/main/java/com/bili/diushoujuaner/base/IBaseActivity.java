@@ -73,4 +73,9 @@ public interface IBaseActivity {
      */
     void resetStatus();
 
+    /**
+     * == 初始化header中的控件
+     */
+    void initHeader();
+
 }

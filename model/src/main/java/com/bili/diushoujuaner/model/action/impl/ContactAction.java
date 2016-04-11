@@ -6,11 +6,11 @@ import com.bili.diushoujuaner.model.action.IContactAction;
 import com.bili.diushoujuaner.model.action.respon.ActionRespon;
 import com.bili.diushoujuaner.model.apihelper.ApiRespon;
 import com.bili.diushoujuaner.model.apihelper.api.ApiAction;
-import com.bili.diushoujuaner.model.apihelper.callback.ApiCallbackListener;
+import com.bili.diushoujuaner.model.apihelper.callback.ApiStringCallbackListener;
 import com.bili.diushoujuaner.model.apihelper.request.ContactInfoReq;
 import com.bili.diushoujuaner.model.apihelper.response.UserRes;
 import com.bili.diushoujuaner.model.cachehelper.ACache;
-import com.bili.diushoujuaner.model.callback.ActionCallbackListener;
+import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
 import com.bili.diushoujuaner.model.databasehelper.DBManager;
 import com.bili.diushoujuaner.model.databasehelper.dao.Friend;
 import com.bili.diushoujuaner.model.databasehelper.dao.Member;
@@ -56,9 +56,9 @@ public class ContactAction implements IContactAction{
     }
 
     @Override
-    public void getContactFromApi(final ContactInfoReq contactInfoReq, final ActionCallbackListener<ActionRespon<FriendVo>> actionCallbackListener) {
+    public void getContactFromApi(final ContactInfoReq contactInfoReq, final ActionStringCallbackListener<ActionRespon<FriendVo>> actionStringCallbackListener) {
 
-        ApiAction.getInstance().getContactInfo(contactInfoReq, new ApiCallbackListener() {
+        ApiAction.getInstance().getContactInfo(contactInfoReq, new ApiStringCallbackListener() {
             @Override
             public void onSuccess(final String data) {
                 Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<FriendVo>>() {
@@ -66,17 +66,20 @@ public class ContactAction implements IContactAction{
                     public ActionRespon<FriendVo> doInBackground() throws Exception {
                         ApiRespon<UserRes> result = GsonParser.getInstance().fromJson(data, new TypeToken<ApiRespon<UserRes>>() {
                         }.getType());
-                        DBManager.getInstance().saveUser(result.getData());
-                        return ActionRespon.getActionRespon(result.getMessage(), result.getRetCode(), DBManager.getInstance().getFriendVo(contactInfoReq.getUserNo()));
+                        if(result.getIsLegal()){
+                            DBManager.getInstance().saveUser(result.getData());
+                            return ActionRespon.getActionRespon(result.getMessage(), result.getRetCode(), DBManager.getInstance().getFriendVo(contactInfoReq.getUserNo()));
+                        }
+                        return ActionRespon.getActionRespon(result.getMessage(), result.getRetCode(), (FriendVo)null);
                     }
                 }, new Completion<ActionRespon<FriendVo>>() {
                     @Override
                     public void onSuccess(Context context, ActionRespon<FriendVo> result) {
-                        actionCallbackListener.onSuccess(result);
+                        actionStringCallbackListener.onSuccess(result);
                     }
                     @Override
                     public void onError(Context context, Exception e) {
-                        actionCallbackListener.onSuccess(ActionRespon.<FriendVo>getActionResponError());
+                        actionStringCallbackListener.onSuccess(ActionRespon.<FriendVo>getActionResponError());
                     }
                 });
 
@@ -84,13 +87,13 @@ public class ContactAction implements IContactAction{
 
             @Override
             public void onFailure(int errorCode) {
-                actionCallbackListener.onFailure(errorCode);
+                actionStringCallbackListener.onFailure(errorCode);
             }
         });
     }
 
     @Override
-    public void getContactFromLocal(final long userNo,  final ActionCallbackListener<ActionRespon<FriendVo>> actionCallbackListener) {
+    public void getContactFromLocal(final long userNo,  final ActionStringCallbackListener<ActionRespon<FriendVo>> actionStringCallbackListener) {
         FriendVo friendVo = ContactTemper.getFriendVo(userNo);
         if(friendVo == null){
             Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<FriendVo>>() {
@@ -102,16 +105,16 @@ public class ContactAction implements IContactAction{
             }, new Completion<ActionRespon<FriendVo>>() {
                 @Override
                 public void onSuccess(Context context, ActionRespon<FriendVo> result) {
-                    actionCallbackListener.onSuccess(result);
+                    actionStringCallbackListener.onSuccess(result);
                 }
 
                 @Override
                 public void onError(Context context, Exception e) {
-                    actionCallbackListener.onSuccess(ActionRespon.<FriendVo>getActionResponError());
+                    actionStringCallbackListener.onSuccess(ActionRespon.<FriendVo>getActionResponError());
                 }
             });
         }else{
-            actionCallbackListener.onSuccess(ActionRespon.getActionRespon(friendVo));
+            actionStringCallbackListener.onSuccess(ActionRespon.getActionRespon(friendVo));
         }
     }
 
@@ -127,7 +130,7 @@ public class ContactAction implements IContactAction{
     }
 
     @Override
-    public void getContactList(final ActionCallbackListener<ActionRespon<List<FriendVo>>> actionCallbackListener){
+    public void getContactList(final ActionStringCallbackListener<ActionRespon<List<FriendVo>>> actionStringCallbackListener){
         //先从本地加载并显示
         Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<List<FriendVo>>>() {
             @Override
@@ -137,23 +140,23 @@ public class ContactAction implements IContactAction{
         }, new Completion<ActionRespon<List<FriendVo>>>() {
             @Override
             public void onSuccess(Context context, ActionRespon<List<FriendVo>> result) {
-                actionCallbackListener.onSuccess(result);
+                actionStringCallbackListener.onSuccess(result);
                 String updateTime = ACache.getInstance().getAsString(Constant.ACACHE_LAST_TIME_CONTACT);
                 //TODO 完善后，更改全量获取联系人的时间间隔
                 if(Common.isEmpty(updateTime) || Common.getHourDifferenceBetweenTime(updateTime) > 1){
-                    getContactListFromApi(actionCallbackListener);
+                    getContactListFromApi(actionStringCallbackListener);
                 }
             }
 
             @Override
             public void onError(Context context, Exception e) {
-                actionCallbackListener.onSuccess(ActionRespon.<List<FriendVo>>getActionResponError());
+                actionStringCallbackListener.onSuccess(ActionRespon.<List<FriendVo>>getActionResponError());
             }
         });
     }
 
-    private void getContactListFromApi(final ActionCallbackListener<ActionRespon<List<FriendVo>>> actionCallbackListener){
-        ApiAction.getInstance().getContactList(new ApiCallbackListener() {
+    private void getContactListFromApi(final ActionStringCallbackListener<ActionRespon<List<FriendVo>>> actionStringCallbackListener){
+        ApiAction.getInstance().getContactList(new ApiStringCallbackListener() {
             @Override
             public void onSuccess(final String data) {
                 Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<List<FriendVo>>>() {
@@ -172,19 +175,19 @@ public class ContactAction implements IContactAction{
                     @Override
                     public void onSuccess(Context context, ActionRespon<List<FriendVo>> result) {
                         ACache.getInstance().put(Constant.ACACHE_LAST_TIME_CONTACT, Common.getCurrentTimeYYMMDD_HHMMSS());
-                        actionCallbackListener.onSuccess(result);
+                        actionStringCallbackListener.onSuccess(result);
                     }
 
                     @Override
                     public void onError(Context context, Exception e) {
-                        actionCallbackListener.onSuccess(ActionRespon.<List<FriendVo>>getActionResponError());
+                        actionStringCallbackListener.onSuccess(ActionRespon.<List<FriendVo>>getActionResponError());
                     }
                 });
             }
 
             @Override
             public void onFailure(int errorCode) {
-                actionCallbackListener.onFailure(errorCode);
+                actionStringCallbackListener.onFailure(errorCode);
             }
         });
     }
@@ -250,6 +253,7 @@ public class ContactAction implements IContactAction{
         user.setAutograph(contactDto.getAutograph());
         user.setNickName(contactDto.getNickName());
         user.setHomeTown(contactDto.getHomeTown());
+        user.setWallPaper(contactDto.getWallPaper());
 
         return user;
     }

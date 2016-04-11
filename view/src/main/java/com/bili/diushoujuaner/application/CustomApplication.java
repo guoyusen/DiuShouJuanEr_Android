@@ -11,6 +11,7 @@ import com.bili.diushoujuaner.model.preferhelper.SettingPreference;
 import com.bili.diushoujuaner.utils.Common;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.stetho.Stetho;
+import com.bili.diushoujuaner.model.okhttphelper.okhttputils.OkHttpUtils;
 import com.orhanobut.logger.Logger;
 
 import cat.ereza.customactivityoncrash.CustomActivityOnCrash;
@@ -42,6 +43,11 @@ public class CustomApplication extends Application {
     private void initHtpp(){
         HttpEngine.initialize(this);
         ApiAction.initialize();
+        OkHttpUtils.init(this);
+        OkHttpUtils.getInstance()
+                .setConnectTimeout(OkHttpUtils.DEFAULT_MILLISECONDS)               //全局的连接超时时间
+                .setReadTimeOut(OkHttpUtils.DEFAULT_MILLISECONDS)                  //全局的读取超时时间
+                .setWriteTimeOut(OkHttpUtils.DEFAULT_MILLISECONDS);
     }
 
     private void initAcache(){

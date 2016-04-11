@@ -1,5 +1,7 @@
 package com.bili.diushoujuaner.utils;
 
+import android.os.Environment;
+
 /**
  * Created by BiLi on 2016/3/11.
  */
@@ -28,6 +30,7 @@ public interface Constant {
     int WARNING_401 = 3;
     int WARNING_403 = 4;
     int WARNING_503 = 5;
+    int WARNING_FILE = 6;
 
     String DATABASE_NAME = "diushoujuaner_db";
 
@@ -40,9 +43,6 @@ public interface Constant {
     // 童趣类型
     int RECALL_ALL = 1;
     int RECALL_USER = 2;
-
-    // Acache缓存键值
-    String ACACHE_RECALL_LIST = "A_RECALL_LIST";
 
     int REFRESH_DEFAULT = 1;
     int REFRESH_INTENT = 2;
@@ -57,9 +57,6 @@ public interface Constant {
     int DELETE_COMMENT = 1;
     int DELETE_RESPON = 2;
 
-    //好友最新发表的缓存时间
-    int ACACHE_TIME_RECENT_RECALL = 600000;
-
     int EDIT_CONTENT_NONE = 0;
     int EDIT_CONTENT_AUTOGRAPH = 1;
     int EDIT_CONTENT_FEEDBACK = 2;
@@ -67,6 +64,29 @@ public interface Constant {
     int EDIT_CONTENT_LENGTH_AUTOGRAPH = 50;
     int EDIT_CONTENT_LENGTH_FEEDBACK = 200;
 
-    String ACACHE_LAST_TIME_CONTACT = "UpdateTimeContact";
+
+    int ACACHE_TIME_RECENT_RECALL = 600000;
+    String ACACHE_RECENT_RECALL_PREFIX = "A_RECENT_RECALL_";
+    String ACACHE_RECALL_LIST = "A_RECALL_LIST";
+    String ACACHE_LAST_TIME_CONTACT = "A_CONTACT_TIME";
+    String ACACHE_USER_RECALL_PREFIX = "A_USER_RECALL_";
+
+    //区分是忘记密码还是注册
+    int ACOUNT_UPDATE_REGIST = 1;
+    int ACOUNT_UPDATE_RESET = 2;
+    //传递给RecallAdapter的页面类型
+    int RECALL_ADAPTER_HOME = 1;
+    int RECALL_ADAPTER_SPACE = 2;
+    //传递给RecallAdapter的页面索引，仅表明home的就可以，因为SpaceActivity有静态变量公布
+    int RECALL_GOOD_HOME_INDEX = 0;
+
+    int CORP_IMAGE_HEAD_EAGE = 280;
+    int CORP_IMAGE_WALLPAPER_EAGE = 320;
+
+    int CORP_IMAGE_OUT_WIDTH = 800;
+    int CORP_IMAGE_OUT_HEIGHT = 800;
+
+    int RECALL_ADD_PIC_PATH = 1;
+    int RECALL_ADD_PIC_RES = 2;
 
 }

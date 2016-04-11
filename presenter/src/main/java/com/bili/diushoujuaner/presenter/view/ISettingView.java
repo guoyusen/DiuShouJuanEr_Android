@@ -10,4 +10,6 @@ public interface ISettingView extends IBaseView {
 
     void showSettings(SettingVo settingVo);
 
+    void exitActivity();
+
 }

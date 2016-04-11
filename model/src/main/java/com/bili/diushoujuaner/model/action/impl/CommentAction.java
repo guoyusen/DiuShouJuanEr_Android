@@ -6,11 +6,11 @@ import com.bili.diushoujuaner.model.action.ICommentAction;
 import com.bili.diushoujuaner.model.action.respon.ActionRespon;
 import com.bili.diushoujuaner.model.apihelper.ApiRespon;
 import com.bili.diushoujuaner.model.apihelper.api.ApiAction;
-import com.bili.diushoujuaner.model.apihelper.callback.ApiCallbackListener;
+import com.bili.diushoujuaner.model.apihelper.callback.ApiStringCallbackListener;
 import com.bili.diushoujuaner.model.apihelper.request.CommentAddReq;
 import com.bili.diushoujuaner.model.apihelper.request.CommentRemoveReq;
 import com.bili.diushoujuaner.model.apihelper.response.CommentDto;
-import com.bili.diushoujuaner.model.callback.ActionCallbackListener;
+import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
 import com.bili.diushoujuaner.utils.GsonParser;
 import com.google.gson.reflect.TypeToken;
 import com.nanotasks.BackgroundWork;
@@ -37,8 +37,8 @@ public class CommentAction implements ICommentAction {
     }
 
     @Override
-    public void getCommentAdd(CommentAddReq commentAddReq, final ActionCallbackListener<ActionRespon<CommentDto>> actionCallbackListener) {
-        ApiAction.getInstance().getCommentAdd(commentAddReq, new ApiCallbackListener() {
+    public void getCommentAdd(CommentAddReq commentAddReq, final ActionStringCallbackListener<ActionRespon<CommentDto>> actionStringCallbackListener) {
+        ApiAction.getInstance().getCommentAdd(commentAddReq, new ApiStringCallbackListener() {
             @Override
             public void onSuccess(final String data) {
                 Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<CommentDto>>() {
@@ -51,26 +51,26 @@ public class CommentAction implements ICommentAction {
                 }, new Completion<ActionRespon<CommentDto>>() {
                     @Override
                     public void onSuccess(Context context, ActionRespon<CommentDto> result) {
-                        actionCallbackListener.onSuccess(result);
+                        actionStringCallbackListener.onSuccess(result);
                     }
 
                     @Override
                     public void onError(Context context, Exception e) {
-                        actionCallbackListener.onSuccess(ActionRespon.<CommentDto>getActionResponError());
+                        actionStringCallbackListener.onSuccess(ActionRespon.<CommentDto>getActionResponError());
                     }
                 });
             }
 
             @Override
             public void onFailure(int errorCode) {
-                actionCallbackListener.onFailure(errorCode);
+                actionStringCallbackListener.onFailure(errorCode);
             }
         });
     }
 
     @Override
-    public void getCommentRemove(CommentRemoveReq commentRemoveReq, final ActionCallbackListener<ActionRespon<Long>> actionCallbackListener) {
-        ApiAction.getInstance().getCommentRemove(commentRemoveReq, new ApiCallbackListener() {
+    public void getCommentRemove(CommentRemoveReq commentRemoveReq, final ActionStringCallbackListener<ActionRespon<Long>> actionStringCallbackListener) {
+        ApiAction.getInstance().getCommentRemove(commentRemoveReq, new ApiStringCallbackListener() {
             @Override
             public void onSuccess(final String data) {
                 Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<Long>>() {
@@ -83,19 +83,19 @@ public class CommentAction implements ICommentAction {
                 }, new Completion<ActionRespon<Long>>() {
                     @Override
                     public void onSuccess(Context context, ActionRespon<Long> result) {
-                        actionCallbackListener.onSuccess(result);
+                        actionStringCallbackListener.onSuccess(result);
                     }
 
                     @Override
                     public void onError(Context context, Exception e) {
-                        actionCallbackListener.onSuccess(ActionRespon.<Long>getActionResponError());
+                        actionStringCallbackListener.onSuccess(ActionRespon.<Long>getActionResponError());
                     }
                 });
             }
 
             @Override
             public void onFailure(int errorCode) {
-                actionCallbackListener.onFailure(errorCode);
+                actionStringCallbackListener.onFailure(errorCode);
             }
         });
     }

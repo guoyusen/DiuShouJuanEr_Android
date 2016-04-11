@@ -6,8 +6,8 @@ import com.bili.diushoujuaner.model.action.IGoodAction;
 import com.bili.diushoujuaner.model.action.respon.ActionRespon;
 import com.bili.diushoujuaner.model.apihelper.ApiRespon;
 import com.bili.diushoujuaner.model.apihelper.api.ApiAction;
-import com.bili.diushoujuaner.model.apihelper.callback.ApiCallbackListener;
-import com.bili.diushoujuaner.model.callback.ActionCallbackListener;
+import com.bili.diushoujuaner.model.apihelper.callback.ApiStringCallbackListener;
+import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
 import com.bili.diushoujuaner.utils.GsonParser;
 import com.google.gson.reflect.TypeToken;
 import com.nanotasks.BackgroundWork;
@@ -34,8 +34,8 @@ public class GoodAction implements IGoodAction {
     }
 
     @Override
-    public void getGoodAdd(final long recallNo, final ActionCallbackListener<ActionRespon<String>> actionCallbackListener){
-        ApiAction.getInstance().getGoodAdd(recallNo, new ApiCallbackListener() {
+    public void getGoodAdd(final long recallNo, final ActionStringCallbackListener<ActionRespon<String>> actionStringCallbackListener){
+        ApiAction.getInstance().getGoodAdd(recallNo, new ApiStringCallbackListener() {
             @Override
             public void onSuccess(final String data) {
                 Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<String>>() {
@@ -48,26 +48,26 @@ public class GoodAction implements IGoodAction {
                 }, new Completion<ActionRespon<String>>() {
                     @Override
                     public void onSuccess(Context context, ActionRespon<String> result) {
-                        actionCallbackListener.onSuccess(result);
+                        actionStringCallbackListener.onSuccess(result);
                     }
 
                     @Override
                     public void onError(Context context, Exception e) {
-                        actionCallbackListener.onSuccess(ActionRespon.<String>getActionResponError());
+                        actionStringCallbackListener.onSuccess(ActionRespon.<String>getActionResponError());
                     }
                 });
             }
 
             @Override
             public void onFailure(int errorCode) {
-                actionCallbackListener.onFailure(errorCode);
+                actionStringCallbackListener.onFailure(errorCode);
             }
         });
     }
 
     @Override
-    public void getGoodRemove(long recallNo, final ActionCallbackListener<ActionRespon<String>> actionCallbackListener){
-        ApiAction.getInstance().getGoodRemove(recallNo, new ApiCallbackListener() {
+    public void getGoodRemove(long recallNo, final ActionStringCallbackListener<ActionRespon<String>> actionStringCallbackListener){
+        ApiAction.getInstance().getGoodRemove(recallNo, new ApiStringCallbackListener() {
             @Override
             public void onSuccess(final String data) {
                 Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<String>>() {
@@ -80,19 +80,19 @@ public class GoodAction implements IGoodAction {
                 }, new Completion<ActionRespon<String>>() {
                     @Override
                     public void onSuccess(Context context, ActionRespon<String> result) {
-                        actionCallbackListener.onSuccess(result);
+                        actionStringCallbackListener.onSuccess(result);
                     }
 
                     @Override
                     public void onError(Context context, Exception e) {
-                        actionCallbackListener.onSuccess(ActionRespon.<String>getActionResponError());
+                        actionStringCallbackListener.onSuccess(ActionRespon.<String>getActionResponError());
                     }
                 });
             }
 
             @Override
             public void onFailure(int errorCode) {
-                actionCallbackListener.onFailure(errorCode);
+                actionStringCallbackListener.onFailure(errorCode);
             }
         });
     }

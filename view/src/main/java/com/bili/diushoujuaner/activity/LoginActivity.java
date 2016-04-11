@@ -5,13 +5,14 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
+import android.widget.RelativeLayout;
 
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.base.BaseActivity;
 import com.bili.diushoujuaner.presenter.presenter.LoginActivityPresenter;
 import com.bili.diushoujuaner.presenter.presenter.impl.LoginActivityPresenterImpl;
 import com.bili.diushoujuaner.presenter.view.ILoginView;
+import com.bili.diushoujuaner.utils.Constant;
 import com.bili.diushoujuaner.utils.manager.ActivityManager;
 
 import butterknife.Bind;
@@ -20,12 +21,14 @@ public class LoginActivity extends BaseActivity<LoginActivityPresenter> implemen
 
     @Bind(R.id.btnLogin)
     Button btnLogin;
-    @Bind(R.id.txtForgetPsd)
-    TextView txtForgetPsd;
     @Bind(R.id.edtMobile)
     EditText edtMobile;
     @Bind(R.id.edtPassword)
     EditText edtPassword;
+    @Bind(R.id.layoutRegister)
+    RelativeLayout layoutRegister;
+    @Bind(R.id.layoutReset)
+    RelativeLayout layoutReset;
 
     @Override
     public void beforeInitView() {
@@ -43,6 +46,8 @@ public class LoginActivity extends BaseActivity<LoginActivityPresenter> implemen
         setTintStatusColor(R.color.TRANSPARENT);
 
         btnLogin.setOnClickListener(this);
+        layoutRegister.setOnClickListener(this);
+        layoutReset.setOnClickListener(this);
     }
 
     @Override
@@ -56,6 +61,12 @@ public class LoginActivity extends BaseActivity<LoginActivityPresenter> implemen
         switch (v.getId()) {
             case R.id.btnLogin:
                 getBindPresenter().getUserLogin(edtMobile.getText().toString().trim(), edtPassword.getText().toString().trim());
+                break;
+            case R.id.layoutRegister:
+                startActivity(new Intent(this, AcountActivity.class).putExtra(AcountActivity.TAG, Constant.ACOUNT_UPDATE_REGIST));
+                break;
+            case R.id.layoutReset:
+                startActivity(new Intent(this, AcountActivity.class).putExtra(AcountActivity.TAG, Constant.ACOUNT_UPDATE_RESET));
                 break;
         }
     }
