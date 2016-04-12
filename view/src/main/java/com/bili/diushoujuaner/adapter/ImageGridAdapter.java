@@ -12,7 +12,7 @@ import android.widget.Toast;
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.widget.imagepicker.ImagePicker;
 import com.bili.diushoujuaner.widget.imagepicker.Utils;
-import com.bili.diushoujuaner.widget.imagepicker.bean.ImageItem;
+import com.bili.diushoujuaner.utils.entity.ImageItemVo;
 import com.bili.diushoujuaner.widget.imagepicker.view.SuperCheckBox;
 
 import java.util.ArrayList;
@@ -33,13 +33,13 @@ public class ImageGridAdapter extends BaseAdapter {
 
     private ImagePicker imagePicker;
     private Activity mActivity;
-    private ArrayList<ImageItem> images;       //当前需要显示的所有的图片数据
-    private ArrayList<ImageItem> mSelectedImages; //全局保存的已经选中的图片数据
+    private ArrayList<ImageItemVo> images;       //当前需要显示的所有的图片数据
+    private ArrayList<ImageItemVo> mSelectedImages; //全局保存的已经选中的图片数据
     private boolean isShowCamera;         //是否显示拍照按钮
     private int mImageSize;               //每个条目的大小
     private OnImageItemClickListener listener;   //图片被点击的监听
 
-    public ImageGridAdapter(Activity activity, ArrayList<ImageItem> images) {
+    public ImageGridAdapter(Activity activity, ArrayList<ImageItemVo> images) {
         this.mActivity = activity;
         if (images != null && images.size() > 0) this.images = images;
         else this.images = new ArrayList<>();
@@ -50,7 +50,7 @@ public class ImageGridAdapter extends BaseAdapter {
         mSelectedImages = imagePicker.getSelectedImages();
     }
 
-    public void refreshData(ArrayList<ImageItem> images) {
+    public void refreshData(ArrayList<ImageItemVo> images) {
         if (images != null && images.size() > 0) this.images = images;
         else this.images.clear();
         notifyDataSetChanged();
@@ -73,7 +73,7 @@ public class ImageGridAdapter extends BaseAdapter {
     }
 
     @Override
-    public ImageItem getItem(int position) {
+    public ImageItemVo getItem(int position) {
         if (isShowCamera) {
             if (position == 0) return null;
             return images.get(position - 1);
@@ -110,13 +110,13 @@ public class ImageGridAdapter extends BaseAdapter {
             } else {
                 holder = (ViewHolder) convertView.getTag();
             }
-            final ImageItem imageItem = getItem(position);
+            final ImageItemVo imageItemVo = getItem(position);
 
             holder.ivThumb.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (listener != null)
-                        listener.onImageItemClick(holder.rootView, imageItem, position);
+                        listener.onImageItemClick(holder.rootView, imageItemVo, position);
                 }
             });
             holder.cbCheck.setOnClickListener(new View.OnClickListener() {
@@ -128,7 +128,7 @@ public class ImageGridAdapter extends BaseAdapter {
                         holder.cbCheck.setChecked(false);
                         holder.mask.setVisibility(View.GONE);
                     } else {
-                        imagePicker.addSelectedImageItem(position, imageItem, holder.cbCheck.isChecked());
+                        imagePicker.addSelectedImageItem(position, imageItemVo, holder.cbCheck.isChecked());
                         holder.mask.setVisibility(View.VISIBLE);
                     }
                 }
@@ -136,7 +136,7 @@ public class ImageGridAdapter extends BaseAdapter {
             //根据是否多选，显示或隐藏checkbox
             if (imagePicker.isMultiMode()) {
                 holder.cbCheck.setVisibility(View.VISIBLE);
-                boolean checked = mSelectedImages.contains(imageItem);
+                boolean checked = mSelectedImages.contains(imageItemVo);
                 if (checked) {
                     holder.mask.setVisibility(View.VISIBLE);
                     holder.cbCheck.setChecked(true);
@@ -147,7 +147,7 @@ public class ImageGridAdapter extends BaseAdapter {
             } else {
                 holder.cbCheck.setVisibility(View.GONE);
             }
-            imagePicker.getImageLoader().displayImage(mActivity, imageItem.path, holder.ivThumb, mImageSize, mImageSize); //显示图片
+            imagePicker.getImageLoader().displayImage(mActivity, imageItemVo.path, holder.ivThumb, mImageSize, mImageSize); //显示图片
         }
         return convertView;
     }
@@ -171,6 +171,6 @@ public class ImageGridAdapter extends BaseAdapter {
     }
 
     public interface OnImageItemClickListener {
-        void onImageItemClick(View view, ImageItem imageItem, int position);
+        void onImageItemClick(View view, ImageItemVo imageItemVo, int position);
     }
 }

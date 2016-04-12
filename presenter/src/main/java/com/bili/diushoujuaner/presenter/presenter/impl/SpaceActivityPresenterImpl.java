@@ -24,7 +24,7 @@ import com.bili.diushoujuaner.presenter.view.ISpaceView;
 import com.bili.diushoujuaner.utils.Common;
 import com.bili.diushoujuaner.utils.Constant;
 import com.bili.diushoujuaner.utils.entity.FriendVo;
-import com.bili.diushoujuaner.utils.event.UpdateWallPaperEvent;
+import com.bili.diushoujuaner.presenter.event.UpdateWallPaperEvent;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -230,10 +230,6 @@ public class SpaceActivityPresenterImpl extends BasePresenter<ISpaceView> implem
 
             @Override
             public void onFailure(int errorCode) {
-                //最不可能出现的情况，本地失败，API获取失败
-                if(isBindViewValid()){
-                    getBindView().showContactInfo(null);
-                }
                 showError(errorCode);
                 hideLoading(Constant.LOADING_DEFAULT);
             }

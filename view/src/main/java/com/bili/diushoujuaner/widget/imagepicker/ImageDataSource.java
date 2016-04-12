@@ -11,7 +11,7 @@ import android.support.v4.content.Loader;
 
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.widget.imagepicker.bean.ImageFolder;
-import com.bili.diushoujuaner.widget.imagepicker.bean.ImageItem;
+import com.bili.diushoujuaner.utils.entity.ImageItemVo;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -77,7 +77,7 @@ public class ImageDataSource implements LoaderManager.LoaderCallbacks<Cursor> {
             int count = data.getCount();
             if (count <= 0) return;
 
-            ArrayList<ImageItem> allImages = new ArrayList<>();   //所有图片的集合,不分文件夹
+            ArrayList<ImageItemVo> allImages = new ArrayList<>();   //所有图片的集合,不分文件夹
             while (data.moveToNext()) {
                 //查询数据
                 String imageName = data.getString(data.getColumnIndexOrThrow(IMAGE_PROJECTION[0]));
@@ -88,15 +88,15 @@ public class ImageDataSource implements LoaderManager.LoaderCallbacks<Cursor> {
                 String imageMimeType = data.getString(data.getColumnIndexOrThrow(IMAGE_PROJECTION[5]));
                 long imageAddTime = data.getLong(data.getColumnIndexOrThrow(IMAGE_PROJECTION[6]));
                 //封装实体
-                ImageItem imageItem = new ImageItem();
-                imageItem.name = imageName;
-                imageItem.path = imagePath;
-                imageItem.size = imageSize;
-                imageItem.width = imageWidth;
-                imageItem.height = imageHeight;
-                imageItem.mimeType = imageMimeType;
-                imageItem.addTime = imageAddTime;
-                allImages.add(imageItem);
+                ImageItemVo imageItemVo = new ImageItemVo();
+                imageItemVo.name = imageName;
+                imageItemVo.path = imagePath;
+                imageItemVo.size = imageSize;
+                imageItemVo.width = imageWidth;
+                imageItemVo.height = imageHeight;
+                imageItemVo.mimeType = imageMimeType;
+                imageItemVo.addTime = imageAddTime;
+                allImages.add(imageItemVo);
                 //根据父路径分类存放图片
                 File imageFile = new File(imagePath);
                 File imageParentFile = imageFile.getParentFile();
@@ -105,13 +105,13 @@ public class ImageDataSource implements LoaderManager.LoaderCallbacks<Cursor> {
                 imageFolder.path = imageParentFile.getAbsolutePath();
 
                 if (!imageFolders.contains(imageFolder)) {
-                    ArrayList<ImageItem> images = new ArrayList<>();
-                    images.add(imageItem);
-                    imageFolder.cover = imageItem;
+                    ArrayList<ImageItemVo> images = new ArrayList<>();
+                    images.add(imageItemVo);
+                    imageFolder.cover = imageItemVo;
                     imageFolder.images = images;
                     imageFolders.add(imageFolder);
                 } else {
-                    imageFolders.get(imageFolders.indexOf(imageFolder)).images.add(imageItem);
+                    imageFolders.get(imageFolders.indexOf(imageFolder)).images.add(imageItemVo);
                 }
             }
 

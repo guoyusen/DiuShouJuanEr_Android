@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 
 import com.bili.diushoujuaner.widget.imagepicker.ImagePicker;
 import com.bili.diushoujuaner.widget.imagepicker.Utils;
-import com.bili.diushoujuaner.widget.imagepicker.bean.ImageItem;
+import com.bili.diushoujuaner.utils.entity.ImageItemVo;
 
 import java.util.ArrayList;
 
@@ -21,11 +21,11 @@ public class ImagePageAdapter extends PagerAdapter {
     private int screenWidth;
     private int screenHeight;
     private ImagePicker imagePicker;
-    private ArrayList<ImageItem> images = new ArrayList<>();
+    private ArrayList<ImageItemVo> images = new ArrayList<>();
     private Activity mActivity;
     public PhotoViewClickListener listener;
 
-    public ImagePageAdapter(Activity activity, ArrayList<ImageItem> images) {
+    public ImagePageAdapter(Activity activity, ArrayList<ImageItemVo> images) {
         this.mActivity = activity;
         this.images = images;
 
@@ -42,8 +42,8 @@ public class ImagePageAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(ViewGroup container, int position) {
         PhotoView photoView = new PhotoView(mActivity);
-        ImageItem imageItem = images.get(position);
-        imagePicker.getImageLoader().displayImage(mActivity, imageItem.path, photoView, screenWidth, screenHeight);
+        ImageItemVo imageItemVo = images.get(position);
+        imagePicker.getImageLoader().displayImage(mActivity, imageItemVo.path, photoView, screenWidth, screenHeight);
         photoView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
             @Override
             public void onPhotoTap(View view, float x, float y) {

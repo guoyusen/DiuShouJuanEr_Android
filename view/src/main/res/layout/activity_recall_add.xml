@@ -17,6 +17,7 @@
             android:orientation="vertical">
 
             <com.bili.diushoujuaner.widget.CustomEditText
+                android:id="@+id/edtEditor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/y24"
@@ -41,7 +42,9 @@
                     android:id="@+id/gridview"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:numColumns="3"/>
+                    android:layout_marginLeft="@dimen/x16"
+                    android:layout_marginRight="@dimen/x16"
+                    android:numColumns="4"/>
 
         </LinearLayout>
 

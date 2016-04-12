@@ -29,6 +29,26 @@
         android:id="@+id/txtNavTitle"
         style="@style/TextNavTitle"/>
 
+    <com.bili.diushoujuaner.widget.badgeview.BGABadgeRelativeLayout
+        android:id="@+id/layoutProgress"
+        android:layout_width="@dimen/x100"
+        android:layout_height="@dimen/y100"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/x108"
+        android:visibility="gone"
+        app:badge_gravity="rightTop"
+        app:badge_verticalMargin="@dimen/x10"
+        app:badge_horizontalMargin="@dimen/x10">
+
+        <ImageView
+            android:id="@+id/ivUploading"
+            android:layout_width="@dimen/x48"
+            android:layout_height="@dimen/y48"
+            android:layout_centerInParent="true"
+            android:src="@drawable/uploading"/>
+
+    </com.bili.diushoujuaner.widget.badgeview.BGABadgeRelativeLayout>
+
     <ImageButton
         android:id="@+id/btnRight"
         android:layout_width="wrap_content"
@@ -38,7 +58,7 @@
         android:layout_alignParentRight="true"
         android:layout_marginRight="@dimen/x24"
         android:layout_centerVertical="true"/>
-    
+
     <TextView
         android:id="@+id/txtRight"
         style="@style/TextNavRight"

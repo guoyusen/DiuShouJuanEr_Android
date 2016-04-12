@@ -61,7 +61,7 @@
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/ivTip"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="@dimen/y32"
+                        android:layout_marginTop="@dimen/y64"
                         android:text="暂无数据"
                         android:textColor="@color/TC_BFBFBF" />
 

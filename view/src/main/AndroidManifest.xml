@@ -127,6 +127,12 @@
         <activity
             android:name=".activity.RecallAddActivity"
             android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
+
+        <activity
+            android:name=".activity.ProgressActivity"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
     </application>
 

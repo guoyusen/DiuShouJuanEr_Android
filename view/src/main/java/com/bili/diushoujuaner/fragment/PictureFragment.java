@@ -148,7 +148,7 @@ public class PictureFragment extends Fragment{
             DialogTool.createPictureSaveDialog(getContext(), new OnDialogPositiveClickListener() {
                 @Override
                 public void onPositiveClicked() {
-                    if(Common.isImageDownloaded(Uri.parse(v.getTag().toString())) && Common.savePictureFromFresco(v.getTag().toString())){
+                    if(Common.isImageDownloaded(Uri.parse(v.getTag().toString())) && Common.savePictureFromFresco(getContext(),v.getTag().toString())){
                         Toast.makeText(getContext(),"图片保存成功",Toast.LENGTH_SHORT).show();
                     }else{
                         Toast.makeText(getContext(),"资源未获取，稍后再试",Toast.LENGTH_SHORT).show();

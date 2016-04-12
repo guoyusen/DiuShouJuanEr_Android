@@ -10,7 +10,7 @@ import com.bili.diushoujuaner.presenter.base.BasePresenter;
 import com.bili.diushoujuaner.presenter.base.IBaseView;
 import com.bili.diushoujuaner.presenter.presenter.AcountMobileFragmentPresenter;
 import com.bili.diushoujuaner.utils.Constant;
-import com.bili.diushoujuaner.utils.event.NextPageEvent;
+import com.bili.diushoujuaner.presenter.event.NextPageEvent;
 
 import org.greenrobot.eventbus.EventBus;
 

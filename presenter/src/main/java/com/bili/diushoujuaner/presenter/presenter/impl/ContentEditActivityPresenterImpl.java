@@ -12,7 +12,7 @@ import com.bili.diushoujuaner.model.databasehelper.dao.User;
 import com.bili.diushoujuaner.presenter.base.BasePresenter;
 import com.bili.diushoujuaner.presenter.presenter.ContentEditActivityPresenter;
 import com.bili.diushoujuaner.presenter.view.IContentEditView;
-import com.bili.diushoujuaner.utils.event.UpdateAutographEvent;
+import com.bili.diushoujuaner.presenter.event.UpdateAutographEvent;
 
 import org.greenrobot.eventbus.EventBus;
 

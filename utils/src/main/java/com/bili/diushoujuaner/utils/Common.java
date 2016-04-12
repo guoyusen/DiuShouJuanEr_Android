@@ -1,6 +1,7 @@
 package com.bili.diushoujuaner.utils;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -13,6 +14,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.os.Environment;
+import android.provider.MediaStore;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
@@ -473,7 +475,7 @@ public class Common {
         }
     }
 
-    public static boolean savePictureFromFresco(String url){
+    public static boolean savePictureFromFresco(Context context, String url){
         File dirFile = new File(dd_album);
         if (!dirFile.exists()) {
             dirFile.mkdirs();
@@ -496,6 +498,15 @@ public class Common {
             e.printStackTrace();
             return false;
         }
+//        // 其次把文件插入到系统图库
+//        try {
+//            MediaStore.Images.Media.insertImage(context.getContentResolver(),
+//                    f.getAbsolutePath(), fileName, null);
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
+        // 最后通知图库更新
+        context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://"+ dd_album)));
         return true;
     }
 

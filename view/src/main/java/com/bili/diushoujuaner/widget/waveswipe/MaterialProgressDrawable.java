@@ -95,7 +95,7 @@ public class MaterialProgressDrawable extends Drawable implements Animatable {
     private static final int ARROW_HEIGHT = 5;
     private static final float ARROW_OFFSET_ANGLE = 5;
 
-    /** Layout info for the arrowhead for the large spinner in dp */
+    /** Layout info for the arrowhead for the large uploading in dp */
     private static final int ARROW_WIDTH_LARGE = 12;
     private static final int ARROW_HEIGHT_LARGE = 6;
     private static final float MAX_PROGRESS_ARC = .8f;
@@ -145,21 +145,21 @@ public class MaterialProgressDrawable extends Drawable implements Animatable {
     }
 
     /**
-     * @param show Set to true to display the arrowhead on the progress spinner.
+     * @param show Set to true to display the arrowhead on the progress uploading.
      */
     public void showArrow(boolean show) {
         mRing.setShowArrow(show);
     }
 
     /**
-     * @param scale Set the scale of the arrowhead for the spinner.
+     * @param scale Set the scale of the arrowhead for the uploading.
      */
     public void setArrowScale(float scale) {
         mRing.setArrowScale(scale);
     }
 
     /**
-     * Set the start and end trim for the progress spinner arc.
+     * Set the start and end trim for the progress uploading arc.
      *
      * @param startAngle start angle
      * @param endAngle end angle
@@ -170,7 +170,7 @@ public class MaterialProgressDrawable extends Drawable implements Animatable {
     }
 
     /**
-     * Set the amount of rotation to apply to the progress spinner.
+     * Set the amount of rotation to apply to the progress uploading.
      *
      * @param rotation Rotation is from [0..1]
      */
@@ -445,7 +445,7 @@ public class MaterialProgressDrawable extends Drawable implements Animatable {
         }
 
         /**
-         * Draw the progress spinner
+         * Draw the progress uploading
          */
         public void draw(Canvas c, Rect bounds) {
             final RectF arcBounds = mTempBounds;
@@ -503,7 +503,7 @@ public class MaterialProgressDrawable extends Drawable implements Animatable {
         }
 
         /**
-         * Set the colors the progress spinner alternates between.
+         * Set the colors the progress uploading alternates between.
          *
          * @param colors Array of integers describing the colors. Must be non-<code>null</code>.
          */
@@ -515,7 +515,7 @@ public class MaterialProgressDrawable extends Drawable implements Animatable {
 
         /**
          * @param index Index into the color array of the color to display in
-         *            the progress spinner.
+         *            the progress uploading.
          */
         public void setColorIndex(int index) {
             mColorIndex = index;
@@ -535,21 +535,21 @@ public class MaterialProgressDrawable extends Drawable implements Animatable {
         }
 
         /**
-         * @param alpha Set the alpha of the progress spinner and associated arrowhead.
+         * @param alpha Set the alpha of the progress uploading and associated arrowhead.
          */
         public void setAlpha(int alpha) {
             mAlpha = alpha;
         }
 
         /**
-         * @return Current alpha of the progress spinner and arrowhead.
+         * @return Current alpha of the progress uploading and arrowhead.
          */
         public int getAlpha() {
             return mAlpha;
         }
 
         /**
-         * @param strokeWidth Set the stroke width of the progress spinner in pixels.
+         * @param strokeWidth Set the stroke width of the progress uploading in pixels.
          */
         public void setStrokeWidth(float strokeWidth) {
             mStrokeWidth = strokeWidth;
@@ -621,7 +621,7 @@ public class MaterialProgressDrawable extends Drawable implements Animatable {
 
         /**
          * @param centerRadius Inner radius in px of the circle the progress
-         *            spinner arc traces.
+         *            uploading arc traces.
          */
         public void setCenterRadius(double centerRadius) {
             mRingCenterRadius = centerRadius;
@@ -632,7 +632,7 @@ public class MaterialProgressDrawable extends Drawable implements Animatable {
         }
 
         /**
-         * @param show Set to true to show the arrow head on the progress spinner.
+         * @param show Set to true to show the arrow head on the progress uploading.
          */
         public void setShowArrow(boolean show) {
             if (mShowArrow != show) {
@@ -642,7 +642,7 @@ public class MaterialProgressDrawable extends Drawable implements Animatable {
         }
 
         /**
-         * @param scale Set the scale of the arrowhead for the spinner.
+         * @param scale Set the scale of the arrowhead for the uploading.
          */
         public void setArrowScale(float scale) {
             if (scale != mArrowScale) {
@@ -652,7 +652,7 @@ public class MaterialProgressDrawable extends Drawable implements Animatable {
         }
 
         /**
-         * @return The amount the progress spinner is currently rotated, between [0..1].
+         * @return The amount the progress uploading is currently rotated, between [0..1].
          */
         public float getStartingRotation() {
             return mStartingRotation;
@@ -669,7 +669,7 @@ public class MaterialProgressDrawable extends Drawable implements Animatable {
         }
 
         /**
-         * Reset the progress spinner to default rotation, start and end angles.
+         * Reset the progress uploading to default rotation, start and end angles.
          */
         public void resetOriginals() {
             mStartingStartTrim = 0;

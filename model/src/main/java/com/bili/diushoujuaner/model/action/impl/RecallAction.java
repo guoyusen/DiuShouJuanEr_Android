@@ -7,6 +7,7 @@ import com.bili.diushoujuaner.model.action.respon.ActionRespon;
 import com.bili.diushoujuaner.model.apihelper.ApiRespon;
 import com.bili.diushoujuaner.model.apihelper.api.ApiAction;
 import com.bili.diushoujuaner.model.apihelper.callback.ApiStringCallbackListener;
+import com.bili.diushoujuaner.model.apihelper.request.RecallPublishReq;
 import com.bili.diushoujuaner.model.apihelper.request.RecallRemoveReq;
 import com.bili.diushoujuaner.model.apihelper.request.RecentRecallReq;
 import com.bili.diushoujuaner.model.cachehelper.ACache;
@@ -41,6 +42,38 @@ public class RecallAction implements IRecallAction {
             recallAction = new RecallAction(context);
         }
         return recallAction;
+    }
+
+    @Override
+    public void getRecallPublish(RecallPublishReq recallPublishReq, final ActionStringCallbackListener<ActionRespon<RecallDto>> actionStringCallbackListener) {
+        ApiAction.getInstance().getRecallPublish(recallPublishReq, new ApiStringCallbackListener() {
+            @Override
+            public void onSuccess(final String data) {
+                Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<RecallDto>>() {
+                    @Override
+                    public ActionRespon<RecallDto> doInBackground() throws Exception {
+                        ApiRespon<RecallDto> result = GsonParser.getInstance().fromJson(data, new TypeToken<ApiRespon<RecallDto>>() {
+                        }.getType());
+                        return ActionRespon.getActionResponFromApiRespon(result);
+                    }
+                }, new Completion<ActionRespon<RecallDto>>() {
+                    @Override
+                    public void onSuccess(Context context, ActionRespon<RecallDto> result) {
+                        actionStringCallbackListener.onSuccess(result);
+                    }
+
+                    @Override
+                    public void onError(Context context, Exception e) {
+                        actionStringCallbackListener.onSuccess(ActionRespon.<RecallDto>getActionResponError());
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(int errorCode) {
+                actionStringCallbackListener.onFailure(errorCode);
+            }
+        });
     }
 
     @Override

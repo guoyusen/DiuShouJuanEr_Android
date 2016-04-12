@@ -11,4 +11,6 @@ public interface IFileAction {
     void uploadHeadPic(String path, ActionFileCallbackListener<ActionRespon<String>> actionFileCallbackListener);
 
     void uploadWallpaper(String path, ActionFileCallbackListener<ActionRespon<String>> actionFileCallbackListener);
+
+    void uploadRecallPic(String path, ActionFileCallbackListener<ActionRespon<String>> actionFileCallbackListener);
 }

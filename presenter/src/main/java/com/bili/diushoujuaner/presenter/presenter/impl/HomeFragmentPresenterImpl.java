@@ -47,11 +47,6 @@ public class HomeFragmentPresenterImpl extends BasePresenter<IHomeView> implemen
     }
 
     @Override
-    public void addRecallDtoToTemper(RecallDto recallDto) {
-        RecallTemper.addRecallDto(recallDto);
-    }
-
-    @Override
     public boolean getGoodStatusByRecallNo(long recallNo) {
         return GoodTemper.getGoodStatus(recallNo);
     }

@@ -1,5 +1,7 @@
 package com.bili.diushoujuaner.widget.imagepicker.bean;
 
+import com.bili.diushoujuaner.utils.entity.ImageItemVo;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -8,8 +10,8 @@ public class ImageFolder implements Serializable {
 
     public String name;  //当前文件夹的名字
     public String path;  //当前文件夹的路径
-    public ImageItem cover;   //当前文件夹需要要显示的缩略图，默认为最近的一次图片
-    public ArrayList<ImageItem> images;  //当前文件夹下所有图片的集合
+    public ImageItemVo cover;   //当前文件夹需要要显示的缩略图，默认为最近的一次图片
+    public ArrayList<ImageItemVo> images;  //当前文件夹下所有图片的集合
 
     /** 只要文件夹的路径和名字相同，就认为是相同的文件夹 */
     @Override

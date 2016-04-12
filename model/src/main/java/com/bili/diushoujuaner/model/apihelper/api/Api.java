@@ -8,6 +8,7 @@ import com.bili.diushoujuaner.model.apihelper.request.CommentAddReq;
 import com.bili.diushoujuaner.model.apihelper.request.CommentRemoveReq;
 import com.bili.diushoujuaner.model.apihelper.request.ContactInfoReq;
 import com.bili.diushoujuaner.model.apihelper.request.FeedBackReq;
+import com.bili.diushoujuaner.model.apihelper.request.RecallPublishReq;
 import com.bili.diushoujuaner.model.apihelper.request.RecallRemoveReq;
 import com.bili.diushoujuaner.model.apihelper.request.RecentRecallReq;
 import com.bili.diushoujuaner.model.apihelper.request.ResponAddReq;
@@ -45,6 +46,8 @@ public interface Api {
     String getRecallRemove = Constant.HOST_ADDRESS + "1.0/recalls/remove";
     String getHeadUpdate = Constant.HOST_ADDRESS + "1.0/file/headpic";
     String getWallpaperUpdate = Constant.HOST_ADDRESS + "1.0/file/wallpaper";
+    String getRecallPicUpload = Constant.HOST_ADDRESS + "1.0/file/recallpic";
+    String getRecallPublish = Constant.HOST_ADDRESS + "1.0/recalls/add";
 
     /**
      * 用户登录
@@ -194,4 +197,18 @@ public interface Api {
      * @param apiFileCallbackListener
      */
     void getWallpaperUpdate(String path, ApiFileCallbackListener apiFileCallbackListener);
+
+    /**
+     * 上传recallPic
+     * @param path
+     * @param apiFileCallbackListener
+     */
+    void getRecallPicUpload(String path, ApiFileCallbackListener apiFileCallbackListener);
+
+    /**
+     * 发布Recall
+     * @param recallPublishReq
+     * @param apiStringCallbackListener
+     */
+    void getRecallPublish(RecallPublishReq recallPublishReq, ApiStringCallbackListener apiStringCallbackListener);
 }

@@ -1,6 +1,7 @@
 package com.bili.diushoujuaner.model.action;
 
 import com.bili.diushoujuaner.model.action.respon.ActionRespon;
+import com.bili.diushoujuaner.model.apihelper.request.RecallPublishReq;
 import com.bili.diushoujuaner.model.apihelper.request.RecallRemoveReq;
 import com.bili.diushoujuaner.model.apihelper.request.RecentRecallReq;
 import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
@@ -23,5 +24,7 @@ public interface IRecallAction {
     void getRecentRecall(RecentRecallReq recentRecallReq, final ActionStringCallbackListener<ActionRespon<RecallDto>> actionStringCallbackListener);
 
     void getRecallRemove(RecallRemoveReq recallRemoveReq, final ActionStringCallbackListener<ActionRespon<Long>> actionStringCallbackListener);
+
+    void getRecallPublish(RecallPublishReq recallPublishReq, final ActionStringCallbackListener<ActionRespon<RecallDto>> actionStringCallbackListener);
 
 }

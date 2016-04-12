@@ -3,17 +3,17 @@ package com.bili.diushoujuaner.activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.base.BaseActivity;
 import com.bili.diushoujuaner.widget.imagepicker.ImagePicker;
-import com.bili.diushoujuaner.widget.imagepicker.bean.ImageItem;
+import com.bili.diushoujuaner.utils.entity.ImageItemVo;
 import com.bili.diushoujuaner.widget.imagepicker.view.CropImageView;
 
 import java.io.File;
@@ -34,7 +34,7 @@ public class ImageCropActivity extends BaseActivity implements View.OnClickListe
     private boolean mIsSaveRectangle;
     private int mOutputX;
     private int mOutputY;
-    private ArrayList<ImageItem> mImageItems;
+    private ArrayList<ImageItemVo> mImageItemVos;
     private ImagePicker imagePicker;
 
     @Override
@@ -65,8 +65,8 @@ public class ImageCropActivity extends BaseActivity implements View.OnClickListe
         mOutputX = imagePicker.getOutPutX();
         mOutputY = imagePicker.getOutPutY();
         mIsSaveRectangle = imagePicker.isSaveRectangle();
-        mImageItems = imagePicker.getSelectedImages();
-        String imagePath = mImageItems.get(0).path;
+        mImageItemVos = imagePicker.getSelectedImages();
+        String imagePath = mImageItemVos.get(0).path;
 
         cvCropImage.setFocusStyle(imagePicker.getStyle());
         cvCropImage.setFocusWidth(imagePicker.getFocusWidth());
@@ -115,13 +115,15 @@ public class ImageCropActivity extends BaseActivity implements View.OnClickListe
     @Override
     public void onBitmapSaveSuccess(File file) {
         //裁剪后替换掉返回数据的内容，但是不要改变全局中的选中数据
-        mImageItems.remove(0);
-        ImageItem imageItem = new ImageItem();
-        imageItem.path = file.getAbsolutePath();
-        mImageItems.add(imageItem);
+        mImageItemVos.remove(0);
+        ImageItemVo imageItemVo = new ImageItemVo();
+        imageItemVo.path = file.getAbsolutePath();
+        mImageItemVos.add(imageItemVo);
 
         Intent intent = new Intent();
-        intent.putExtra(ImagePicker.EXTRA_RESULT_ITEMS, mImageItems);
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList(ImagePicker.EXTRA_RESULT_ITEMS, mImageItemVos);
+        intent.putExtra(ImagePicker.EXTRA_IMAGES_BUNDLE, bundle);
         setResult(ImagePicker.RESULT_CODE_ITEMS, intent);   //单选不需要裁剪，返回数据
         finish();
     }

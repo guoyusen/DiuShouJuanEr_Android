@@ -2,7 +2,6 @@ package com.bili.diushoujuaner.activity;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
@@ -20,7 +19,7 @@ import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.adapter.CommentAdapter;
 import com.bili.diushoujuaner.adapter.ImageAdapter;
 import com.bili.diushoujuaner.base.BaseFragmentActivity;
-import com.bili.diushoujuaner.utils.event.ResponEvent;
+import com.bili.diushoujuaner.presenter.event.ResponEvent;
 import com.bili.diushoujuaner.fragment.PictureFragment;
 import com.bili.diushoujuaner.presenter.presenter.RecallDetailActivityPresenter;
 import com.bili.diushoujuaner.presenter.presenter.impl.RecallDetailActivityPresenterImpl;

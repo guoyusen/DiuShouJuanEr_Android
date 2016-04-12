@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/MatchMatch">
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/itemImg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:actualImageScaleType="centerCrop"
+        app:viewAspectRatio="1.0"
+        android:layout_margin="@dimen/x8"/>
+
+    <RelativeLayout
+        android:id="@+id/layoutMask"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/itemImg"
+        android:layout_alignTop="@+id/itemImg"
+        android:layout_alignLeft="@+id/itemImg"
+        android:layout_alignRight="@+id/itemImg"
+        android:background="@color/TRANSPARENT_BLACK">
+
+        <TextView
+            android:id="@+id/txtProgress"
+            android:layout_width="@dimen/x124"
+            android:layout_height="@dimen/x124"
+            android:background="@drawable/text_progress_bg"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:textColor="@color/COLOR_WHITE"
+            style="@style/TextLarge"/>
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

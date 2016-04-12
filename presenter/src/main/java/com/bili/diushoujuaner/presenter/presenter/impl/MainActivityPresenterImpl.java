@@ -9,7 +9,7 @@ import com.bili.diushoujuaner.model.databasehelper.dao.User;
 import com.bili.diushoujuaner.presenter.base.BasePresenter;
 import com.bili.diushoujuaner.presenter.presenter.MainActivityPresenter;
 import com.bili.diushoujuaner.presenter.view.IMainView;
-import com.bili.diushoujuaner.utils.event.ShowHeadEvent;
+import com.bili.diushoujuaner.presenter.event.ShowHeadEvent;
 
 import org.greenrobot.eventbus.EventBus;
 

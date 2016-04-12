@@ -9,7 +9,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 
 import com.bili.diushoujuaner.widget.imagepicker.bean.ImageFolder;
-import com.bili.diushoujuaner.widget.imagepicker.bean.ImageItem;
+import com.bili.diushoujuaner.utils.entity.ImageItemVo;
 import com.bili.diushoujuaner.widget.imagepicker.loader.ImageLoader;
 import com.bili.diushoujuaner.widget.imagepicker.view.CropImageView;
 
@@ -32,6 +32,7 @@ public class ImagePicker {
     public static final String EXTRA_RESULT_ITEMS = "extra_result_items";
     public static final String EXTRA_SELECTED_IMAGE_POSITION = "selected_image_position";
     public static final String EXTRA_IMAGE_ITEMS = "extra_image_items";
+    public static final String EXTRA_IMAGES_BUNDLE = "extra_image_bundle";
 
     private boolean multiMode = true;    //图片选择模式
     private int selectLimit = 9;         //最大选择图片数量
@@ -48,7 +49,7 @@ public class ImagePicker {
     private File takeImageFile;
     public Bitmap cropBitmap;
 
-    private ArrayList<ImageItem> mSelectedImages = new ArrayList<>();   //选中的图片集合
+    private ArrayList<ImageItemVo> mSelectedImages = new ArrayList<>();   //选中的图片集合
     private List<ImageFolder> mImageFolders;      //所有的图片文件夹
     private int mCurrentImageFolderPosition = 0;  //当前选中的文件夹位置 0表示所有图片
     private List<OnImageSelectedListener> mImageSelectedListeners;          // 图片选中的监听回调
@@ -188,11 +189,11 @@ public class ImagePicker {
         mCurrentImageFolderPosition = mCurrentSelectedImageSetPosition;
     }
 
-    public ArrayList<ImageItem> getCurrentImageFolderItems() {
+    public ArrayList<ImageItemVo> getCurrentImageFolderItems() {
         return mImageFolders.get(mCurrentImageFolderPosition).images;
     }
 
-    public boolean isSelect(ImageItem item) {
+    public boolean isSelect(ImageItemVo item) {
         return mSelectedImages.contains(item);
     }
 
@@ -203,7 +204,11 @@ public class ImagePicker {
         return mSelectedImages.size();
     }
 
-    public ArrayList<ImageItem> getSelectedImages() {
+    public void setmSelectedImages(ArrayList<ImageItemVo> mSelectedImages) {
+        this.mSelectedImages = mSelectedImages;
+    }
+
+    public ArrayList<ImageItemVo> getSelectedImages() {
         return mSelectedImages;
     }
 
@@ -264,7 +269,7 @@ public class ImagePicker {
 
     /** 图片选中的监听 */
     public interface OnImageSelectedListener {
-        void onImageSelected(int position, ImageItem item, boolean isAdd);
+        void onImageSelected(int position, ImageItemVo item, boolean isAdd);
     }
 
     public void addOnImageSelectedListener(OnImageSelectedListener l) {
@@ -277,13 +282,13 @@ public class ImagePicker {
         mImageSelectedListeners.remove(l);
     }
 
-    public void addSelectedImageItem(int position, ImageItem item, boolean isAdd) {
+    public void addSelectedImageItem(int position, ImageItemVo item, boolean isAdd) {
         if (isAdd) mSelectedImages.add(item);
         else mSelectedImages.remove(item);
         notifyImageSelectedChanged(position, item, isAdd);
     }
 
-    private void notifyImageSelectedChanged(int position, ImageItem item, boolean isAdd) {
+    private void notifyImageSelectedChanged(int position, ImageItemVo item, boolean isAdd) {
         if (mImageSelectedListeners == null) return;
         for (OnImageSelectedListener l : mImageSelectedListeners) {
             l.onImageSelected(position, item, isAdd);

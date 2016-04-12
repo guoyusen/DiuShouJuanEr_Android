@@ -10,7 +10,7 @@ import com.bili.diushoujuaner.presenter.presenter.ContactFragmentPresenter;
 import com.bili.diushoujuaner.presenter.view.IContactView;
 import com.bili.diushoujuaner.utils.Constant;
 import com.bili.diushoujuaner.utils.entity.FriendVo;
-import com.bili.diushoujuaner.utils.event.RefreshRecallEvent;
+import com.bili.diushoujuaner.presenter.event.RefreshRecallEvent;
 
 import org.greenrobot.eventbus.EventBus;
 

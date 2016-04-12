@@ -25,6 +25,11 @@ public class RecallTemper {
         recallDtoHashtable.put(recallDto.getRecallNo(), recallDto);
     }
 
+    public static void addRecallDtoToHomeList(RecallDto recallDto){
+        recallList.add(0,recallDto);
+        saveRecallListToCache();
+    }
+
     public static void removeRecallDto(Long recallNo){
         recallDtoHashtable.remove(recallNo);
     }

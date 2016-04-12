@@ -2,6 +2,7 @@ package com.bili.diushoujuaner.widget;
 
 import android.content.Context;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
@@ -18,8 +19,7 @@ public class CustomToast {
 
     private static Runnable r = new Runnable() {
         public void run() {
-            toast.cancel();
-            toast=null;//toast隐藏后，将其置为null
+            toast.show();
         }
     };
 
@@ -45,7 +45,7 @@ public class CustomToast {
         toast.show();
     }
 
-    public void showWarning(Context context, String msg) {
+    public synchronized void showWarning(Context context, String msg) {
         if(toast == null){
             toast = new Toast(context);
         }
@@ -58,7 +58,6 @@ public class CustomToast {
         toast.setView(ll);
         mHandler.removeCallbacks(r);
         mHandler.postDelayed(r, 1000);
-        toast.show();
     }
 
     public void showSuccess(Context context, String msg) {

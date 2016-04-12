@@ -51,6 +51,11 @@ public abstract class CommonAdapter<T> extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    public void addFirst(T data){
+        this.list.add(0, data);
+        notifyDataSetChanged();
+    }
+
     /**
      * 在原有的数据上添加新数据
      *

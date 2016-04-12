@@ -1,4 +1,4 @@
-package com.bili.diushoujuaner.utils.event;
+package com.bili.diushoujuaner.presenter.event;
 
 /**
  * Created by BiLi on 2016/4/2.
@@ -12,7 +12,7 @@ public class ShowHeadEvent {
     private String headPicUrl;
 
     public String getHeadPicUrl() {
-        return headPicUrl;
+        return headPicUrl == null ? "" : headPicUrl;
     }
 
     public void setHeadPicUrl(String headPicUrl) {

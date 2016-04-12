@@ -35,6 +35,43 @@ public class FileAction implements IFileAction {
     }
 
     @Override
+    public synchronized void uploadRecallPic(String path, final ActionFileCallbackListener<ActionRespon<String>> actionFileCallbackListener) {
+        ApiAction.getInstance().getRecallPicUpload(path, new ApiFileCallbackListener() {
+            @Override
+            public void onSuccess(final String data) {
+                Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<String>>() {
+                    @Override
+                    public ActionRespon<String> doInBackground() throws Exception {
+                        ApiRespon<String> result = GsonParser.getInstance().fromJson(data, new TypeToken<ApiRespon<String>>() {
+                        }.getType());
+                        return ActionRespon.getActionResponFromApiRespon(result);
+                    }
+                }, new Completion<ActionRespon<String>>() {
+                    @Override
+                    public void onSuccess(Context context, ActionRespon<String> result) {
+                        actionFileCallbackListener.onSuccess(result);
+                    }
+
+                    @Override
+                    public void onError(Context context, Exception e) {
+                        actionFileCallbackListener.onSuccess(ActionRespon.<String>getActionResponError());
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(int errorCode) {
+                actionFileCallbackListener.onFailure(errorCode);
+            }
+
+            @Override
+            public void onProgress(float progress) {
+                actionFileCallbackListener.onProgress(progress);
+            }
+        });
+    }
+
+    @Override
     public void uploadWallpaper(String path, final ActionFileCallbackListener<ActionRespon<String>> actionFileCallbackListener) {
         ApiAction.getInstance().getWallpaperUpdate(path, new ApiFileCallbackListener() {
             @Override

@@ -11,6 +11,7 @@ import com.bili.diushoujuaner.model.apihelper.request.CommentRemoveReq;
 import com.bili.diushoujuaner.model.apihelper.request.ContactInfoReq;
 import com.bili.diushoujuaner.model.apihelper.request.FeedBackReq;
 import com.bili.diushoujuaner.model.apihelper.request.RecallListReq;
+import com.bili.diushoujuaner.model.apihelper.request.RecallPublishReq;
 import com.bili.diushoujuaner.model.apihelper.request.RecallRemoveReq;
 import com.bili.diushoujuaner.model.apihelper.request.RecentRecallReq;
 import com.bili.diushoujuaner.model.apihelper.request.ResponAddReq;
@@ -157,5 +158,15 @@ public class ApiAction implements Api {
     @Override
     public void getWallpaperUpdate(String path, ApiFileCallbackListener apiFileCallbackListener) {
         dataLoader.processFileUpload(Api.getWallpaperUpdate,"file",path, apiFileCallbackListener);
+    }
+
+    @Override
+    public void getRecallPicUpload(String path, ApiFileCallbackListener apiFileCallbackListener) {
+        dataLoader.processFileUpload(Api.getRecallPicUpload,"file",path, apiFileCallbackListener);
+    }
+
+    @Override
+    public void getRecallPublish(RecallPublishReq recallPublishReq, ApiStringCallbackListener apiStringCallbackListener) {
+        dataLoader.processStringRequest(Request.Method.POST, Api.getRecallPublish, Common.ConvertObjToMap(recallPublishReq), apiStringCallbackListener);
     }
 }

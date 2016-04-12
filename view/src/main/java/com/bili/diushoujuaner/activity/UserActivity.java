@@ -32,7 +32,7 @@ import com.bili.diushoujuaner.widget.dialog.OnDialogChoseListener;
 import com.bili.diushoujuaner.widget.dialog.OnDialogPositiveClickListener;
 import com.bili.diushoujuaner.widget.floatingactionbutton.FloatingActionButton;
 import com.bili.diushoujuaner.widget.imagepicker.ImagePicker;
-import com.bili.diushoujuaner.widget.imagepicker.bean.ImageItem;
+import com.bili.diushoujuaner.utils.entity.ImageItemVo;
 import com.bili.diushoujuaner.widget.imagepicker.loader.GlideImageLoader;
 import com.bili.diushoujuaner.widget.imagepicker.view.CropImageView;
 import com.bili.diushoujuaner.widget.scrollview.OnChangeHeadStatusListener;
@@ -256,7 +256,7 @@ public class UserActivity extends BaseFragmentActivity<UserActivityPresenter> im
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == ImagePicker.RESULT_CODE_ITEMS && data != null && requestCode == 100) {
-            ArrayList<ImageItem> images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
+            ArrayList<ImageItemVo> images = data.getBundleExtra(ImagePicker.EXTRA_IMAGES_BUNDLE).getParcelableArrayList(ImagePicker.EXTRA_RESULT_ITEMS);
             getBindPresenter().updateHeadPic(images.get(0).path);
         }
     }

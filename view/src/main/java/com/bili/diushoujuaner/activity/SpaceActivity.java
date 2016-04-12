@@ -3,6 +3,7 @@ package com.bili.diushoujuaner.activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
@@ -19,22 +20,27 @@ import com.bili.diushoujuaner.base.BaseFragmentActivity;
 import com.bili.diushoujuaner.fragment.PictureFragment;
 import com.bili.diushoujuaner.model.apihelper.response.RecallDto;
 import com.bili.diushoujuaner.presenter.base.IBaseView;
+import com.bili.diushoujuaner.presenter.event.PublishRecallEvent;
 import com.bili.diushoujuaner.presenter.presenter.SpaceActivityPresenter;
 import com.bili.diushoujuaner.presenter.presenter.impl.SpaceActivityPresenterImpl;
+import com.bili.diushoujuaner.presenter.publisher.OnPublishListener;
+import com.bili.diushoujuaner.presenter.publisher.RecallPublisher;
 import com.bili.diushoujuaner.presenter.view.ISpaceView;
 import com.bili.diushoujuaner.utils.Common;
 import com.bili.diushoujuaner.utils.Constant;
 import com.bili.diushoujuaner.utils.entity.FriendVo;
 import com.bili.diushoujuaner.utils.entity.PictureVo;
-import com.bili.diushoujuaner.utils.event.GoodRecallEvent;
-import com.bili.diushoujuaner.utils.event.RemoveRecallEvent;
+import com.bili.diushoujuaner.presenter.event.GoodRecallEvent;
+import com.bili.diushoujuaner.presenter.event.RemoveRecallEvent;
 import com.bili.diushoujuaner.widget.CustomListViewRefresh;
 import com.bili.diushoujuaner.widget.TintedBitmapDrawable;
+import com.bili.diushoujuaner.widget.badgeview.BGABadgeImageView;
+import com.bili.diushoujuaner.widget.badgeview.BGABadgeRelativeLayout;
 import com.bili.diushoujuaner.widget.dialog.DialogTool;
 import com.bili.diushoujuaner.widget.dialog.OnDialogPositiveClickListener;
 import com.bili.diushoujuaner.widget.floatingactionbutton.FloatingActionButton;
 import com.bili.diushoujuaner.widget.imagepicker.ImagePicker;
-import com.bili.diushoujuaner.widget.imagepicker.bean.ImageItem;
+import com.bili.diushoujuaner.utils.entity.ImageItemVo;
 import com.bili.diushoujuaner.widget.imagepicker.loader.GlideImageLoader;
 import com.bili.diushoujuaner.widget.imagepicker.view.CropImageView;
 import com.bili.diushoujuaner.widget.scrollview.OnChangeHeadStatusListener;
@@ -54,7 +60,7 @@ import butterknife.Bind;
 /**
  * Created by BiLi on 2016/4/3.
  */
-public class SpaceActivity extends BaseFragmentActivity<SpaceActivityPresenter> implements ISpaceView, OnScrollRefreshListener, OnChangeHeadStatusListener, CustomListViewRefresh.OnLoadMoreListener, View.OnClickListener {
+public class SpaceActivity extends BaseFragmentActivity<SpaceActivityPresenter> implements ISpaceView, OnScrollRefreshListener, OnChangeHeadStatusListener, CustomListViewRefresh.OnLoadMoreListener, View.OnClickListener, OnPublishListener {
 
     @Bind(R.id.ivWallPaper)
     SimpleDraweeView ivWallPaper;
@@ -72,13 +78,18 @@ public class SpaceActivity extends BaseFragmentActivity<SpaceActivityPresenter> 
     RelativeLayout layoutHead;
     @Bind(R.id.reboundScrollView)
     ReboundScrollView reboundScrollView;
-
-    public static int openCount = 0;
-    public static final String TAG = "SpaceActivity";
     @Bind(R.id.ivTip)
     ImageView ivTip;
     @Bind(R.id.txtNavTitle)
     TextView txtNavTitle;
+    @Bind(R.id.ivUploading)
+    ImageView ivUploading;
+    @Bind(R.id.layoutProgress)
+    BGABadgeRelativeLayout layoutProgress;
+
+
+    public static int openCount = 0;
+    public static final String TAG = "SpaceActivity";
 
     private long userNo;
     private List<RecallDto> recallDtoList;
@@ -91,6 +102,7 @@ public class SpaceActivity extends BaseFragmentActivity<SpaceActivityPresenter> 
     private long goodRecallNo;
     private FriendVo currentFriendVo;
     private ImagePicker imagePicker;
+    private AnimationDrawable uplaodingAni;
 
     class CustomRunnable implements Runnable {
         @Override
@@ -142,6 +154,9 @@ public class SpaceActivity extends BaseFragmentActivity<SpaceActivityPresenter> 
         setTintStatusColor(R.color.TRANSPARENT_BLACK);
         layoutHead.setBackground(ContextCompat.getDrawable(context, R.drawable.transparent_black_down_bg));
 
+        RecallPublisher.getInstance(context).register(this);
+        uplaodingAni = (AnimationDrawable)ivUploading.getDrawable();
+
         if (userNo == getBindPresenter().getCustomSessionUserNo()) {
             btnFloat.setImageResource(R.mipmap.icon_editor);
         }else{
@@ -150,6 +165,8 @@ public class SpaceActivity extends BaseFragmentActivity<SpaceActivityPresenter> 
 
         userHead.setOnClickListener(this);
         ivWallPaper.setOnClickListener(this);
+        btnFloat.setOnClickListener(this);
+        layoutProgress.setOnClickListener(this);
 
         reboundScrollView.setScrollRefreshListener(this);
         reboundScrollView.setChangeHeadStatusListener(this);
@@ -186,6 +203,39 @@ public class SpaceActivity extends BaseFragmentActivity<SpaceActivityPresenter> 
     }
 
     @Override
+    public void onError() {
+
+    }
+
+    @Override
+    public void onProgress(int position, float progress) {
+        if(layoutProgress != null){
+            layoutProgress.setVisibility(View.VISIBLE);
+            layoutProgress.showTextBadge((position + 1) + "");
+        }
+    }
+
+    @Override
+    public void onFinishPublish() {
+        if(layoutProgress != null){
+            layoutProgress.hiddenBadge();
+            layoutProgress.setVisibility(View.GONE);
+        }
+        uplaodingAni.stop();
+    }
+
+    @Override
+    public void onStartPublish() {
+        if(layoutProgress != null){
+            layoutProgress.hiddenBadge();
+            layoutProgress.setVisibility(View.VISIBLE);
+        }
+        if(!uplaodingAni.isRunning()){
+            uplaodingAni.start();
+        }
+    }
+
+    @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.ivWallPaper:
@@ -203,6 +253,16 @@ public class SpaceActivity extends BaseFragmentActivity<SpaceActivityPresenter> 
                     PictureFragment.showPictureDetail(getSupportFragmentManager(),pictureVoList,0, false);
                 }
                 break;
+            case R.id.btnFloat:
+                if(userNo == getBindPresenter().getCustomSessionUserNo()){
+                    startActivity(new Intent(context, RecallAddActivity.class));
+                }else{
+                    //TODO 执行关注逻辑
+                }
+                break;
+            case R.id.layoutProgress:
+                startActivity(new Intent(context, ProgressActivity.class));
+                break;
         }
     }
 
@@ -210,7 +270,7 @@ public class SpaceActivity extends BaseFragmentActivity<SpaceActivityPresenter> 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == ImagePicker.RESULT_CODE_ITEMS && data != null && requestCode == 100) {
-            ArrayList<ImageItem> images = (ArrayList<ImageItem>) data.getSerializableExtra(ImagePicker.EXTRA_RESULT_ITEMS);
+            ArrayList<ImageItemVo> images = data.getBundleExtra(ImagePicker.EXTRA_IMAGES_BUNDLE).getParcelableArrayList(ImagePicker.EXTRA_RESULT_ITEMS);
             getBindPresenter().updateWallpaper(images.get(0).path);
         }
     }
@@ -346,8 +406,17 @@ public class SpaceActivity extends BaseFragmentActivity<SpaceActivityPresenter> 
         handler.postDelayed(customRunnable, 1500);
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onPublishRecallEvent(PublishRecallEvent publishRecallEvent){
+        if (recallAdapter != null) {
+            recallAdapter.addFirst(publishRecallEvent.getRecallDto());
+            recallAdapter.notifyDataSetChanged();
+        }
+    }
+
     @Override
     public void onPageDestroy() {
+        RecallPublisher.getInstance(context).unregister(this);
         EventBus.getDefault().unregister(this);
         super.onPageDestroy();
         openCount--;

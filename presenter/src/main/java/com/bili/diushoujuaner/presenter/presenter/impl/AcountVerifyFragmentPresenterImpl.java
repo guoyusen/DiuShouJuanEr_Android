@@ -11,8 +11,8 @@ import com.bili.diushoujuaner.presenter.base.BasePresenter;
 import com.bili.diushoujuaner.presenter.base.IBaseView;
 import com.bili.diushoujuaner.presenter.presenter.AcountVerifyFragmentPresenter;
 import com.bili.diushoujuaner.utils.Constant;
-import com.bili.diushoujuaner.utils.event.NextPageEvent;
-import com.bili.diushoujuaner.utils.event.StartTimerEvent;
+import com.bili.diushoujuaner.presenter.event.NextPageEvent;
+import com.bili.diushoujuaner.presenter.event.StartTimerEvent;
 
 import org.greenrobot.eventbus.EventBus;
 

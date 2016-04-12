@@ -89,15 +89,11 @@ public class ContactDetailActivityPresenterImpl extends BasePresenter<IContactDe
                         getBindView().showContactInfo(result.getData());
                     }
                 }
-                    hideLoading(Constant.LOADING_DEFAULT);
+                hideLoading(Constant.LOADING_DEFAULT);
             }
 
             @Override
             public void onFailure(int errorCode) {
-                //最不可能出现的情况，本地失败，API获取失败
-                if(isBindViewValid()){
-                    getBindView().showContactInfo(null);
-                }
                 showError(errorCode);
                 hideLoading(Constant.LOADING_DEFAULT);
             }

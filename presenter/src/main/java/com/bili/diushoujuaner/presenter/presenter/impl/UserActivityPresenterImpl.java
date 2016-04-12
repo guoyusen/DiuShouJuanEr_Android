@@ -1,7 +1,6 @@
 package com.bili.diushoujuaner.presenter.presenter.impl;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.bili.diushoujuaner.model.action.impl.FileAction;
 import com.bili.diushoujuaner.model.action.impl.UserInfoAction;
@@ -10,18 +9,14 @@ import com.bili.diushoujuaner.model.apihelper.request.UserInfoReq;
 import com.bili.diushoujuaner.model.callback.ActionFileCallbackListener;
 import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
 import com.bili.diushoujuaner.model.databasehelper.dao.User;
-import com.bili.diushoujuaner.model.okhttphelper.okhttpserver.listener.UploadListener;
-import com.bili.diushoujuaner.model.okhttphelper.okhttpserver.upload.UploadInfo;
 import com.bili.diushoujuaner.presenter.base.BasePresenter;
 import com.bili.diushoujuaner.presenter.presenter.UserActivityPresenter;
 import com.bili.diushoujuaner.presenter.view.IUserView;
 import com.bili.diushoujuaner.utils.Constant;
-import com.bili.diushoujuaner.utils.event.ShowHeadEvent;
-import com.bili.diushoujuaner.utils.event.UpdateUserInfoEvent;
+import com.bili.diushoujuaner.presenter.event.ShowHeadEvent;
+import com.bili.diushoujuaner.presenter.event.UpdateUserInfoEvent;
 
 import org.greenrobot.eventbus.EventBus;
-
-import okhttp3.Response;
 
 /**
  * Created by BiLi on 2016/4/4.

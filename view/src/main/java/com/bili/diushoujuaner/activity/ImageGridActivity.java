@@ -3,6 +3,7 @@ package com.bili.diushoujuaner.activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.AdapterView;
@@ -22,7 +23,7 @@ import com.bili.diushoujuaner.widget.imagepicker.ImageDataSource;
 import com.bili.diushoujuaner.widget.imagepicker.ImagePicker;
 import com.bili.diushoujuaner.widget.imagepicker.Utils;
 import com.bili.diushoujuaner.widget.imagepicker.bean.ImageFolder;
-import com.bili.diushoujuaner.widget.imagepicker.bean.ImageItem;
+import com.bili.diushoujuaner.utils.entity.ImageItemVo;
 
 import java.util.List;
 
@@ -81,7 +82,6 @@ public class ImageGridActivity extends BaseFragmentActivity implements ImageData
     public void setViewStatus() {
         showPageHead(title,null,"完成");
         setTintStatusColor(R.color.BG_CC22292C);
-        imagePicker.clear();
         imagePicker.addOnImageSelectedListener(this);
         DisplayMetrics dm = Utils.getScreenPix(this);
         screenWidth = dm.widthPixels;
@@ -99,7 +99,7 @@ public class ImageGridActivity extends BaseFragmentActivity implements ImageData
         btnPreview.setOnClickListener(this);
         txtRight.setOnClickListener(this);
 
-        mImageGridAdapter = new ImageGridAdapter(this, null);
+        mImageGridAdapter = new ImageGridAdapter(this, imagePicker.getSelectedImages());
         mImageFolderAdapter = new ImageFolderAdapter(this, null);
 
         onImageSelected(0, null, false);
@@ -118,7 +118,9 @@ public class ImageGridActivity extends BaseFragmentActivity implements ImageData
         switch (v.getId()) {
             case R.id.txtRight:
                 Intent intent = new Intent();
-                intent.putExtra(ImagePicker.EXTRA_RESULT_ITEMS, imagePicker.getSelectedImages());
+                Bundle bundle = new Bundle();
+                bundle.putParcelableArrayList(ImagePicker.EXTRA_RESULT_ITEMS, imagePicker.getSelectedImages());
+                intent.putExtra(ImagePicker.EXTRA_IMAGES_BUNDLE,bundle);
                 setResult(ImagePicker.RESULT_CODE_ITEMS, intent);  //多选不允许裁剪裁剪，返回数据
                 finish();
                 break;
@@ -140,7 +142,9 @@ public class ImageGridActivity extends BaseFragmentActivity implements ImageData
             case R.id.btn_preview:
                 intent = new Intent(ImageGridActivity.this, ImagePreviewActivity.class);
                 intent.putExtra(ImagePicker.EXTRA_SELECTED_IMAGE_POSITION, 0);
-                intent.putExtra(ImagePicker.EXTRA_IMAGE_ITEMS, imagePicker.getSelectedImages());
+                bundle = new Bundle();
+                bundle.putParcelableArrayList(ImagePicker.EXTRA_IMAGE_ITEMS,imagePicker.getSelectedImages());
+                intent.putExtra(ImagePicker.EXTRA_IMAGES_BUNDLE, bundle);
                 intent.putExtra(ImagePreviewActivity.ISORIGIN, isOrigin);
                 startActivityForResult(intent, ImagePicker.REQUEST_CODE_PREVIEW);
                 break;
@@ -202,13 +206,15 @@ public class ImageGridActivity extends BaseFragmentActivity implements ImageData
     }
 
     @Override
-    public void onImageItemClick(View view, ImageItem imageItem, int position) {
+    public void onImageItemClick(View view, ImageItemVo imageItemVo, int position) {
         //根据是否有相机按钮确定位置
         position = imagePicker.isShowCamera() ? position - 1 : position;
         if (imagePicker.isMultiMode()) {
             Intent intent = new Intent(ImageGridActivity.this, ImagePreviewActivity.class);
             intent.putExtra(ImagePicker.EXTRA_SELECTED_IMAGE_POSITION, position);
-            intent.putExtra(ImagePicker.EXTRA_IMAGE_ITEMS, imagePicker.getCurrentImageFolderItems());
+            Bundle bundle = new Bundle();
+            bundle.putParcelableArrayList(ImagePicker.EXTRA_IMAGE_ITEMS,imagePicker.getCurrentImageFolderItems());
+            intent.putExtra(ImagePicker.EXTRA_IMAGES_BUNDLE, bundle);
             intent.putExtra(ImagePreviewActivity.ISORIGIN, isOrigin);
             startActivityForResult(intent, ImagePicker.REQUEST_CODE_PREVIEW);  //如果是多选，点击图片进入预览界面
         } else {
@@ -219,7 +225,9 @@ public class ImageGridActivity extends BaseFragmentActivity implements ImageData
                 startActivityForResult(intent, ImagePicker.REQUEST_CODE_CROP);  //单选需要裁剪，进入裁剪界面
             } else {
                 Intent intent = new Intent();
-                intent.putExtra(ImagePicker.EXTRA_RESULT_ITEMS, imagePicker.getSelectedImages());
+                Bundle bundle = new Bundle();
+                bundle.putParcelableArrayList(ImagePicker.EXTRA_RESULT_ITEMS, imagePicker.getSelectedImages());
+                intent.putExtra(ImagePicker.EXTRA_IMAGES_BUNDLE, bundle);
                 setResult(ImagePicker.RESULT_CODE_ITEMS, intent);   //单选不需要裁剪，返回数据
                 finish();
             }
@@ -227,7 +235,7 @@ public class ImageGridActivity extends BaseFragmentActivity implements ImageData
     }
 
     @Override
-    public void onImageSelected(int position, ImageItem item, boolean isAdd) {
+    public void onImageSelected(int position, ImageItemVo item, boolean isAdd) {
         if (imagePicker.getSelectImageCount() > 0) {
             txtRight.setText(getString(R.string.select_complete, imagePicker.getSelectImageCount(), imagePicker.getSelectLimit()));
             txtRight.setEnabled(true);
@@ -257,16 +265,18 @@ public class ImageGridActivity extends BaseFragmentActivity implements ImageData
             if (requestCode == ImagePicker.REQUEST_CODE_TAKE) {
                 //发送广播通知图片增加了
                 ImagePicker.galleryAddPic(this, imagePicker.getTakeImageFile());
-                ImageItem imageItem = new ImageItem();
-                imageItem.path = imagePicker.getTakeImageFile().getAbsolutePath();
+                ImageItemVo imageItemVo = new ImageItemVo();
+                imageItemVo.path = imagePicker.getTakeImageFile().getAbsolutePath();
                 imagePicker.clearSelectedImages();
-                imagePicker.addSelectedImageItem(0, imageItem, true);
+                imagePicker.addSelectedImageItem(0, imageItemVo, true);
                 if (imagePicker.isCrop()) {
                     Intent intent = new Intent(ImageGridActivity.this, ImageCropActivity.class);
                     startActivityForResult(intent, ImagePicker.REQUEST_CODE_CROP);  //单选需要裁剪，进入裁剪界面
                 } else {
                     Intent intent = new Intent();
-                    intent.putExtra(ImagePicker.EXTRA_RESULT_ITEMS, imagePicker.getSelectedImages());
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelableArrayList(ImagePicker.EXTRA_RESULT_ITEMS, imagePicker.getSelectedImages());
+                    intent.putExtra(ImagePicker.EXTRA_IMAGES_BUNDLE, bundle);
                     setResult(ImagePicker.RESULT_CODE_ITEMS, intent);   //单选不需要裁剪，返回数据
                     finish();
                 }

@@ -2,34 +2,39 @@ package com.bili.diushoujuaner.fragment;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.bili.diushoujuaner.R;
+import com.bili.diushoujuaner.activity.ProgressActivity;
 import com.bili.diushoujuaner.activity.RecallAddActivity;
 import com.bili.diushoujuaner.activity.RecallDetailActivity;
 import com.bili.diushoujuaner.adapter.RecallAdapter;
 import com.bili.diushoujuaner.base.BaseFragment;
 import com.bili.diushoujuaner.model.apihelper.response.RecallDto;
+import com.bili.diushoujuaner.presenter.event.PublishRecallEvent;
 import com.bili.diushoujuaner.presenter.presenter.HomeFragmentPresenter;
 import com.bili.diushoujuaner.presenter.presenter.impl.HomeFragmentPresenterImpl;
+import com.bili.diushoujuaner.presenter.publisher.OnPublishListener;
+import com.bili.diushoujuaner.presenter.publisher.RecallPublisher;
 import com.bili.diushoujuaner.presenter.view.IHomeView;
 import com.bili.diushoujuaner.utils.Common;
 import com.bili.diushoujuaner.utils.Constant;
-import com.bili.diushoujuaner.utils.event.GoodRecallEvent;
-import com.bili.diushoujuaner.utils.event.RefreshRecallEvent;
-import com.bili.diushoujuaner.utils.event.ShowHeadEvent;
-import com.bili.diushoujuaner.utils.event.ShowMainMenuEvent;
+import com.bili.diushoujuaner.presenter.event.GoodRecallEvent;
+import com.bili.diushoujuaner.presenter.event.RefreshRecallEvent;
+import com.bili.diushoujuaner.presenter.event.ShowHeadEvent;
+import com.bili.diushoujuaner.presenter.event.ShowMainMenuEvent;
 import com.bili.diushoujuaner.widget.CustomListViewRefresh;
 import com.bili.diushoujuaner.widget.TintedBitmapDrawable;
+import com.bili.diushoujuaner.widget.badgeview.BGABadgeImageView;
+import com.bili.diushoujuaner.widget.badgeview.BGABadgeRelativeLayout;
 import com.bili.diushoujuaner.widget.waveswipe.WaveSwipeRefreshLayout;
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -46,7 +51,7 @@ import butterknife.ButterKnife;
 /**
  * Created by BiLi on 2016/3/2.
  */
-public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements WaveSwipeRefreshLayout.OnRefreshListener, IHomeView, View.OnClickListener, CustomListViewRefresh.OnLoadMoreListener {
+public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements WaveSwipeRefreshLayout.OnRefreshListener, IHomeView, View.OnClickListener, CustomListViewRefresh.OnLoadMoreListener, OnPublishListener {
 
     @Bind(R.id.listviewRecall)
     CustomListViewRefresh listviewRecall;
@@ -60,6 +65,10 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
     ImageView ivTip;
     @Bind(R.id.btnRight)
     ImageButton btnRight;
+    @Bind(R.id.ivUploading)
+    ImageView ivUploading;
+    @Bind(R.id.layoutProgress)
+    BGABadgeRelativeLayout layoutProgress;
 
     private List<RecallDto> recallDtoList;
     private RecallAdapter recallAdapter;
@@ -69,6 +78,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
     private CustomRunnable customRunnable;
     private long goodRecallNo;
     private String headPicUrl;
+    private AnimationDrawable uplaodingAni;
 
 
     class CustomRunnable implements Runnable {
@@ -99,7 +109,6 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
         recallDtoList = new ArrayList<>();
         handler = new Handler();
         customRunnable = new CustomRunnable();
-
         basePresenter = new HomeFragmentPresenterImpl(this, context);
     }
 
@@ -107,11 +116,15 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
     public void setViewStatus() {
         showPageHead("首页", R.mipmap.icon_editor, null);
 
+        RecallPublisher.getInstance(context).register(this);
+        uplaodingAni = (AnimationDrawable)ivUploading.getDrawable();
+
         waveSwipeRefreshLayout.setColorSchemeColors(Color.WHITE, Color.WHITE);
         waveSwipeRefreshLayout.setWaveColor(ContextCompat.getColor(context, R.color.COLOR_THEME_MAIN));
         waveSwipeRefreshLayout.setOnRefreshListener(this);
         ivNavHead.setOnClickListener(this);
         btnRight.setOnClickListener(this);
+        layoutProgress.setOnClickListener(this);
 
         ivTip.setImageDrawable(new TintedBitmapDrawable(getResources(), R.mipmap.icon_nodata, ContextCompat.getColor(context, R.color.COLOR_BFBFBF)));
         Common.displayDraweeView(headPicUrl, ivNavHead);
@@ -142,6 +155,9 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
             case R.id.btnRight:
                 startActivity(new Intent(getContext(), RecallAddActivity.class));
                 break;
+            case R.id.layoutProgress:
+                startActivity(new Intent(context, ProgressActivity.class));
+                break;
         }
     }
 
@@ -149,6 +165,39 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
     public void onResume() {
         super.onResume();
         recallAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onError() {
+
+    }
+
+    @Override
+    public void onProgress(int position, float progress) {
+        if(layoutProgress != null){
+            layoutProgress.setVisibility(View.VISIBLE);
+            layoutProgress.showTextBadge((position + 1) + "");
+        }
+    }
+
+    @Override
+    public void onFinishPublish() {
+        if(layoutProgress != null){
+            layoutProgress.hiddenBadge();
+            layoutProgress.setVisibility(View.GONE);
+        }
+        uplaodingAni.stop();
+    }
+
+    @Override
+    public void onStartPublish() {
+        if(layoutProgress != null){
+            layoutProgress.hiddenBadge();
+            layoutProgress.setVisibility(View.VISIBLE);
+        }
+        if(!uplaodingAni.isRunning()){
+            uplaodingAni.start();
+        }
     }
 
     @Override
@@ -237,8 +286,17 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onPublishRecallEvent(PublishRecallEvent publishRecallEvent){
+        if (recallAdapter != null) {
+            recallAdapter.addFirst(publishRecallEvent.getRecallDto());
+            recallAdapter.notifyDataSetChanged();
+        }
+    }
+
     @Override
     public void onDestroyView() {
+        RecallPublisher.getInstance(context).unregister(this);
         EventBus.getDefault().unregister(this);
         super.onDestroyView();
         ButterKnife.unbind(this);

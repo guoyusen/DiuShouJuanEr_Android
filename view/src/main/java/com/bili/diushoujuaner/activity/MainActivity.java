@@ -18,9 +18,9 @@ import android.widget.Toast;
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.base.BaseFragmentActivity;
 import com.bili.diushoujuaner.presenter.presenter.MainActivityPresenter;
-import com.bili.diushoujuaner.utils.event.UpdateAutographEvent;
-import com.bili.diushoujuaner.utils.event.ShowHeadEvent;
-import com.bili.diushoujuaner.utils.event.ShowMainMenuEvent;
+import com.bili.diushoujuaner.presenter.event.UpdateAutographEvent;
+import com.bili.diushoujuaner.presenter.event.ShowHeadEvent;
+import com.bili.diushoujuaner.presenter.event.ShowMainMenuEvent;
 import com.bili.diushoujuaner.fragment.ContactFragment;
 import com.bili.diushoujuaner.fragment.HomeFragment;
 import com.bili.diushoujuaner.fragment.MessageFragment;
@@ -29,8 +29,8 @@ import com.bili.diushoujuaner.presenter.presenter.impl.MainActivityPresenterImpl
 import com.bili.diushoujuaner.presenter.view.IMainView;
 import com.bili.diushoujuaner.utils.Common;
 import com.bili.diushoujuaner.utils.Constant;
-import com.bili.diushoujuaner.utils.event.UpdateUserInfoEvent;
-import com.bili.diushoujuaner.utils.event.UpdateWallPaperEvent;
+import com.bili.diushoujuaner.presenter.event.UpdateUserInfoEvent;
+import com.bili.diushoujuaner.presenter.event.UpdateWallPaperEvent;
 import com.bili.diushoujuaner.utils.manager.ActivityManager;
 import com.bili.diushoujuaner.widget.CustomViewPager;
 import com.bili.diushoujuaner.widget.TintedBitmapDrawable;
@@ -292,8 +292,12 @@ public class MainActivity extends BaseFragmentActivity<MainActivityPresenter> im
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onShowHeadEvent(ShowHeadEvent showHeadEvent){
-        Common.displayDraweeView(showHeadEvent.getHeadPicUrl(), menuHead);
-        this.user.setPicPath(showHeadEvent.getHeadPicUrl());
+        if(menuHead != null){
+            Common.displayDraweeView(showHeadEvent.getHeadPicUrl(), menuHead);
+        }
+        if(this.user != null){
+            this.user.setPicPath(showHeadEvent.getHeadPicUrl());
+        }
     }
 
     @Override

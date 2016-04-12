@@ -15,7 +15,7 @@ import com.bili.diushoujuaner.adapter.viewholder.ViewHolder;
 import com.bili.diushoujuaner.model.action.impl.UserInfoAction;
 import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
 import com.bili.diushoujuaner.presenter.base.IBaseView;
-import com.bili.diushoujuaner.utils.event.ResponEvent;
+import com.bili.diushoujuaner.presenter.event.ResponEvent;
 import com.bili.diushoujuaner.model.tempHelper.ContactTemper;
 import com.bili.diushoujuaner.utils.Common;
 import com.bili.diushoujuaner.model.apihelper.response.CommentDto;

@@ -21,8 +21,6 @@ public interface HomeFragmentPresenter {
 
     boolean getGoodStatusByRecallNo(long recallNo);
 
-    void addRecallDtoToTemper(RecallDto recallDto);
-
     void changeGoodStatusToLocal(long recallNo, int position);
 
 }

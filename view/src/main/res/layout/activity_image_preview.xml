@@ -22,16 +22,6 @@
         android:background="#cc22292c">
 
         <com.bili.diushoujuaner.widget.imagepicker.view.SuperCheckBox
-            android:id="@+id/cb_origin"
-            style="@style/SuperCheckboxTheme"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:paddingLeft="8dp"
-            android:text="原图(3.07M)"
-            android:textColor="#FFF" />
-
-        <com.bili.diushoujuaner.widget.imagepicker.view.SuperCheckBox
             android:id="@+id/cb_check"
             style="@style/SuperCheckboxTheme"
             android:layout_width="wrap_content"
