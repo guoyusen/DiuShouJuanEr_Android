@@ -10,8 +10,8 @@ import com.bili.diushoujuaner.base.BaseFragmentActivity;
 import com.bili.diushoujuaner.fragment.AcountMobileFragment;
 import com.bili.diushoujuaner.fragment.AcountVerifyFragment;
 import com.bili.diushoujuaner.utils.Constant;
-import com.bili.diushoujuaner.presenter.event.NextPageEvent;
-import com.bili.diushoujuaner.presenter.event.StartTimerEvent;
+import com.bili.diushoujuaner.model.eventhelper.NextPageEvent;
+import com.bili.diushoujuaner.model.eventhelper.StartTimerEvent;
 import com.bili.diushoujuaner.widget.CustomViewPager;
 import com.bili.diushoujuaner.widget.stepview.StepsView;
 

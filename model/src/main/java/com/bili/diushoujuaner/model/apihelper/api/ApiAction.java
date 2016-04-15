@@ -13,6 +13,7 @@ import com.bili.diushoujuaner.model.apihelper.request.FeedBackReq;
 import com.bili.diushoujuaner.model.apihelper.request.RecallListReq;
 import com.bili.diushoujuaner.model.apihelper.request.RecallPublishReq;
 import com.bili.diushoujuaner.model.apihelper.request.RecallRemoveReq;
+import com.bili.diushoujuaner.model.apihelper.request.RecallSerialReq;
 import com.bili.diushoujuaner.model.apihelper.request.RecentRecallReq;
 import com.bili.diushoujuaner.model.apihelper.request.ResponAddReq;
 import com.bili.diushoujuaner.model.apihelper.request.ResponRemoveReq;
@@ -152,21 +153,26 @@ public class ApiAction implements Api {
 
     @Override
     public void getHeadUpdate(String path, ApiFileCallbackListener apiFileCallbackListener){
-        dataLoader.processFileUpload(Api.getHeadUpdate,"file",path, apiFileCallbackListener);
+        dataLoader.processFileUpload(Api.getHeadUpdate, null, "file", path, apiFileCallbackListener);
     }
 
     @Override
     public void getWallpaperUpdate(String path, ApiFileCallbackListener apiFileCallbackListener) {
-        dataLoader.processFileUpload(Api.getWallpaperUpdate,"file",path, apiFileCallbackListener);
+        dataLoader.processFileUpload(Api.getWallpaperUpdate, null, "file", path, apiFileCallbackListener);
     }
 
     @Override
-    public void getRecallPicUpload(String path, ApiFileCallbackListener apiFileCallbackListener) {
-        dataLoader.processFileUpload(Api.getRecallPicUpload,"file",path, apiFileCallbackListener);
+    public void getRecallPicUpload(RecallSerialReq recallSerialReq, String path, ApiFileCallbackListener apiFileCallbackListener) {
+        dataLoader.processFileUpload(Api.getRecallPicUpload,Common.ConvertObjToMap(recallSerialReq), "file",path, apiFileCallbackListener);
     }
 
     @Override
     public void getRecallPublish(RecallPublishReq recallPublishReq, ApiStringCallbackListener apiStringCallbackListener) {
         dataLoader.processStringRequest(Request.Method.POST, Api.getRecallPublish, Common.ConvertObjToMap(recallPublishReq), apiStringCallbackListener);
+    }
+
+    @Override
+    public void getOffMsg(ApiStringCallbackListener apiStringCallbackListener) {
+        dataLoader.processStringRequest(Request.Method.GET, Api.getOffMsg, null, apiStringCallbackListener);
     }
 }

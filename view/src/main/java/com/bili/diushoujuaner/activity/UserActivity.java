@@ -19,20 +19,20 @@ import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.base.BaseFragmentActivity;
 import com.bili.diushoujuaner.fragment.PictureFragment;
 import com.bili.diushoujuaner.model.apihelper.request.UserInfoReq;
-import com.bili.diushoujuaner.model.databasehelper.dao.User;
+import com.bili.diushoujuaner.utils.entity.po.User;
 import com.bili.diushoujuaner.presenter.presenter.UserActivityPresenter;
 import com.bili.diushoujuaner.presenter.presenter.impl.UserActivityPresenterImpl;
 import com.bili.diushoujuaner.presenter.view.IUserView;
 import com.bili.diushoujuaner.utils.Common;
 import com.bili.diushoujuaner.utils.Constant;
-import com.bili.diushoujuaner.utils.entity.PictureVo;
+import com.bili.diushoujuaner.utils.entity.vo.PictureVo;
 import com.bili.diushoujuaner.widget.TintedBitmapDrawable;
 import com.bili.diushoujuaner.widget.dialog.DialogTool;
 import com.bili.diushoujuaner.widget.dialog.OnDialogChoseListener;
 import com.bili.diushoujuaner.widget.dialog.OnDialogPositiveClickListener;
 import com.bili.diushoujuaner.widget.floatingactionbutton.FloatingActionButton;
 import com.bili.diushoujuaner.widget.imagepicker.ImagePicker;
-import com.bili.diushoujuaner.utils.entity.ImageItemVo;
+import com.bili.diushoujuaner.utils.entity.vo.ImageItemVo;
 import com.bili.diushoujuaner.widget.imagepicker.loader.GlideImageLoader;
 import com.bili.diushoujuaner.widget.imagepicker.view.CropImageView;
 import com.bili.diushoujuaner.widget.scrollview.OnChangeHeadStatusListener;
@@ -287,20 +287,9 @@ public class UserActivity extends BaseFragmentActivity<UserActivityPresenter> im
             layoutHead.setBackgroundColor(Color.parseColor(Common.getThemeAlphaColor(alpha)));
             setTintStatusColor(R.color.COLOR_THEME_MAIN);
             setTineStatusAlpha((float)alpha / 100);
-            if(isEditable){
-                showPageHead("个人资料", R.mipmap.icon_finish, null);
-            }else{
-                showPageHead("个人资料", R.mipmap.icon_editor, null);
-            }
         } else {
             layoutHead.setBackground(ContextCompat.getDrawable(context, R.drawable.transparent_black_down_bg));
             setTintStatusColor(R.color.TRANSPARENT_BLACK);
-            setTineStatusAlpha(1.0f);
-            if(isEditable){
-                showPageHead(null, R.mipmap.icon_finish, null);
-            }else{
-                showPageHead(null, R.mipmap.icon_editor, null);
-            }
         }
     }
 

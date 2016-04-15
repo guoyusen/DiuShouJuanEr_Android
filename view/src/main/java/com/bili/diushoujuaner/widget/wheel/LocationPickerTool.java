@@ -62,6 +62,7 @@ public class LocationPickerTool {
 
     private Context context;
 
+    private boolean isUpdatePrin = true;
     private boolean isUpdateCity = true;
     private boolean isUpdateArea = true;
 
@@ -73,7 +74,12 @@ public class LocationPickerTool {
     }
 
     private int getPIndexFromLocation(String currentLocation){
-        String province = currentLocation.substring(0,currentLocation.indexOf("-"));
+        String province;
+        if(!currentLocation.contains("-")){
+            province = currentLocation;
+        }else{
+            province = currentLocation.substring(0, currentLocation.indexOf("-"));
+        }
         for(int i = 0, len = mProvinceDatas.length;i < len; i++){
             if(mProvinceDatas[i].equals(province)){
                 return i;
@@ -83,6 +89,9 @@ public class LocationPickerTool {
     }
 
     private int getCIndexFromLocation(String currentLocation){
+        if(!currentLocation.contains("-")){
+            return 0;
+        }
         String city;
         if(currentLocation.indexOf("-") == currentLocation.lastIndexOf("-")){
             city = currentLocation.substring(currentLocation.indexOf("-") + 1);
@@ -99,7 +108,7 @@ public class LocationPickerTool {
 
     private int getAIndexFromLocation(String currentLocation){
         String area;
-        if(currentLocation.indexOf("-") == currentLocation.lastIndexOf("-")){
+        if(!currentLocation.contains("-") || currentLocation.indexOf("-") == currentLocation.lastIndexOf("-")){
             return 0;
         }else{
             area = currentLocation.substring(currentLocation.lastIndexOf("-") + 1);
@@ -145,7 +154,8 @@ public class LocationPickerTool {
 
         if(currentLocation.length() <= 0){
             np1.setCurrentItem(0);
-            updateCities();
+            updateCityEmpty();
+            updateAreaEmpty();
         } else {
             np1.setCurrentItem(getPIndexFromLocation(currentLocation));
             updateCities();
@@ -159,27 +169,21 @@ public class LocationPickerTool {
 
             @Override
             public void onClick(View v) {
-                String tmpP = np1.getAdapter().getItem(np1.getCurrentItem());
-                String tmpC = np2.getAdapter().getItem(np2.getCurrentItem());
-                String tmpD = np3.getAdapter().getItem(np3.getCurrentItem());
-                onLocationPickerChoseListener.onLocationPickerChosened(tmpP.trim() + "-" + tmpC.trim() + (tmpD.length() <= 0 ? "" : ("-") + tmpD));
+                String tmpP = np1.getCurrentItem() == 0 ? "" : np1.getAdapter().getItem(np1.getCurrentItem());
+                String tmpC = np2.getCurrentItem() == 0 ? "" : np2.getAdapter().getItem(np2.getCurrentItem());
+                String tmpD = np3.getCurrentItem() == 0 ? "" : np3.getAdapter().getItem(np3.getCurrentItem());
+                StringBuilder stringBuilder = new StringBuilder();
+                if(tmpP.length() > 0){
+                    stringBuilder.append(tmpP);
+                    if(tmpC.length() > 0){
+                        stringBuilder.append("-" + tmpC);
+                        if(tmpD.length() > 0){
+                            stringBuilder.append("-" + tmpD);
+                        }
+                    }
+                }
+                onLocationPickerChoseListener.onLocationPickerChosened(stringBuilder.toString());
                 dismiss();
-            }
-        });
-
-        np2.addChangingListener(new OnWheelChangedListener() {
-            @Override
-            public void onChanged(WheelView wheel, int oldValue,
-                                  int newValue) {
-                updateAreas();
-            }
-        });
-
-        np1.addChangingListener(new OnWheelChangedListener() {
-            @Override
-            public void onChanged(WheelView wheel, int oldValue,
-                                  int newValue) {
-                updateCities();
             }
         });
         np1.addScrollingListener(new OnWheelScrollListener() {
@@ -188,12 +192,16 @@ public class LocationPickerTool {
             public void onScrollingStarted(WheelView wheel) {
                 isUpdateCity = false;
                 isUpdateArea = false;
+                np2.setCanScroll(false);
+                np3.setCanScroll(false);
             }
 
             @Override
             public void onScrollingFinished(WheelView wheel) {
                 isUpdateCity = true;
                 isUpdateArea = true;
+                np2.setCanScroll(true);
+                np3.setCanScroll(true);
                 updateCities();
             }
         });
@@ -201,13 +209,36 @@ public class LocationPickerTool {
 
             @Override
             public void onScrollingStarted(WheelView wheel) {
+                isUpdatePrin = false;
                 isUpdateArea = false;
+                np1.setCanScroll(false);
+                np3.setCanScroll(false);
             }
 
             @Override
             public void onScrollingFinished(WheelView wheel) {
+                isUpdatePrin = true;
                 isUpdateArea = true;
+                np1.setCanScroll(true);
+                np3.setCanScroll(true);
                 updateAreas();
+            }
+        });
+        np3.addScrollingListener(new OnWheelScrollListener() {
+            @Override
+            public void onScrollingStarted(WheelView wheel) {
+                isUpdatePrin = false;
+                isUpdateCity = false;
+                np1.setCanScroll(false);
+                np2.setCanScroll(false);
+            }
+
+            @Override
+            public void onScrollingFinished(WheelView wheel) {
+                isUpdatePrin = true;
+                isUpdateCity = true;
+                np1.setCanScroll(true);
+                np2.setCanScroll(true);
             }
         });
 
@@ -276,7 +307,17 @@ public class LocationPickerTool {
         }
         np2.setAdapter(new ArrayWheelAdapter<String>(cities));
         np2.setCurrentItem(0,true);
-        updateAreas();
+        updateAreaEmpty();
+    }
+
+    private void updateCityEmpty(){
+        np2.setAdapter(new ArrayWheelAdapter<String>(new String[]{""}));
+        np2.setCurrentItem(0,true);
+    }
+
+    private void updateAreaEmpty(){
+        np3.setAdapter(new ArrayWheelAdapter<String>(new String[]{""}));
+        np3.setCurrentItem(0,true);
     }
 
 
@@ -310,10 +351,11 @@ public class LocationPickerTool {
         try
         {
             JSONArray jsonArray = mJsonObj.getJSONArray("citylist");
-            mProvinceDatas = new String[jsonArray.length()];
-            for (int i = 0; i < jsonArray.length(); i++)
+            mProvinceDatas = new String[jsonArray.length() + 1];
+            mProvinceDatas[0] = "----";
+            for (int i = 1; i < jsonArray.length() + 1; i++)
             {
-                JSONObject jsonP = jsonArray.getJSONObject(i);// 每个省的json对象
+                JSONObject jsonP = jsonArray.getJSONObject(i - 1);// 每个省的json对象
                 String province = jsonP.getString("p");// 省名字
 
                 mProvinceDatas[i] = province;
@@ -330,10 +372,11 @@ public class LocationPickerTool {
                 {
                     continue;
                 }
-                String[] mCitiesDatas = new String[jsonCs.length()];
-                for (int j = 0; j < jsonCs.length(); j++)
+                String[] mCitiesDatas = new String[jsonCs.length() + 1];
+                mCitiesDatas[0] = "----";
+                for (int j = 1; j < jsonCs.length() + 1; j++)
                 {
-                    JSONObject jsonCity = jsonCs.getJSONObject(j);
+                    JSONObject jsonCity = jsonCs.getJSONObject(j - 1);
                     String city = jsonCity.getString("n");// 市名字
                     mCitiesDatas[j] = city;
                     JSONArray jsonAreas = null;
@@ -349,10 +392,11 @@ public class LocationPickerTool {
                         continue;
                     }
 
-                    String[] mAreasDatas = new String[jsonAreas.length()];// 当前市的所有区
-                    for (int k = 0; k < jsonAreas.length(); k++)
+                    String[] mAreasDatas = new String[jsonAreas.length() + 1];// 当前市的所有区
+                    mAreasDatas[0] = "----";
+                    for (int k = 1; k < jsonAreas.length() + 1; k++)
                     {
-                        String area = jsonAreas.getJSONObject(k).getString("s");// 区域的名称
+                        String area = jsonAreas.getJSONObject(k - 1).getString("s");// 区域的名称
                         mAreasDatas[k] = area;
                     }
                     mAreaDatasMap.put(city, mAreasDatas);

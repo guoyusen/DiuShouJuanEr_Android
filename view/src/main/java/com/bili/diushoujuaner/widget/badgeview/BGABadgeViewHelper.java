@@ -371,6 +371,10 @@ public class BGABadgeViewHelper {
         return mBadgeBgColor;
     }
 
+    public void setBadgeBgColor(int color){
+        this.mBadgeBgColor = color;
+    }
+
     public int getBadgeTextColor() {
         return mBadgeTextColor;
     }

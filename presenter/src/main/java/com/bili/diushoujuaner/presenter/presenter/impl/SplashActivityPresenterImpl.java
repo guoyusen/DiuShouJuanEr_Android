@@ -2,7 +2,7 @@ package com.bili.diushoujuaner.presenter.presenter.impl;
 
 import android.content.Context;
 
-import com.bili.diushoujuaner.model.action.impl.CustomSessionAction;
+import com.bili.diushoujuaner.model.actionhelper.action.CustomSessionAction;
 import com.bili.diushoujuaner.presenter.base.BasePresenter;
 import com.bili.diushoujuaner.presenter.presenter.SplashActivityPresenter;
 import com.bili.diushoujuaner.presenter.view.ISplashView;

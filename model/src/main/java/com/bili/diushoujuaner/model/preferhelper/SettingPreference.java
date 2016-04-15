@@ -3,7 +3,7 @@ package com.bili.diushoujuaner.model.preferhelper;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.bili.diushoujuaner.utils.entity.SettingVo;
+import com.bili.diushoujuaner.utils.entity.vo.SettingVo;
 
 /**
  * Created by BiLi on 2016/3/10.

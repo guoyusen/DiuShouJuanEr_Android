@@ -9,7 +9,7 @@ import com.bili.diushoujuaner.presenter.presenter.PartyActivityPresenter;
 import com.bili.diushoujuaner.presenter.presenter.impl.PartyActivityPresenterImpl;
 import com.bili.diushoujuaner.presenter.view.IPartyView;
 import com.bili.diushoujuaner.utils.Common;
-import com.bili.diushoujuaner.utils.entity.PartyVo;
+import com.bili.diushoujuaner.utils.entity.vo.PartyVo;
 import com.bili.diushoujuaner.widget.CustomListViewRefresh;
 
 import java.util.ArrayList;

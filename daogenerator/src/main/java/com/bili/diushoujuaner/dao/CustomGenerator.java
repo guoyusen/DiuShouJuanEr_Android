@@ -7,14 +7,14 @@ import de.greenrobot.daogenerator.Schema;
 public class CustomGenerator {
 
     public static void main(String[] args) throws Exception{
-        Schema schema = new Schema(1, "com.bili.diushoujuaner.model.databasehelper.dao");
+        Schema schema = new Schema(1, "com.bili.diushoujuaner.utils.entity.po");
         addUser(schema);
         addFriend(schema);
         addParty(schema);
         addMember(schema);
         addChat(schema);
 
-        new DaoGenerator().generateAll(schema, "../diushoujuaner/model/src/main/java");
+        new DaoGenerator().generateAll(schema, "../diushoujuaner/utils/src/main/java");
     }
 
     /**
@@ -47,6 +47,7 @@ public class CustomGenerator {
         friend.addIdProperty().autoincrement().primaryKey();
         friend.addLongProperty("ownerNo").notNull().index();
         friend.addLongProperty("friendNo").notNull();
+        friend.addBooleanProperty("recent").notNull();
         friend.addStringProperty("remark");
     }
 
@@ -62,7 +63,6 @@ public class CustomGenerator {
         party.addStringProperty("information");
         party.addStringProperty("registerTime").notNull();
         party.addStringProperty("picPath").notNull();
-
     }
 
     private static void addMember(Schema schema){
@@ -73,6 +73,7 @@ public class CustomGenerator {
         member.addStringProperty("memberName").notNull();
         member.addStringProperty("addTime").notNull();
         member.addIntProperty("type").notNull();
+        member.addBooleanProperty("recent").notNull();
     }
 
     private static void addChat(Schema schema){
@@ -85,6 +86,9 @@ public class CustomGenerator {
         chat.addStringProperty("time").notNull();
         chat.addIntProperty("msgType").notNull();
         chat.addIntProperty("conType").notNull();
+        chat.addIntProperty("status").notNull();
+        chat.addBooleanProperty("showTime").notNull();
+        chat.addBooleanProperty("read").notNull();
     }
 
 }

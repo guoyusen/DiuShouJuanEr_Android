@@ -12,8 +12,7 @@ import com.bili.diushoujuaner.base.BaseActivity;
 import com.bili.diushoujuaner.presenter.presenter.SettingActivityPresenter;
 import com.bili.diushoujuaner.presenter.presenter.impl.SettingActivityPresenterImpl;
 import com.bili.diushoujuaner.presenter.view.ISettingView;
-import com.bili.diushoujuaner.utils.entity.SettingVo;
-import com.bili.diushoujuaner.utils.manager.ActivityManager;
+import com.bili.diushoujuaner.utils.entity.vo.SettingVo;
 import com.bili.diushoujuaner.widget.ShSwitchView;
 import com.bili.diushoujuaner.widget.TintedBitmapDrawable;
 

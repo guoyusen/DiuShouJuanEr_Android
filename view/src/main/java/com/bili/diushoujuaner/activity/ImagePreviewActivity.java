@@ -14,7 +14,7 @@ import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.adapter.ImagePageAdapter;
 import com.bili.diushoujuaner.base.BaseActivity;
 import com.bili.diushoujuaner.widget.imagepicker.ImagePicker;
-import com.bili.diushoujuaner.utils.entity.ImageItemVo;
+import com.bili.diushoujuaner.utils.entity.vo.ImageItemVo;
 import com.bili.diushoujuaner.widget.imagepicker.view.SuperCheckBox;
 import com.bili.diushoujuaner.widget.imagepicker.view.ViewPagerFixed;
 

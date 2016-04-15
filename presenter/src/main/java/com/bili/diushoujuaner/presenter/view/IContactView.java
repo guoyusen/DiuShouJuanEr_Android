@@ -1,7 +1,7 @@
 package com.bili.diushoujuaner.presenter.view;
 
 import com.bili.diushoujuaner.presenter.base.IBaseView;
-import com.bili.diushoujuaner.utils.entity.FriendVo;
+import com.bili.diushoujuaner.utils.entity.vo.FriendVo;
 
 import java.util.List;
 

@@ -3,17 +3,19 @@ package com.bili.diushoujuaner.presenter.publisher;
 import android.content.Context;
 import android.util.Log;
 
-import com.bili.diushoujuaner.model.action.impl.FileAction;
-import com.bili.diushoujuaner.model.action.impl.RecallAction;
-import com.bili.diushoujuaner.model.action.respon.ActionRespon;
+import com.bili.diushoujuaner.model.actionhelper.action.FileAction;
+import com.bili.diushoujuaner.model.actionhelper.action.RecallAction;
+import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
 import com.bili.diushoujuaner.model.apihelper.request.RecallPublishReq;
-import com.bili.diushoujuaner.model.apihelper.response.RecallDto;
+import com.bili.diushoujuaner.model.apihelper.request.RecallSerialReq;
+import com.bili.diushoujuaner.utils.entity.dto.RecallDto;
 import com.bili.diushoujuaner.model.callback.ActionFileCallbackListener;
 import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
 import com.bili.diushoujuaner.model.tempHelper.RecallTemper;
-import com.bili.diushoujuaner.presenter.event.PublishRecallEvent;
+import com.bili.diushoujuaner.model.eventhelper.PublishRecallEvent;
+import com.bili.diushoujuaner.utils.Common;
 import com.bili.diushoujuaner.utils.Constant;
-import com.bili.diushoujuaner.utils.entity.ImageItemVo;
+import com.bili.diushoujuaner.utils.entity.vo.ImageItemVo;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -27,20 +29,23 @@ public class RecallPublisher {
 
     public static final int STATUS_UPLOADING = 1;
     public static final int STATUS_NONE = 2;
+    public static final int STATUS_ERROR = 3;
 
-    private ArrayList<ImageItemVo> imageItemVoList;
-    private List<OnPublishListener> publishListeners;
+    private ArrayList<ImageItemVo> imageItemVoList;//当前发布的图片列表
+    private List<OnPublishListener> publishListeners;//监听列表
     private static RecallPublisher recallPublisher;
-    private String content;
-    private int status;
     private Context context;
+    private String content;//当前发布的文本
+    private int status;//当前发布的状态
     private int currentPosition; //当前正在上传的图片索引
+    private String serial;//单次发表过程中的序列号
+    private boolean isErrorOccured = false;//上传过程中是否发生了错误
 
     public RecallPublisher(Context context){
-        publishListeners = new ArrayList<>();
-        imageItemVoList = new ArrayList<>();
+        this.publishListeners = new ArrayList<>();
+        this.imageItemVoList = new ArrayList<>();
         this.context = context;
-        currentPosition = 0;
+        this.currentPosition = 0;
     }
 
     public static synchronized RecallPublisher getInstance(Context context){
@@ -55,10 +60,12 @@ public class RecallPublisher {
     }
 
     public void reset(){
-        imageItemVoList.clear();
-        status = STATUS_NONE;
-        content = "";
-        currentPosition = 0;
+        this.imageItemVoList.clear();
+        this.status = STATUS_NONE;
+        this.content = "";
+        this.currentPosition = 0;
+        this.serial = "";
+        this.isErrorOccured = false;
     }
 
     public void register(OnPublishListener publishListener){
@@ -77,56 +84,87 @@ public class RecallPublisher {
         return status;
     }
 
+    public boolean isErrorOccured() {
+        return isErrorOccured;
+    }
+
     public void publishRecall(final ArrayList<ImageItemVo> imageItemVoList, String content){
         reset();
+        this.serial = Common.getSerial();
         this.imageItemVoList.addAll(imageItemVoList);
         this.content = content;
-        status = STATUS_UPLOADING;
+        this.status = STATUS_UPLOADING;
 
         //通知正在发布中
         for(OnPublishListener publishListener : publishListeners){
             publishListener.onStartPublish();
         }
-
         if(this.imageItemVoList.size() <= 0){
             publishContent();
         }else{
-            for(final ImageItemVo item : this.imageItemVoList){
-                FileAction.getInstance(context).uploadRecallPic(item.path, new ActionFileCallbackListener<ActionRespon<String>>() {
-                    @Override
-                    public void onSuccess(ActionRespon<String> result) {
-                        //重新通知，保证数据正确
-                        for(OnPublishListener publishListener : publishListeners){
-                            publishListener.onProgress(currentPosition, 1.0f);
-                        }
+            publishPicture();
+        }
+    }
 
-                        currentPosition ++;
-                        if(currentPosition == imageItemVoList.size()){
-                            publishContent();
-                        }
-                    }
+    public void republishRecall(){
+        this.serial = Common.getSerial();
+        this.status = STATUS_UPLOADING;
+        this.currentPosition = 0;
+        this.isErrorOccured = false;
+        //通知正在发布中
+        for(OnPublishListener publishListener : publishListeners){
+            publishListener.onStartPublish();
+        }
+        if(this.imageItemVoList.size() <= 0){
+            publishContent();
+        }else{
+            publishPicture();
+        }
+    }
 
-                    @Override
-                    public void onFailure(int errorCode) {
-
-                    }
-
-                    @Override
-                    public void onProgress(float progress) {
-                        for(OnPublishListener publishListener : publishListeners){
-                            Log.d("guoyusenc","position = " + currentPosition + " progress = " + progress);
-                            publishListener.onStartPublish();
-                            publishListener.onProgress(currentPosition, progress);
-                        }
-                    }
-                });
+    public void publishPicture(){
+        for(final ImageItemVo item : this.imageItemVoList){
+            if(isErrorOccured){
+                return;
             }
+            FileAction.getInstance(context).uploadRecallPic(new RecallSerialReq(this.serial),item.path, new ActionFileCallbackListener<ActionRespon<String>>() {
+                @Override
+                public void onSuccess(ActionRespon<String> result) {
+                    //重新通知，保证数据正确
+                    for(OnPublishListener publishListener : publishListeners){
+                        publishListener.onProgress(currentPosition, 1.0f);
+                    }
+
+                    currentPosition ++;
+                    if(currentPosition == imageItemVoList.size()){
+                        publishContent();
+                    }
+                }
+
+                @Override
+                public void onFailure(int errorCode) {
+                    status = STATUS_ERROR;
+                    for(OnPublishListener publishListener : publishListeners){
+                        publishListener.onError();
+                    }
+                    isErrorOccured = true;
+                }
+
+                @Override
+                public void onProgress(float progress) {
+                    for(OnPublishListener publishListener : publishListeners){
+                        Log.d("guoyusenc","position = " + currentPosition + " progress = " + progress);
+                        publishListener.onStartPublish();
+                        publishListener.onProgress(currentPosition, progress);
+                    }
+                }
+            });
         }
 
     }
 
     private void publishContent(){
-        RecallAction.getInstance(context).getRecallPublish(new RecallPublishReq(content, imageItemVoList.size()), new ActionStringCallbackListener<ActionRespon<RecallDto>>() {
+        RecallAction.getInstance(context).getRecallPublish(new RecallPublishReq(content, imageItemVoList.size(),this.serial), new ActionStringCallbackListener<ActionRespon<RecallDto>>() {
             @Override
             public void onSuccess(ActionRespon<RecallDto> result) {
                 if(result.getRetCode().equals(Constant.RETCODE_SUCCESS)){

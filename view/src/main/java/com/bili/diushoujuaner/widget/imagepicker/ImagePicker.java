@@ -9,7 +9,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 
 import com.bili.diushoujuaner.widget.imagepicker.bean.ImageFolder;
-import com.bili.diushoujuaner.utils.entity.ImageItemVo;
+import com.bili.diushoujuaner.utils.entity.vo.ImageItemVo;
 import com.bili.diushoujuaner.widget.imagepicker.loader.ImageLoader;
 import com.bili.diushoujuaner.widget.imagepicker.view.CropImageView;
 

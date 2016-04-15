@@ -23,7 +23,7 @@ import com.bili.diushoujuaner.widget.imagepicker.ImageDataSource;
 import com.bili.diushoujuaner.widget.imagepicker.ImagePicker;
 import com.bili.diushoujuaner.widget.imagepicker.Utils;
 import com.bili.diushoujuaner.widget.imagepicker.bean.ImageFolder;
-import com.bili.diushoujuaner.utils.entity.ImageItemVo;
+import com.bili.diushoujuaner.utils.entity.vo.ImageItemVo;
 
 import java.util.List;
 

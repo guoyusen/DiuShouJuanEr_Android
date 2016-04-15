@@ -1,13 +1,13 @@
 package com.bili.diushoujuaner.model.tempHelper;
 
-import com.bili.diushoujuaner.model.apihelper.response.ResponDto;
+import com.bili.diushoujuaner.utils.entity.dto.ResponDto;
 import com.bili.diushoujuaner.model.cachehelper.ACache;
 import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
 import com.bili.diushoujuaner.utils.Constant;
 import com.bili.diushoujuaner.utils.GsonParser;
-import com.bili.diushoujuaner.model.apihelper.response.CommentDto;
-import com.bili.diushoujuaner.model.apihelper.response.GoodDto;
-import com.bili.diushoujuaner.model.apihelper.response.RecallDto;
+import com.bili.diushoujuaner.utils.entity.dto.CommentDto;
+import com.bili.diushoujuaner.utils.entity.dto.GoodDto;
+import com.bili.diushoujuaner.utils.entity.dto.RecallDto;
 
 import java.util.ArrayList;
 import java.util.Hashtable;

@@ -2,10 +2,10 @@ package com.bili.diushoujuaner.presenter.presenter;
 
 import android.text.SpannableString;
 
-import com.bili.diushoujuaner.model.apihelper.response.GoodDto;
-import com.bili.diushoujuaner.model.apihelper.response.PictureDto;
-import com.bili.diushoujuaner.model.apihelper.response.RecallDto;
-import com.bili.diushoujuaner.utils.entity.PictureVo;
+import com.bili.diushoujuaner.utils.entity.dto.GoodDto;
+import com.bili.diushoujuaner.utils.entity.dto.PictureDto;
+import com.bili.diushoujuaner.utils.entity.dto.RecallDto;
+import com.bili.diushoujuaner.utils.entity.vo.PictureVo;
 
 import java.util.List;
 

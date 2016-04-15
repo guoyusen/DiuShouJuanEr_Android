@@ -1,7 +1,7 @@
 package com.bili.diushoujuaner.presenter.view;
 
 import com.bili.diushoujuaner.presenter.base.IBaseView;
-import com.bili.diushoujuaner.utils.entity.SettingVo;
+import com.bili.diushoujuaner.utils.entity.vo.SettingVo;
 
 /**
  * Created by BiLi on 2016/4/7.

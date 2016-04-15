@@ -28,6 +28,7 @@ import android.view.ViewParent;
  * 描述:
  */
 public interface BGABadgeable {
+
     /**
      * 显示圆点徽章
      */

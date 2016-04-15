@@ -7,7 +7,7 @@ import android.widget.TextView;
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.adapter.viewholder.ViewHolder;
 import com.bili.diushoujuaner.utils.Common;
-import com.bili.diushoujuaner.utils.entity.FriendVo;
+import com.bili.diushoujuaner.utils.entity.vo.FriendVo;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.HashMap;

@@ -2,19 +2,19 @@ package com.bili.diushoujuaner.presenter.presenter.impl;
 
 import android.content.Context;
 
-import com.bili.diushoujuaner.model.action.impl.ContactAction;
-import com.bili.diushoujuaner.model.action.impl.RecallAction;
-import com.bili.diushoujuaner.model.action.respon.ActionRespon;
+import com.bili.diushoujuaner.model.actionhelper.action.ContactAction;
+import com.bili.diushoujuaner.model.actionhelper.action.RecallAction;
+import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
 import com.bili.diushoujuaner.model.apihelper.request.ContactInfoReq;
 import com.bili.diushoujuaner.model.apihelper.request.RecentRecallReq;
-import com.bili.diushoujuaner.model.apihelper.response.RecallDto;
+import com.bili.diushoujuaner.utils.entity.dto.RecallDto;
 import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
 import com.bili.diushoujuaner.presenter.base.BasePresenter;
 import com.bili.diushoujuaner.presenter.presenter.ContactDetailActivityPresenter;
 import com.bili.diushoujuaner.presenter.view.IContactDetailView;
 import com.bili.diushoujuaner.utils.Common;
 import com.bili.diushoujuaner.utils.Constant;
-import com.bili.diushoujuaner.utils.entity.FriendVo;
+import com.bili.diushoujuaner.utils.entity.vo.FriendVo;
 
 /**
  * Created by BiLi on 2016/4/3.

@@ -1,18 +1,11 @@
 package com.bili.diushoujuaner.adapter;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AbsListView;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.adapter.viewholder.ViewHolder;
 import com.bili.diushoujuaner.utils.Common;
-import com.bili.diushoujuaner.utils.entity.PictureVo;
+import com.bili.diushoujuaner.utils.entity.vo.PictureVo;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import java.util.List;

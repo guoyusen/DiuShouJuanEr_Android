@@ -2,7 +2,7 @@ package com.bili.diushoujuaner.presenter.presenter.impl;
 
 import android.content.Context;
 
-import com.bili.diushoujuaner.model.action.impl.ContactAction;
+import com.bili.diushoujuaner.model.actionhelper.action.ContactAction;
 import com.bili.diushoujuaner.presenter.base.BasePresenter;
 import com.bili.diushoujuaner.presenter.presenter.PartyActivityPresenter;
 import com.bili.diushoujuaner.presenter.view.IPartyView;

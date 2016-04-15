@@ -11,9 +11,9 @@ import android.widget.TextView;
 
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.adapter.viewholder.ViewHolder;
-import com.bili.diushoujuaner.presenter.event.ResponEvent;
+import com.bili.diushoujuaner.model.eventhelper.ResponEvent;
 import com.bili.diushoujuaner.model.tempHelper.ContactTemper;
-import com.bili.diushoujuaner.model.apihelper.response.ResponDto;
+import com.bili.diushoujuaner.utils.entity.dto.ResponDto;
 import com.bili.diushoujuaner.utils.Constant;
 
 import org.greenrobot.eventbus.EventBus;

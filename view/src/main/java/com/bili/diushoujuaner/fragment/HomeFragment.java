@@ -18,8 +18,8 @@ import com.bili.diushoujuaner.activity.RecallAddActivity;
 import com.bili.diushoujuaner.activity.RecallDetailActivity;
 import com.bili.diushoujuaner.adapter.RecallAdapter;
 import com.bili.diushoujuaner.base.BaseFragment;
-import com.bili.diushoujuaner.model.apihelper.response.RecallDto;
-import com.bili.diushoujuaner.presenter.event.PublishRecallEvent;
+import com.bili.diushoujuaner.utils.entity.dto.RecallDto;
+import com.bili.diushoujuaner.model.eventhelper.PublishRecallEvent;
 import com.bili.diushoujuaner.presenter.presenter.HomeFragmentPresenter;
 import com.bili.diushoujuaner.presenter.presenter.impl.HomeFragmentPresenterImpl;
 import com.bili.diushoujuaner.presenter.publisher.OnPublishListener;
@@ -27,13 +27,12 @@ import com.bili.diushoujuaner.presenter.publisher.RecallPublisher;
 import com.bili.diushoujuaner.presenter.view.IHomeView;
 import com.bili.diushoujuaner.utils.Common;
 import com.bili.diushoujuaner.utils.Constant;
-import com.bili.diushoujuaner.presenter.event.GoodRecallEvent;
-import com.bili.diushoujuaner.presenter.event.RefreshRecallEvent;
-import com.bili.diushoujuaner.presenter.event.ShowHeadEvent;
-import com.bili.diushoujuaner.presenter.event.ShowMainMenuEvent;
+import com.bili.diushoujuaner.model.eventhelper.GoodRecallEvent;
+import com.bili.diushoujuaner.model.eventhelper.UpdatedContactEvent;
+import com.bili.diushoujuaner.model.eventhelper.ShowHeadEvent;
+import com.bili.diushoujuaner.model.eventhelper.ShowMainMenuEvent;
 import com.bili.diushoujuaner.widget.CustomListViewRefresh;
 import com.bili.diushoujuaner.widget.TintedBitmapDrawable;
-import com.bili.diushoujuaner.widget.badgeview.BGABadgeImageView;
 import com.bili.diushoujuaner.widget.badgeview.BGABadgeRelativeLayout;
 import com.bili.diushoujuaner.widget.waveswipe.WaveSwipeRefreshLayout;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -169,7 +168,8 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
 
     @Override
     public void onError() {
-
+        showWarning("趣事发表失败");
+        uplaodingAni.stop();
     }
 
     @Override
@@ -280,7 +280,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
 
     // 通讯录更新之后，需要重新刷新recall的右侧标志
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onRefreshRecallEvent(RefreshRecallEvent refreshRecallEvent) {
+    public void onUpdatedContactEvent(UpdatedContactEvent updatedContactEvent) {
         if (recallAdapter != null) {
             recallAdapter.notifyDataSetChanged();
         }

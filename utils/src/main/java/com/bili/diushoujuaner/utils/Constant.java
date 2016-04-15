@@ -35,6 +35,7 @@ public interface Constant {
     String DATABASE_NAME = "diushoujuaner_db";
 
     String HOST_ADDRESS = "http://192.168.137.1:8080/diushoujuaner/";
+    String SERVER_IP = "192.168.137.1";
 
     // 通讯录类型
     int CONTACT_PARTY = 1;
@@ -88,5 +89,27 @@ public interface Constant {
 
     int RECALL_ADD_PIC_PATH = 1;
     int RECALL_ADD_PIC_RES = 2;
+
+    // 聊天的消息类型
+    int CHAT_INIT = -1;
+    int CHAT_PING = 0;
+    int CHAT_PONG = 1;
+    int CHAT_FRI = 2;
+    int CHAT_TIME = 3;
+    int CHAT_CLOSE = 4;
+    int CHAT_PAR = 5;
+    int CHAT_GOOD = 6;
+    // 聊天消息中content的类型
+    int CHAT_CONTENT_EMPTY = 0;
+    int CHAT_CONTENT_TEXT = 1;
+    int CHAT_CONTENT_IMG = 2;
+    int CHAT_CONTENT_VOICE = 3;
+
+    int IDEL_TIMEOUT_FOR_INTERVAL = 20;//如果20S内没有收到来自服务端的心跳请求，则触发离线
+    int CONNECTTIMEOUT = 5000;//5S连接超时
+
+    int MESSAGE_STATUS_SENDING = 0;
+    int MESSAGE_STATUS_FAIL = 1;
+    int MESSAGE_STATUS_SUCCESS = 2;
 
 }

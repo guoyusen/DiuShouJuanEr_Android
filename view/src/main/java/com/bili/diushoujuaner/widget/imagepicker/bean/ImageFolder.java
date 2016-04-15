@@ -1,6 +1,6 @@
 package com.bili.diushoujuaner.widget.imagepicker.bean;
 
-import com.bili.diushoujuaner.utils.entity.ImageItemVo;
+import com.bili.diushoujuaner.utils.entity.vo.ImageItemVo;
 
 import java.io.Serializable;
 import java.util.ArrayList;

@@ -11,7 +11,7 @@ import android.support.v4.content.Loader;
 
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.widget.imagepicker.bean.ImageFolder;
-import com.bili.diushoujuaner.utils.entity.ImageItemVo;
+import com.bili.diushoujuaner.utils.entity.vo.ImageItemVo;
 
 import java.io.File;
 import java.util.ArrayList;

@@ -12,7 +12,7 @@ import android.widget.Toast;
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.widget.imagepicker.ImagePicker;
 import com.bili.diushoujuaner.widget.imagepicker.Utils;
-import com.bili.diushoujuaner.utils.entity.ImageItemVo;
+import com.bili.diushoujuaner.utils.entity.vo.ImageItemVo;
 import com.bili.diushoujuaner.widget.imagepicker.view.SuperCheckBox;
 
 import java.util.ArrayList;

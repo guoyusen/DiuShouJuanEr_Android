@@ -2,7 +2,7 @@ package com.bili.diushoujuaner.utils.pinyin;
 
 import java.util.Comparator;
 
-import com.bili.diushoujuaner.utils.entity.SortVo;
+import com.bili.diushoujuaner.utils.entity.vo.SortVo;
 
 public class PinyinComparator implements Comparator<SortVo> {
 

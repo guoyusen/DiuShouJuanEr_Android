@@ -26,4 +26,8 @@ dependencies {
     compile 'com.google.code.gson:gson:2.6.2'
     compile project(':logger')
     compile 'com.belerweb:pinyin4j:2.5.1'
+    compile 'com.squareup.okhttp3:okhttp:3.2.0'
+    compile 'de.greenrobot:greendao:2.1.0'
+    compile 'com.squareup.okio:okio:1.6.0'
+    compile 'com.j256.ormlite:ormlite-android:4.48'
 }

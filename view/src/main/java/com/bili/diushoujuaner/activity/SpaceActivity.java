@@ -18,9 +18,9 @@ import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.adapter.RecallAdapter;
 import com.bili.diushoujuaner.base.BaseFragmentActivity;
 import com.bili.diushoujuaner.fragment.PictureFragment;
-import com.bili.diushoujuaner.model.apihelper.response.RecallDto;
+import com.bili.diushoujuaner.utils.entity.dto.RecallDto;
 import com.bili.diushoujuaner.presenter.base.IBaseView;
-import com.bili.diushoujuaner.presenter.event.PublishRecallEvent;
+import com.bili.diushoujuaner.model.eventhelper.PublishRecallEvent;
 import com.bili.diushoujuaner.presenter.presenter.SpaceActivityPresenter;
 import com.bili.diushoujuaner.presenter.presenter.impl.SpaceActivityPresenterImpl;
 import com.bili.diushoujuaner.presenter.publisher.OnPublishListener;
@@ -28,19 +28,18 @@ import com.bili.diushoujuaner.presenter.publisher.RecallPublisher;
 import com.bili.diushoujuaner.presenter.view.ISpaceView;
 import com.bili.diushoujuaner.utils.Common;
 import com.bili.diushoujuaner.utils.Constant;
-import com.bili.diushoujuaner.utils.entity.FriendVo;
-import com.bili.diushoujuaner.utils.entity.PictureVo;
-import com.bili.diushoujuaner.presenter.event.GoodRecallEvent;
-import com.bili.diushoujuaner.presenter.event.RemoveRecallEvent;
+import com.bili.diushoujuaner.utils.entity.vo.FriendVo;
+import com.bili.diushoujuaner.utils.entity.vo.PictureVo;
+import com.bili.diushoujuaner.model.eventhelper.GoodRecallEvent;
+import com.bili.diushoujuaner.model.eventhelper.RemoveRecallEvent;
 import com.bili.diushoujuaner.widget.CustomListViewRefresh;
 import com.bili.diushoujuaner.widget.TintedBitmapDrawable;
-import com.bili.diushoujuaner.widget.badgeview.BGABadgeImageView;
 import com.bili.diushoujuaner.widget.badgeview.BGABadgeRelativeLayout;
 import com.bili.diushoujuaner.widget.dialog.DialogTool;
 import com.bili.diushoujuaner.widget.dialog.OnDialogPositiveClickListener;
 import com.bili.diushoujuaner.widget.floatingactionbutton.FloatingActionButton;
 import com.bili.diushoujuaner.widget.imagepicker.ImagePicker;
-import com.bili.diushoujuaner.utils.entity.ImageItemVo;
+import com.bili.diushoujuaner.utils.entity.vo.ImageItemVo;
 import com.bili.diushoujuaner.widget.imagepicker.loader.GlideImageLoader;
 import com.bili.diushoujuaner.widget.imagepicker.view.CropImageView;
 import com.bili.diushoujuaner.widget.scrollview.OnChangeHeadStatusListener;
@@ -204,7 +203,8 @@ public class SpaceActivity extends BaseFragmentActivity<SpaceActivityPresenter> 
 
     @Override
     public void onError() {
-
+        uplaodingAni.stop();
+        showWarning("趣事发表失败");
     }
 
     @Override

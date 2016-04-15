@@ -13,11 +13,11 @@ import com.bili.diushoujuaner.presenter.presenter.RecallAddActivityPresenter;
 import com.bili.diushoujuaner.presenter.presenter.impl.RecallAddActivityPresenterImpl;
 import com.bili.diushoujuaner.presenter.view.IRecallAddView;
 import com.bili.diushoujuaner.utils.Constant;
-import com.bili.diushoujuaner.utils.entity.RecallAddPicVo;
+import com.bili.diushoujuaner.utils.entity.vo.RecallAddPicVo;
 import com.bili.diushoujuaner.widget.CustomEditText;
 import com.bili.diushoujuaner.widget.CustomGridView;
 import com.bili.diushoujuaner.widget.imagepicker.ImagePicker;
-import com.bili.diushoujuaner.utils.entity.ImageItemVo;
+import com.bili.diushoujuaner.utils.entity.vo.ImageItemVo;
 import com.bili.diushoujuaner.widget.imagepicker.loader.GlideImageLoader;
 import com.bili.diushoujuaner.widget.imagepicker.view.CropImageView;
 

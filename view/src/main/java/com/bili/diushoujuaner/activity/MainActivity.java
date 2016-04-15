@@ -18,19 +18,20 @@ import android.widget.Toast;
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.base.BaseFragmentActivity;
 import com.bili.diushoujuaner.presenter.presenter.MainActivityPresenter;
-import com.bili.diushoujuaner.presenter.event.UpdateAutographEvent;
-import com.bili.diushoujuaner.presenter.event.ShowHeadEvent;
-import com.bili.diushoujuaner.presenter.event.ShowMainMenuEvent;
+import com.bili.diushoujuaner.model.eventhelper.UpdateAutographEvent;
+import com.bili.diushoujuaner.model.eventhelper.ShowHeadEvent;
+import com.bili.diushoujuaner.model.eventhelper.ShowMainMenuEvent;
 import com.bili.diushoujuaner.fragment.ContactFragment;
 import com.bili.diushoujuaner.fragment.HomeFragment;
-import com.bili.diushoujuaner.fragment.MessageFragment;
-import com.bili.diushoujuaner.model.databasehelper.dao.User;
+import com.bili.diushoujuaner.fragment.ChattingFragment;
+import com.bili.diushoujuaner.service.MessageService;
+import com.bili.diushoujuaner.utils.entity.po.User;
 import com.bili.diushoujuaner.presenter.presenter.impl.MainActivityPresenterImpl;
 import com.bili.diushoujuaner.presenter.view.IMainView;
 import com.bili.diushoujuaner.utils.Common;
 import com.bili.diushoujuaner.utils.Constant;
-import com.bili.diushoujuaner.presenter.event.UpdateUserInfoEvent;
-import com.bili.diushoujuaner.presenter.event.UpdateWallPaperEvent;
+import com.bili.diushoujuaner.model.eventhelper.UpdateUserInfoEvent;
+import com.bili.diushoujuaner.model.eventhelper.UpdateWallPaperEvent;
 import com.bili.diushoujuaner.utils.manager.ActivityManager;
 import com.bili.diushoujuaner.widget.CustomViewPager;
 import com.bili.diushoujuaner.widget.TintedBitmapDrawable;
@@ -100,11 +101,11 @@ public class MainActivity extends BaseFragmentActivity<MainActivityPresenter> im
 
     private List<Fragment> fragmentList;
     private HomeFragment homeFragment;
-    private MessageFragment messageFragment;
+    private ChattingFragment chattingFragment;
     private ContactFragment contactFragment;
 
     private BGABottomNavigationItemView navHome;
-    private BGABottomNavigationItemView navMess;
+    private BGABottomNavigationItemView navChat;
     private BGABottomNavigationItemView navCont;
 
     private int badgeHomeCount = 0;
@@ -133,15 +134,19 @@ public class MainActivity extends BaseFragmentActivity<MainActivityPresenter> im
         initFragment();
         initBottomButton();
         initMenuIv();
+        startMessageService();
 
-        txtSystemNotice.showTextBadge("2");
         getBindPresenter().getUserInfo();
+    }
+
+    private void startMessageService(){
+        startService(new Intent(this, MessageService.class));
     }
 
     @Override
     public void initFinished() {
         navHome = bottomNavigation.getBGAButtonItemView(0);
-        navMess = bottomNavigation.getBGAButtonItemView(1);
+        navChat = bottomNavigation.getBGAButtonItemView(1);
         navCont = bottomNavigation.getBGAButtonItemView(2);
 
         navHome.showTextBadge("1");
@@ -157,11 +162,11 @@ public class MainActivity extends BaseFragmentActivity<MainActivityPresenter> im
 
     private void initFragment() {
         homeFragment = HomeFragment.instantiation(0);
-        messageFragment = MessageFragment.instantiation(1);
+        chattingFragment = ChattingFragment.instantiation(1);
         contactFragment = ContactFragment.instantiation(2);
 
         fragmentList.add(homeFragment);
-        fragmentList.add(messageFragment);
+        fragmentList.add(chattingFragment);
         fragmentList.add(contactFragment);
 
         FragmentPagerAdapter fragmentPagerAdapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
@@ -193,7 +198,7 @@ public class MainActivity extends BaseFragmentActivity<MainActivityPresenter> im
 
     private void initBottomButton() {
         BGABottomNavigationItem itemHome = new BGABottomNavigationItem(getResources().getString(R.string.main_nav_home), R.mipmap.nav_home, ContextCompat.getColor(context, R.color.COLOR_THEME_MAIN));
-        BGABottomNavigationItem itemMess = new BGABottomNavigationItem(getResources().getString(R.string.main_nav_mess), R.mipmap.nav_mess, ContextCompat.getColor(context, R.color.COLOR_THEME_MAIN));
+        BGABottomNavigationItem itemMess = new BGABottomNavigationItem(getResources().getString(R.string.main_nav_mess), R.mipmap.nav_chat, ContextCompat.getColor(context, R.color.COLOR_THEME_MAIN));
         BGABottomNavigationItem itemCont = new BGABottomNavigationItem(getResources().getString(R.string.main_nav_cont), R.mipmap.nav_cont, ContextCompat.getColor(context, R.color.COLOR_THEME_MAIN));
 
         ArrayList<BGABottomNavigationItem> items = new ArrayList<>();

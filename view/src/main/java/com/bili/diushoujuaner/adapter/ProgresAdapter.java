@@ -6,7 +6,7 @@ import android.widget.TextView;
 
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.adapter.viewholder.ViewHolder;
-import com.bili.diushoujuaner.utils.entity.ProgressVo;
+import com.bili.diushoujuaner.utils.entity.vo.ProgressVo;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.backends.pipeline.PipelineDraweeControllerBuilder;
 import com.facebook.drawee.view.SimpleDraweeView;
@@ -43,7 +43,7 @@ public class ProgresAdapter extends CommonAdapter<ProgressVo> {
             }else if(progressVo.getProgress() <= 0){
                 ((TextView)holder.getView(R.id.txtProgress)).setText("等待");
             }else{
-                ((TextView)holder.getView(R.id.txtProgress)).setText(String.format(Locale.CHINA,"%d%%",(int)(progressVo.getProgress() * 100)));
+                ((TextView)holder.getView(R.id.txtProgress)).setText(String.format(Locale.CHINA,"%chat_left%%",(int)(progressVo.getProgress() * 100)));
             }
         }
     }

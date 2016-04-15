@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.bili.diushoujuaner.utils.Common;
-import com.bili.diushoujuaner.model.apihelper.response.CustomSession;
+import com.bili.diushoujuaner.utils.entity.dto.CustomSession;
 
 /**
  * Created by BiLi on 2016/3/10.

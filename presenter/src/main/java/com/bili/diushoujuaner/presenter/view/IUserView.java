@@ -1,6 +1,6 @@
 package com.bili.diushoujuaner.presenter.view;
 
-import com.bili.diushoujuaner.model.databasehelper.dao.User;
+import com.bili.diushoujuaner.utils.entity.po.User;
 import com.bili.diushoujuaner.presenter.base.IBaseView;
 
 /**

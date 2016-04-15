@@ -6,7 +6,7 @@ import com.bili.diushoujuaner.presenter.base.BasePresenter;
 import com.bili.diushoujuaner.presenter.presenter.RecallAddActivityPresenter;
 import com.bili.diushoujuaner.presenter.publisher.RecallPublisher;
 import com.bili.diushoujuaner.presenter.view.IRecallAddView;
-import com.bili.diushoujuaner.utils.entity.ImageItemVo;
+import com.bili.diushoujuaner.utils.entity.vo.ImageItemVo;
 
 import java.util.ArrayList;
 

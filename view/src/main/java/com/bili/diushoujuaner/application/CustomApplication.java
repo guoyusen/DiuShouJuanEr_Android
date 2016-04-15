@@ -11,7 +11,7 @@ import com.bili.diushoujuaner.model.preferhelper.SettingPreference;
 import com.bili.diushoujuaner.utils.Common;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.stetho.Stetho;
-import com.bili.diushoujuaner.model.okhttphelper.okhttputils.OkHttpUtils;
+import com.bili.diushoujuaner.utils.okhttp.okhttputils.OkHttpUtils;
 import com.orhanobut.logger.Logger;
 
 import cat.ereza.customactivityoncrash.CustomActivityOnCrash;

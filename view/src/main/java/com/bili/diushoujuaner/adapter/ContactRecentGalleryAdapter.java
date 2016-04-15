@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.adapter.viewholder.ViewHolder;
-import com.bili.diushoujuaner.model.apihelper.response.PictureDto;
+import com.bili.diushoujuaner.utils.entity.dto.PictureDto;
 import com.bili.diushoujuaner.utils.Common;
 import com.facebook.drawee.view.SimpleDraweeView;
 

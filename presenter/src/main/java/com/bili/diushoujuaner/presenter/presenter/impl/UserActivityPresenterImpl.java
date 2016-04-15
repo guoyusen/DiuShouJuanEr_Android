@@ -2,19 +2,19 @@ package com.bili.diushoujuaner.presenter.presenter.impl;
 
 import android.content.Context;
 
-import com.bili.diushoujuaner.model.action.impl.FileAction;
-import com.bili.diushoujuaner.model.action.impl.UserInfoAction;
-import com.bili.diushoujuaner.model.action.respon.ActionRespon;
+import com.bili.diushoujuaner.model.actionhelper.action.FileAction;
+import com.bili.diushoujuaner.model.actionhelper.action.UserInfoAction;
+import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
 import com.bili.diushoujuaner.model.apihelper.request.UserInfoReq;
 import com.bili.diushoujuaner.model.callback.ActionFileCallbackListener;
 import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
-import com.bili.diushoujuaner.model.databasehelper.dao.User;
+import com.bili.diushoujuaner.utils.entity.po.User;
 import com.bili.diushoujuaner.presenter.base.BasePresenter;
 import com.bili.diushoujuaner.presenter.presenter.UserActivityPresenter;
 import com.bili.diushoujuaner.presenter.view.IUserView;
 import com.bili.diushoujuaner.utils.Constant;
-import com.bili.diushoujuaner.presenter.event.ShowHeadEvent;
-import com.bili.diushoujuaner.presenter.event.UpdateUserInfoEvent;
+import com.bili.diushoujuaner.model.eventhelper.ShowHeadEvent;
+import com.bili.diushoujuaner.model.eventhelper.UpdateUserInfoEvent;
 
 import org.greenrobot.eventbus.EventBus;
 

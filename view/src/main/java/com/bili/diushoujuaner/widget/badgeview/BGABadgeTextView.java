@@ -84,4 +84,8 @@ public class BGABadgeTextView extends TextView implements BGABadgeable {
     public void setDragDismissDelegage(BGADragDismissDelegate delegate) {
         mBadgeViewHeler.setDragDismissDelegage(delegate);
     }
+
+    public void setBadgeBgColor(int badgeBgColor){
+        mBadgeViewHeler.setBadgeBgColor(badgeBgColor);
+    }
 }

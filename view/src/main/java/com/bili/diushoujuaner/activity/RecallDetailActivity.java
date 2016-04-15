@@ -19,7 +19,7 @@ import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.adapter.CommentAdapter;
 import com.bili.diushoujuaner.adapter.ImageAdapter;
 import com.bili.diushoujuaner.base.BaseFragmentActivity;
-import com.bili.diushoujuaner.presenter.event.ResponEvent;
+import com.bili.diushoujuaner.model.eventhelper.ResponEvent;
 import com.bili.diushoujuaner.fragment.PictureFragment;
 import com.bili.diushoujuaner.presenter.presenter.RecallDetailActivityPresenter;
 import com.bili.diushoujuaner.presenter.presenter.impl.RecallDetailActivityPresenterImpl;
@@ -27,11 +27,11 @@ import com.bili.diushoujuaner.presenter.view.IRecallDetailView;
 import com.bili.diushoujuaner.utils.Common;
 
 import com.bili.diushoujuaner.utils.Constant;
-import com.bili.diushoujuaner.utils.entity.PictureVo;
-import com.bili.diushoujuaner.model.apihelper.response.CommentDto;
-import com.bili.diushoujuaner.model.apihelper.response.GoodDto;
+import com.bili.diushoujuaner.utils.entity.vo.PictureVo;
+import com.bili.diushoujuaner.utils.entity.dto.CommentDto;
+import com.bili.diushoujuaner.utils.entity.dto.GoodDto;
 
-import com.bili.diushoujuaner.model.apihelper.response.RecallDto;
+import com.bili.diushoujuaner.utils.entity.dto.RecallDto;
 import com.bili.diushoujuaner.widget.CustomEditText;
 import com.bili.diushoujuaner.widget.CustomGridView;
 import com.bili.diushoujuaner.widget.CustomListView;

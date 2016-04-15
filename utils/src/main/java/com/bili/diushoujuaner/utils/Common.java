@@ -14,13 +14,15 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
+import com.bili.diushoujuaner.utils.entity.dto.MessageDto;
+import com.bili.diushoujuaner.utils.entity.dto.OffMsgDto;
+import com.bili.diushoujuaner.utils.entity.vo.MessageVo;
 import com.facebook.binaryresource.BinaryResource;
 import com.facebook.binaryresource.FileBinaryResource;
 import com.facebook.cache.common.CacheKey;
@@ -28,6 +30,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.cache.DefaultCacheKeyFactory;
 import com.facebook.imagepipeline.core.ImagePipelineFactory;
 import com.facebook.imagepipeline.request.ImageRequest;
+import com.google.gson.reflect.TypeToken;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -43,6 +46,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -75,6 +79,18 @@ public class Common {
 
     public static int getHourDifferenceBetweenTime(String start){
         return getHourDifferenceBetweenTime(start, getCurrentTimeYYMMDD_HHMMSS());
+    }
+
+    public static int getMinuteDifferenceBetweenTime(String start, String end){
+        Calendar c1 = Calendar.getInstance();
+        Calendar c2 = Calendar.getInstance();
+        try{
+            c1.setTime(sdf_YYMMDD_HHMMSS.parse(start));
+            c2.setTime(sdf_YYMMDD_HHMMSS.parse(end));
+            return (int)Math.abs(((c1.getTimeInMillis() - c2.getTimeInMillis())/60000));
+        }catch(ParseException pe){
+            return 0;
+        }
     }
 
     public static int getHourDifferenceBetweenTime(String start, String end){
@@ -163,7 +179,7 @@ public class Common {
     }
 
     public static String changeObjToString(Object object){
-        return object + "";
+        return object.toString() + "";
     }
 
     public static Bitmap drawable2Bitmap(Drawable drawable) {
@@ -286,25 +302,6 @@ public class Common {
         Matcher m = p.matcher(str);
         return m.matches();
     }
-
-    /**
-     * 编辑框获得焦点时去掉提示文字
-     */
-    public static View.OnFocusChangeListener onFocusAutoClearHintListener = new View.OnFocusChangeListener() {
-        @Override
-        public void onFocusChange(View v, boolean hasFocus) {
-            EditText textView = (EditText) v;
-            String hint;
-            if (hasFocus) {
-                hint = textView.getHint().toString();
-                textView.setTag(hint);
-                textView.setHint("");
-            } else {
-                hint = textView.getTag().toString();
-                textView.setHint(hint);
-            }
-        }
-    };
 
     public static boolean isWiFiActive(Context context) {
         WifiManager wm = null;
@@ -498,13 +495,6 @@ public class Common {
             e.printStackTrace();
             return false;
         }
-//        // 其次把文件插入到系统图库
-//        try {
-//            MediaStore.Images.Media.insertImage(context.getContentResolver(),
-//                    f.getAbsolutePath(), fileName, null);
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        }
         // 最后通知图库更新
         context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.parse("file://"+ dd_album)));
         return true;
@@ -525,12 +515,68 @@ public class Common {
         return localFile;
     }
 
+    /**
+     * 判断Fresco是否把图片 已经下载到本地
+     * @param loadUri
+     * @return
+     */
     public static boolean isImageDownloaded(Uri loadUri) {
         if (loadUri == null) {
             return false;
         }
         CacheKey cacheKey = DefaultCacheKeyFactory.getInstance().getEncodedCacheKey(ImageRequest.fromUri(loadUri));
         return ImagePipelineFactory.getInstance().getMainDiskStorageCache().hasKey(cacheKey) || ImagePipelineFactory.getInstance().getSmallImageDiskStorageCache().hasKey(cacheKey);
+    }
+
+    /**
+     * 上传图片时使用，为每一次发布生成一个序列号
+     * @return
+     */
+    public static String getSerial(){
+        return UUID.randomUUID().toString() + "Client/Android";
+    }
+
+    public static MessageVo getMessageVoFromOffMsgVo(OffMsgDto offMsgDto){
+        MessageVo messageVo = new MessageVo();
+        messageVo.setContent(offMsgDto.getContent());
+        messageVo.setTime(offMsgDto.getTime());
+        messageVo.setConType(offMsgDto.getConType());
+        messageVo.setMsgType(offMsgDto.getMsgType());
+        messageVo.setStatus(Constant.MESSAGE_STATUS_SUCCESS);
+        messageVo.setFromNo(offMsgDto.getFromNo());
+        messageVo.setToNo(offMsgDto.getToNo());
+        return messageVo;
+    }
+
+    public static MessageDto getMessageFromJSONString(String jsonString) {
+        MessageDto messageDto;
+        try{
+            messageDto = GsonParser.getInstance().fromJson(jsonString, new TypeToken<MessageDto>(){}.getType());
+        }catch(Exception e){
+            return null;
+        }
+        return messageDto;
+    }
+
+    /**
+     * 判断是否是心跳请求包
+     * @param message
+     * @return
+     */
+    public static boolean isMessageForHeartBeat(String message){
+        MessageDto messageDto = getMessageFromJSONString(message);
+        return messageDto.getMsgType() == Constant.CHAT_PING;
+    }
+
+    public static String getEmptyMessage(long senderNo, int chatType){
+        MessageDto messageDto = new MessageDto();
+        messageDto.setMsgContent("");
+        messageDto.setMsgTime("");
+        messageDto.setMsgType(chatType);
+        messageDto.setReceiverNo(0);
+        messageDto.setSenderNo(senderNo);
+
+        return GsonParser.getInstance().toJson(messageDto);
     }
 
 }

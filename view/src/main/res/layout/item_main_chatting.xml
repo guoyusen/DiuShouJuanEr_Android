@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/y128"
+    android:background="@color/COLOR_WHITE"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingLeft="@dimen/x24"
+    android:paddingRight="@dimen/x24">
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/ivHead"
+        android:layout_width="@dimen/x96"
+        android:layout_height="@dimen/x96"
+        android:layout_centerVertical="true"
+        app:roundAsCircle="true"
+        app:actualImageScaleType="centerCrop"/>
+
+    <com.bili.diushoujuaner.widget.badgeview.BGABadgeRelativeLayout
+        android:id="@+id/layoutBadge"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/x24"
+        app:badge_dragable="true"
+        app:badge_gravity="rightBottom"
+        app:badge_verticalMargin="@dimen/y28">
+
+        <TextView
+            android:id="@+id/txtName"
+            android:textSize="@dimen/x30"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="@dimen/y20"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="三木同学"
+            android:textColor="@color/TC_040404" />
+
+        <ImageView
+            android:id="@+id/ivStatus"
+            android:layout_width="@dimen/x32"
+            android:layout_height="@dimen/x32"
+            android:layout_alignParentLeft="true"
+            android:layout_marginBottom="@dimen/y24"
+            android:layout_alignParentBottom="true"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/txtContent"
+            style="@style/TextSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/ivStatus"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/y24"
+            android:layout_marginRight="@dimen/x80"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:text="就让大雨冲刷记忆中的沙，让我了无牵挂浪迹在天涯"
+            android:textColor="@color/TC_8A8A8A" />
+
+        <TextView
+            android:id="@+id/txtTime"
+            style="@style/TextSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/txtName"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:text="20:20"
+            android:textColor="@color/TC_8A8A8A" />
+
+        <View
+            style="@style/line"
+            android:layout_alignParentBottom="true"/>
+
+    </com.bili.diushoujuaner.widget.badgeview.BGABadgeRelativeLayout>
+
+</LinearLayout>

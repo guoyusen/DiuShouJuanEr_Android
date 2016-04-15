@@ -2,17 +2,17 @@ package com.bili.diushoujuaner.presenter.presenter.impl;
 
 import android.content.Context;
 
-import com.bili.diushoujuaner.model.action.impl.ContactAction;
-import com.bili.diushoujuaner.model.action.impl.FileAction;
-import com.bili.diushoujuaner.model.action.impl.GoodAction;
-import com.bili.diushoujuaner.model.action.impl.RecallAction;
-import com.bili.diushoujuaner.model.action.impl.UserInfoAction;
-import com.bili.diushoujuaner.model.action.respon.ActionRespon;
+import com.bili.diushoujuaner.model.actionhelper.action.ContactAction;
+import com.bili.diushoujuaner.model.actionhelper.action.FileAction;
+import com.bili.diushoujuaner.model.actionhelper.action.GoodAction;
+import com.bili.diushoujuaner.model.actionhelper.action.RecallAction;
+import com.bili.diushoujuaner.model.actionhelper.action.UserInfoAction;
+import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
 import com.bili.diushoujuaner.model.apihelper.request.ContactInfoReq;
 import com.bili.diushoujuaner.model.apihelper.request.RecallListReq;
 import com.bili.diushoujuaner.model.apihelper.request.RecallRemoveReq;
-import com.bili.diushoujuaner.model.apihelper.response.GoodDto;
-import com.bili.diushoujuaner.model.apihelper.response.RecallDto;
+import com.bili.diushoujuaner.utils.entity.dto.GoodDto;
+import com.bili.diushoujuaner.utils.entity.dto.RecallDto;
 import com.bili.diushoujuaner.model.callback.ActionFileCallbackListener;
 import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
 import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
@@ -23,8 +23,8 @@ import com.bili.diushoujuaner.presenter.presenter.SpaceActivityPresenter;
 import com.bili.diushoujuaner.presenter.view.ISpaceView;
 import com.bili.diushoujuaner.utils.Common;
 import com.bili.diushoujuaner.utils.Constant;
-import com.bili.diushoujuaner.utils.entity.FriendVo;
-import com.bili.diushoujuaner.presenter.event.UpdateWallPaperEvent;
+import com.bili.diushoujuaner.utils.entity.vo.FriendVo;
+import com.bili.diushoujuaner.model.eventhelper.UpdateWallPaperEvent;
 
 import org.greenrobot.eventbus.EventBus;
 

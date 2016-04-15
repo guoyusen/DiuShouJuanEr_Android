@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/MatchWrap"
+    android:background="@color/TRANSPARENT"
+    android:orientation="vertical"
+    android:padding="@dimen/x24">
+
+    <TextView
+        android:id="@+id/txtTime"
+        style="@style/TextSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:paddingBottom="@dimen/x24"
+        android:text="20:20"
+        android:textColor="@color/TC_8A8A8A" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/TRANSPARENT"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/x12"
+            android:layout_marginRight="@dimen/x12"
+            android:layout_toLeftOf="@+id/ivHead"
+            android:layout_toStartOf="@+id/ivHead">
+
+            <TextView
+                android:id="@+id/txtName"
+                style="@style/TextSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/x24"
+                android:layout_marginEnd="@dimen/x24"
+                android:paddingBottom="@dimen/y16"
+                android:ellipsize="end"
+                android:maxEms="10"
+                android:maxLength="10"
+                android:singleLine="true"
+                android:text="三木同学"
+                android:textColor="@color/TC_8A8A8A" />
+
+            <ImageView
+                android:id="@+id/ivArrow"
+                android:layout_width="@dimen/x24"
+                android:layout_height="@dimen/y36"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_below="@+id/txtName"
+                android:layout_marginTop="@dimen/y27"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/icon_right_arrow" />
+
+            <TextView
+                android:id="@+id/txtContent"
+                style="@style/TextMiddle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/ivArrow"
+                android:layout_toStartOf="@+id/ivArrow"
+                android:layout_below="@+id/txtName"
+                android:layout_marginLeft="@dimen/x96"
+                android:layout_marginStart="@dimen/x96"
+                android:background="@drawable/rectangle_solid_chat_right"
+                android:gravity="top|left"
+                android:minHeight="@dimen/y90"
+                android:minWidth="@dimen/x124"
+                android:padding="@dimen/x24"
+                android:textColor="@color/TC_040404" />
+
+            <ImageView
+                android:id="@+id/ivStatus"
+                android:layout_width="@dimen/x64"
+                android:layout_height="@dimen/x64"
+                android:layout_alignBottom="@+id/txtContent"
+                android:layout_marginBottom="@dimen/y20"
+                android:layout_marginLeft="@dimen/x32"
+                android:layout_marginStart="@dimen/x32"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/ivHead"
+            android:layout_width="@dimen/x96"
+            android:layout_height="@dimen/x96"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            app:actualImageScaleType="centerCrop"
+            app:roundAsCircle="true" />
+
+    </RelativeLayout>
+
+</LinearLayout>

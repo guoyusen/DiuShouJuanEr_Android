@@ -1,14 +1,10 @@
 package com.bili.diushoujuaner.utils.pinyin;
 
-import com.bili.diushoujuaner.utils.entity.SortVo;
-
 import net.sourceforge.pinyin4j.PinyinHelper;
 import net.sourceforge.pinyin4j.format.HanyuPinyinCaseType;
 import net.sourceforge.pinyin4j.format.HanyuPinyinOutputFormat;
 import net.sourceforge.pinyin4j.format.HanyuPinyinToneType;
 import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
-
-import java.util.List;
 
 public class PinyinUtil {
 

@@ -5,21 +5,22 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.bili.diushoujuaner.model.apihelper.api.Api;
 import com.bili.diushoujuaner.model.apihelper.callback.ApiFileCallbackListener;
 import com.bili.diushoujuaner.model.apihelper.callback.ApiStringCallbackListener;
-import com.bili.diushoujuaner.model.okhttphelper.okhttpserver.listener.UploadListener;
-import com.bili.diushoujuaner.model.okhttphelper.okhttpserver.upload.UploadInfo;
-import com.bili.diushoujuaner.model.okhttphelper.okhttpserver.upload.UploadManager;
-import com.bili.diushoujuaner.model.okhttphelper.okhttputils.OkHttpUtils;
-import com.bili.diushoujuaner.model.okhttphelper.okhttputils.model.HttpHeaders;
+import com.bili.diushoujuaner.utils.okhttp.okhttpserver.listener.UploadListener;
+import com.bili.diushoujuaner.utils.okhttp.okhttpserver.upload.UploadInfo;
+import com.bili.diushoujuaner.utils.okhttp.okhttpserver.upload.UploadManager;
+import com.bili.diushoujuaner.utils.okhttp.okhttputils.OkHttpUtils;
+import com.bili.diushoujuaner.utils.okhttp.okhttputils.model.HttpHeaders;
 import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
 import com.bili.diushoujuaner.utils.Constant;
+import com.bili.diushoujuaner.utils.okhttp.okhttputils.model.HttpParams;
 import com.orhanobut.logger.Logger;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Created by BiLi on 2016/3/11.
@@ -35,7 +36,7 @@ public class DataLoader {
         StringRequest stringRequest = new StringRequest(method, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Logger.json(response);
+//                Logger.json(response);
                 apiStringCallbackListener.onSuccess(response);
             }
         }, new Response.ErrorListener() {
@@ -77,11 +78,19 @@ public class DataLoader {
         HttpEngine.getInstance().addToRequestQueue(stringRequest);
     }
 
-    public void processFileUpload(String url, String key, String path, final ApiFileCallbackListener apiFileCallbackListener){
-        HttpHeaders headers = new HttpHeaders();
-        headers.put("Device-Type", "Client/Android");
-        headers.put("AccessToken", CustomSessionPreference.getInstance().getCustomSession().getAccessToken());
-        OkHttpUtils.getInstance().addCommonHeaders(headers);
+    public void processFileUpload(String url, Map<String, String> params, String key, String path, final ApiFileCallbackListener apiFileCallbackListener){
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.put("Device-Type", "Client/Android");
+        httpHeaders.put("AccessToken", CustomSessionPreference.getInstance().getCustomSession().getAccessToken());
+        if(params != null){
+            HttpParams httpParams = new HttpParams();
+            Object[] keyArray = params.keySet().toArray();
+            for(int i = 0, len = params.size(); i < len; i++){
+                httpParams.put(keyArray[i].toString(),params.get(keyArray[i]));
+            }
+            OkHttpUtils.getInstance().addCommonParams(httpParams);
+        }
+        OkHttpUtils.getInstance().addCommonHeaders(httpHeaders);
         UploadManager.getInstance().addTask(url, new File(path), key, new UploadListener<String>() {
             // 当前回调为主线程
             @Override

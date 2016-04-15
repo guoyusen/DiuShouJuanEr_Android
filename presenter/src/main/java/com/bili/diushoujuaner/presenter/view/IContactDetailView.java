@@ -1,10 +1,8 @@
 package com.bili.diushoujuaner.presenter.view;
 
-import com.bili.diushoujuaner.model.apihelper.response.RecallDto;
+import com.bili.diushoujuaner.utils.entity.dto.RecallDto;
 import com.bili.diushoujuaner.presenter.base.IBaseView;
-import com.bili.diushoujuaner.utils.entity.FriendVo;
-
-import java.util.List;
+import com.bili.diushoujuaner.utils.entity.vo.FriendVo;
 
 /**
  * Created by BiLi on 2016/3/13.

@@ -2,15 +2,15 @@ package com.bili.diushoujuaner.presenter.presenter.impl;
 
 import android.content.Context;
 
-import com.bili.diushoujuaner.model.action.impl.ContactAction;
-import com.bili.diushoujuaner.model.action.respon.ActionRespon;
+import com.bili.diushoujuaner.model.actionhelper.action.ContactAction;
+import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
 import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
 import com.bili.diushoujuaner.presenter.base.BasePresenter;
 import com.bili.diushoujuaner.presenter.presenter.ContactFragmentPresenter;
 import com.bili.diushoujuaner.presenter.view.IContactView;
 import com.bili.diushoujuaner.utils.Constant;
-import com.bili.diushoujuaner.utils.entity.FriendVo;
-import com.bili.diushoujuaner.presenter.event.RefreshRecallEvent;
+import com.bili.diushoujuaner.utils.entity.vo.FriendVo;
+import com.bili.diushoujuaner.model.eventhelper.UpdatedContactEvent;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -34,7 +34,7 @@ public class ContactFragmentPresenterImpl extends BasePresenter<IContactView> im
                     if(isBindViewValid()){
                         getBindView().showContactList(result.getData());
                     }
-                    EventBus.getDefault().post(new RefreshRecallEvent());
+                    EventBus.getDefault().post(new UpdatedContactEvent());
                 }
                 hideLoading(Constant.LOADING_DEFAULT);
             }

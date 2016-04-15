@@ -133,6 +133,9 @@ public class WheelView extends View {
     /** 是否循环 */
     boolean isCyclic = false;
 
+    /** 是否可以滚动 */
+    boolean isCanScroll = true;
+
     /** 条目改变监听器集合  封装了条目改变方法, 当条目改变时回调 */
     private List<OnWheelChangedListener> changingListeners = new LinkedList<OnWheelChangedListener>();
     /** 条目滚动监听器集合, 该监听器封装了 开始滚动方法, 结束滚动方法 */
@@ -540,7 +543,7 @@ public class WheelView extends View {
 
         //index 大于 0
         index %= count;
-        return adapter.getItem(index);
+        return adapter.getItem(index).length() > 5 ? adapter.getItem(index).substring(0,5) : adapter.getItem(index);
     }
 
     /**
@@ -589,21 +592,8 @@ public class WheelView extends View {
         if (adapter == null) {
             return 0;
         }
-
-        String maxText = null;
-        int addItems = visibleItems / 2;
-        /*
-         * 遍历当前显示的条目, 获取字符串长度最长的那个, 返回这个最长的字符串长度
-         */
-        for (int i = Math.max(currentItem - addItems, 0); i < Math.min(currentItem + visibleItems,
-                adapter.getItemsCount()); i++) {
-            String text = adapter.getItem(i);
-            if (text != null && (maxText == null || maxText.length() < text.length())) {
-                maxText = text;
-            }
-        }
-
-        return maxText != null ? maxText.length() : 0;
+        //最多显示5个字的长度
+        return 5;
     }
 
     /**
@@ -765,7 +755,7 @@ public class WheelView extends View {
          * 创建选中条目
          */
         if (!isScrollingPerformed && (valueLayout == null || valueLayout.getWidth() > widthItems)) {
-            String text = getAdapter() != null ? getAdapter().getItem(currentItem) : null;
+            String text = getAdapter() != null ? (getAdapter().getItem(currentItem).length() > 5 ? getAdapter().getItem(currentItem).substring(0,5) : getAdapter().getItem(currentItem)) : null;
             valueLayout = new StaticLayout(text != null ? text : "", valuePaint, widthItems,
                     widthLabel > 0 ? Layout.Alignment.ALIGN_OPPOSITE : Layout.Alignment.ALIGN_CENTER, 1,
                     ADDITIONAL_ITEM_HEIGHT, false);
@@ -958,6 +948,11 @@ public class WheelView extends View {
      */
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+
+        if(!isCanScroll){
+            return true;
+        }
+
     	//获取适配器
         WheelAdapter adapter = getAdapter();
         if (adapter == null) {
@@ -973,6 +968,10 @@ public class WheelView extends View {
             justify();
         }
         return true;
+    }
+
+    public void setCanScroll(boolean canScroll) {
+        isCanScroll = canScroll;
     }
 
     /**

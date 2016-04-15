@@ -3,11 +3,11 @@ package com.bili.diushoujuaner.presenter.presenter.impl;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.bili.diushoujuaner.model.action.respon.ActionRespon;
+import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
 import com.bili.diushoujuaner.presenter.presenter.LoginActivityPresenter;
 import com.bili.diushoujuaner.utils.Constant;
 import com.bili.diushoujuaner.model.apihelper.request.UserAccountReq;
-import com.bili.diushoujuaner.model.action.impl.CustomSessionAction;
+import com.bili.diushoujuaner.model.actionhelper.action.CustomSessionAction;
 import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
 import com.bili.diushoujuaner.presenter.base.BasePresenter;
 import com.bili.diushoujuaner.presenter.view.ILoginView;
