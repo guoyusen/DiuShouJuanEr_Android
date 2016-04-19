@@ -10,8 +10,6 @@ import java.util.List;
  */
 public interface IChattingView extends IBaseView {
 
-    void updateAdapter();
-
     void showChatting(List<ChattingVo> chattingVoList);
 
 }

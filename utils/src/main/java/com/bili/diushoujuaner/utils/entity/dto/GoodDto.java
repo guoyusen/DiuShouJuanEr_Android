@@ -6,7 +6,7 @@ import android.os.Parcelable;
 /**
  * Created by BiLi on 2016/3/21.
  */
-public class GoodDto implements Parcelable {
+public class GoodDto implements Parcelable, Cloneable {
     /**
      * goodNo : 38
      * goodTime : 2016-01-11 16:33:53
@@ -98,4 +98,18 @@ public class GoodDto implements Parcelable {
             return new GoodDto[size];
         }
     };
+
+    @Override
+    protected GoodDto clone() throws CloneNotSupportedException {
+        return (GoodDto)super.clone();
+    }
+
+    public GoodDto getCloneGoodDto(){
+        GoodDto goodDto = null;
+        try{
+            goodDto = clone();
+        }catch(CloneNotSupportedException e){
+        }
+        return goodDto;
+    }
 }

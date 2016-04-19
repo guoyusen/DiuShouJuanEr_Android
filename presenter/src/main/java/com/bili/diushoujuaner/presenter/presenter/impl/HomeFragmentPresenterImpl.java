@@ -34,21 +34,21 @@ public class HomeFragmentPresenterImpl extends BasePresenter<IHomeView> implemen
     @Override
     public void changeGoodStatusToLocal(long recallNo, int position) {
         if(getGoodStatusByRecallNo(recallNo)){
-            GoodTemper.setGoodStatus(recallNo, false);
-            RecallTemper.removeGood(position);
+            GoodTemper.getInstance().setGoodStatus(recallNo, false);
+            RecallTemper.getInstance().removeGood(position);
         } else {
-            GoodTemper.setGoodStatus(recallNo, true);
+            GoodTemper.getInstance().setGoodStatus(recallNo, true);
 
             GoodDto goodDto = new GoodDto();
             goodDto.setUserNo(CustomSessionPreference.getInstance().getCustomSession().getUserNo());
             goodDto.setNickName(UserInfoAction.getInstance(context).getUserFromLocal().getNickName());
-            RecallTemper.addGood(goodDto, position);
+            RecallTemper.getInstance().addGood(goodDto, position);
         }
     }
 
     @Override
     public boolean getGoodStatusByRecallNo(long recallNo) {
-        return GoodTemper.getGoodStatus(recallNo);
+        return GoodTemper.getInstance().getGoodStatus(recallNo);
     }
 
     @Override
@@ -95,9 +95,9 @@ public class HomeFragmentPresenterImpl extends BasePresenter<IHomeView> implemen
                     }
 
                     updateRequestParam(result.getData());
-                    RecallTemper.clear();
-                    GoodTemper.clear();
-                    RecallTemper.addRecallDtoList(result.getData());
+                    RecallTemper.getInstance().clear();
+                    GoodTemper.getInstance().clear();
+                    RecallTemper.getInstance().addRecallDtoList(result.getData());
                 }
                 hideLoading();
             }
@@ -117,8 +117,8 @@ public class HomeFragmentPresenterImpl extends BasePresenter<IHomeView> implemen
             @Override
             public void onSuccess(ActionRespon<List<RecallDto>> result) {
                 if (showMessage(result.getRetCode(), result.getMessage()) && isBindViewValid()) {
-                    RecallTemper.clear();
-                    RecallTemper.addRecallDtoList(result.getData());
+                    RecallTemper.getInstance().clear();
+                    RecallTemper.getInstance().addRecallDtoList(result.getData());
                     getBindView().showRecallList(result.getData());
                 }
             }
@@ -138,7 +138,7 @@ public class HomeFragmentPresenterImpl extends BasePresenter<IHomeView> implemen
                 if (showMessage(result.getRetCode(), result.getMessage()) && isBindViewValid()) {
                     updateRequestParam(result.getData());
                     getBindView().showMoreRecallList(result.getData());
-                    RecallTemper.addRecallDtoList(result.getData());
+                    RecallTemper.getInstance().addRecallDtoList(result.getData());
                 }else{
                     if(isBindViewValid()){
                         getBindView().setLoadMoreEnd();
@@ -158,10 +158,10 @@ public class HomeFragmentPresenterImpl extends BasePresenter<IHomeView> implemen
 
     @Override
     public boolean executeGoodChange(boolean goodstatus, long recallNo){
-        if(goodstatus == GoodTemper.getGoodStatus(recallNo)){
+        if(goodstatus == GoodTemper.getInstance().getGoodStatus(recallNo)){
             return goodstatus;
         }
-        if(GoodTemper.getGoodStatus(recallNo)){
+        if(GoodTemper.getInstance().getGoodStatus(recallNo)){
             getGoodAdd(recallNo);
             return true;
         }else{

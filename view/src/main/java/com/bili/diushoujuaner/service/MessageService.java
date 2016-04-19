@@ -23,11 +23,13 @@ public class MessageService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        if(!MinaClienter.getInstance().isAlive()){
+            MinaClienter.getInstance().start();
+        }
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        MinaClienter.getInstance().start();
         return START_STICKY;
     }
 

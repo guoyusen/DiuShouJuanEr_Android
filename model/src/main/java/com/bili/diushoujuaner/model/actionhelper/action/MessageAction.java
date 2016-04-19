@@ -52,4 +52,24 @@ public class MessageAction implements IMessageAction {
             }
         });
     }
+
+    @Override
+    public void saveMessageVo(final MessageVo messageVo, final ActionStringCallbackListener<ActionRespon<MessageVo>> actionStringCallbackListener) {
+        Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<MessageVo>>() {
+            @Override
+            public ActionRespon<MessageVo> doInBackground() throws Exception {
+                return ActionRespon.getActionRespon(DBManager.getInstance().saveMessage(messageVo));
+            }
+        }, new Completion<ActionRespon<MessageVo>>() {
+            @Override
+            public void onSuccess(Context context, ActionRespon<MessageVo> result) {
+                actionStringCallbackListener.onSuccess(result);
+            }
+
+            @Override
+            public void onError(Context context, Exception e) {
+                actionStringCallbackListener.onSuccess(ActionRespon.<MessageVo>getActionResponError());
+            }
+        });
+    }
 }

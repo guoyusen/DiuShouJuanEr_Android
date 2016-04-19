@@ -5,7 +5,8 @@ package com.bili.diushoujuaner.utils.entity.vo;
  */
 public class MessageVo {
 
-    private long id;
+    private String serialNo;
+    private long id;//分页获取信息的标志
     private long fromNo;//消息发送者的账号
     private long toNo;//接收者的账号，单聊时为好友账号，群聊时为群号
     private String time;//消息的时间
@@ -16,12 +17,24 @@ public class MessageVo {
     private boolean isTimeShow;//时间是否显示
     private boolean isRead;//是否已读
 
+    public MessageVo(){
+        this.id = -1;
+    }
+
     public long getId() {
         return id;
     }
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getSerialNo() {
+        return serialNo;
+    }
+
+    public void setSerialNo(String serialNo) {
+        this.serialNo = serialNo;
     }
 
     public boolean isRead() {

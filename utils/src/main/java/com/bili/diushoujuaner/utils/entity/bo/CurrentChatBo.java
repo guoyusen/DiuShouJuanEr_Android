@@ -5,7 +5,7 @@ package com.bili.diushoujuaner.utils.entity.bo;
  */
 public class CurrentChatBo {
 
-    private long userNo;
+    private long toNo;
     private int msgType;
     private boolean isChatting;
 
@@ -25,12 +25,11 @@ public class CurrentChatBo {
         this.msgType = msgType;
     }
 
-    public long getUserNo() {
-        return userNo;
+    public long getToNo() {
+        return toNo;
     }
 
-    public void setUserNo(long userNo) {
-        this.userNo = userNo;
+    public void setToNo(long toNo) {
+        this.toNo = toNo;
     }
-
 }

@@ -7,21 +7,33 @@ import java.util.Hashtable;
  */
 public class GoodTemper {
 
-    private static Hashtable<Long, Boolean> booleanHashtable = new Hashtable<>();
+    private Hashtable<Long, Boolean> booleanHashtable;
+    private static GoodTemper goodTemper;
 
-    public static void setGoodStatus(Long recallNo, Boolean value){
+    public GoodTemper(){
+        booleanHashtable = new Hashtable<>();
+    }
+
+    public static synchronized GoodTemper getInstance(){
+        if(goodTemper == null){
+            goodTemper = new GoodTemper();
+        }
+        return goodTemper;
+    }
+
+    public void setGoodStatus(Long recallNo, Boolean value){
         booleanHashtable.put(recallNo, value);
     }
 
-    public static boolean isExists(Long recallNo){
+    public boolean isExists(Long recallNo){
         return booleanHashtable.get(recallNo) != null;
     }
 
-    public static boolean getGoodStatus(Long recallNo){
+    public boolean getGoodStatus(Long recallNo){
         return booleanHashtable.get(recallNo) != null ? booleanHashtable.get(recallNo) : false;
     }
 
-    public static void clear(){
+    public void clear(){
         booleanHashtable.clear();
     }
 

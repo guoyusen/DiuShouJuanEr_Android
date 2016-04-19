@@ -17,6 +17,9 @@ import android.widget.Toast;
 
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.base.BaseFragmentActivity;
+import com.bili.diushoujuaner.model.eventhelper.StartChattingEvent;
+import com.bili.diushoujuaner.model.eventhelper.UpdateMessageEvent;
+import com.bili.diushoujuaner.model.eventhelper.UpdateReadCountEvent;
 import com.bili.diushoujuaner.presenter.presenter.MainActivityPresenter;
 import com.bili.diushoujuaner.model.eventhelper.UpdateAutographEvent;
 import com.bili.diushoujuaner.model.eventhelper.ShowHeadEvent;
@@ -108,10 +111,6 @@ public class MainActivity extends BaseFragmentActivity<MainActivityPresenter> im
     private BGABottomNavigationItemView navChat;
     private BGABottomNavigationItemView navCont;
 
-    private int badgeHomeCount = 0;
-    private int badgeMessCount = 0;
-    private int badgeContCount = 0;
-
     private User user;
 
     @Override
@@ -149,7 +148,9 @@ public class MainActivity extends BaseFragmentActivity<MainActivityPresenter> im
         navChat = bottomNavigation.getBGAButtonItemView(1);
         navCont = bottomNavigation.getBGAButtonItemView(2);
 
-        navHome.showTextBadge("1");
+        navHome.setmDragable(false);
+        navChat.setmDragable(false);
+        navCont.setmDragable(false);
     }
 
     private void initMenuIv(){
@@ -270,6 +271,21 @@ public class MainActivity extends BaseFragmentActivity<MainActivityPresenter> im
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onUpdateUserInfoEvent(UpdateUserInfoEvent updateUserInfoEvent){
         getBindPresenter().getUserInfo();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onUpdateReadCountEvent(UpdateReadCountEvent updateReadCountEvent){
+        int unReadCount = getBindPresenter().getUnReadCount();
+        if(unReadCount <= 0) {
+            navChat.hiddenBadge();
+        }else{
+            navChat.showTextBadge(unReadCount + "");
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onStartChattingEvent(StartChattingEvent startChattingEvent){
+        customViewPager.setCurrentItem(1, false);
     }
 
     @Override

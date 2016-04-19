@@ -5,11 +5,13 @@ import android.content.Context;
 import com.bili.diushoujuaner.model.actionhelper.action.UserInfoAction;
 import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
 import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
+import com.bili.diushoujuaner.model.tempHelper.ChattingTemper;
 import com.bili.diushoujuaner.utils.entity.po.User;
 import com.bili.diushoujuaner.presenter.base.BasePresenter;
 import com.bili.diushoujuaner.presenter.presenter.MainActivityPresenter;
 import com.bili.diushoujuaner.presenter.view.IMainView;
 import com.bili.diushoujuaner.model.eventhelper.ShowHeadEvent;
+import com.bili.diushoujuaner.utils.entity.vo.ChattingVo;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -20,6 +22,15 @@ public class MainActivityPresenterImpl extends BasePresenter<IMainView> implemen
 
     public MainActivityPresenterImpl(IMainView baseView, Context context) {
         super(baseView, context);
+    }
+
+    @Override
+    public int getUnReadCount() {
+        int unReadCount = 0;
+        for(ChattingVo chattingVo : ChattingTemper.getInstance().getChattingVoList()){
+            unReadCount += chattingVo.getUnReadCount();
+        }
+        return unReadCount;
     }
 
     @Override

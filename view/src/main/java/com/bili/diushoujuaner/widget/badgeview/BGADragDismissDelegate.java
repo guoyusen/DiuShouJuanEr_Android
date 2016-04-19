@@ -25,8 +25,6 @@ public interface BGADragDismissDelegate {
 
     /**
      * 拖动大于BGABadgeViewHelper.mMoveHiddenThreshold后抬起手指徽章消失的回调方法
-     *
-     * @param badgeable
      */
-    void onDismiss(BGABadgeable badgeable);
+    void onDismiss();
 }

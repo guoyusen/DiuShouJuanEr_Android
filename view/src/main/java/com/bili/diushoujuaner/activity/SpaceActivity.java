@@ -32,7 +32,7 @@ import com.bili.diushoujuaner.utils.entity.vo.FriendVo;
 import com.bili.diushoujuaner.utils.entity.vo.PictureVo;
 import com.bili.diushoujuaner.model.eventhelper.GoodRecallEvent;
 import com.bili.diushoujuaner.model.eventhelper.RemoveRecallEvent;
-import com.bili.diushoujuaner.widget.CustomListViewRefresh;
+import com.bili.diushoujuaner.widget.LoadMoreListView;
 import com.bili.diushoujuaner.widget.TintedBitmapDrawable;
 import com.bili.diushoujuaner.widget.badgeview.BGABadgeRelativeLayout;
 import com.bili.diushoujuaner.widget.dialog.DialogTool;
@@ -59,7 +59,7 @@ import butterknife.Bind;
 /**
  * Created by BiLi on 2016/4/3.
  */
-public class SpaceActivity extends BaseFragmentActivity<SpaceActivityPresenter> implements ISpaceView, OnScrollRefreshListener, OnChangeHeadStatusListener, CustomListViewRefresh.OnLoadMoreListener, View.OnClickListener, OnPublishListener {
+public class SpaceActivity extends BaseFragmentActivity<SpaceActivityPresenter> implements ISpaceView, OnScrollRefreshListener, OnChangeHeadStatusListener, LoadMoreListView.OnLoadMoreListener, View.OnClickListener, OnPublishListener {
 
     @Bind(R.id.ivWallPaper)
     SimpleDraweeView ivWallPaper;
@@ -68,7 +68,7 @@ public class SpaceActivity extends BaseFragmentActivity<SpaceActivityPresenter> 
     @Bind(R.id.layoutTip)
     RelativeLayout layoutTip;
     @Bind(R.id.listviewRecall)
-    CustomListViewRefresh listviewRecall;
+    LoadMoreListView listviewRecall;
     @Bind(R.id.btnFloat)
     FloatingActionButton btnFloat;
     @Bind(R.id.layoutDetail)
@@ -101,7 +101,7 @@ public class SpaceActivity extends BaseFragmentActivity<SpaceActivityPresenter> 
     private long goodRecallNo;
     private FriendVo currentFriendVo;
     private ImagePicker imagePicker;
-    private AnimationDrawable uplaodingAni;
+    private AnimationDrawable uploadingAni;
 
     class CustomRunnable implements Runnable {
         @Override
@@ -154,7 +154,7 @@ public class SpaceActivity extends BaseFragmentActivity<SpaceActivityPresenter> 
         layoutHead.setBackground(ContextCompat.getDrawable(context, R.drawable.transparent_black_down_bg));
 
         RecallPublisher.getInstance(context).register(this);
-        uplaodingAni = (AnimationDrawable)ivUploading.getDrawable();
+        uploadingAni = (AnimationDrawable)ivUploading.getDrawable();
 
         if (userNo == getBindPresenter().getCustomSessionUserNo()) {
             btnFloat.setImageResource(R.mipmap.icon_editor);
@@ -203,7 +203,7 @@ public class SpaceActivity extends BaseFragmentActivity<SpaceActivityPresenter> 
 
     @Override
     public void onError() {
-        uplaodingAni.stop();
+        uploadingAni.stop();
         showWarning("趣事发表失败");
     }
 
@@ -221,7 +221,7 @@ public class SpaceActivity extends BaseFragmentActivity<SpaceActivityPresenter> 
             layoutProgress.hiddenBadge();
             layoutProgress.setVisibility(View.GONE);
         }
-        uplaodingAni.stop();
+        uploadingAni.stop();
     }
 
     @Override
@@ -230,8 +230,8 @@ public class SpaceActivity extends BaseFragmentActivity<SpaceActivityPresenter> 
             layoutProgress.hiddenBadge();
             layoutProgress.setVisibility(View.VISIBLE);
         }
-        if(!uplaodingAni.isRunning()){
-            uplaodingAni.start();
+        if(!uploadingAni.isRunning()){
+            uploadingAni.start();
         }
     }
 
@@ -383,7 +383,6 @@ public class SpaceActivity extends BaseFragmentActivity<SpaceActivityPresenter> 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onGoodRecallEvent(GoodRecallEvent goodRecallEvent) {
-        boolean aaa = (goodRecallEvent.getIndex() == index && goodRecallEvent.getType() == Constant.RECALL_ADAPTER_SPACE);
         if (!(goodRecallEvent.getIndex() == index && goodRecallEvent.getType() == Constant.RECALL_ADAPTER_SPACE)) {
             return;
         }
@@ -409,7 +408,8 @@ public class SpaceActivity extends BaseFragmentActivity<SpaceActivityPresenter> 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onPublishRecallEvent(PublishRecallEvent publishRecallEvent){
         if (recallAdapter != null) {
-            recallAdapter.addFirst(publishRecallEvent.getRecallDto());
+            RecallDto recallDto = publishRecallEvent.getRecallDto().getCloneRecallDto();
+            recallAdapter.addFirst(recallDto);
             recallAdapter.notifyDataSetChanged();
         }
     }

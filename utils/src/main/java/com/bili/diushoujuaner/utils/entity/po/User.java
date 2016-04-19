@@ -7,7 +7,7 @@ package com.bili.diushoujuaner.utils.entity.po;
 public class User {
 
     private Long id;
-    private Long userNo;
+    private long userNo;
     private String nickName;
     private String mobile;
     private String email;
@@ -29,7 +29,7 @@ public class User {
         this.id = id;
     }
 
-    public User(Long id, Long userNo, String nickName, String mobile, String email, String autograph, Integer gender, String birthday, String homeTown, String location, String picPath, String smallNick, String registTime, String wallPaper, String updateTime) {
+    public User(Long id, long userNo, String nickName, String mobile, String email, String autograph, Integer gender, String birthday, String homeTown, String location, String picPath, String smallNick, String registTime, String wallPaper, String updateTime) {
         this.id = id;
         this.userNo = userNo;
         this.nickName = nickName;
@@ -55,11 +55,11 @@ public class User {
         this.id = id;
     }
 
-    public Long getUserNo() {
+    public long getUserNo() {
         return userNo;
     }
 
-    public void setUserNo(Long userNo) {
+    public void setUserNo(long userNo) {
         this.userNo = userNo;
     }
 

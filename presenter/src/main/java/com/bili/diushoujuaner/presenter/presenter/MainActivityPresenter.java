@@ -7,4 +7,6 @@ public interface MainActivityPresenter {
 
     void getUserInfo();
 
+    int getUnReadCount();
+
 }

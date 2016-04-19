@@ -15,4 +15,8 @@ public interface IChattingAction {
 
     void getChattingList(ActionStringCallbackListener<ActionRespon<Void>> actionStringCallbackListener);
 
+    void updateMessageRead(long userNo, int msgType);
+
+    void deleteRecent(long userNo, int msgType);
+
 }

@@ -28,7 +28,7 @@ import com.bili.diushoujuaner.utils.Constant;
 import com.bili.diushoujuaner.utils.entity.vo.PictureVo;
 import com.bili.diushoujuaner.widget.TintedBitmapDrawable;
 import com.bili.diushoujuaner.widget.dialog.DialogTool;
-import com.bili.diushoujuaner.widget.dialog.OnDialogChoseListener;
+import com.bili.diushoujuaner.widget.dialog.OnGenderChoseListener;
 import com.bili.diushoujuaner.widget.dialog.OnDialogPositiveClickListener;
 import com.bili.diushoujuaner.widget.floatingactionbutton.FloatingActionButton;
 import com.bili.diushoujuaner.widget.imagepicker.ImagePicker;
@@ -50,7 +50,7 @@ import butterknife.Bind;
 /**
  * Created by BiLi on 2016/4/3.
  */
-public class UserActivity extends BaseFragmentActivity<UserActivityPresenter> implements IUserView, OnChangeHeadStatusListener, View.OnClickListener, OnDatePickerChoseListener, OnLocationPickerChoseListener, OnDialogChoseListener {
+public class UserActivity extends BaseFragmentActivity<UserActivityPresenter> implements IUserView, OnChangeHeadStatusListener, View.OnClickListener, OnDatePickerChoseListener, OnLocationPickerChoseListener, OnGenderChoseListener {
 
     @Bind(R.id.ivUserName)
     ImageView ivUserName;
@@ -290,6 +290,7 @@ public class UserActivity extends BaseFragmentActivity<UserActivityPresenter> im
         } else {
             layoutHead.setBackground(ContextCompat.getDrawable(context, R.drawable.transparent_black_down_bg));
             setTintStatusColor(R.color.TRANSPARENT_BLACK);
+            setTineStatusAlpha(1.0f);
         }
     }
 

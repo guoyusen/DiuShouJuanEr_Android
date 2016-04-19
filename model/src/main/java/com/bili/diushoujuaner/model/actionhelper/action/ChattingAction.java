@@ -14,6 +14,7 @@ import com.bili.diushoujuaner.utils.Common;
 import com.bili.diushoujuaner.utils.Constant;
 import com.bili.diushoujuaner.utils.GsonParser;
 import com.bili.diushoujuaner.utils.entity.dto.OffMsgDto;
+import com.bili.diushoujuaner.utils.entity.po.Party;
 import com.bili.diushoujuaner.utils.entity.vo.MessageVo;
 import com.google.gson.reflect.TypeToken;
 import com.nanotasks.BackgroundWork;
@@ -40,6 +41,44 @@ public class ChattingAction implements IChattingAction {
             chattingAction = new ChattingAction(context);
         }
         return chattingAction;
+    }
+
+    @Override
+    public void deleteRecent(final long userNo, final int msgType) {
+        Tasks.executeInBackground(context, new BackgroundWork<Void>() {
+            @Override
+            public Void doInBackground() throws Exception {
+                DBManager.getInstance().deleteRecent(userNo, msgType);
+                return null;
+            }
+        }, new Completion<Void>() {
+            @Override
+            public void onSuccess(Context context, Void result) {
+            }
+
+            @Override
+            public void onError(Context context, Exception e) {
+            }
+        });
+    }
+
+    @Override
+    public void updateMessageRead(final long userNo, final int msgType) {
+        Tasks.executeInBackground(context, new BackgroundWork<Void>() {
+            @Override
+            public Void doInBackground() throws Exception {
+                DBManager.getInstance().updateMessageRead(userNo, msgType);
+                return null;
+            }
+        }, new Completion<Void>() {
+            @Override
+            public void onSuccess(Context context, Void result) {
+            }
+
+            @Override
+            public void onError(Context context, Exception e) {
+            }
+        });
     }
 
     @Override
@@ -119,21 +158,15 @@ public class ChattingAction implements IChattingAction {
     }
 
     private MessageVo processOffMessage(OffMsgDto item){
-        MessageVo messageVo = Common.getMessageVoFromOffMsgVo(item);
-        //正在聊天界面
-        //聊天类型相同
-        //群聊或者单聊
-        if(ChattingTemper.isChatting() && ChattingTemper.getMsgType() == messageVo.getMsgType() &&
-                ((ChattingTemper.getMsgType() == Constant.CHAT_PAR && ChattingTemper.getUserNo() == messageVo.getToNo()) ||
-                        ChattingTemper.getMsgType() == Constant.CHAT_FRI && ChattingTemper.getUserNo() == messageVo.getFromNo())){
-            messageVo.setRead(true);
-        }else{
-            messageVo.setRead(false);
+        MessageVo messageVo = Common.getMessageVoFromOffMsgDto(item);
+        //接收到的离线信息，需要插在首位，且此时需要判断是否显示时间
+        ChattingTemper.getInstance().addChattingVoNew(messageVo);
+        if(messageVo.getMsgType() == Constant.CHAT_FRI){
+            DBManager.getInstance().updateFriendRecent(messageVo.getFromNo(), true);
+        }else if(messageVo.getMsgType() == Constant.CHAT_PAR){
+            DBManager.getInstance().updateMemberRecent(messageVo.getToNo(), true);
         }
-        ChattingTemper.addChattingVo(messageVo, true);
-        //插入完成会返回对应的Id
-        messageVo.setId(DBManager.getInstance().saveMessage(messageVo));
-
-        return messageVo;
+        //插入完成会返回包含id的messageVo
+        return DBManager.getInstance().saveMessage(messageVo);
     }
 }

@@ -90,7 +90,7 @@ public class RecallPublisher {
 
     public void publishRecall(final ArrayList<ImageItemVo> imageItemVoList, String content){
         reset();
-        this.serial = Common.getSerial();
+        this.serial = Common.getSerialNo();
         this.imageItemVoList.addAll(imageItemVoList);
         this.content = content;
         this.status = STATUS_UPLOADING;
@@ -107,7 +107,7 @@ public class RecallPublisher {
     }
 
     public void republishRecall(){
-        this.serial = Common.getSerial();
+        this.serial = Common.getSerialNo();
         this.status = STATUS_UPLOADING;
         this.currentPosition = 0;
         this.isErrorOccured = false;
@@ -172,12 +172,11 @@ public class RecallPublisher {
                         publishListener.onFinishPublish();
                     }
                     reset();
-                    RecallTemper.addRecallDtoToHomeList(result.getData());
-                    RecallTemper.addRecallDto(result.getData());
+                    RecallTemper.getInstance().addRecallDtoToHomeList(result.getData());
+                    RecallTemper.getInstance().addRecallDto(result.getData());
                     EventBus.getDefault().post(new PublishRecallEvent(result.getData()));
                 }
             }
-
             @Override
             public void onFailure(int errorCode) {
                 for(OnPublishListener publishListener : publishListeners){

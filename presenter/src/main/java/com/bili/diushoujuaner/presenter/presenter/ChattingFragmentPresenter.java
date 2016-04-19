@@ -9,6 +9,12 @@ public interface ChattingFragmentPresenter {
 
     void getChattingList();
 
+    void getChattingVoListFromTemper();
+
     void setCurrentChatting(long userNo, int msgType);
+
+    void updateMessageRead(long userNo, int msgType);
+
+    void deleteChattingVo(long userNo, int msgType);
 
 }

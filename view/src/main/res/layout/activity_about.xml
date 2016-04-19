@@ -16,110 +16,142 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="@dimen/x24">
 
-            <RelativeLayout
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/x24">
+                android:gravity="center"
+                android:text="丢手绢儿-成年人的童年社交"
+                android:textColor="@color/TC_040404"
+                android:textSize="@dimen/x48" />
+
+            <com.bili.diushoujuaner.widget.aligntextview.AlignTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/y48"
+                android:text="挖掘成年的童年记忆，寻找失联的童年好友，重新建立社交元素,具体内容如下:"
+                android:textColor="@color/TC_333333"
+                android:textSize="@dimen/x30" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/y24"
+                android:text="1) 通过手机号进行注册,登录,重置；"
+                android:textColor="@color/TC_333333"
+                android:textSize="@dimen/x30" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/y5"
+                android:text="2) 修改个人基本信息；"
+                android:textColor="@color/TC_333333"
+                android:textSize="@dimen/x30" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/y5"
+                android:text="3) 发布童年趣事（文字+图片）,并对所有用户的童年趣事进行点赞、删除和评论；"
+                android:textColor="@color/TC_333333"
+                android:textSize="@dimen/x30" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/y5"
+                android:text="4) 进行实时聊天，可以单聊和群聊，添加删除好友，更改好友备注；"
+                android:textColor="@color/TC_333333"
+                android:textSize="@dimen/x30" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/y5"
+                android:text="5) 离线信息存储和管理；"
+                android:textColor="@color/TC_333333"
+                android:textSize="@dimen/x30" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/y5"
+                android:text="6) 根据用户的个人信息以及发布的趣事，实现童友的推荐；"
+                android:textColor="@color/TC_333333"
+                android:textSize="@dimen/x30" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/y24"
+                android:text="开发者信息"
+                android:textColor="@color/TC_040404"
+                android:textSize="@dimen/x36" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/x96"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/y24">
 
                 <com.facebook.drawee.view.SimpleDraweeView
                     android:id="@+id/guoyusen"
-                    android:layout_width="@dimen/x200"
-                    android:layout_height="@dimen/x200"
-                    app:roundAsCircle="true"/>
+                    android:layout_width="@dimen/x96"
+                    android:layout_height="@dimen/x96"
+                    app:roundAsCircle="true" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="@dimen/x24">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/x48"
+                        android:gravity="top"
+                        style="@style/TextMiddle"
+                        android:textColor="@color/TC_333333"
+                        android:text="三木同学--BiLi"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="@dimen/x48"
+                        android:gravity="bottom"
+                        style="@style/TextMiddle"
+                        android:textColor="@color/TC_333333"
+                        android:text="郭玉森"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="@dimen/y24">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/x108"
-                    android:textColor="@color/TC_8A8A8A"
-                    android:layout_alignParentRight="true"
-                    android:text="三木同学"/>
+                    android:text="项目地址："
+                    android:textColor="@color/TC_040404"
+                    android:textSize="@dimen/x30" />
 
-            </RelativeLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="https://github.com/guoyusen"
+                    android:autoLink="web"
+                    android:textColor="@color/TC_040404"
+                    android:textSize="@dimen/x30" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/y48"
-                android:textSize="@dimen/x200"
-                android:textColor="@color/TC_040404"
-                android:text="帅！"/>
-
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/y48"
-                android:textSize="@dimen/x82"
-                android:textColor="@color/TC_8A8A8A"
-                android:text="的不要不要的..."/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/y48"
-                android:textSize="@dimen/x82"
-                android:textColor="@color/TC_8A8A8A"
-                android:text="不要不要的..."/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/y48"
-                android:textSize="@dimen/x82"
-                android:textColor="@color/TC_8A8A8A"
-                android:text="要不要的..."/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/y48"
-                android:textSize="@dimen/x82"
-                android:textColor="@color/TC_8A8A8A"
-                android:text="不要的..."/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/y48"
-                android:textSize="@dimen/x82"
-                android:textColor="@color/TC_8A8A8A"
-                android:text="要的..."/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/y48"
-                android:textSize="@dimen/x82"
-                android:textColor="@color/TC_8A8A8A"
-                android:text="的..."/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/y48"
-                android:textSize="@dimen/x82"
-                android:textColor="@color/TC_8A8A8A"
-                android:text="..."/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/y48"
-                android:textSize="@dimen/x82"
-                android:textColor="@color/TC_8A8A8A"
-                android:text="就是任性。。。"/>
+            </LinearLayout>
 
         </LinearLayout>
 

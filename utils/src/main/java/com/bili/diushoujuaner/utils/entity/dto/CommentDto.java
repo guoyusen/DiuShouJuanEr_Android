@@ -3,12 +3,13 @@ package com.bili.diushoujuaner.utils.entity.dto;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by BiLi on 2016/3/21.
  */
-public class CommentDto implements Parcelable {
+public class CommentDto implements Parcelable, Cloneable {
     /**
      * addTime : 2016-01-20 14:42:02
      * commentNo : 41
@@ -144,4 +145,23 @@ public class CommentDto implements Parcelable {
             return new CommentDto[size];
         }
     };
+
+    @Override
+    protected CommentDto clone() throws CloneNotSupportedException {
+        return (CommentDto)super.clone();
+    }
+
+    public CommentDto getCloneCommentDto(){
+        CommentDto commentDto =  null;
+        try{
+            commentDto = clone();
+            List<ResponDto> responDtoList = new ArrayList<>();
+            for(ResponDto responDto : this.responList){
+                responDtoList.add(responDto.getCloneResponDto());
+            }
+            commentDto.setResponList(responDtoList);
+        }catch(CloneNotSupportedException e){
+        }
+        return commentDto;
+    }
 }

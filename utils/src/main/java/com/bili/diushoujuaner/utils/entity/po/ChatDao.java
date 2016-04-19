@@ -24,16 +24,17 @@ public class ChatDao extends AbstractDao<Chat, Long> {
     */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property OwnerNo = new Property(1, long.class, "ownerNo", false, "OWNER_NO");
-        public final static Property FromNo = new Property(2, long.class, "fromNo", false, "FROM_NO");
-        public final static Property ToNo = new Property(3, long.class, "toNo", false, "TO_NO");
-        public final static Property Content = new Property(4, String.class, "content", false, "CONTENT");
-        public final static Property Time = new Property(5, String.class, "time", false, "TIME");
-        public final static Property MsgType = new Property(6, int.class, "msgType", false, "MSG_TYPE");
-        public final static Property ConType = new Property(7, int.class, "conType", false, "CON_TYPE");
-        public final static Property Status = new Property(8, int.class, "status", false, "STATUS");
-        public final static Property ShowTime = new Property(9, boolean.class, "showTime", false, "SHOW_TIME");
-        public final static Property Read = new Property(10, boolean.class, "read", false, "READ");
+        public final static Property SerialNo = new Property(1, String.class, "serialNo", false, "SERIAL_NO");
+        public final static Property OwnerNo = new Property(2, long.class, "ownerNo", false, "OWNER_NO");
+        public final static Property FromNo = new Property(3, long.class, "fromNo", false, "FROM_NO");
+        public final static Property ToNo = new Property(4, long.class, "toNo", false, "TO_NO");
+        public final static Property Content = new Property(5, String.class, "content", false, "CONTENT");
+        public final static Property Time = new Property(6, String.class, "time", false, "TIME");
+        public final static Property MsgType = new Property(7, int.class, "msgType", false, "MSG_TYPE");
+        public final static Property ConType = new Property(8, int.class, "conType", false, "CON_TYPE");
+        public final static Property Status = new Property(9, int.class, "status", false, "STATUS");
+        public final static Property ShowTime = new Property(10, boolean.class, "showTime", false, "SHOW_TIME");
+        public final static Property Read = new Property(11, boolean.class, "read", false, "READ");
     };
 
 
@@ -50,16 +51,17 @@ public class ChatDao extends AbstractDao<Chat, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"CHAT\" (" + //
                 "\"_id\" INTEGER PRIMARY KEY AUTOINCREMENT ," + // 0: id
-                "\"OWNER_NO\" INTEGER NOT NULL ," + // 1: ownerNo
-                "\"FROM_NO\" INTEGER NOT NULL ," + // 2: fromNo
-                "\"TO_NO\" INTEGER NOT NULL ," + // 3: toNo
-                "\"CONTENT\" TEXT," + // 4: content
-                "\"TIME\" TEXT NOT NULL ," + // 5: time
-                "\"MSG_TYPE\" INTEGER NOT NULL ," + // 6: msgType
-                "\"CON_TYPE\" INTEGER NOT NULL ," + // 7: conType
-                "\"STATUS\" INTEGER NOT NULL ," + // 8: status
-                "\"SHOW_TIME\" INTEGER NOT NULL ," + // 9: showTime
-                "\"READ\" INTEGER NOT NULL );"); // 10: read
+                "\"SERIAL_NO\" TEXT," + // 1: serialNo
+                "\"OWNER_NO\" INTEGER NOT NULL ," + // 2: ownerNo
+                "\"FROM_NO\" INTEGER NOT NULL ," + // 3: fromNo
+                "\"TO_NO\" INTEGER NOT NULL ," + // 4: toNo
+                "\"CONTENT\" TEXT," + // 5: content
+                "\"TIME\" TEXT NOT NULL ," + // 6: time
+                "\"MSG_TYPE\" INTEGER NOT NULL ," + // 7: msgType
+                "\"CON_TYPE\" INTEGER NOT NULL ," + // 8: conType
+                "\"STATUS\" INTEGER NOT NULL ," + // 9: status
+                "\"SHOW_TIME\" INTEGER NOT NULL ," + // 10: showTime
+                "\"READ\" INTEGER NOT NULL );"); // 11: read
         // Add Indexes
         db.execSQL("CREATE INDEX " + constraint + "IDX_CHAT_OWNER_NO ON CHAT" +
                 " (\"OWNER_NO\");");
@@ -80,20 +82,25 @@ public class ChatDao extends AbstractDao<Chat, Long> {
         if (id != null) {
             stmt.bindLong(1, id);
         }
-        stmt.bindLong(2, entity.getOwnerNo());
-        stmt.bindLong(3, entity.getFromNo());
-        stmt.bindLong(4, entity.getToNo());
+ 
+        String serialNo = entity.getSerialNo();
+        if (serialNo != null) {
+            stmt.bindString(2, serialNo);
+        }
+        stmt.bindLong(3, entity.getOwnerNo());
+        stmt.bindLong(4, entity.getFromNo());
+        stmt.bindLong(5, entity.getToNo());
  
         String content = entity.getContent();
         if (content != null) {
-            stmt.bindString(5, content);
+            stmt.bindString(6, content);
         }
-        stmt.bindString(6, entity.getTime());
-        stmt.bindLong(7, entity.getMsgType());
-        stmt.bindLong(8, entity.getConType());
-        stmt.bindLong(9, entity.getStatus());
-        stmt.bindLong(10, entity.getShowTime() ? 1L: 0L);
-        stmt.bindLong(11, entity.getRead() ? 1L: 0L);
+        stmt.bindString(7, entity.getTime());
+        stmt.bindLong(8, entity.getMsgType());
+        stmt.bindLong(9, entity.getConType());
+        stmt.bindLong(10, entity.getStatus());
+        stmt.bindLong(11, entity.getShowTime() ? 1L: 0L);
+        stmt.bindLong(12, entity.getRead() ? 1L: 0L);
     }
 
     /** @inheritdoc */
@@ -107,16 +114,17 @@ public class ChatDao extends AbstractDao<Chat, Long> {
     public Chat readEntity(Cursor cursor, int offset) {
         Chat entity = new Chat( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.getLong(offset + 1), // ownerNo
-            cursor.getLong(offset + 2), // fromNo
-            cursor.getLong(offset + 3), // toNo
-            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // content
-            cursor.getString(offset + 5), // time
-            cursor.getInt(offset + 6), // msgType
-            cursor.getInt(offset + 7), // conType
-            cursor.getInt(offset + 8), // status
-            cursor.getShort(offset + 9) != 0, // showTime
-            cursor.getShort(offset + 10) != 0 // read
+            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // serialNo
+            cursor.getLong(offset + 2), // ownerNo
+            cursor.getLong(offset + 3), // fromNo
+            cursor.getLong(offset + 4), // toNo
+            cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5), // content
+            cursor.getString(offset + 6), // time
+            cursor.getInt(offset + 7), // msgType
+            cursor.getInt(offset + 8), // conType
+            cursor.getInt(offset + 9), // status
+            cursor.getShort(offset + 10) != 0, // showTime
+            cursor.getShort(offset + 11) != 0 // read
         );
         return entity;
     }
@@ -125,16 +133,17 @@ public class ChatDao extends AbstractDao<Chat, Long> {
     @Override
     public void readEntity(Cursor cursor, Chat entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
-        entity.setOwnerNo(cursor.getLong(offset + 1));
-        entity.setFromNo(cursor.getLong(offset + 2));
-        entity.setToNo(cursor.getLong(offset + 3));
-        entity.setContent(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
-        entity.setTime(cursor.getString(offset + 5));
-        entity.setMsgType(cursor.getInt(offset + 6));
-        entity.setConType(cursor.getInt(offset + 7));
-        entity.setStatus(cursor.getInt(offset + 8));
-        entity.setShowTime(cursor.getShort(offset + 9) != 0);
-        entity.setRead(cursor.getShort(offset + 10) != 0);
+        entity.setSerialNo(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
+        entity.setOwnerNo(cursor.getLong(offset + 2));
+        entity.setFromNo(cursor.getLong(offset + 3));
+        entity.setToNo(cursor.getLong(offset + 4));
+        entity.setContent(cursor.isNull(offset + 5) ? null : cursor.getString(offset + 5));
+        entity.setTime(cursor.getString(offset + 6));
+        entity.setMsgType(cursor.getInt(offset + 7));
+        entity.setConType(cursor.getInt(offset + 8));
+        entity.setStatus(cursor.getInt(offset + 9));
+        entity.setShowTime(cursor.getShort(offset + 10) != 0);
+        entity.setRead(cursor.getShort(offset + 11) != 0);
      }
     
     /** @inheritdoc */

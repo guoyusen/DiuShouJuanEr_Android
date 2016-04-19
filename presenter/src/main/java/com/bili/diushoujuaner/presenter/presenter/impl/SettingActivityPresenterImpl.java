@@ -39,10 +39,10 @@ public class SettingActivityPresenterImpl extends BasePresenter<ISettingView> im
                     ACache.getInstance().remove(Constant.ACACHE_USER_RECALL_PREFIX + CustomSessionPreference.getInstance().getCustomSession().getUserNo());
                     CustomSessionPreference.getInstance().clear();
                     UserInfoAction.getInstance(context).clearUser();
-                    RecallTemper.clear();
-                    GoodTemper.clear();
-                    ContactTemper.clear();
-                    ChattingTemper.clear();
+                    RecallTemper.getInstance().clear();
+                    GoodTemper.getInstance().clear();
+                    ContactTemper.getInstance().clear();
+                    ChattingTemper.getInstance().clear();
                     if(isBindViewValid()){
                         getBindView().exitActivity();
                     }

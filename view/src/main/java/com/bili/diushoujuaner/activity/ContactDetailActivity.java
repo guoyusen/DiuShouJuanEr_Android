@@ -12,6 +12,8 @@ import android.widget.TextView;
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.adapter.ContactRecentGalleryAdapter;
 import com.bili.diushoujuaner.base.BaseActivity;
+import com.bili.diushoujuaner.model.eventhelper.StartChattingEvent;
+import com.bili.diushoujuaner.utils.Constant;
 import com.bili.diushoujuaner.utils.entity.dto.RecallDto;
 import com.bili.diushoujuaner.presenter.presenter.ContactDetailActivityPresenter;
 import com.bili.diushoujuaner.presenter.presenter.impl.ContactDetailActivityPresenterImpl;
@@ -24,6 +26,8 @@ import com.bili.diushoujuaner.widget.TintedBitmapDrawable;
 import com.bili.diushoujuaner.widget.aligntextview.AlignTextView;
 import com.bili.diushoujuaner.widget.floatingactionbutton.FloatingActionButton;
 import com.facebook.drawee.view.SimpleDraweeView;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -103,6 +107,7 @@ public class ContactDetailActivity extends BaseActivity<ContactDetailActivityPre
         layoutHead.setBackgroundColor(ContextCompat.getColor(context, R.color.COLOR_THEME_MAIN));
 
         layoutRecent.setOnClickListener(this);
+        btnStartMsg.setOnClickListener(this);
 
         getBindPresenter().getFriendVo(userNo);
         getBindPresenter().getRecentRecall(userNo);
@@ -113,6 +118,12 @@ public class ContactDetailActivity extends BaseActivity<ContactDetailActivityPre
         switch (v.getId()){
             case R.id.layoutRecent:
                 startActivity(new Intent(ContactDetailActivity.this, SpaceActivity.class).putExtra(SpaceActivity.TAG,this.friendVo.getFriendNo()));
+                break;
+            case R.id.btnStartMsg:
+                getBindPresenter().setCurrentChatting(this.friendVo.getFriendNo(), Constant.CHAT_FRI);
+                EventBus.getDefault().post(new StartChattingEvent());
+                startActivity(new Intent(ContactDetailActivity.this, MessageActivity.class));
+                finish();
                 break;
         }
     }

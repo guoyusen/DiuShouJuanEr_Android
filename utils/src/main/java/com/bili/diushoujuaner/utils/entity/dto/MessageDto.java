@@ -7,12 +7,21 @@ import java.io.Serializable;
  */
 public class MessageDto implements Serializable {
 
-    private long senderNo;
-    private long receiverNo;
-    private int msgType;
-    private int conType;
-    private String msgContent = "";
-    private String msgTime = "";
+    private String serialNo;//只是用来更新本地的消息发送状态
+    private long senderNo;//发送者的账号
+    private long receiverNo;//接收者的账号
+    private int msgType;//通信类型 群 Or 单
+    private int conType;//文本类型 文本 Or 语音 Or 图片 Or 文件
+    private String msgContent = "";//消息内容
+    private String msgTime = "";//消息时间
+
+    public String getSerialNo() {
+        return serialNo;
+    }
+
+    public void setSerialNo(String serialNo) {
+        this.serialNo = serialNo;
+    }
 
     public int getConType() {
         return conType;

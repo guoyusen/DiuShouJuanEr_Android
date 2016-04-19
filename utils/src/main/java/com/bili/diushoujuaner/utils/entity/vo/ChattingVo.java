@@ -5,7 +5,7 @@ package com.bili.diushoujuaner.utils.entity.vo;
  */
 public class ChattingVo {
 
-    private long id;//MessageVo对应于数据库中的id
+    private String serialNo;//MessageVo对应于数据库中的id
     private long userNo;//对方的账号 1.好友账号 2.群号
     private long memberNo;//群聊时使用
     private int msgType;//消息的类型 1.好友消息 2.群消息
@@ -16,12 +16,12 @@ public class ChattingVo {
     private int conType;//消息内容类型
     private String lastShowTime;//上次显示的时间
 
-    public long getId() {
-        return id;
+    public String getSerialNo() {
+        return serialNo;
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void setSerialNo(String serialNo) {
+        this.serialNo = serialNo;
     }
 
     public String getLastShowTime() {

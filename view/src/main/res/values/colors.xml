@@ -12,6 +12,7 @@
     <color name="COLOR_BFBFBF">#BFBFBF</color>
     <color name="COLOR_8A8A8A">#8A8A8A</color>
     <color name="COLOR_4DD965">#4DD965</color>
+    <color name="COLOR_RED">@android:color/holo_red_light</color>
 
     <!-- 背景常用颜-色 -->
     <color name="BG_F6F6F6">#F6F6F6</color>
@@ -21,6 +22,7 @@
     <color name="BG_ADADBB">#ADADBB</color>
     <color name="BG_DDDEE2">#DDDEE2</color>
     <color name="BG_CC22292C">#CC22292C</color>
+    <color name="BG_ECEDF1">#ECEDF1</color>
 
     <color name="SELECT_HLIGHT">#88E67F22</color>
 

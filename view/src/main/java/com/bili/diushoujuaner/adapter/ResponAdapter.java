@@ -56,8 +56,8 @@ public class ResponAdapter extends CommonAdapter<ResponDto> {
 
     private SpannableString getSpannableString(ResponDto responDto){
         StringBuilder stringBuilder = new StringBuilder();
-        String userFromName = ContactTemper.getFriendRemark(responDto.getFromNo());
-        String userToName = ContactTemper.getFriendRemark(responDto.getToNo());
+        String userFromName = ContactTemper.getInstance().getFriendRemark(responDto.getFromNo());
+        String userToName = ContactTemper.getInstance().getFriendRemark(responDto.getToNo());
 
         stringBuilder.append(userFromName != null ? userFromName : responDto.getNickNameFrom());
         stringBuilder.append(" 回复 ");

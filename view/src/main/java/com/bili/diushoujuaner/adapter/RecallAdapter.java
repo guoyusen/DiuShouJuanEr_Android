@@ -73,7 +73,7 @@ public class RecallAdapter extends CommonAdapter<RecallDto> {
                 holder.getView(R.id.layoutItemPic).setVisibility(View.GONE);
             }
             //设置昵称
-            String userName = ContactTemper.getFriendRemark(recallDto.getUserNo());
+            String userName = ContactTemper.getInstance().getFriendRemark(recallDto.getUserNo());
             if(userName != null){
                 ((TextView) holder.getView(R.id.txtItemUserName)).setText(userName);
             }else{
@@ -135,18 +135,18 @@ public class RecallAdapter extends CommonAdapter<RecallDto> {
     }
 
     private void getGoodStatus(ViewHolder holder, RecallDto recallDto){
-        if(GoodTemper.isExists(recallDto.getRecallNo())){
-            if(GoodTemper.getGoodStatus(recallDto.getRecallNo())){
+        if(GoodTemper.getInstance().isExists(recallDto.getRecallNo())){
+            if(GoodTemper.getInstance().getGoodStatus(recallDto.getRecallNo())){
                 setGoodStatus(holder, true);
             }else{
                 setGoodStatus(holder, false);
             }
         }else{
             if(getGoodStatusFromRecallDto(recallDto)){
-                GoodTemper.setGoodStatus(recallDto.getRecallNo(), true);
+                GoodTemper.getInstance().setGoodStatus(recallDto.getRecallNo(), true);
                 setGoodStatus(holder, true);
             }else{
-                GoodTemper.setGoodStatus(recallDto.getRecallNo(), false);
+                GoodTemper.getInstance().setGoodStatus(recallDto.getRecallNo(), false);
                 setGoodStatus(holder, false);
             }
         }

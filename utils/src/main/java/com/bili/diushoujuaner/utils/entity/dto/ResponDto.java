@@ -6,7 +6,7 @@ import android.os.Parcelable;
 /**
  * Created by BiLi on 2016/3/21.
  */
-public class ResponDto implements Parcelable {
+public class ResponDto implements Parcelable, Cloneable {
     /**
      * addTime : 2016-01-24 13:28:36
      * commentNo : 19
@@ -157,4 +157,18 @@ public class ResponDto implements Parcelable {
             return new ResponDto[size];
         }
     };
+
+    @Override
+    protected ResponDto clone() throws CloneNotSupportedException {
+        return (ResponDto)super.clone();
+    }
+
+    public ResponDto getCloneResponDto(){
+        ResponDto responDto = null;
+        try{
+            responDto = clone();
+        }catch(CloneNotSupportedException e){
+        }
+        return responDto;
+    }
 }

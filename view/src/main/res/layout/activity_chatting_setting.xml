@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/MatchMatch.FitWindow"
+    android:background="@color/BG_ECEDF1">
+
+    <include
+        android:id="@+id/layoutHead"
+        layout="@layout/include_head_custom" />
+
+    <com.bili.diushoujuaner.widget.scrollview.ReboundScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/layoutHead">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:id="@+id/layoutUser"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y128"
+                android:layout_marginTop="@dimen/y16"
+                android:background="@color/COLOR_WHITE"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingLeft="@dimen/x24"
+                android:paddingRight="@dimen/x24">
+
+                <com.facebook.drawee.view.SimpleDraweeView
+                    android:id="@+id/ivHead"
+                    android:layout_width="@dimen/x96"
+                    android:layout_height="@dimen/x96"
+                    app:actualImageScaleType="centerCrop"
+                    app:roundAsCircle="true" />
+
+                <RelativeLayout
+                    android:layout_width="@dimen/x506"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/x24"
+                    android:layout_marginStart="@dimen/x24">
+
+                    <TextView
+                        android:id="@+id/txtName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginTop="@dimen/y20"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:text="三木同学"
+                        android:textColor="@color/TC_040404"
+                        android:textSize="@dimen/x30" />
+
+                    <TextView
+                        android:id="@+id/txtContent"
+                        style="@style/TextSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_marginBottom="@dimen/y24"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:text="就让大雨冲刷记忆中的沙，让我了无牵挂浪迹在天涯"
+                        android:textColor="@color/TC_8A8A8A" />
+
+
+                </RelativeLayout>
+
+                <ImageView
+                    android:id="@+id/ivUser"
+                    android:layout_width="@dimen/x50"
+                    android:layout_height="@dimen/y50"
+                    android:layout_marginLeft="@dimen/x24"
+                    android:layout_marginStart="@dimen/x24"/>
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/layoutRecord"
+                style="@style/MatchWrap"
+                android:layout_below="@+id/layoutUser"
+                android:background="@color/COLOR_WHITE"
+                android:layout_marginTop="@dimen/y32"
+                android:paddingLeft="@dimen/x24"
+                android:paddingRight="@dimen/x24"
+                android:paddingTop="@dimen/y32"
+                android:paddingBottom="@dimen/y32">
+
+                <TextView
+                    style="@style/TextMiddle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="聊天记录"
+                    android:textColor="@color/TC_040404" />
+
+                <ImageView
+                    android:id="@+id/ivRecord"
+                    android:layout_width="@dimen/x50"
+                    android:layout_height="@dimen/y50"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"/>
+
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/line"
+                style="@style/line"
+                android:layout_marginLeft="@dimen/x24"
+                android:layout_below="@+id/layoutRecord"/>
+
+            <RelativeLayout
+                android:id="@+id/layoutFile"
+                style="@style/MatchWrap"
+                android:layout_below="@+id/line"
+                android:background="@color/COLOR_WHITE"
+                android:paddingLeft="@dimen/x24"
+                android:paddingRight="@dimen/x24"
+                android:paddingTop="@dimen/y32"
+                android:paddingBottom="@dimen/y32">
+
+                <TextView
+                    style="@style/TextMiddle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="最近文件"
+                    android:textColor="@color/TC_040404" />
+
+                <ImageView
+                    android:id="@+id/ivFile"
+                    android:layout_width="@dimen/x50"
+                    android:layout_height="@dimen/y50"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"/>
+
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/btnDelete"
+                android:layout_marginTop="@dimen/y128"
+                android:layout_below="@+id/layoutFile"
+                style="@style/BtnXLongRed"
+                android:text="删除童友" />
+
+        </RelativeLayout>
+
+    </com.bili.diushoujuaner.widget.scrollview.ReboundScrollView>
+
+</RelativeLayout>

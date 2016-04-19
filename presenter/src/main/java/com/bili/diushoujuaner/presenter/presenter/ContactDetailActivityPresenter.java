@@ -9,4 +9,6 @@ public interface ContactDetailActivityPresenter {
 
     void getRecentRecall(long userNo);
 
+    void setCurrentChatting(long userNo, int msgType);
+
 }

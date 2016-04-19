@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/MatchMatch.FitWindow"
-    android:background="@color/BG_ECECEC">
+    android:background="@color/BG_ECEDF1">
 
     <include
         android:id="@+id/layoutHead"
         layout="@layout/include_head_custom" />
 
-    <ListView
+    <com.bili.diushoujuaner.widget.PopKeepListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/layoutBottom"
         android:layout_below="@+id/layoutHead"
+        android:transcriptMode="alwaysScroll"
+        android:dividerHeight="0dp"
+        android:divider="@color/BG_ECEDF1"
         android:overScrollMode="never" />
 
     <RelativeLayout
@@ -20,15 +23,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/BG_ECECEC"
+        android:background="@color/BG_ECEDF1"
         android:padding="@dimen/x16">
 
         <com.bili.diushoujuaner.widget.CustomEditText
-            android:id="@+id/txtComment"
+            android:id="@+id/txtEditor"
             style="@style/TextMiddle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/x108"
+            android:layout_marginEnd="@dimen/x108"
             android:background="@drawable/rectangle_solid_white"
             android:hint="说点什么呗..."
             android:maxLines="6"
@@ -43,8 +47,9 @@
             android:id="@+id/layoutSend"
             android:layout_width="@dimen/x80"
             android:layout_height="@dimen/x80"
-            android:layout_alignBottom="@+id/txtComment"
+            android:layout_alignBottom="@+id/txtEditor"
             android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
             android:background="@drawable/layout_send_close_bg"
             android:gravity="center">
 

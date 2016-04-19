@@ -6,7 +6,6 @@ import com.bili.diushoujuaner.utils.Common;
 import com.bili.diushoujuaner.utils.Constant;
 import com.bili.diushoujuaner.utils.entity.dto.MessageDto;
 
-import org.apache.mina.core.filterchain.IoFilter;
 import org.apache.mina.core.session.IdleStatus;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.core.write.WriteRequest;
@@ -40,8 +39,7 @@ public class HeartBeatFilter extends KeepAliveFilter {
      */
     private boolean getPermitSent(String message) {
         if (message.substring(0, 1).equals("{") && message.substring(message.length() - 1,message.length()).equals("}")) {
-            MessageDto messageDto = Common.getMessageFromJSONString(message);
-            Log.d("guoyusenm",messageDto.toString());
+            MessageDto messageDto = Common.getMessageDtoFromJSONString(message);
             return !(messageDto == null || messageDto.getMsgType() == Constant.CHAT_PING || messageDto.getMsgType() == Constant.CHAT_PONG);
         } else {
             return false;

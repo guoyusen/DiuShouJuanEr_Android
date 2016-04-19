@@ -99,6 +99,7 @@ public interface Constant {
     int CHAT_CLOSE = 4;
     int CHAT_PAR = 5;
     int CHAT_GOOD = 6;
+    int CHAT_STATUS = 7;
     // 聊天消息中content的类型
     int CHAT_CONTENT_EMPTY = 0;
     int CHAT_CONTENT_TEXT = 1;

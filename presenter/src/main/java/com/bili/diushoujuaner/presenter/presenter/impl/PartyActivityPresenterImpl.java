@@ -3,6 +3,7 @@ package com.bili.diushoujuaner.presenter.presenter.impl;
 import android.content.Context;
 
 import com.bili.diushoujuaner.model.actionhelper.action.ContactAction;
+import com.bili.diushoujuaner.model.tempHelper.ChattingTemper;
 import com.bili.diushoujuaner.presenter.base.BasePresenter;
 import com.bili.diushoujuaner.presenter.presenter.PartyActivityPresenter;
 import com.bili.diushoujuaner.presenter.view.IPartyView;
@@ -15,6 +16,11 @@ public class PartyActivityPresenterImpl extends BasePresenter<IPartyView> implem
 
     public PartyActivityPresenterImpl(IPartyView baseView, Context context) {
         super(baseView, context);
+    }
+
+    @Override
+    public void setCurrentChatting(long userNo, int msgType) {
+        ChattingTemper.getInstance().setCurrentChatBo(userNo, msgType);
     }
 
     @Override

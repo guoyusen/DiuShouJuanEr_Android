@@ -1,16 +1,23 @@
 package com.bili.diushoujuaner.activity;
 
+import android.content.Intent;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.TextView;
 
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.adapter.PartyAdapter;
 import com.bili.diushoujuaner.base.BaseActivity;
+import com.bili.diushoujuaner.model.eventhelper.StartChattingEvent;
 import com.bili.diushoujuaner.presenter.presenter.PartyActivityPresenter;
 import com.bili.diushoujuaner.presenter.presenter.impl.PartyActivityPresenterImpl;
 import com.bili.diushoujuaner.presenter.view.IPartyView;
 import com.bili.diushoujuaner.utils.Common;
+import com.bili.diushoujuaner.utils.Constant;
 import com.bili.diushoujuaner.utils.entity.vo.PartyVo;
-import com.bili.diushoujuaner.widget.CustomListViewRefresh;
+import com.bili.diushoujuaner.widget.LoadMoreListView;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +31,7 @@ public class PartyActivity extends BaseActivity<PartyActivityPresenter> implemen
 
 
     @Bind(R.id.customListViewRefresh)
-    CustomListViewRefresh customListViewRefresh;
+    LoadMoreListView loadMoreListView;
     @Bind(R.id.txtPartyCount)
     TextView txtPartyCount;
 
@@ -47,7 +54,16 @@ public class PartyActivity extends BaseActivity<PartyActivityPresenter> implemen
         showPageHead("群组",null,null);
 
         partyAdapter = new PartyAdapter(this, partyVoList);
-        customListViewRefresh.setAdapter(partyAdapter);
+        loadMoreListView.setAdapter(partyAdapter);
+        loadMoreListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                getBindPresenter().setCurrentChatting(partyAdapter.getItem(position).getPartyNo(), Constant.CHAT_PAR);
+                EventBus.getDefault().post(new StartChattingEvent());
+                startActivity(new Intent(PartyActivity.this, MessageActivity.class));
+                finish();
+            }
+        });
 
         getBindPresenter().getPartyList();
     }

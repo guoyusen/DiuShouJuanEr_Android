@@ -94,7 +94,7 @@ public class ContactAction implements IContactAction{
 
     @Override
     public void getContactFromLocal(final long userNo,  final ActionStringCallbackListener<ActionRespon<FriendVo>> actionStringCallbackListener) {
-        FriendVo friendVo = ContactTemper.getFriendVo(userNo);
+        FriendVo friendVo = ContactTemper.getInstance().getFriendVo(userNo);
         if(friendVo == null){
             Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<FriendVo>>() {
                 @Override

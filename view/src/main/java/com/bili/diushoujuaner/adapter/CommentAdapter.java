@@ -60,7 +60,7 @@ public class CommentAdapter extends CommonAdapter<CommentDto> {
                 }
             });
 
-            String userName = ContactTemper.getFriendRemark(commentDto.getFromNo());
+            String userName = ContactTemper.getInstance().getFriendRemark(commentDto.getFromNo());
             if(userName != null){
                 ((TextView) holder.getView(R.id.itemCommentUserName)).setText(userName);
             }else{

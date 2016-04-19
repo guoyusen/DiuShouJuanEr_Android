@@ -2,17 +2,21 @@ package com.bili.diushoujuaner.application;
 
 import android.app.Application;
 
+import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.model.apihelper.HttpEngine;
 import com.bili.diushoujuaner.model.apihelper.api.ApiAction;
 import com.bili.diushoujuaner.model.cachehelper.ACache;
 import com.bili.diushoujuaner.model.databasehelper.DBManager;
 import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
 import com.bili.diushoujuaner.model.preferhelper.SettingPreference;
+import com.bili.diushoujuaner.presenter.messager.Transceiver;
 import com.bili.diushoujuaner.utils.Common;
+import com.bili.diushoujuaner.utils.MessageNoticer;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.stetho.Stetho;
 import com.bili.diushoujuaner.utils.okhttp.okhttputils.OkHttpUtils;
 import com.orhanobut.logger.Logger;
+import com.squareup.leakcanary.LeakCanary;
 
 import cat.ereza.customactivityoncrash.CustomActivityOnCrash;
 
@@ -29,9 +33,24 @@ public class CustomApplication extends Application {
         initAcache();// 初始化ACache
         initPrefs(); // 初始化SharedPreference
         initDatabase();// 初始化DBManager
-        initLogger(); //初始化日志处理
-        Stetho.initializeWithDefaults(this);
-        CustomActivityOnCrash.install(this);
+        MessageNoticer.init(this, R.raw.notify);
+        Transceiver.init();
+        if(Common.isApkDebugable(this)){
+            initStetho();
+            initLogger(); //初始化日志处理
+            CustomActivityOnCrash.install(this);
+            LeakCanary.install(this);
+        }
+    }
+
+    private void initStetho(){
+        Stetho.initialize(
+                Stetho.newInitializerBuilder(this)
+                        .enableDumpapp(
+                                Stetho.defaultDumperPluginsProvider(this))
+                        .enableWebKitInspector(
+                                Stetho.defaultInspectorModulesProvider(this))
+                        .build());
     }
 
     private void initLogger(){

@@ -1,7 +1,5 @@
 package com.bili.diushoujuaner.model.filterhelper;
 
-import android.util.Log;
-
 import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
 import com.bili.diushoujuaner.utils.Common;
 import com.bili.diushoujuaner.utils.Constant;
@@ -26,15 +24,11 @@ public class KeepAliveMessageFactoryImpl implements KeepAliveMessageFactory {
 
     @Override
     public boolean isResponse(IoSession ioSession, Object o) {
-        Log.d("guoyusenm","发送心跳响应包");
-        Log.d("guoyusenm",Thread.currentThread().getName());
         return Common.isMessageForHeartBeat(o.toString());
     }
 
     @Override
     public Object getResponse(IoSession ioSession, Object o) {
-        Log.d("guoyusenm","收到心跳请求包");
-        Log.d("guoyusenm",Thread.currentThread().getName());
-        return Common.getEmptyMessage(CustomSessionPreference.getInstance().getCustomSession().getUserNo(), Constant.CHAT_PONG);
+        return Common.getEmptyMessage("",CustomSessionPreference.getInstance().getCustomSession().getUserNo(), Constant.CHAT_PONG);
     }
 }

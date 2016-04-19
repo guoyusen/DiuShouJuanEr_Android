@@ -7,4 +7,6 @@ public interface PartyActivityPresenter {
 
     void getPartyList();
 
+    void setCurrentChatting(long userNo, int msgType);
+
 }

@@ -4,6 +4,8 @@ import android.util.Log;
 
 import com.bili.diushoujuaner.model.filterhelper.HeartBeatFilter;
 import com.bili.diushoujuaner.utils.Constant;
+import com.bili.diushoujuaner.utils.GsonParser;
+import com.bili.diushoujuaner.utils.entity.dto.MessageDto;
 
 import org.apache.mina.core.future.ConnectFuture;
 import org.apache.mina.core.session.IoSession;
@@ -62,6 +64,13 @@ public class MinaClienter extends Thread{
             Log.d("guoyusenm","聊天客户端连接服务器失败" + e.getMessage());
         }
         connector.dispose();
+    }
+
+    public void sendMessage(MessageDto messageDto){
+        if(session == null){
+            return;
+        }
+        session.write(GsonParser.getInstance().toJson(messageDto));
     }
 
 }

@@ -31,7 +31,7 @@ import com.bili.diushoujuaner.model.eventhelper.GoodRecallEvent;
 import com.bili.diushoujuaner.model.eventhelper.UpdatedContactEvent;
 import com.bili.diushoujuaner.model.eventhelper.ShowHeadEvent;
 import com.bili.diushoujuaner.model.eventhelper.ShowMainMenuEvent;
-import com.bili.diushoujuaner.widget.CustomListViewRefresh;
+import com.bili.diushoujuaner.widget.LoadMoreListView;
 import com.bili.diushoujuaner.widget.TintedBitmapDrawable;
 import com.bili.diushoujuaner.widget.badgeview.BGABadgeRelativeLayout;
 import com.bili.diushoujuaner.widget.waveswipe.WaveSwipeRefreshLayout;
@@ -50,10 +50,10 @@ import butterknife.ButterKnife;
 /**
  * Created by BiLi on 2016/3/2.
  */
-public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements WaveSwipeRefreshLayout.OnRefreshListener, IHomeView, View.OnClickListener, CustomListViewRefresh.OnLoadMoreListener, OnPublishListener {
+public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements WaveSwipeRefreshLayout.OnRefreshListener, IHomeView, View.OnClickListener, LoadMoreListView.OnLoadMoreListener, OnPublishListener {
 
     @Bind(R.id.listviewRecall)
-    CustomListViewRefresh listviewRecall;
+    LoadMoreListView listviewRecall;
     @Bind(R.id.waveSwipeRefreshLayout)
     WaveSwipeRefreshLayout waveSwipeRefreshLayout;
     @Bind(R.id.ivNavHead)

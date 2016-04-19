@@ -7,6 +7,7 @@ package com.bili.diushoujuaner.utils.entity.po;
 public class Chat {
 
     private Long id;
+    private String serialNo;
     private long ownerNo;
     private long fromNo;
     private long toNo;
@@ -26,8 +27,9 @@ public class Chat {
         this.id = id;
     }
 
-    public Chat(Long id, long ownerNo, long fromNo, long toNo, String content, String time, int msgType, int conType, int status, boolean showTime, boolean read) {
+    public Chat(Long id, String serialNo, long ownerNo, long fromNo, long toNo, String content, String time, int msgType, int conType, int status, boolean showTime, boolean read) {
         this.id = id;
+        this.serialNo = serialNo;
         this.ownerNo = ownerNo;
         this.fromNo = fromNo;
         this.toNo = toNo;
@@ -46,6 +48,14 @@ public class Chat {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getSerialNo() {
+        return serialNo;
+    }
+
+    public void setSerialNo(String serialNo) {
+        this.serialNo = serialNo;
     }
 
     public long getOwnerNo() {

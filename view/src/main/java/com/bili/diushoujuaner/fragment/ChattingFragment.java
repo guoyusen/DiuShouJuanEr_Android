@@ -12,15 +12,21 @@ import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.activity.MessageActivity;
 import com.bili.diushoujuaner.adapter.ChattingAdapter;
 import com.bili.diushoujuaner.base.BaseFragment;
+import com.bili.diushoujuaner.callback.OnChatReadDismissListener;
 import com.bili.diushoujuaner.model.eventhelper.ShowHeadEvent;
 import com.bili.diushoujuaner.model.eventhelper.ShowMainMenuEvent;
+import com.bili.diushoujuaner.model.eventhelper.UpdateMessageEvent;
 import com.bili.diushoujuaner.model.eventhelper.UpdatedContactEvent;
 import com.bili.diushoujuaner.presenter.presenter.ChattingFragmentPresenter;
 import com.bili.diushoujuaner.presenter.presenter.impl.ChattingFragmentPresenterImpl;
 import com.bili.diushoujuaner.presenter.view.IChattingView;
 import com.bili.diushoujuaner.utils.Common;
 import com.bili.diushoujuaner.utils.entity.vo.ChattingVo;
-import com.bili.diushoujuaner.widget.CustomListViewRefresh;
+import com.bili.diushoujuaner.widget.LoadMoreListView;
+import com.bili.diushoujuaner.widget.swipemenu.SwipeMenu;
+import com.bili.diushoujuaner.widget.swipemenu.SwipeMenuCreator;
+import com.bili.diushoujuaner.widget.swipemenu.SwipeMenuItem;
+import com.bili.diushoujuaner.widget.swipemenu.SwipeMenuListView;
 import com.bili.diushoujuaner.widget.waveswipe.WaveSwipeRefreshLayout;
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -36,10 +42,10 @@ import butterknife.Bind;
 /**
  * Created by BiLi on 2016/3/2.
  */
-public class ChattingFragment extends BaseFragment<ChattingFragmentPresenter> implements IChattingView, WaveSwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
+public class ChattingFragment extends BaseFragment<ChattingFragmentPresenter> implements IChattingView, WaveSwipeRefreshLayout.OnRefreshListener, View.OnClickListener, OnChatReadDismissListener {
 
-    @Bind(R.id.customListViewRefresh)
-    CustomListViewRefresh customListViewRefresh;
+    @Bind(R.id.listViewChatting)
+    SwipeMenuListView listViewChatting;
     @Bind(R.id.waveSwipeRefreshLayout)
     WaveSwipeRefreshLayout waveSwipeRefreshLayout;
     @Bind(R.id.ivNavHead)
@@ -72,19 +78,27 @@ public class ChattingFragment extends BaseFragment<ChattingFragmentPresenter> im
     @Override
     public void showChatting(List<ChattingVo> chattingVoList) {
         //每次启动app，该方法必须 保证回调，只在初始化的时候做一次，之后便是添加信息，即便是下拉刷新，也是增量更新
-        if(chattingAdapter != null){
+        if(chattingAdapter == null){
             return;
         }
-        chattingAdapter = new ChattingAdapter(getContext(), chattingVoList);
-        customListViewRefresh.setAdapter(chattingAdapter);
+        chattingAdapter.refresh(chattingVoList);
     }
 
-    @Override
-    public void updateAdapter() {
-        if(chattingAdapter != null){
-            //防止离线信息快速回调，而本地聊天列表却没有加载完成
-            chattingAdapter.notifyDataSetChanged();
-        }
+    private SwipeMenuCreator getSwipeMenuCreator(){
+        SwipeMenuCreator creator = new SwipeMenuCreator(){
+            @Override
+            public void create(SwipeMenu menu) {
+                SwipeMenuItem openItem = new SwipeMenuItem(context);
+                openItem.setBackground(R.color.COLOR_RED);
+                openItem.setWidth((int)context.getResources().getDimension(R.dimen.x168));
+                openItem.setTitle("删除");
+                openItem.setTitleSize(18);
+                openItem.setTitleColor(Color.WHITE);
+                menu.addMenuItem(openItem);
+            }
+        };
+
+        return creator;
     }
 
     @Override
@@ -92,12 +106,25 @@ public class ChattingFragment extends BaseFragment<ChattingFragmentPresenter> im
         showPageHead("消息", null, null);
         ivNavHead.setOnClickListener(this);
 
-        customListViewRefresh.setCanLoadMore(false);
-        customListViewRefresh.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        chattingAdapter = new ChattingAdapter(getContext(), chattingVoList);
+        chattingAdapter.setOnChatReadDismissListener(this);
+        listViewChatting.setAdapter(chattingAdapter);
+        listViewChatting.setMenuCreator(getSwipeMenuCreator());
+        listViewChatting.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                chattingAdapter.getItem(position).setUnReadCount(0);
+                chattingAdapter.notifyDataSetChanged();
+                getBindPresenter().updateMessageRead(chattingAdapter.getItem(position).getUserNo(), chattingAdapter.getItem(position).getMsgType());
                 getBindPresenter().setCurrentChatting(chattingAdapter.getItem(position).getUserNo(), chattingAdapter.getItem(position).getMsgType());
                 startActivity(new Intent(getContext(), MessageActivity.class));
+            }
+        });
+        listViewChatting.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+            @Override
+            public void onMenuItemClick(int position, SwipeMenu menu, int index) {
+                ChattingVo chattingVo = chattingAdapter.remove(position);
+                getBindPresenter().deleteChattingVo(chattingVo.getUserNo(), chattingVo.getMsgType());
             }
         });
 
@@ -118,6 +145,13 @@ public class ChattingFragment extends BaseFragment<ChattingFragmentPresenter> im
                 EventBus.getDefault().post(new ShowMainMenuEvent());
                 break;
         }
+    }
+
+    @Override
+    public void onChatReadDismiss(int position) {
+        chattingAdapter.getItem(position).setUnReadCount(0);
+        chattingAdapter.notifyDataSetChanged();
+        getBindPresenter().updateMessageRead(chattingAdapter.getItem(position).getUserNo(), chattingAdapter.getItem(position).getMsgType());
     }
 
     @Override
@@ -144,6 +178,11 @@ public class ChattingFragment extends BaseFragment<ChattingFragmentPresenter> im
         if (chattingAdapter != null) {
             chattingAdapter.notifyDataSetChanged();
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onSuccessMessageEvent(UpdateMessageEvent updateMessageEvent){
+        getBindPresenter().getChattingVoListFromTemper();
     }
 
     @Override

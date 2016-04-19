@@ -44,6 +44,10 @@ public class BGABottomNavigationItemView extends FrameLayout implements BGABadge
 		mBadgeViewHeler.drawBadge(canvas);
 	}
 
+	public void setmDragable(boolean mDragable) {
+		mBadgeViewHeler.setmDragable(mDragable);
+	}
+
 	@Override
 	public void showCirclePointBadge() {
 		mBadgeViewHeler.showCirclePointBadge();

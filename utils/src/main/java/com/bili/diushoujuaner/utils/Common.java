@@ -18,10 +18,10 @@ import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
 
 import com.bili.diushoujuaner.utils.entity.dto.MessageDto;
 import com.bili.diushoujuaner.utils.entity.dto.OffMsgDto;
+import com.bili.diushoujuaner.utils.entity.dto.RecallDto;
 import com.bili.diushoujuaner.utils.entity.vo.MessageVo;
 import com.facebook.binaryresource.BinaryResource;
 import com.facebook.binaryresource.FileBinaryResource;
@@ -45,6 +45,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -57,11 +58,15 @@ public class Common {
 
     private static final String dd_album = Environment.getExternalStorageDirectory() + "/diudiu/album/";
     private static final String dd_voice = Environment.getExternalStorageDirectory() + "/diudiu/voice/";
-    private static SimpleDateFormat sdf_YYMMDD_HHMMSS = new SimpleDateFormat(
-            "yyyy-MM-dd HH:mm:ss");
+    private static SimpleDateFormat sdf_YYMMDD_HHMMSS = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
+    private static SimpleDateFormat sdf_Full = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS", Locale.CHINA);
 
     public static String getCurrentTimeYYMMDD_HHMMSS(){
         return sdf_YYMMDD_HHMMSS.format(new Date());
+    }
+
+    public static String getCurrentTimeFull(){
+        return sdf_Full.format(new Date());
     }
 
     private static int getYearDifferenceBetweenTime(String start, String end){
@@ -81,6 +86,18 @@ public class Common {
         return getHourDifferenceBetweenTime(start, getCurrentTimeYYMMDD_HHMMSS());
     }
 
+    public static int getHourDifferenceBetweenTime(String start, String end){
+        Calendar c1 = Calendar.getInstance();
+        Calendar c2 = Calendar.getInstance();
+        try{
+            c1.setTime(sdf_YYMMDD_HHMMSS.parse(start));
+            c2.setTime(sdf_YYMMDD_HHMMSS.parse(end));
+            return (int)Math.abs(((c1.getTimeInMillis() - c2.getTimeInMillis())/3600000));
+        }catch(ParseException pe){
+            return 0;
+        }
+    }
+
     public static int getMinuteDifferenceBetweenTime(String start, String end){
         Calendar c1 = Calendar.getInstance();
         Calendar c2 = Calendar.getInstance();
@@ -93,13 +110,13 @@ public class Common {
         }
     }
 
-    public static int getHourDifferenceBetweenTime(String start, String end){
+    public static int getMilliDifferenceBetweenTime(String start){
         Calendar c1 = Calendar.getInstance();
         Calendar c2 = Calendar.getInstance();
         try{
-            c1.setTime(sdf_YYMMDD_HHMMSS.parse(start));
-            c2.setTime(sdf_YYMMDD_HHMMSS.parse(end));
-            return (int)Math.abs(((c1.getTimeInMillis() - c2.getTimeInMillis())/3600000));
+            c1.setTime(sdf_Full.parse(start));
+            c2.setTime(sdf_Full.parse(getCurrentTimeFull()));
+            return (int)Math.abs(c1.getTimeInMillis() - c2.getTimeInMillis());
         }catch(ParseException pe){
             return 0;
         }
@@ -428,7 +445,7 @@ public class Common {
         if (isEmpty(html)) {
             return html;
         } else {
-            return html.replaceAll("&lt;", "<").replaceAll("&gt;", ">").replaceAll("&amp;", "&").replaceAll("&quot;","\"");
+            return html.replaceAll("&lt;", "<").replaceAll("&gt;", ">").replaceAll("&amp;", "&").replaceAll("&quot;","\"").replace("&nbsp;"," ");
         }
     }
 
@@ -528,15 +545,11 @@ public class Common {
         return ImagePipelineFactory.getInstance().getMainDiskStorageCache().hasKey(cacheKey) || ImagePipelineFactory.getInstance().getSmallImageDiskStorageCache().hasKey(cacheKey);
     }
 
-    /**
-     * 上传图片时使用，为每一次发布生成一个序列号
-     * @return
-     */
-    public static String getSerial(){
-        return UUID.randomUUID().toString() + "Client/Android";
+    public static String getSerialNo(){
+        return UUID.randomUUID().toString();
     }
 
-    public static MessageVo getMessageVoFromOffMsgVo(OffMsgDto offMsgDto){
+    public static MessageVo getMessageVoFromOffMsgDto(OffMsgDto offMsgDto){
         MessageVo messageVo = new MessageVo();
         messageVo.setContent(offMsgDto.getContent());
         messageVo.setTime(offMsgDto.getTime());
@@ -548,7 +561,52 @@ public class Common {
         return messageVo;
     }
 
-    public static MessageDto getMessageFromJSONString(String jsonString) {
+    public static MessageVo getMessageVoFromReceive(String jsonString){
+        MessageDto messageDto = getMessageDtoFromJSONString(jsonString);
+        MessageVo messageVo = null;
+        if(messageDto != null){
+            messageVo = new MessageVo();
+            messageVo.setMsgType(messageDto.getMsgType());
+            messageVo.setStatus(Constant.MESSAGE_STATUS_SUCCESS);
+            messageVo.setToNo(messageDto.getReceiverNo());
+            messageVo.setFromNo(messageDto.getSenderNo());
+            messageVo.setTime(messageDto.getMsgTime());
+            messageVo.setConType(messageDto.getConType());
+            messageVo.setContent(messageDto.getMsgContent());
+        }
+        return messageVo;
+    }
+
+    /**
+     * 发送成功之后，会回调messageSent方法，解析出对应的MessageVo，发送event来 通知更新状态
+     * @return
+     */
+    public static MessageVo getMessageVoFromMessageDto(MessageDto messageDto){
+        MessageVo messageVo = null;
+        try{
+            if(messageDto != null){
+                messageVo = new MessageVo();
+                messageVo.setSerialNo(messageDto.getSerialNo());
+                messageVo.setMsgType(messageDto.getMsgType());
+                messageVo.setStatus(Constant.MESSAGE_STATUS_SUCCESS);
+                messageVo.setToNo(messageDto.getReceiverNo());
+                messageVo.setFromNo(messageDto.getSenderNo());
+                messageVo.setTime(messageDto.getMsgTime());
+                messageVo.setConType(messageDto.getConType());
+                messageVo.setContent(messageDto.getMsgContent());
+            }
+        }catch(Exception e){
+            return null;
+        }
+        return messageVo;
+    }
+
+    /**
+     * 将收到的数据转化成MessageDto
+     * @param jsonString
+     * @return
+     */
+    public static MessageDto getMessageDtoFromJSONString(String jsonString) {
         MessageDto messageDto;
         try{
             messageDto = GsonParser.getInstance().fromJson(jsonString, new TypeToken<MessageDto>(){}.getType());
@@ -559,24 +617,56 @@ public class Common {
     }
 
     /**
+     * 将要准备发送的messageVo转化成MessageDto
+     */
+    public static MessageDto getMessageDtoFromMessageVo(MessageVo messageVo){
+        MessageDto messageDto = new MessageDto();
+        messageDto.setSerialNo(messageVo.getSerialNo());
+        messageDto.setConType(messageVo.getConType());
+        messageDto.setMsgContent(messageVo.getContent());
+        messageDto.setMsgType(messageVo.getMsgType());
+        messageDto.setMsgTime(messageVo.getTime());
+        messageDto.setReceiverNo(messageVo.getToNo());
+        messageDto.setSenderNo(messageVo.getFromNo());
+
+        return messageDto;
+    }
+
+    /**
      * 判断是否是心跳请求包
      * @param message
      * @return
      */
     public static boolean isMessageForHeartBeat(String message){
-        MessageDto messageDto = getMessageFromJSONString(message);
+        MessageDto messageDto = getMessageDtoFromJSONString(message);
         return messageDto.getMsgType() == Constant.CHAT_PING;
     }
 
-    public static String getEmptyMessage(long senderNo, int chatType){
+    /**
+     * 得到空的消息包
+     * @return
+     */
+    public static String getEmptyMessage(String serialNo, long senderNo, int chatType){
         MessageDto messageDto = new MessageDto();
+        messageDto.setSerialNo(serialNo);
         messageDto.setMsgContent("");
         messageDto.setMsgTime("");
         messageDto.setMsgType(chatType);
+        messageDto.setConType(Constant.CHAT_CONTENT_TEXT);
         messageDto.setReceiverNo(0);
         messageDto.setSenderNo(senderNo);
 
         return GsonParser.getInstance().toJson(messageDto);
+    }
+
+    public static MessageVo getEmptyMessageVo(long senderNo, int chatType){
+        MessageVo messageVo = new MessageVo();
+        messageVo.setSerialNo(getSerialNo());
+        messageVo.setMsgType(chatType);
+        messageVo.setFromNo(senderNo);
+        messageVo.setStatus(Constant.MESSAGE_STATUS_SENDING);
+
+        return messageVo;
     }
 
 }

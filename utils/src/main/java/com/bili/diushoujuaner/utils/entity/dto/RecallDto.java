@@ -3,12 +3,13 @@ package com.bili.diushoujuaner.utils.entity.dto;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by BiLi on 2016/3/5.
  */
-public class RecallDto implements Parcelable {
+public class RecallDto implements Parcelable, Cloneable {
 
 
     /**
@@ -146,4 +147,34 @@ public class RecallDto implements Parcelable {
             return new RecallDto[size];
         }
     };
+
+    @Override
+    protected RecallDto clone() throws CloneNotSupportedException {
+        return (RecallDto) super.clone();
+    }
+
+    public RecallDto getCloneRecallDto(){
+        RecallDto recallDto = null;
+        try{
+            recallDto = clone();
+            List<CommentDto> commentDtoList = new ArrayList<>();
+            for(CommentDto commentDto : this.commentList){
+                commentDtoList.add(commentDto.getCloneCommentDto());
+            }
+            recallDto.setCommentList(commentDtoList);
+            List<GoodDto> goodDtoList = new ArrayList<>();
+            for(GoodDto goodDto : this.goodList){
+                goodDtoList.add(goodDto.getCloneGoodDto());
+            }
+            recallDto.setGoodList(goodDtoList);
+            List<PictureDto> pictureDtoList = new ArrayList<>();
+            for(PictureDto pictureDto : this.pictureList){
+                pictureDtoList.add(pictureDto.getClonePictureDto());
+            }
+            recallDto.setPictureList(pictureDtoList);
+        }catch(CloneNotSupportedException e){
+            e.printStackTrace();
+        }
+        return recallDto;
+    }
 }

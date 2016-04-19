@@ -78,7 +78,7 @@ public class SpaceActivityPresenterImpl extends BasePresenter<ISpaceView> implem
                 hideLoading(Constant.LOADING_CENTER);
                 if(showMessage(result.getRetCode(), result.getMessage())){
                     getBindView().removeRecallByPosition(position);
-                    RecallTemper.removeRecallDto(result.getData());
+                    RecallTemper.getInstance().removeRecallDto(result.getData());
                 }
             }
 
@@ -99,13 +99,13 @@ public class SpaceActivityPresenterImpl extends BasePresenter<ISpaceView> implem
         if(recallDto != null){
             recallDto.getGoodList().add(0, goodDto);
         }
-        RecallTemper.addGood(goodDto, recallDto.getRecallNo());
+        RecallTemper.getInstance().addGood(goodDto, recallDto.getRecallNo());
     }
 
     @Override
     public void removeGoodFromLocal(RecallDto recallDto) {
         if(recallDto != null){
-            RecallTemper.removeGood(recallDto.getRecallNo());
+            RecallTemper.getInstance().removeGood(recallDto.getRecallNo());
             List<GoodDto> goodDtoList = recallDto.getGoodList();
             if(goodDtoList.isEmpty()){
                 return;
@@ -121,10 +121,10 @@ public class SpaceActivityPresenterImpl extends BasePresenter<ISpaceView> implem
 
     @Override
     public boolean executeGoodChange(boolean goodstatus, long recallNo) {
-        if(goodstatus == GoodTemper.getGoodStatus(recallNo)){
+        if(goodstatus == GoodTemper.getInstance().getGoodStatus(recallNo)){
             return goodstatus;
         }
-        if(GoodTemper.getGoodStatus(recallNo)){
+        if(GoodTemper.getInstance().getGoodStatus(recallNo)){
             getGoodAdd(recallNo);
             return true;
         }else{
@@ -165,12 +165,12 @@ public class SpaceActivityPresenterImpl extends BasePresenter<ISpaceView> implem
 
     @Override
     public boolean getGoodStatusByRecallNo(long recallNo) {
-        return GoodTemper.getGoodStatus(recallNo);
+        return GoodTemper.getInstance().getGoodStatus(recallNo);
     }
 
     @Override
     public void setGoodStatusByRecallNo(long recallNo, boolean status) {
-        GoodTemper.setGoodStatus(recallNo, status);
+        GoodTemper.getInstance().setGoodStatus(recallNo, status);
     }
 
     @Override
@@ -180,7 +180,7 @@ public class SpaceActivityPresenterImpl extends BasePresenter<ISpaceView> implem
 
     @Override
     public void addRecallDtoToTemper(RecallDto recallDto) {
-        RecallTemper.addRecallDto(recallDto);
+        RecallTemper.getInstance().addRecallDto(recallDto);
     }
 
     @Override
@@ -244,7 +244,7 @@ public class SpaceActivityPresenterImpl extends BasePresenter<ISpaceView> implem
                 if (showMessage(result.getRetCode(), result.getMessage()) && isBindViewValid()) {
                     updateRequestParam(result.getData());
                     getBindView().showMoreRecallList(result.getData());
-                    RecallTemper.addRecallDtoList(result.getData());
+                    RecallTemper.getInstance().addRecallDtoList(result.getData());
                 }else{
                     if(isBindViewValid()){
                         getBindView().setLoadMoreEnd();

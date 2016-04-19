@@ -72,19 +72,19 @@ public class RecallDetailActivityPresenterImpl extends BasePresenter<IRecallDeta
 
     @Override
     public boolean getGoodStatus(long recallNo) {
-        return GoodTemper.getGoodStatus(recallNo);
+        return GoodTemper.getInstance().getGoodStatus(recallNo);
     }
 
     @Override
     public List<GoodDto> changeGoodStatusToLocal(long recallNo) {
-        if(GoodTemper.getGoodStatus(recallNo)){
-            GoodTemper.setGoodStatus(recallNo, false);
+        if(GoodTemper.getInstance().getGoodStatus(recallNo)){
+            GoodTemper.getInstance().setGoodStatus(recallNo, false);
             if(isBindViewValid()){
                 getBindView().setGoodStatus(false);
             }
             removeGoodDtoFromTemper(recallNo);
         }else{
-            GoodTemper.setGoodStatus(recallNo, true);
+            GoodTemper.getInstance().setGoodStatus(recallNo, true);
             if(isBindViewValid()){
                 getBindView().setGoodStatus(true);
             }
@@ -102,14 +102,14 @@ public class RecallDetailActivityPresenterImpl extends BasePresenter<IRecallDeta
 
     @Override
     public RecallDto getRecallDtoByRecallNo(long recallNo) {
-        return RecallTemper.getRecallDto(recallNo);
+        return RecallTemper.getInstance().getRecallDto(recallNo);
     }
 
     @Override
     public SpannableString getSpannableString(List<GoodDto> goodDtoList){
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0, len = goodDtoList.size(); i < len; i++) {
-            String tmpNickName = ContactTemper.getFriendRemark(goodDtoList.get(i).getUserNo());
+            String tmpNickName = ContactTemper.getInstance().getFriendRemark(goodDtoList.get(i).getUserNo());
             if (tmpNickName == null) {
                 tmpNickName = goodDtoList.get(i).getNickName();
             }
@@ -122,7 +122,7 @@ public class RecallDetailActivityPresenterImpl extends BasePresenter<IRecallDeta
         SpannableString goodDetail = new SpannableString(stringBuilder.toString());
         int index = 0, tmpEnd = 0;
         for (int i = 0, len = goodDtoList.size(); i < len; i++) {
-            String tmpNickName = ContactTemper.getFriendRemark(goodDtoList.get(i).getUserNo());
+            String tmpNickName = ContactTemper.getInstance().getFriendRemark(goodDtoList.get(i).getUserNo());
             if (tmpNickName == null) {
                 tmpNickName = goodDtoList.get(i).getNickName();
             }
@@ -140,10 +140,10 @@ public class RecallDetailActivityPresenterImpl extends BasePresenter<IRecallDeta
 
     @Override
     public boolean executeGoodChange(boolean goodstatus, long recallNo){
-        if(goodstatus == GoodTemper.getGoodStatus(recallNo)){
+        if(goodstatus == GoodTemper.getInstance().getGoodStatus(recallNo)){
             return goodstatus;
         }
-        if(GoodTemper.getGoodStatus(recallNo)){
+        if(GoodTemper.getInstance().getGoodStatus(recallNo)){
             getGoodAdd(recallNo);
             return true;
         }else{
@@ -184,7 +184,7 @@ public class RecallDetailActivityPresenterImpl extends BasePresenter<IRecallDeta
 
     @Override
     public void removeRecallDto(long recallNo){
-        RecallTemper.removeRecallDto(recallNo);
+        RecallTemper.getInstance().removeRecallDto(recallNo);
     }
 
     @Override
@@ -201,7 +201,7 @@ public class RecallDetailActivityPresenterImpl extends BasePresenter<IRecallDeta
             @Override
             public void onSuccess(ActionRespon<ResponDto> result) {
                 if (showMessage(result.getRetCode(), result.getMessage())) {
-                    RecallDto recallDto = RecallTemper.getRecallDto(recallNo);
+                    RecallDto recallDto = RecallTemper.getInstance().getRecallDto(recallNo);
                     for (CommentDto commentDto : recallDto.getCommentList()) {
                         if (commentDto.getCommentNo() == result.getData().getCommentNo()) {
                             for (ResponDto responDto : commentDto.getResponList()) {
@@ -242,7 +242,7 @@ public class RecallDetailActivityPresenterImpl extends BasePresenter<IRecallDeta
             @Override
             public void onSuccess(ActionRespon<CommentDto> result) {
                 if (showMessage(result.getRetCode(), result.getMessage())) {
-                    RecallDto recallDto = RecallTemper.getRecallDto(result.getData().getRecallNo());
+                    RecallDto recallDto = RecallTemper.getInstance().getRecallDto(result.getData().getRecallNo());
                     for (CommentDto commentDto : recallDto.getCommentList()) {
                         if (commentDto.getTimeStamp() != null && commentDto.getTimeStamp().equals(result.getData().getTimeStamp())) {
                             commentDto.setAddTime(result.getData().getAddTime());
@@ -270,7 +270,7 @@ public class RecallDetailActivityPresenterImpl extends BasePresenter<IRecallDeta
         responDto.setNickNameFrom(UserInfoAction.getInstance(context).getUserFromLocal().getNickName());
         responDto.setTimeStamp(System.currentTimeMillis() + "");
 
-        RecallTemper.addResponDtoByRecallNo(recallNo, commentNo, responDto);
+        RecallTemper.getInstance().addResponDtoByRecallNo(recallNo, commentNo, responDto);
 
         return responDto;
     }
@@ -286,7 +286,7 @@ public class RecallDetailActivityPresenterImpl extends BasePresenter<IRecallDeta
         commentDto.setFromPicPath(UserInfoAction.getInstance(context).getUserFromLocal().getPicPath());
         commentDto.setResponList(new ArrayList<ResponDto>());
 
-        RecallTemper.addCommentDtoByRecallNo(recallNo, commentDto);
+        RecallTemper.getInstance().addCommentDtoByRecallNo(recallNo, commentDto);
 
         return commentDto;
     }
@@ -312,7 +312,7 @@ public class RecallDetailActivityPresenterImpl extends BasePresenter<IRecallDeta
             @Override
             public void onSuccess(ActionRespon<Long> result) {
                 if(showMessage(result.getRetCode(), result.getMessage())){
-                    RecallTemper.removeCommentByRecalllNo(recallNo, result.getData());
+                    RecallTemper.getInstance().removeCommentByRecalllNo(recallNo, result.getData());
                     if(isBindViewValid()){
                         getBindView().refreshComment();
                     }
@@ -335,7 +335,7 @@ public class RecallDetailActivityPresenterImpl extends BasePresenter<IRecallDeta
             @Override
             public void onSuccess(ActionRespon<Long> result) {
                 if (showMessage(result.getRetCode(), result.getMessage())) {
-                    RecallTemper.removeResponByRecallNo(recallNo, commentNo, result.getData());
+                    RecallTemper.getInstance().removeResponByRecallNo(recallNo, commentNo, result.getData());
                     if(isBindViewValid()){
                         getBindView().refreshComment();
                     }
@@ -353,10 +353,10 @@ public class RecallDetailActivityPresenterImpl extends BasePresenter<IRecallDeta
         GoodDto goodDto = new GoodDto();
         goodDto.setUserNo(CustomSessionPreference.getInstance().getCustomSession().getUserNo());
         goodDto.setNickName(DBManager.getInstance().getUser(CustomSessionPreference.getInstance().getCustomSession().getUserNo()).getNickName());
-        RecallTemper.addGood(goodDto, recallNo);
+        RecallTemper.getInstance().addGood(goodDto, recallNo);
     }
 
     private void removeGoodDtoFromTemper(long recallNo){
-        RecallTemper.removeGood(recallNo);
+        RecallTemper.getInstance().removeGood(recallNo);
     }
 }

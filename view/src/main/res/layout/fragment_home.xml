@@ -39,7 +39,7 @@
         android:layout_below="@+id/layoutHead"
         android:background="@color/TRANSPARENT">
 
-        <com.bili.diushoujuaner.widget.CustomListViewRefresh
+        <com.bili.diushoujuaner.widget.LoadMoreListView
             android:id="@+id/listviewRecall"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

@@ -15,21 +15,36 @@ import java.util.Hashtable;
 public class ContactTemper {
 
     //<FriendNo, FriendVo>
-    private static Hashtable<Long, FriendVo> friendVoHashtable = new Hashtable<>();
+    private Hashtable<Long, FriendVo> friendVoHashtable;
     //<PartyNo, PartyVo>
-    private static Hashtable<Long, PartyVo> partyVoHashtable = new Hashtable<>();
+    private Hashtable<Long, PartyVo> partyVoHashtable;
     //<PartyNo, HashMap<MemberNo, MemberVo>>
-    private static Hashtable<Long, HashMap<Long, MemberVo>> memberVoHashTable = new Hashtable<>();
+    private Hashtable<Long, HashMap<Long, MemberVo>> memberVoHashTable;
 
-    public static void addFriendVo(FriendVo friendVo){
+    private static ContactTemper contactTemper;
+
+    public ContactTemper(){
+        friendVoHashtable = new Hashtable<>();
+        partyVoHashtable = new Hashtable<>();
+        memberVoHashTable = new Hashtable<>();
+    }
+
+    public static synchronized ContactTemper getInstance(){
+        if(contactTemper == null){
+            contactTemper = new ContactTemper();
+        }
+        return contactTemper;
+    }
+
+    public void addFriendVo(FriendVo friendVo){
         friendVoHashtable.put(friendVo.getFriendNo(), friendVo);
     }
 
-    public static void addPartyVo(PartyVo partyVo){
+    public void addPartyVo(PartyVo partyVo){
         partyVoHashtable.put(partyVo.getPartyNo(), partyVo);
     }
 
-    public static void addMemberVo(MemberVo memberVo){
+    public void addMemberVo(MemberVo memberVo){
         if(memberVoHashTable.get(memberVo.getPartyNo()) == null){
             HashMap<Long, MemberVo> memberVoHashMap = new HashMap<>();
             memberVoHashMap.put(memberVo.getUserNo(), memberVo);
@@ -40,7 +55,7 @@ public class ContactTemper {
         }
     }
 
-    public static MemberVo getMemberVo(long partyNo, long memberNo){
+    public MemberVo getMemberVo(long partyNo, long memberNo){
         if(memberVoHashTable.get(partyNo) == null){
             return null;
         }else{
@@ -48,29 +63,29 @@ public class ContactTemper {
         }
     }
 
-    public static FriendVo getFriendVo(Long friendNo){
+    public FriendVo getFriendVo(Long friendNo){
         return friendVoHashtable.get(friendNo);
     }
 
-    public static PartyVo getPartyVo(Long partyNo){
+    public PartyVo getPartyVo(Long partyNo){
         return partyVoHashtable.get(partyNo);
     }
 
-    public static String getFriendRemark(Long friendNo){
+    public String getFriendRemark(Long friendNo){
         FriendVo friendVo = getFriendVo(friendNo);
         return friendVo != null ? friendVo.getDisplayName() : null;
     }
 
-    public static String getPartyName(Long partyNo){
+    public String getPartyName(Long partyNo){
         PartyVo partyVo = getPartyVo(partyNo);
         return partyVo != null ? partyVo.getDisplayName() : null;
     }
 
-    public static void clearFriend(){
+    public void clearFriend(){
         friendVoHashtable.clear();
     }
 
-    public static void clear(){
+    public void clear(){
         friendVoHashtable.clear();
         partyVoHashtable.clear();
         memberVoHashTable.clear();

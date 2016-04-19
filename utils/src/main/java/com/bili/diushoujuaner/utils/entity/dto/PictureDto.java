@@ -6,7 +6,7 @@ import android.os.Parcelable;
 /**
  * Created by BiLi on 2016/3/8.
  */
-public class PictureDto implements Parcelable {
+public class PictureDto implements Parcelable, Cloneable {
 
 
     /**
@@ -69,4 +69,17 @@ public class PictureDto implements Parcelable {
             return new PictureDto[size];
         }
     };
+
+    @Override
+    protected PictureDto clone() throws CloneNotSupportedException {
+        return (PictureDto)super.clone();
+    }
+
+    public PictureDto getClonePictureDto(){
+        PictureDto pictureDto = null;
+        try{
+            pictureDto = clone();
+        }catch(CloneNotSupportedException e){}
+        return pictureDto;
+    }
 }

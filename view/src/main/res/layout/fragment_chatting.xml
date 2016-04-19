@@ -14,8 +14,8 @@
         android:layout_below="@+id/layoutHead"
         android:background="@color/COLOR_WHITE">
 
-        <com.bili.diushoujuaner.widget.CustomListViewRefresh
-            android:id="@+id/customListViewRefresh"
+        <com.bili.diushoujuaner.widget.swipemenu.SwipeMenuListView
+            android:id="@+id/listViewChatting"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:divider="@null" />

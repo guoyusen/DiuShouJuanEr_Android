@@ -39,7 +39,7 @@ public class PartyAdapter extends CommonAdapter<PartyVo> {
                 holder.getView(R.id.line).setVisibility(View.INVISIBLE);
             }
             Common.displayDraweeView(partyVo.getPicPath(), (SimpleDraweeView) holder.getView(R.id.ivItemHead));
-            String displayName = ContactTemper.getPartyName(partyVo.getPartyNo());
+            String displayName = ContactTemper.getInstance().getPartyName(partyVo.getPartyNo());
             ((TextView) holder.getView(R.id.txtContactName)).setText(displayName == null ? partyVo.getDisplayName() : displayName);
         }
     }

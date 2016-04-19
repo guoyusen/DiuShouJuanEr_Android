@@ -7,6 +7,7 @@ import com.bili.diushoujuaner.model.actionhelper.action.RecallAction;
 import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
 import com.bili.diushoujuaner.model.apihelper.request.ContactInfoReq;
 import com.bili.diushoujuaner.model.apihelper.request.RecentRecallReq;
+import com.bili.diushoujuaner.model.tempHelper.ChattingTemper;
 import com.bili.diushoujuaner.utils.entity.dto.RecallDto;
 import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
 import com.bili.diushoujuaner.presenter.base.BasePresenter;
@@ -23,6 +24,11 @@ public class ContactDetailActivityPresenterImpl extends BasePresenter<IContactDe
 
     public ContactDetailActivityPresenterImpl(IContactDetailView baseView, Context context) {
         super(baseView, context);
+    }
+
+    @Override
+    public void setCurrentChatting(long userNo, int msgType) {
+        ChattingTemper.getInstance().setCurrentChatBo(userNo, msgType);
     }
 
     @Override

@@ -49,7 +49,6 @@ public class DataTypeUtil {
         older.setUpdateTime(Common.isEmpty(newer.getUpdateTime()) ? older.getUpdateTime() : newer.getUpdateTime());
         older.setWallPaper(Common.isEmpty(newer.getWallPaper()) ? older.getWallPaper() : newer.getWallPaper());
         older.setEmail(Common.isEmpty(newer.getEmail()) ? older.getEmail() : newer.getEmail());
-        older.setUserNo(newer.getUserNo() == null ? older.getUserNo() : older.getUserNo());
 
         return older;
     }

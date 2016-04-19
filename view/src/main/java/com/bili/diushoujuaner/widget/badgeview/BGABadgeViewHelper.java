@@ -220,7 +220,7 @@ public class BGABadgeViewHelper {
     public void endDragWithDismiss() {
         hiddenBadge();
         if (mDelegage != null) {
-            mDelegage.onDismiss(mBadgeable);
+            mDelegage.onDismiss();
         }
     }
 
@@ -342,6 +342,10 @@ public class BGABadgeViewHelper {
     public void hiddenBadge() {
         mIsShowBadge = false;
         mBadgeable.postInvalidate();
+    }
+
+    public void setmDragable(boolean mDragable) {
+        this.mDragable = mDragable;
     }
 
     public void showDrawable(Bitmap bitmap) {

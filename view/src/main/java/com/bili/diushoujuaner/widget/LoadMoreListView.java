@@ -17,7 +17,7 @@ import com.bili.diushoujuaner.R;
 /**
  * ListView加载更多
  */
-public class CustomListViewRefresh extends ListView implements OnScrollListener {
+public class LoadMoreListView extends ListView implements OnScrollListener {
 
 	/** 刷新中 */
 	private final static int ENDINT_REFRESH = 0;
@@ -69,17 +69,17 @@ public class CustomListViewRefresh extends ListView implements OnScrollListener 
 		}
 	}
 
-	public CustomListViewRefresh(Context pContext, AttributeSet pAttrs) {
+	public LoadMoreListView(Context pContext, AttributeSet pAttrs) {
 		super(pContext, pAttrs);
 		init(pContext);
 	}
 
-	public CustomListViewRefresh(Context pContext) {
+	public LoadMoreListView(Context pContext) {
 		super(pContext);
 		init(pContext);
 	}
 
-	public CustomListViewRefresh(Context pContext, AttributeSet pAttrs, int pDefStyle) {
+	public LoadMoreListView(Context pContext, AttributeSet pAttrs, int pDefStyle) {
 		super(pContext, pAttrs, pDefStyle);
 		init(pContext);
 	}

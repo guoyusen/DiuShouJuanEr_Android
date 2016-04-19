@@ -79,6 +79,7 @@ public class CustomGenerator {
     private static void addChat(Schema schema){
         Entity chat = schema.addEntity("Chat");
         chat.addIdProperty().autoincrement().primaryKey();
+        chat.addStringProperty("serialNo");
         chat.addLongProperty("ownerNo").notNull().index();
         chat.addLongProperty("fromNo").notNull();
         chat.addLongProperty("toNo").notNull();

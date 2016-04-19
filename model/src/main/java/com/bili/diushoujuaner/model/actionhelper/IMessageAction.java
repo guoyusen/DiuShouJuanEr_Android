@@ -13,4 +13,6 @@ public interface IMessageAction {
 
     void getMessageList(long lastId, int pageIndex, int pageSize, final ActionStringCallbackListener<ActionRespon<List<MessageVo>>> actionStringCallbackListener);
 
+    void saveMessageVo(MessageVo messageVo, ActionStringCallbackListener<ActionRespon<MessageVo>> actionStringCallbackListener);
+
 }
