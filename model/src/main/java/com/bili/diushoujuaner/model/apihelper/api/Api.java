@@ -7,7 +7,12 @@ import com.bili.diushoujuaner.model.apihelper.request.AutographModifyReq;
 import com.bili.diushoujuaner.model.apihelper.request.CommentAddReq;
 import com.bili.diushoujuaner.model.apihelper.request.CommentRemoveReq;
 import com.bili.diushoujuaner.model.apihelper.request.ContactInfoReq;
+import com.bili.diushoujuaner.model.apihelper.request.ContactsSearchReq;
 import com.bili.diushoujuaner.model.apihelper.request.FeedBackReq;
+import com.bili.diushoujuaner.model.apihelper.request.MemberNameUpdateReq;
+import com.bili.diushoujuaner.model.apihelper.request.PartyHeadUpdateReq;
+import com.bili.diushoujuaner.model.apihelper.request.PartyIntroduceUpdateReq;
+import com.bili.diushoujuaner.model.apihelper.request.PartyNameUpdateReq;
 import com.bili.diushoujuaner.model.apihelper.request.RecallPublishReq;
 import com.bili.diushoujuaner.model.apihelper.request.RecallRemoveReq;
 import com.bili.diushoujuaner.model.apihelper.request.RecallSerialReq;
@@ -50,6 +55,11 @@ public interface Api {
     String getRecallPicUpload = Constant.HOST_ADDRESS + "1.0/file/recallpic";
     String getRecallPublish = Constant.HOST_ADDRESS + "1.0/recalls/add";
     String getOffMsg = Constant.HOST_ADDRESS + "1.0/offmsgs";
+    String getMemberNameUpdate = Constant.HOST_ADDRESS + "1.0/member/modify/name";
+    String getPartyHeadUpdate = Constant.HOST_ADDRESS + "1.0/file/party/headpic";
+    String getPartyNameUpdate = Constant.HOST_ADDRESS + "1.0/party/modify/name";
+    String getPartyIntroduceUpdate = Constant.HOST_ADDRESS + "1.0/party/modify/introduce";
+    String getContactsSearch = Constant.HOST_ADDRESS + "1.0/contacts/search";
 
     /**
      * 用户登录
@@ -219,4 +229,39 @@ public interface Api {
      * @param apiStringCallbackListener
      */
     void getOffMsg(ApiStringCallbackListener apiStringCallbackListener);
+
+    /**
+     * 更新群名片
+     * @param memberNameUpdateReq
+     * @param apiStringCallbackListener
+     */
+    void getMemberNameUpdate(MemberNameUpdateReq memberNameUpdateReq, ApiStringCallbackListener apiStringCallbackListener);
+
+    /**
+     * 上传群头像
+     * @param path
+     * @param apiFileCallbackListener
+     */
+    void getPartyHeadUpdate(PartyHeadUpdateReq partyHeadUpdateReq, String path, ApiFileCallbackListener apiFileCallbackListener);
+
+    /**
+     * 更新群名称
+     * @param partyNameUpdateReq
+     * @param apiStringCallbackListener
+     */
+    void getPartyNameUpdate(PartyNameUpdateReq partyNameUpdateReq, ApiStringCallbackListener apiStringCallbackListener);
+
+    /**
+     * 更新群介绍
+     * @param partyIntroduceUpdateReq
+     * @param apiStringCallbackListener
+     */
+    void getPartyIntroduceUpdate(PartyIntroduceUpdateReq partyIntroduceUpdateReq, ApiStringCallbackListener apiStringCallbackListener);
+
+    /**
+     * 搜索童友
+     * @param contactsSearchReq
+     * @param apiStringCallbackListener
+     */
+    void getContactsSearch(ContactsSearchReq contactsSearchReq, ApiStringCallbackListener apiStringCallbackListener);
 }

@@ -52,8 +52,8 @@ public class MessageAdapter extends BaseAdapter {
         if(messageVoList == null || messageVoList.isEmpty()){
             return;
         }
-        this.messageVoList.addAll(messageVoList);
-        notifyDataSetChanged();
+        this.messageVoList.addAll(0, messageVoList);
+        notifyDataSetInvalidated();
     }
 
     public void addLast(MessageVo messageVo){
@@ -161,34 +161,22 @@ public class MessageAdapter extends BaseAdapter {
     }
 
     private void setClickListener(ViewHolder holder, final MessageVo messageVo){
-        if(holder.getView(R.id.ivHead).getTag() == null){
-            View.OnClickListener clickListener = new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if(!(messageVo.getFromNo() == CustomSessionPreference.getInstance().getCustomSession().getUserNo())){
-                        context.startActivity(new Intent(context, ContactDetailActivity.class).putExtra(ContactDetailActivity.TAG, messageVo.getFromNo()));
-                    }
+        holder.getView(R.id.ivHead).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!(messageVo.getFromNo() == CustomSessionPreference.getInstance().getCustomSession().getUserNo())){
+                    context.startActivity(new Intent(context, ContactDetailActivity.class).putExtra(ContactDetailActivity.TAG, messageVo.getFromNo()));
                 }
-            };
-            holder.getView(R.id.ivHead).setOnClickListener(clickListener);
-            holder.getView(R.id.ivHead).setTag(clickListener);
-        }else{
-            holder.getView(R.id.ivHead).setOnClickListener((View.OnClickListener)holder.getView(R.id.ivHead).getTag());
-        }
-        if(holder.getView(R.id.ivFail).getTag() == null){
-            View.OnClickListener clickListener = new View.OnClickListener(){
-                @Override
-                public void onClick(View v) {
-                    if(reSendListener != null){
-                        reSendListener.onReSendMessageVo(messageVo);
-                    }
+            }
+        });
+        holder.getView(R.id.ivFail).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(reSendListener != null){
+                    reSendListener.onReSendMessageVo(messageVo);
                 }
-            };
-            holder.getView(R.id.ivFail).setOnClickListener(clickListener);
-            holder.getView(R.id.ivFail).setTag(clickListener);
-        }else{
-            holder.getView(R.id.ivFail).setOnClickListener((View.OnClickListener)holder.getView(R.id.ivFail).getTag());
-        }
+            }
+        });
     }
 
     private void setMessageContent(ViewHolder holder, MessageVo messageVo){

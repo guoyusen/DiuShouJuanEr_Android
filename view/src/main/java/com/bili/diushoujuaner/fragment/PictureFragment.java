@@ -2,6 +2,7 @@ package com.bili.diushoujuaner.fragment;
 
 import android.graphics.drawable.Animatable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -65,8 +66,9 @@ public class PictureFragment extends Fragment{
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        ((BaseFragmentActivity)getActivity()).tintManager.setStatusBarTintResource(R.color.COLOR_BLACK);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            ((BaseFragmentActivity)getActivity()).tintManager.setStatusBarTintResource(R.color.COLOR_BLACK);
+        }
         Bundle bundle = getArguments();
         pictureVoList = bundle.getParcelableArrayList("PictureVoList");
         position = bundle.getInt("Position", 0);
@@ -182,12 +184,13 @@ public class PictureFragment extends Fragment{
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        if(isStatusTheme){
-            ((BaseFragmentActivity) getActivity()).tintManager.setStatusBarTintResource(R.color.COLOR_THEME_MAIN);
-        }else{
-            ((BaseFragmentActivity) getActivity()).tintManager.setStatusBarTintResource(R.color.TRANSPARENT_BLACK);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            if(isStatusTheme){
+                ((BaseFragmentActivity) getActivity()).tintManager.setStatusBarTintResource(R.color.COLOR_THEME_MAIN);
+            }else{
+                ((BaseFragmentActivity) getActivity()).tintManager.setStatusBarTintResource(R.color.TRANSPARENT_BLACK);
+            }
         }
-
         ButterKnife.unbind(this);
     }
 

@@ -5,14 +5,24 @@
     android:layout_height="@dimen/actionbar_height"
     android:background="@color/COLOR_THEME_MAIN">
 
-    <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/ivNavHead"
-        android:layout_width="@dimen/x80"
-        android:layout_height="@dimen/y80"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="@dimen/x24"
-        app:actualImageScaleType="focusCrop"
-        app:roundAsCircle="true"/>
+    <!--<com.facebook.drawee.view.SimpleDraweeView-->
+        <!--android:id="@+id/ivNavHead"-->
+        <!--android:layout_width="@dimen/x80"-->
+        <!--android:layout_height="@dimen/y80"-->
+        <!--android:layout_centerVertical="true"-->
+        <!--android:layout_marginLeft="@dimen/x24"-->
+        <!--app:actualImageScaleType="focusCrop"-->
+        <!--app:roundAsCircle="true"/>-->
+
+    <ImageButton
+        android:id="@+id/btnMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:src="@mipmap/icon_menu"
+        android:background="@null"
+        android:paddingLeft="@dimen/x24"
+        android:paddingRight="@dimen/x24"
+        android:layout_centerVertical="true"/>
 
     <com.bili.diushoujuaner.widget.MaterialCircleView
         android:id="@+id/defaultCircle"

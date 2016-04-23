@@ -78,4 +78,9 @@ public interface IBaseActivity {
      */
     void initHeader();
 
+    /**
+     * 退出到登录界面
+     */
+    void exitActivity();
+
 }

@@ -13,6 +13,7 @@ import com.bili.diushoujuaner.model.tempHelper.ContactTemper;
 import com.bili.diushoujuaner.model.tempHelper.GoodTemper;
 import com.bili.diushoujuaner.model.tempHelper.RecallTemper;
 import com.bili.diushoujuaner.presenter.base.BasePresenter;
+import com.bili.diushoujuaner.presenter.messager.LocalClient;
 import com.bili.diushoujuaner.presenter.presenter.SettingActivityPresenter;
 import com.bili.diushoujuaner.presenter.view.ISettingView;
 import com.bili.diushoujuaner.utils.Constant;
@@ -25,36 +26,6 @@ public class SettingActivityPresenterImpl extends BasePresenter<ISettingView> im
 
     public SettingActivityPresenterImpl(ISettingView baseView, Context context) {
         super(baseView, context);
-    }
-
-    @Override
-    public void getLogout() {
-        showLoading(Constant.LOADING_TOP,"正在退出账号");
-        UserInfoAction.getInstance(context).getLogout(new ActionStringCallbackListener<ActionRespon<Void>>() {
-            @Override
-            public void onSuccess(ActionRespon<Void> result) {
-                hideLoading(Constant.LOADING_TOP);
-                if(showMessage(result.getRetCode(), result.getMessage())){
-                    ACache.getInstance().remove(Constant.ACACHE_LAST_TIME_CONTACT);
-                    ACache.getInstance().remove(Constant.ACACHE_USER_RECALL_PREFIX + CustomSessionPreference.getInstance().getCustomSession().getUserNo());
-                    CustomSessionPreference.getInstance().clear();
-                    UserInfoAction.getInstance(context).clearUser();
-                    RecallTemper.getInstance().clear();
-                    GoodTemper.getInstance().clear();
-                    ContactTemper.getInstance().clear();
-                    ChattingTemper.getInstance().clear();
-                    if(isBindViewValid()){
-                        getBindView().exitActivity();
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(int errorCode) {
-                showError(errorCode);
-                hideLoading(Constant.LOADING_TOP);
-            }
-        });
     }
 
     @Override

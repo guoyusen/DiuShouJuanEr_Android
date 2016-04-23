@@ -308,8 +308,6 @@ public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActiv
 
     @Override
     public void setViewStatus() {
-        EventBus.getDefault().register(this);
-
         layoutGood.setOnClickListener(this);
         layoutComment.setOnClickListener(this);
         layoutSend.setOnClickListener(this);
@@ -516,11 +514,6 @@ public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActiv
             }
         });
 
-    }
-
-    @Override
-    public void onPageDestroy() {
-        EventBus.getDefault().unregister(this);
     }
 
 }

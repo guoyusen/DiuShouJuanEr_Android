@@ -8,9 +8,18 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.bili.diushoujuaner.R;
+import com.bili.diushoujuaner.activity.LoginActivity;
+import com.bili.diushoujuaner.model.eventhelper.ForceOutEvent;
+import com.bili.diushoujuaner.presenter.messager.LocalClient;
 import com.bili.diushoujuaner.utils.Constant;
+import com.bili.diushoujuaner.utils.manager.ActivityManager;
 import com.bili.diushoujuaner.widget.CustomProgress;
 import com.bili.diushoujuaner.widget.CustomToast;
+import com.bili.diushoujuaner.widget.dialog.DialogTool;
+import com.bili.diushoujuaner.widget.dialog.OnBothClickListener;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Created by BiLi on 2016/2/27.
@@ -179,5 +188,10 @@ public class BaseActivity<T> extends AbstractBaseActivity {
                 showWarning(context.getString(R.string.warning_file));
                 break;
         }
+    }
+
+    @Override
+    public void exitActivity() {
+        startActivity(new Intent(this, LoginActivity.class));
     }
 }

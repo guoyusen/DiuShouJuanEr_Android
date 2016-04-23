@@ -257,6 +257,9 @@ public class UserActivity extends BaseFragmentActivity<UserActivityPresenter> im
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == ImagePicker.RESULT_CODE_ITEMS && data != null && requestCode == 100) {
             ArrayList<ImageItemVo> images = data.getBundleExtra(ImagePicker.EXTRA_IMAGES_BUNDLE).getParcelableArrayList(ImagePicker.EXTRA_RESULT_ITEMS);
+            if(Common.isEmpty(images)){
+                return;
+            }
             getBindPresenter().updateHeadPic(images.get(0).path);
         }
     }

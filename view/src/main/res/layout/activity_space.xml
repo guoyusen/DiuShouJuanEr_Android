@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:fab="http://schemas.android.com/apk/res-auto"
-    xmlns:fresco="http://schemas.android.com/tools"
     style="@style/MatchMatch"
     android:background="@color/COLOR_WHITE">
 
@@ -67,11 +65,13 @@
 
                 </RelativeLayout>
 
-                <com.bili.diushoujuaner.widget.LoadMoreListView
+                <com.bili.diushoujuaner.widget.BottomMoreListView
                     android:id="@+id/listviewRecall"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_below="@+id/ivWallPaper"
+                    android:scrollbars="none"
+                    android:overScrollMode="never"
                     android:layout_marginTop="@dimen/y80"
                     android:divider="@color/LC_F6F6F6"
                     android:dividerHeight="@dimen/y20" />
@@ -84,9 +84,9 @@
                     android:layout_marginRight="@dimen/x24"
                     android:layout_marginTop="@dimen/y416"
                     android:src="@mipmap/icon_editor"
-                    fab:fab_colorNormal="@color/accent"
-                    fab:fab_colorPressed="@color/accent_pressed"
-                    fab:fab_colorRipple="@color/ripple" />
+                    app:fab_colorNormal="@color/accent"
+                    app:fab_colorPressed="@color/accent_pressed"
+                    app:fab_colorRipple="@color/ripple" />
 
 
             </RelativeLayout>

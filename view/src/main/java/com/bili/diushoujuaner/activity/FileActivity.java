@@ -15,6 +15,6 @@ public class FileActivity extends BaseActivity {
 
     @Override
     public void setViewStatus() {
-        showPageHead("我的文件",null,null);
+        showPageHead("最近文件",null,null);
     }
 }

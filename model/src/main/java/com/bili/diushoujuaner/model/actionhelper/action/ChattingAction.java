@@ -9,17 +9,20 @@ import com.bili.diushoujuaner.model.apihelper.api.ApiAction;
 import com.bili.diushoujuaner.model.apihelper.callback.ApiStringCallbackListener;
 import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
 import com.bili.diushoujuaner.model.databasehelper.DBManager;
+import com.bili.diushoujuaner.model.eventhelper.UpdatePartyEvent;
 import com.bili.diushoujuaner.model.tempHelper.ChattingTemper;
+import com.bili.diushoujuaner.model.tempHelper.ContactTemper;
 import com.bili.diushoujuaner.utils.Common;
 import com.bili.diushoujuaner.utils.Constant;
 import com.bili.diushoujuaner.utils.GsonParser;
 import com.bili.diushoujuaner.utils.entity.dto.OffMsgDto;
-import com.bili.diushoujuaner.utils.entity.po.Party;
 import com.bili.diushoujuaner.utils.entity.vo.MessageVo;
 import com.google.gson.reflect.TypeToken;
 import com.nanotasks.BackgroundWork;
 import com.nanotasks.Completion;
 import com.nanotasks.Tasks;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -152,6 +155,21 @@ public class ChattingAction implements IChattingAction {
                     break;
                 case Constant.CHAT_TIME:
                     break;
+                case Constant.CHAT_PARTY_HEAD:
+                    ContactTemper.getInstance().updatePartyHeadPic(item.getToNo(), item.getContent());
+                    DBManager.getInstance().updatePartyHeadPic(item.getToNo(), item.getContent());
+                    EventBus.getDefault().post(new UpdatePartyEvent(item.getToNo(), item.getContent(), Constant.CHAT_PARTY_HEAD));
+                    break;
+                case Constant.CHAT_PARTY_NAME:
+                    ContactTemper.getInstance().updatePartyName(item.getToNo(), item.getContent());
+                    DBManager.getInstance().updatePartyName(item.getToNo(), item.getContent());
+                    EventBus.getDefault().post(new UpdatePartyEvent(item.getToNo(), item.getContent(), Constant.CHAT_PARTY_NAME));
+                    break;
+                case Constant.CHAT_PARTY_MEMBER_NAME:
+                    ContactTemper.getInstance().updateMemberName(item.getToNo(), item.getFromNo(), item.getContent());
+                    DBManager.getInstance().updateMemberName(item.getToNo(), item.getFromNo(), item.getContent());
+                    EventBus.getDefault().post(new UpdatePartyEvent(item.getToNo(), item.getContent(), Constant.CHAT_PARTY_MEMBER_NAME));
+                    break;
             }
         }
         return ActionRespon.getActionRespon(msgDtoList);
@@ -160,7 +178,7 @@ public class ChattingAction implements IChattingAction {
     private MessageVo processOffMessage(OffMsgDto item){
         MessageVo messageVo = Common.getMessageVoFromOffMsgDto(item);
         //接收到的离线信息，需要插在首位，且此时需要判断是否显示时间
-        ChattingTemper.getInstance().addChattingVoNew(messageVo);
+        ChattingTemper.getInstance().addChattingVoFromServer(messageVo);
         if(messageVo.getMsgType() == Constant.CHAT_FRI){
             DBManager.getInstance().updateFriendRecent(messageVo.getFromNo(), true);
         }else if(messageVo.getMsgType() == Constant.CHAT_PAR){

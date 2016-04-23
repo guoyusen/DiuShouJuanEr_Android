@@ -9,7 +9,12 @@ import com.bili.diushoujuaner.model.apihelper.request.AutographModifyReq;
 import com.bili.diushoujuaner.model.apihelper.request.CommentAddReq;
 import com.bili.diushoujuaner.model.apihelper.request.CommentRemoveReq;
 import com.bili.diushoujuaner.model.apihelper.request.ContactInfoReq;
+import com.bili.diushoujuaner.model.apihelper.request.ContactsSearchReq;
 import com.bili.diushoujuaner.model.apihelper.request.FeedBackReq;
+import com.bili.diushoujuaner.model.apihelper.request.MemberNameUpdateReq;
+import com.bili.diushoujuaner.model.apihelper.request.PartyHeadUpdateReq;
+import com.bili.diushoujuaner.model.apihelper.request.PartyIntroduceUpdateReq;
+import com.bili.diushoujuaner.model.apihelper.request.PartyNameUpdateReq;
 import com.bili.diushoujuaner.model.apihelper.request.RecallListReq;
 import com.bili.diushoujuaner.model.apihelper.request.RecallPublishReq;
 import com.bili.diushoujuaner.model.apihelper.request.RecallRemoveReq;
@@ -174,5 +179,30 @@ public class ApiAction implements Api {
     @Override
     public void getOffMsg(ApiStringCallbackListener apiStringCallbackListener) {
         dataLoader.processStringRequest(Request.Method.GET, Api.getOffMsg, null, apiStringCallbackListener);
+    }
+
+    @Override
+    public void getMemberNameUpdate(MemberNameUpdateReq memberNameUpdateReq, ApiStringCallbackListener apiStringCallbackListener) {
+        dataLoader.processStringRequest(Request.Method.POST, Api.getMemberNameUpdate, Common.ConvertObjToMap(memberNameUpdateReq), apiStringCallbackListener);
+    }
+
+    @Override
+    public void getPartyHeadUpdate(PartyHeadUpdateReq partyHeadUpdateReq, String path, ApiFileCallbackListener apiFileCallbackListener) {
+        dataLoader.processFileUpload(Api.getPartyHeadUpdate,Common.ConvertObjToMap(partyHeadUpdateReq), "file",path, apiFileCallbackListener);
+    }
+
+    @Override
+    public void getPartyNameUpdate(PartyNameUpdateReq partyNameUpdateReq, ApiStringCallbackListener apiStringCallbackListener) {
+        dataLoader.processStringRequest(Request.Method.POST, Api.getPartyNameUpdate, Common.ConvertObjToMap(partyNameUpdateReq), apiStringCallbackListener);
+    }
+
+    @Override
+    public void getPartyIntroduceUpdate(PartyIntroduceUpdateReq partyIntroduceUpdateReq, ApiStringCallbackListener apiStringCallbackListener) {
+        dataLoader.processStringRequest(Request.Method.POST, Api.getPartyIntroduceUpdate, Common.ConvertObjToMap(partyIntroduceUpdateReq), apiStringCallbackListener);
+    }
+
+    @Override
+    public void getContactsSearch(ContactsSearchReq contactsSearchReq, ApiStringCallbackListener apiStringCallbackListener) {
+        dataLoader.processStringRequest(Request.Method.GET, Api.getContactsSearch, Common.ConvertObjToMap(contactsSearchReq), apiStringCallbackListener);
     }
 }

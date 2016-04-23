@@ -40,6 +40,9 @@ public class CustomSessionPreference {
         if (customSession.getUserNo() != null) {
             editor.putLong("userNo", customSession.getUserNo());
         }
+        if(!Common.isEmpty(customSession.getPassWord())){
+            editor.putString("passWord", customSession.getPassWord());
+        }
         editor.apply();
         this.customSession = null;
     }
@@ -52,6 +55,7 @@ public class CustomSessionPreference {
             customSession.setAccessToken(preferences.getString("accessToken", ""));
             customSession.setLastTime(preferences.getString("lastTime", ""));
             customSession.setUserNo(preferences.getLong("userNo", 0));
+            customSession.setPassWord(preferences.getString("passWord",""));
         }
 
         return customSession;

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/tools"
-    xmlns:fab="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/COLOR_WHITE"
     style="@style/MatchMatch">
 
@@ -16,7 +15,7 @@
             android:background="@color/TRANSPARENT"
             android:overScrollMode="never"
             android:scrollbars="none"
-            fab:rs_scrollCanDown="false">
+            app:rs_scrollCanDown="false">
 
             <RelativeLayout style="@style/MatchMatch">
 
@@ -152,9 +151,9 @@
                     android:layout_marginRight="@dimen/x24"
                     android:layout_marginTop="@dimen/y416"
                     android:src="@mipmap/icon_star_solid"
-                    fab:fab_colorNormal="@color/accent"
-                    fab:fab_colorPressed="@color/accent_pressed"
-                    fab:fab_colorRipple="@color/ripple" />
+                    app:fab_colorNormal="@color/accent"
+                    app:fab_colorPressed="@color/accent_pressed"
+                    app:fab_colorRipple="@color/ripple" />
 
             </RelativeLayout>
 

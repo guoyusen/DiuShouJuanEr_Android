@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/TRANSPARENT"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rectangle_solid_white"
+        android:layout_marginLeft="@dimen/x8"
+        android:layout_marginRight="@dimen/x8"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/layoutHead"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y92"
+            android:gravity="center">
+
+            <TextView
+                style="@style/TextLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="修改群头像"
+                android:textColor="@color/TC_12B7F5" />
+
+        </RelativeLayout>
+
+        <View
+            android:id="@+id/line"
+            style="@style/line"/>
+
+        <RelativeLayout
+            android:id="@+id/layoutExit"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/y92"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/txtExit"
+                style="@style/TextLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="解散该群"
+                android:textColor="@color/TC_F55555" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/layoutCancle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y92"
+        android:layout_marginBottom="@dimen/x16"
+        android:layout_marginLeft="@dimen/x8"
+        android:layout_marginRight="@dimen/x8"
+        android:layout_marginTop="@dimen/x16"
+        android:background="@drawable/rectangle_solid_white"
+        android:gravity="center">
+
+        <TextView
+            style="@style/TextLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="取消"
+            android:textColor="@color/TC_12B7F5" />
+
+    </RelativeLayout>
+
+</LinearLayout>

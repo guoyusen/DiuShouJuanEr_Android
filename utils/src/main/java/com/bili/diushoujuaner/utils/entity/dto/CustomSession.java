@@ -11,6 +11,16 @@ public class CustomSession {
 
     private Long userNo;
 
+    private String passWord;
+
+    public String getPassWord() {
+        return passWord;
+    }
+
+    public void setPassWord(String passWord) {
+        this.passWord = passWord;
+    }
+
     public String getLastTime() {
         return lastTime;
     }

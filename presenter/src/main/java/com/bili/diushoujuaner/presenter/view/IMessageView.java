@@ -18,4 +18,12 @@ public interface IMessageView extends IBaseView {
 
     void showMessageList(List<MessageVo> messageVoList);
 
+    void showMoreMessageList(List<MessageVo> messageVoList);
+
+    void loadComplete();
+
+    void loadFinish();
+
+    void showNextActivity(int showType);
+
 }

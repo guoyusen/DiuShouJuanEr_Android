@@ -13,4 +13,6 @@ public interface IBaseView {
 
     void showWarning(int warningType);
 
+    void exitActivity();
+
 }

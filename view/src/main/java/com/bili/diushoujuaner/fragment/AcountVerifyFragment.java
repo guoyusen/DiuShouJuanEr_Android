@@ -80,7 +80,6 @@ public class AcountVerifyFragment extends BaseFragment<AcountVerifyFragmentPrese
 
     public static AcountVerifyFragment instantiation(int type) {
         AcountVerifyFragment fragment = new AcountVerifyFragment();
-        EventBus.getDefault().register(fragment);
         fragment.setType(type);
         Bundle args = new Bundle();
         args.putInt("position", type);
@@ -166,7 +165,6 @@ public class AcountVerifyFragment extends BaseFragment<AcountVerifyFragmentPrese
 
     @Override
     public void onDestroyView() {
-        EventBus.getDefault().unregister(this);
         handler.removeCallbacks(customRunnable);
         super.onDestroyView();
     }

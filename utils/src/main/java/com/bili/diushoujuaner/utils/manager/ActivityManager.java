@@ -24,6 +24,13 @@ public class ActivityManager extends Application {
         return instance;
     }
 
+    public Activity getTopActivity(){
+        if(activityList == null || activityList.isEmpty()){
+            return null;
+        }
+        return activityList.get(activityList.size() - 1);
+    }
+
     public void addActivity(Activity activity) {
         activityList.add(activity);
     }

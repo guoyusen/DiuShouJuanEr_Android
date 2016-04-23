@@ -11,8 +11,6 @@ public interface MessageActivityPresenter {
 
     void getMessageList();
 
-    void resetMessageSearchParam(long rowId, int pageIndex);
-
     long getOwnerNo();
 
     void saveMessageVo(String content, int conType);
@@ -20,5 +18,9 @@ public interface MessageActivityPresenter {
     boolean validateUpdateEvent(UpdateMessageEvent updateMessageEvent);
 
     void clearCurrentChat();
+
+    void resetMessageSearchParam(long rowId, int pageIndex);
+
+    void getNextActivity();
 
 }

@@ -72,22 +72,15 @@ public class ChattingAdapter extends CommonAdapter<ChattingVo> {
                 }
                 ((BGABadgeRelativeLayout)holder.getView(R.id.layoutBadge)).showTextBadge(chattingVo.getUnReadCount() + "");
             }
-            if(holder.getView(R.id.layoutBadge).getTag() == null) {
-                BGADragDismissDelegate dragDismissDelegate = new BGADragDismissDelegate() {
-                    @Override
-                    public void onDismiss() {
-                        if(onChatReadDismissListener == null){
-                            return;
-                        }
-                        onChatReadDismissListener.onChatReadDismiss(position);
+            ((BGABadgeRelativeLayout) holder.getView(R.id.layoutBadge)).setDragDismissDelegage(new BGADragDismissDelegate() {
+                @Override
+                public void onDismiss() {
+                    if(onChatReadDismissListener == null){
+                        return;
                     }
-                };
-                holder.getView(R.id.layoutBadge).setTag(dragDismissDelegate);
-                ((BGABadgeRelativeLayout) holder.getView(R.id.layoutBadge)).setDragDismissDelegage(dragDismissDelegate);
-            }else{
-                BGADragDismissDelegate dragDismissDelegate = (BGADragDismissDelegate)holder.getView(R.id.layoutBadge).getTag();
-                ((BGABadgeRelativeLayout) holder.getView(R.id.layoutBadge)).setDragDismissDelegage(dragDismissDelegate);
-            }
+                    onChatReadDismissListener.onChatReadDismiss(position);
+                }
+            });
             //设置内容显示
 
             if(chattingVo.getMsgType() == Constant.CHAT_PAR){

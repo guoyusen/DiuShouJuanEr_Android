@@ -7,13 +7,14 @@
         android:id="@+id/layoutHead"
         layout="@layout/include_head_custom" />
 
-    <com.bili.diushoujuaner.widget.PopKeepListView
+    <com.bili.diushoujuaner.widget.MessageListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/layoutBottom"
         android:layout_below="@+id/layoutHead"
         android:transcriptMode="alwaysScroll"
+        android:scrollbars="vertical"
         android:dividerHeight="0dp"
         android:divider="@color/BG_ECEDF1"
         android:overScrollMode="never" />

@@ -25,7 +25,7 @@ public class CircleIndicator extends LinearLayout {
     private int mIndicatorMargin = -1;
     private int mIndicatorWidth = -1;
     private int mIndicatorHeight = -1;
-    private int mAnimatorResId = R.anim.dot_scale_with_alpha;
+    private int mAnimatorResId = R.animator.dot_scale_with_alpha;
     private int mAnimatorReverseResId = 0;
     private int mIndicatorBackgroundResId = R.drawable.white_radius;
     private int mIndicatorUnselectedBackgroundResId = R.drawable.white_radius;
@@ -67,7 +67,7 @@ public class CircleIndicator extends LinearLayout {
                 typedArray.getDimensionPixelSize(R.styleable.CircleIndicator_ci_margin, -1);
 
         mAnimatorResId = typedArray.getResourceId(R.styleable.CircleIndicator_ci_animator,
-                R.anim.dot_scale_with_alpha);
+                R.animator.dot_scale_with_alpha);
         mAnimatorReverseResId =
                 typedArray.getResourceId(R.styleable.CircleIndicator_ci_animator_reverse, 0);
         mIndicatorBackgroundResId =
@@ -84,7 +84,7 @@ public class CircleIndicator extends LinearLayout {
      */
     public void configureIndicator(int indicatorWidth, int indicatorHeight, int indicatorMargin) {
         configureIndicator(indicatorWidth, indicatorHeight, indicatorMargin,
-                R.anim.dot_scale_with_alpha, 0, R.drawable.white_radius, R.drawable.white_radius);
+                R.animator.dot_scale_with_alpha, 0, R.drawable.white_radius, R.drawable.white_radius);
     }
 
     public void configureIndicator(int indicatorWidth, int indicatorHeight, int indicatorMargin,
@@ -111,7 +111,7 @@ public class CircleIndicator extends LinearLayout {
         mIndicatorMargin =
                 (mIndicatorMargin < 0) ? dip2px(DEFAULT_INDICATOR_WIDTH) : mIndicatorMargin;
 
-        mAnimatorResId = (mAnimatorResId == 0) ? R.anim.dot_scale_with_alpha : mAnimatorResId;
+        mAnimatorResId = (mAnimatorResId == 0) ? R.animator.dot_scale_with_alpha : mAnimatorResId;
 
         mAnimatorOut = createAnimatorOut(context);
         mImmediateAnimatorOut = createAnimatorOut(context);

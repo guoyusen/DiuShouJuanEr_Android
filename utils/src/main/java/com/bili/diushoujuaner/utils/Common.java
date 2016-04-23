@@ -60,9 +60,20 @@ public class Common {
     private static final String dd_voice = Environment.getExternalStorageDirectory() + "/diudiu/voice/";
     private static SimpleDateFormat sdf_YYMMDD_HHMMSS = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
     private static SimpleDateFormat sdf_Full = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS", Locale.CHINA);
+    private static SimpleDateFormat sdf_YYMMDD = new SimpleDateFormat("yyyy年MM月dd日", Locale.CHINA);
 
     public static String getCurrentTimeYYMMDD_HHMMSS(){
         return sdf_YYMMDD_HHMMSS.format(new Date());
+    }
+
+    public static String getYYMMDDFromTime(String time){
+        String result = "";
+        try{
+            result = sdf_YYMMDD.format(sdf_YYMMDD_HHMMSS.parse(time));
+        }catch(ParseException pe){
+
+        }
+        return result;
     }
 
     public static String getCurrentTimeFull(){
@@ -566,6 +577,7 @@ public class Common {
         MessageVo messageVo = null;
         if(messageDto != null){
             messageVo = new MessageVo();
+            messageVo.setSerialNo(messageDto.getSerialNo());
             messageVo.setMsgType(messageDto.getMsgType());
             messageVo.setStatus(Constant.MESSAGE_STATUS_SUCCESS);
             messageVo.setToNo(messageDto.getReceiverNo());

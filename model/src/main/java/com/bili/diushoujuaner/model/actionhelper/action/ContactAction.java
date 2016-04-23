@@ -8,6 +8,10 @@ import com.bili.diushoujuaner.model.apihelper.ApiRespon;
 import com.bili.diushoujuaner.model.apihelper.api.ApiAction;
 import com.bili.diushoujuaner.model.apihelper.callback.ApiStringCallbackListener;
 import com.bili.diushoujuaner.model.apihelper.request.ContactInfoReq;
+import com.bili.diushoujuaner.model.apihelper.request.ContactsSearchReq;
+import com.bili.diushoujuaner.model.apihelper.request.MemberNameUpdateReq;
+import com.bili.diushoujuaner.model.apihelper.request.PartyIntroduceUpdateReq;
+import com.bili.diushoujuaner.model.apihelper.request.PartyNameUpdateReq;
 import com.bili.diushoujuaner.utils.entity.dto.UserDto;
 import com.bili.diushoujuaner.model.cachehelper.ACache;
 import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
@@ -56,8 +60,143 @@ public class ContactAction implements IContactAction{
     }
 
     @Override
-    public void getContactFromApi(final ContactInfoReq contactInfoReq, final ActionStringCallbackListener<ActionRespon<FriendVo>> actionStringCallbackListener) {
+    public void getContactsSearch(ContactsSearchReq contactsSearchReq, final ActionStringCallbackListener<ActionRespon<List<ContactDto>>> actionStringCallbackListener) {
+        ApiAction.getInstance().getContactsSearch(contactsSearchReq, new ApiStringCallbackListener() {
+            @Override
+            public void onSuccess(final String data) {
+                Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<List<ContactDto>>>() {
+                    @Override
+                    public ActionRespon<List<ContactDto>> doInBackground() throws Exception {
+                        ApiRespon<List<ContactDto>> result = GsonParser.getInstance().fromJson(data, new TypeToken<ActionRespon<List<ContactDto>>>(){}.getType());
+                        return ActionRespon.getActionResponFromApiRespon(result);
+                    }
+                }, new Completion<ActionRespon<List<ContactDto>>>() {
+                    @Override
+                    public void onSuccess(Context context, ActionRespon<List<ContactDto>> result) {
+                        actionStringCallbackListener.onSuccess(result);
+                    }
 
+                    @Override
+                    public void onError(Context context, Exception e) {
+                        actionStringCallbackListener.onSuccess(ActionRespon.<List<ContactDto>>getActionResponError());
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(int errorCode) {
+                actionStringCallbackListener.onFailure(errorCode);
+            }
+        });
+    }
+
+    @Override
+    public void getPartyNameUpdate(final PartyNameUpdateReq partyNameUpdateReq, final ActionStringCallbackListener<ActionRespon<String>> actionStringCallbackListener) {
+        ApiAction.getInstance().getPartyNameUpdate(partyNameUpdateReq, new ApiStringCallbackListener() {
+            @Override
+            public void onSuccess(final String data) {
+                Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<String>>() {
+                    @Override
+                    public ActionRespon<String> doInBackground() throws Exception {
+                        ApiRespon<String> result = GsonParser.getInstance().fromJson(data, new TypeToken<ApiRespon<String>>(){}.getType());
+                        if(result.getIsLegal()){
+                            ContactTemper.getInstance().updatePartyName(partyNameUpdateReq.getPartyNo(), result.getData());
+                            DBManager.getInstance().updatePartyName(partyNameUpdateReq.getPartyNo(), result.getData());
+                        }
+                        return ActionRespon.getActionResponFromApiRespon(result);
+                    }
+                }, new Completion<ActionRespon<String>>() {
+                    @Override
+                    public void onSuccess(Context context, ActionRespon<String> result) {
+                        actionStringCallbackListener.onSuccess(result);
+                    }
+
+                    @Override
+                    public void onError(Context context, Exception e) {
+                        actionStringCallbackListener.onSuccess(ActionRespon.<String>getActionResponError());
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(int errorCode) {
+                actionStringCallbackListener.onFailure(errorCode);
+            }
+        });
+    }
+
+    @Override
+    public void getPartyIntroduceUpdate(final PartyIntroduceUpdateReq partyIntroduceUpdateReq, final ActionStringCallbackListener<ActionRespon<String>> actionStringCallbackListener) {
+        ApiAction.getInstance().getPartyIntroduceUpdate(partyIntroduceUpdateReq, new ApiStringCallbackListener() {
+            @Override
+            public void onSuccess(final String data) {
+                Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<String>>() {
+                    @Override
+                    public ActionRespon<String> doInBackground() throws Exception {
+                        ApiRespon<String> result = GsonParser.getInstance().fromJson(data, new TypeToken<ApiRespon<String>>(){}.getType());
+                        if(result.getIsLegal()){
+                            ContactTemper.getInstance().updatePartyIntroduce(partyIntroduceUpdateReq.getPartyNo(), result.getData());
+                            DBManager.getInstance().updatePartyIntroduce(partyIntroduceUpdateReq.getPartyNo(), result.getData());
+                        }
+                        return ActionRespon.getActionResponFromApiRespon(result);
+                    }
+                }, new Completion<ActionRespon<String>>() {
+                    @Override
+                    public void onSuccess(Context context, ActionRespon<String> result) {
+                        actionStringCallbackListener.onSuccess(result);
+                    }
+
+                    @Override
+                    public void onError(Context context, Exception e) {
+                        actionStringCallbackListener.onSuccess(ActionRespon.<String>getActionResponError());
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(int errorCode) {
+                actionStringCallbackListener.onFailure(errorCode);
+            }
+        });
+    }
+
+    @Override
+    public void getMemberNameUpdate(final MemberNameUpdateReq memberNameUpdateReq, final ActionStringCallbackListener<ActionRespon<String>> actionStringCallbackListener) {
+        ApiAction.getInstance().getMemberNameUpdate(memberNameUpdateReq, new ApiStringCallbackListener() {
+            @Override
+            public void onSuccess(final String data) {
+                Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<String>>() {
+                    @Override
+                    public ActionRespon<String> doInBackground() throws Exception {
+                        ApiRespon<String> result = GsonParser.getInstance().fromJson(data, new TypeToken<ApiRespon<String>>(){}.getType());
+                        if(result.getIsLegal()){
+                            ContactTemper.getInstance().updateMemberName(memberNameUpdateReq.getPartyNo(), CustomSessionPreference.getInstance().getCustomSession().getUserNo(), result.getData());
+                            DBManager.getInstance().updateMemberName(memberNameUpdateReq.getPartyNo(),CustomSessionPreference.getInstance().getCustomSession().getUserNo(), result.getData());
+                        }
+                        return ActionRespon.getActionResponFromApiRespon(result);
+                    }
+                }, new Completion<ActionRespon<String>>() {
+                    @Override
+                    public void onSuccess(Context context, ActionRespon<String> result) {
+                        actionStringCallbackListener.onSuccess(result);
+                    }
+
+                    @Override
+                    public void onError(Context context, Exception e) {
+                        actionStringCallbackListener.onSuccess(ActionRespon.<String>getActionResponError());
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(int errorCode) {
+                actionStringCallbackListener.onFailure(errorCode);
+            }
+        });
+    }
+
+    @Override
+    public void getContactFromApi(final ContactInfoReq contactInfoReq, final ActionStringCallbackListener<ActionRespon<FriendVo>> actionStringCallbackListener) {
         ApiAction.getInstance().getContactInfo(contactInfoReq, new ApiStringCallbackListener() {
             @Override
             public void onSuccess(final String data) {

@@ -143,7 +143,7 @@ public class ChattingTemper {
         if(messageVo == null){
             return;
         }
-        String key = getKey(messageVo, true);
+        String key = getKey(messageVo, false);
         ChattingVo chattingVo = hashtable.get(key);
         if(chattingVo == null || !chattingVo.getSerialNo().equals(messageVo.getSerialNo())){
             return;
@@ -152,30 +152,30 @@ public class ChattingTemper {
         chattingVo.setStatus(messageVo.getStatus());
     }
 
-    public void addChattingVoNew(MessageVo messageVo){
+    public void addChattingVoFromServer(MessageVo messageVo){
         addChattingVo(messageVo, true);
     }
 
-    public void addChattingVoOld(MessageVo messageVo){
+    public void addChattingVoFromLocal(MessageVo messageVo){
         addChattingVo(messageVo, false);
     }
 
     /**
      * 发送新消息，接收新消息时使用
      */
-    private void addChattingVo(MessageVo messageVo, boolean newer){
+    private void addChattingVo(MessageVo messageVo, boolean fromServer){
         if(messageVo == null){
             return;
         }
-        if(newer){
+        if(fromServer){
             setReadable(messageVo);
         }
-        String key = getKey(messageVo, newer);
+        String key = getKey(messageVo, fromServer);
         ChattingVo chattingVo = hashtable.get(key);
         if(chattingVo != null){
             hashtable.remove(key);
             chattingVoList.remove(chattingVo);
-            if(newer){
+            if(fromServer){
                 messageVo.setTimeShow(Common.getMinuteDifferenceBetweenTime(chattingVo.getLastShowTime(), messageVo.getTime()) > 5);
             }
             chattingVo.setLastShowTime(messageVo.getTime());
@@ -183,22 +183,19 @@ public class ChattingTemper {
                 //正在聊天页面，且当前聊天的正好是接收人
                 chattingVo.setUnReadCount(0);
             }else if(!messageVo.isRead()){
-                Log.d("guoyusenr", messageVo.toString());
-                Log.d("guoyusenr", "消息未读加1");
                 chattingVo.setUnReadCount(chattingVo.getUnReadCount() + 1);
             }
         }else{
             chattingVo = new ChattingVo();
-            if(newer){
+            if(fromServer){
                 messageVo.setTimeShow(true);
             }
             chattingVo.setLastShowTime(messageVo.getTime());
             chattingVo.setUnReadCount(messageVo.isRead() ? 0 : 1);
-            if(messageVo.getStatus() == Constant.MESSAGE_STATUS_SENDING){
-                //发送状态，那么接受者才是对应的id
-                chattingVo.setUserNo(messageVo.getMsgType() == Constant.CHAT_FRI ? messageVo.getToNo() : messageVo.getFromNo());
-            }else{
+            if(fromServer){
                 chattingVo.setUserNo(messageVo.getMsgType() == Constant.CHAT_FRI ? messageVo.getFromNo() : messageVo.getToNo());
+            }else{
+                chattingVo.setUserNo(messageVo.getToNo());
             }
         }
         if(messageVo.getMsgType() == Constant.CHAT_PAR){
@@ -227,19 +224,15 @@ public class ChattingTemper {
         }
     }
 
-    private static String getKey(MessageVo messageVo, boolean newer){
-        String key = "";
-        //做如此区分，防止群号和好友号一致时导致数据有误
-        if(messageVo.getMsgType() == Constant.CHAT_FRI){
-            //好友类型  好友账号+好友聊天类型
-            //如果是新的消息，且id不为-1，那么认为此消息来源于用户自己的发送行为
-            if(newer && messageVo.getId() != -1){
-                key = messageVo.getToNo() + "_" + messageVo.getMsgType();
-            }else{
+    private static String getKey(MessageVo messageVo, boolean fromServer){
+        String key;
+        if(fromServer){//服务端发过来的数据
+            if(messageVo.getMsgType() == Constant.CHAT_FRI){
                 key = messageVo.getFromNo() + "_" + messageVo.getMsgType();
+            }else{
+                key = messageVo.getToNo() + "_" + messageVo.getMsgType();
             }
-        }else if(messageVo.getMsgType() == Constant.CHAT_PAR){
-            //群聊类型  群账号+群聊类型
+        }else{
             key = messageVo.getToNo() + "_" + messageVo.getMsgType();
         }
 

@@ -7,9 +7,11 @@ import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
 import com.bili.diushoujuaner.model.apihelper.ApiRespon;
 import com.bili.diushoujuaner.model.apihelper.api.ApiAction;
 import com.bili.diushoujuaner.model.apihelper.callback.ApiFileCallbackListener;
+import com.bili.diushoujuaner.model.apihelper.request.PartyHeadUpdateReq;
 import com.bili.diushoujuaner.model.apihelper.request.RecallSerialReq;
 import com.bili.diushoujuaner.model.callback.ActionFileCallbackListener;
 import com.bili.diushoujuaner.model.databasehelper.DBManager;
+import com.bili.diushoujuaner.model.tempHelper.ContactTemper;
 import com.bili.diushoujuaner.utils.GsonParser;
 import com.google.gson.reflect.TypeToken;
 import com.nanotasks.BackgroundWork;
@@ -33,6 +35,47 @@ public class FileAction implements IFileAction {
             fileAction = new FileAction(context);
         }
         return fileAction;
+    }
+
+    @Override
+    public void upoadPartyHeadPic(final PartyHeadUpdateReq partyHeadUpdateReq, String path, final ActionFileCallbackListener<ActionRespon<String>> actionFileCallbackListener) {
+        ApiAction.getInstance().getPartyHeadUpdate(partyHeadUpdateReq, path, new ApiFileCallbackListener() {
+            @Override
+            public void onSuccess(final String data) {
+                Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<String>>() {
+                    @Override
+                    public ActionRespon<String> doInBackground() throws Exception {
+                        ApiRespon<String> result = GsonParser.getInstance().fromJson(data, new TypeToken<ApiRespon<String>>() {
+                        }.getType());
+                        if(result.getIsLegal()){
+                            ContactTemper.getInstance().updatePartyHeadPic(partyHeadUpdateReq.getPartyNo(), result.getData());
+                            DBManager.getInstance().updatePartyHeadPic(partyHeadUpdateReq.getPartyNo(), result.getData());
+                        }
+                        return ActionRespon.getActionResponFromApiRespon(result);
+                    }
+                }, new Completion<ActionRespon<String>>() {
+                    @Override
+                    public void onSuccess(Context context, ActionRespon<String> result) {
+                        actionFileCallbackListener.onSuccess(result);
+                    }
+
+                    @Override
+                    public void onError(Context context, Exception e) {
+                        actionFileCallbackListener.onSuccess(ActionRespon.<String>getActionResponError());
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(int errorCode) {
+                actionFileCallbackListener.onFailure(errorCode);
+            }
+
+            @Override
+            public void onProgress(float progress) {
+                actionFileCallbackListener.onProgress(progress);
+            }
+        });
     }
 
     @Override

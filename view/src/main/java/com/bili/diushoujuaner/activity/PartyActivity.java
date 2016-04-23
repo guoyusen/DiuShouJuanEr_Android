@@ -15,7 +15,7 @@ import com.bili.diushoujuaner.presenter.view.IPartyView;
 import com.bili.diushoujuaner.utils.Common;
 import com.bili.diushoujuaner.utils.Constant;
 import com.bili.diushoujuaner.utils.entity.vo.PartyVo;
-import com.bili.diushoujuaner.widget.LoadMoreListView;
+import com.bili.diushoujuaner.widget.BottomMoreListView;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -31,7 +31,7 @@ public class PartyActivity extends BaseActivity<PartyActivityPresenter> implemen
 
 
     @Bind(R.id.customListViewRefresh)
-    LoadMoreListView loadMoreListView;
+    BottomMoreListView bottomMoreListView;
     @Bind(R.id.txtPartyCount)
     TextView txtPartyCount;
 
@@ -54,8 +54,8 @@ public class PartyActivity extends BaseActivity<PartyActivityPresenter> implemen
         showPageHead("群组",null,null);
 
         partyAdapter = new PartyAdapter(this, partyVoList);
-        loadMoreListView.setAdapter(partyAdapter);
-        loadMoreListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        bottomMoreListView.setAdapter(partyAdapter);
+        bottomMoreListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 getBindPresenter().setCurrentChatting(partyAdapter.getItem(position).getPartyNo(), Constant.CHAT_PAR);

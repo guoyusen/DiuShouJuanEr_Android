@@ -2,24 +2,19 @@ package com.bili.diushoujuaner.presenter.presenter.impl;
 
 import android.content.Context;
 
-import com.bili.diushoujuaner.model.actionhelper.action.ContactAction;
 import com.bili.diushoujuaner.model.actionhelper.action.MessageAction;
 import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
-import com.bili.diushoujuaner.model.apihelper.request.ContactInfoReq;
 import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
 import com.bili.diushoujuaner.model.eventhelper.UpdateMessageEvent;
 import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
 import com.bili.diushoujuaner.model.tempHelper.ChattingTemper;
 import com.bili.diushoujuaner.model.tempHelper.ContactTemper;
 import com.bili.diushoujuaner.presenter.base.BasePresenter;
-import com.bili.diushoujuaner.presenter.messager.MinaClienter;
-import com.bili.diushoujuaner.presenter.messager.Transceiver;
+import com.bili.diushoujuaner.presenter.messager.LocalClient;
 import com.bili.diushoujuaner.presenter.presenter.MessageActivityPresenter;
 import com.bili.diushoujuaner.presenter.view.IMessageView;
 import com.bili.diushoujuaner.utils.Common;
 import com.bili.diushoujuaner.utils.Constant;
-import com.bili.diushoujuaner.utils.entity.dto.MessageDto;
-import com.bili.diushoujuaner.utils.entity.vo.FriendVo;
 import com.bili.diushoujuaner.utils.entity.vo.MessageVo;
 
 import org.greenrobot.eventbus.EventBus;
@@ -37,21 +32,25 @@ public class MessageActivityPresenterImpl extends BasePresenter<IMessageView> im
         private long lastId;
         private int pageIndex;
         private int pageSize;
-        private boolean loadOver;
+        private boolean loadComplete;
 
-        public MessageSearchParam(long lastId, int pageIndex, int pageSize, boolean loadOver) {
+        public MessageSearchParam(long lastId, int pageIndex, int pageSize, boolean loadComplete) {
             this.lastId = lastId;
             this.pageSize = pageSize;
             this.pageIndex = pageIndex;
-            this.loadOver = loadOver;
+            this.loadComplete = loadComplete;
         }
 
-        public boolean isLoadOver() {
-            return loadOver;
+        public boolean isLoadComplete() {
+            return loadComplete;
         }
 
-        public void setLoadOver(boolean loadOver) {
-            this.loadOver = loadOver;
+        public void setLoadComplete(boolean loadComplete) {
+            this.loadComplete = loadComplete;
+        }
+
+        public boolean isLoadMore(){
+            return pageIndex != 1;
         }
 
         public long getLastId() {
@@ -85,6 +84,19 @@ public class MessageActivityPresenterImpl extends BasePresenter<IMessageView> im
     }
 
     @Override
+    public void getNextActivity() {
+        if(ChattingTemper.getInstance().getMsgType() == Constant.CHAT_FRI){
+            if(isBindViewValid()){
+                getBindView().showNextActivity(Constant.SHOW_TYPE_CHATTING_SETTING);
+            }
+        }else{
+            if(isBindViewValid()){
+                getBindView().showNextActivity(Constant.SHOW_TYPE_PARTY_DETAIL);
+            }
+        }
+    }
+
+    @Override
     public void clearCurrentChat() {
         ChattingTemper.getInstance().resetCurrentChatBo();
     }
@@ -109,10 +121,10 @@ public class MessageActivityPresenterImpl extends BasePresenter<IMessageView> im
             @Override
             public void onSuccess(ActionRespon<MessageVo> result) {
                 if(showMessage(result.getRetCode(), result.getMessage())){
-                    ChattingTemper.getInstance().addChattingVoNew(result.getData());
+                    ChattingTemper.getInstance().addChattingVoFromLocal(result.getData());
                     EventBus.getDefault().post(new UpdateMessageEvent(result.getData(), UpdateMessageEvent.MESSAGE_SEND));
-                    //添加到收发器中
-                    Transceiver.getInstance().addSendTask(result.getData());
+                    //发送到service
+                    LocalClient.getInstance(context).sendMessageToService(Constant.HANDLER_CHAT, result.getData());
                 }
             }
 
@@ -148,7 +160,7 @@ public class MessageActivityPresenterImpl extends BasePresenter<IMessageView> im
     public void resetMessageSearchParam(long rowId, int pageIndex) {
         messageSearchParam.setLastId(rowId);
         messageSearchParam.setPageIndex(pageIndex);
-        messageSearchParam.setLoadOver(false);
+        messageSearchParam.setLoadComplete(false);
     }
 
     @Override
@@ -163,20 +175,30 @@ public class MessageActivityPresenterImpl extends BasePresenter<IMessageView> im
 
     @Override
     public void getMessageList() {
-        if(messageSearchParam.isLoadOver()){
+        if(messageSearchParam.isLoadComplete()){
+            getBindView().loadComplete();
             return;
         }
         MessageAction.getInstance(context).getMessageList(messageSearchParam.getLastId(), messageSearchParam.getPageIndex(), messageSearchParam.getPageSize(), new ActionStringCallbackListener<ActionRespon<List<MessageVo>>>() {
             @Override
             public void onSuccess(ActionRespon<List<MessageVo>> result) {
                 if(showMessage(result.getRetCode(), result.getMessage())){
-                    if(result.getData().size() == messageSearchParam.getPageSize()){
-                        messageSearchParam.setLoadOver(false);
-                    }else if(result.getData().size() < messageSearchParam.getPageSize()){
-                        messageSearchParam.setLoadOver(true);
-                    }
                     if(isBindViewValid()){
-                        getBindView().showMessageList(result.getData());
+                        if(messageSearchParam.isLoadMore()){
+                            getBindView().loadFinish();
+                            getBindView().showMoreMessageList(result.getData());
+                        }else{
+                            if(!result.getData().isEmpty()){
+                                messageSearchParam.setLastId(result.getData().get(result.getData().size() - 1).getId());
+                            }
+                            getBindView().showMessageList(result.getData());
+                        }
+                    }
+                    if(result.getData().size() == messageSearchParam.getPageSize()){
+                        messageSearchParam.setPageIndex(messageSearchParam.getPageIndex() + 1);
+                        messageSearchParam.setLoadComplete(false);
+                    }else if(result.getData().size() < messageSearchParam.getPageSize()){
+                        messageSearchParam.setLoadComplete(true);
                     }
                 }
             }

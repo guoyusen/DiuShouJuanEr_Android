@@ -1,18 +1,24 @@
 package com.bili.diushoujuaner.presenter.messager;
 
+import android.os.Handler;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.bili.diushoujuaner.model.eventhelper.LogoutEvent;
 import com.bili.diushoujuaner.model.filterhelper.HeartBeatFilter;
 import com.bili.diushoujuaner.utils.Constant;
 import com.bili.diushoujuaner.utils.GsonParser;
 import com.bili.diushoujuaner.utils.entity.dto.MessageDto;
 
+import org.apache.mina.core.future.CloseFuture;
 import org.apache.mina.core.future.ConnectFuture;
+import org.apache.mina.core.future.IoFuture;
+import org.apache.mina.core.future.IoFutureListener;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.filter.codec.serialization.ObjectSerializationCodecFactory;
-import org.apache.mina.filter.logging.LoggingFilter;
 import org.apache.mina.transport.socket.nio.NioSocketConnector;
+import org.greenrobot.eventbus.EventBus;
 
 import java.net.InetSocketAddress;
 
@@ -26,6 +32,7 @@ public class MinaClienter extends Thread{
     private ProtocolCodecFilter protocolCodecFilter;
     private HeartBeatFilter heartBeatFilter;
     private IoSession session;
+    private Handler handler;
 
     public MinaClienter(){
         connector = new NioSocketConnector();
@@ -41,13 +48,23 @@ public class MinaClienter extends Thread{
         connector.getFilterChain().addLast("HeartBeatFilter", heartBeatFilter);
         //设定消息处理器
         connector.setHandler(new MinaClientHanler());
+
+        handler = new Handler();
+        minaClienter = this;
     }
 
-    public static synchronized MinaClienter getInstance(){
+    public static MinaClienter getInstance(){
         if(minaClienter == null){
             minaClienter = new MinaClienter();
         }
         return minaClienter;
+    }
+
+    public boolean isActive(){
+        if(session == null){
+            return false;
+        }
+        return session.isActive() && session.isConnected();
     }
 
     @Override
@@ -61,9 +78,24 @@ public class MinaClienter extends Thread{
             }
         }catch(Exception e){
             e.printStackTrace();
-            Log.d("guoyusenm","聊天客户端连接服务器失败" + e.getMessage());
+            Log.d("guoyusenm","连接服务器失败" + e.getMessage());
         }
         connector.dispose();
+    }
+
+    public void reConnect(){
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                connect();
+            }
+        },5000);
+    }
+
+    public void connect(){
+        if(!isActive()){
+            new MinaClienter().start();
+        }
     }
 
     public void sendMessage(MessageDto messageDto){
@@ -71,6 +103,21 @@ public class MinaClienter extends Thread{
             return;
         }
         session.write(GsonParser.getInstance().toJson(messageDto));
+    }
+
+    public void disConnect(){
+        if(session == null){
+            return;
+        }
+        CloseFuture closeFuture = session.getCloseFuture();
+        closeFuture.addListener(new IoFutureListener<IoFuture>() {
+            public void operationComplete(IoFuture future) {
+                if (future instanceof CloseFuture) {
+                    ((CloseFuture) future).setClosed();
+                }
+            }
+        });
+        session.closeNow();
     }
 
 }

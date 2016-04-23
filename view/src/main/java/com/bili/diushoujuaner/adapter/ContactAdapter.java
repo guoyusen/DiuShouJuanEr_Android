@@ -19,10 +19,11 @@ import java.util.Map;
  */
 public class ContactAdapter extends CommonAdapter<FriendVo> {
 
-    private Map<Integer,Integer> sectionMap = new HashMap<>();
+    private Map<Integer,Integer> sectionMap;
 
     public ContactAdapter(Context context, List<FriendVo> list){
         super(context, list, R.layout.item_main_contact);
+        sectionMap = new HashMap<>();
     }
 
     @Override

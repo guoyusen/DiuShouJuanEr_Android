@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/MatchMatch"
+    android:background="@color/BG_ECEDF1">
+
+    <com.bili.diushoujuaner.widget.scrollview.ReboundScrollView
+        android:id="@+id/reboundScrollView"
+        style="@style/MatchMatch"
+        android:background="@color/BG_ECEDF1"
+        android:overScrollMode="never"
+        android:scrollbars="none"
+        app:rs_scrollCanDown="false">
+
+        <RelativeLayout
+            style="@style/MatchMatch"
+            android:background="@color/BG_ECEDF1">
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/ivWallPaper"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y480"
+                app:actualImageScaleType="centerCrop"
+                app:placeholderImage="@mipmap/bg_menu_head"
+                app:placeholderImageScaleType="centerCrop" />
+
+            <RelativeLayout
+                android:id="@+id/layoutContactName"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y150"
+                android:layout_alignBottom="@+id/ivWallPaper"
+                android:background="@drawable/transparent_black_up_bg">
+
+                <TextView
+                    android:id="@+id/txtTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginBottom="@dimen/x24"
+                    android:layout_marginLeft="@dimen/x24"
+                    android:layout_marginStart="@dimen/x24"
+                    android:gravity="center"
+                    android:text="创建于2016年01月20日"
+                    android:textColor="@color/TC_WHITE"
+                    android:textSize="@dimen/x30" />
+
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ivWallPaper"
+                android:layout_marginTop="@dimen/y32"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:id="@+id/layoutPartyName"
+                    style="@style/MatchWrap"
+                    android:layout_height="@dimen/y112"
+                    android:background="@color/COLOR_WHITE"
+                    android:paddingLeft="@dimen/x24"
+                    android:paddingRight="@dimen/x24">
+
+                    <TextView
+                        style="@style/TextMiddle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="群名称"
+                        android:textColor="@color/TC_040404" />
+
+                    <TextView
+                        android:id="@+id/txtPartyName"
+                        style="@style/TextMiddle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/x176"
+                        android:layout_marginRight="@dimen/x72"
+                        android:ellipsize="marquee"
+                        android:gravity="center|right"
+                        android:maxLines="1"
+                        android:text="一群都比"
+                        android:textColor="@color/TC_8A8A8A" />
+
+                    <ImageView
+                        android:id="@+id/ivPartyName"
+                        android:layout_width="@dimen/x50"
+                        android:layout_height="@dimen/y50"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true" />
+
+                </RelativeLayout>
+
+                <View style="@style/line" />
+
+                <RelativeLayout
+                    android:id="@+id/layoutMemberName"
+                    style="@style/MatchWrap"
+                    android:layout_height="@dimen/y112"
+                    android:background="@color/COLOR_WHITE"
+                    android:paddingLeft="@dimen/x24"
+                    android:paddingRight="@dimen/x24">
+
+                    <TextView
+                        style="@style/TextMiddle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="我的群名片"
+                        android:textColor="@color/TC_040404" />
+
+                    <TextView
+                        android:id="@+id/txtMemberName"
+                        style="@style/TextMiddle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/x176"
+                        android:layout_marginRight="@dimen/x72"
+                        android:ellipsize="marquee"
+                        android:gravity="center|right"
+                        android:maxLines="1"
+                        android:text="小郭子"
+                        android:textColor="@color/TC_8A8A8A" />
+
+                    <ImageView
+                        android:id="@+id/ivMemberName"
+                        android:layout_width="@dimen/x50"
+                        android:layout_height="@dimen/y50"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true" />
+
+                </RelativeLayout>
+
+                <View style="@style/line" />
+
+                <RelativeLayout
+                    android:id="@+id/layoutMember"
+                    style="@style/MatchWrap"
+                    android:layout_height="@dimen/y112"
+                    android:background="@color/COLOR_WHITE"
+                    android:paddingLeft="@dimen/x24"
+                    android:paddingRight="@dimen/x24">
+
+                    <TextView
+                        style="@style/TextMiddle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="群成员"
+                        android:textColor="@color/TC_040404" />
+
+                    <TextView
+                        android:id="@+id/txtMemberCount"
+                        style="@style/TextMiddle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="@dimen/x72"
+                        android:layout_marginLeft="@dimen/x176"
+                        android:layout_marginRight="@dimen/x72"
+                        android:layout_marginStart="@dimen/x176"
+                        android:ellipsize="marquee"
+                        android:gravity="center|right"
+                        android:maxLines="1"
+                        android:text="30人"
+                        android:textColor="@color/TC_8A8A8A" />
+
+                    <ImageView
+                        android:id="@+id/ivMemberCount"
+                        android:layout_width="@dimen/x50"
+                        android:layout_height="@dimen/y50"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true" />
+
+                </RelativeLayout>
+
+                <com.bili.diushoujuaner.widget.CustomGridView
+                    android:id="@+id/gridViewMember"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/COLOR_WHITE"
+                    android:numColumns="5"
+                    android:paddingLeft="@dimen/x16"
+                    android:paddingRight="@dimen/x16"
+                    android:visibility="gone" />
+
+                <RelativeLayout
+                    android:id="@+id/layoutRecord"
+                    style="@style/MatchWrap"
+                    android:layout_height="@dimen/y112"
+                    android:layout_marginTop="@dimen/y32"
+                    android:background="@color/COLOR_WHITE"
+                    android:paddingBottom="@dimen/y32"
+                    android:paddingLeft="@dimen/x24"
+                    android:paddingRight="@dimen/x24"
+                    android:paddingTop="@dimen/y32">
+
+                    <TextView
+                        style="@style/TextMiddle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="聊天记录"
+                        android:textColor="@color/TC_040404" />
+
+                    <ImageView
+                        android:id="@+id/ivRecord"
+                        android:layout_width="@dimen/x50"
+                        android:layout_height="@dimen/y50"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true" />
+
+                </RelativeLayout>
+
+                <View style="@style/line" />
+
+                <RelativeLayout
+                    android:id="@+id/layoutFile"
+                    style="@style/MatchWrap"
+                    android:layout_height="@dimen/y112"
+                    android:background="@color/COLOR_WHITE"
+                    android:paddingBottom="@dimen/y32"
+                    android:paddingLeft="@dimen/x24"
+                    android:paddingRight="@dimen/x24"
+                    android:paddingTop="@dimen/y32">
+
+                    <TextView
+                        style="@style/TextMiddle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="最近文件"
+                        android:textColor="@color/TC_040404" />
+
+                    <ImageView
+                        android:id="@+id/ivFile"
+                        android:layout_width="@dimen/x50"
+                        android:layout_height="@dimen/y50"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/layoutIntroduce"
+                    style="@style/MatchWrap"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/y32"
+                    android:background="@color/COLOR_WHITE"
+                    android:paddingBottom="@dimen/y32"
+                    android:paddingLeft="@dimen/x24"
+                    android:paddingRight="@dimen/x24"
+                    android:paddingTop="@dimen/y32">
+
+                    <RelativeLayout
+                        android:id="@+id/layoutIntroduceHead"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/y50">
+
+                        <TextView
+                            android:id="@+id/txtIntroduceLabel"
+                            style="@style/TextMiddle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="群介绍"
+                            android:textColor="@color/TC_040404" />
+
+                        <ImageView
+                            android:id="@+id/ivIntroduce"
+                            android:layout_width="@dimen/x50"
+                            android:layout_height="@dimen/y50"
+                            android:layout_alignParentEnd="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true" />
+
+                    </RelativeLayout>
+
+                    <TextView
+                        android:id="@+id/txtIntroduce"
+                        style="@style/TextSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/layoutIntroduceHead"
+                        android:layout_marginTop="@dimen/y16"
+                        android:text="发的是煎熬开发等哈说尽快发"
+                        android:textColor="@color/TC_8A8A8A" />
+
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+    </com.bili.diushoujuaner.widget.scrollview.ReboundScrollView>
+
+    <include
+        android:id="@+id/layoutHead"
+        layout="@layout/include_head_transparent" />
+
+</FrameLayout>

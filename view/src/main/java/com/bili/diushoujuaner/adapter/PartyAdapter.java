@@ -20,10 +20,11 @@ import java.util.Map;
  */
 public class PartyAdapter extends CommonAdapter<PartyVo> {
 
-    private Map<Integer,Integer> sectionMap = new HashMap<>();
+    private Map<Integer,Integer> sectionMap;
 
     public PartyAdapter(Context context, List<PartyVo> list){
         super(context, list, R.layout.item_main_contact);
+        sectionMap = new HashMap<>();
     }
 
     @Override

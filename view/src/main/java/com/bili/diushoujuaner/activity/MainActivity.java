@@ -17,8 +17,8 @@ import android.widget.Toast;
 
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.base.BaseFragmentActivity;
+import com.bili.diushoujuaner.model.eventhelper.ForceOutEvent;
 import com.bili.diushoujuaner.model.eventhelper.StartChattingEvent;
-import com.bili.diushoujuaner.model.eventhelper.UpdateMessageEvent;
 import com.bili.diushoujuaner.model.eventhelper.UpdateReadCountEvent;
 import com.bili.diushoujuaner.presenter.presenter.MainActivityPresenter;
 import com.bili.diushoujuaner.model.eventhelper.UpdateAutographEvent;
@@ -27,6 +27,7 @@ import com.bili.diushoujuaner.model.eventhelper.ShowMainMenuEvent;
 import com.bili.diushoujuaner.fragment.ContactFragment;
 import com.bili.diushoujuaner.fragment.HomeFragment;
 import com.bili.diushoujuaner.fragment.ChattingFragment;
+import com.bili.diushoujuaner.presenter.messager.LocalClient;
 import com.bili.diushoujuaner.service.MessageService;
 import com.bili.diushoujuaner.utils.entity.po.User;
 import com.bili.diushoujuaner.presenter.presenter.impl.MainActivityPresenterImpl;
@@ -42,6 +43,9 @@ import com.bili.diushoujuaner.widget.badgeview.BGABadgeTextView;
 import com.bili.diushoujuaner.widget.badgeview.BGABottomNavigation;
 import com.bili.diushoujuaner.widget.badgeview.BGABottomNavigationItem;
 import com.bili.diushoujuaner.widget.badgeview.BGABottomNavigationItemView;
+import com.bili.diushoujuaner.widget.dialog.DialogTool;
+import com.bili.diushoujuaner.widget.dialog.OnBothClickListener;
+import com.bili.diushoujuaner.widget.dialog.OnDialogPositiveClickListener;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import org.greenrobot.eventbus.EventBus;
@@ -127,19 +131,18 @@ public class MainActivity extends BaseFragmentActivity<MainActivityPresenter> im
 
     @Override
     public void setViewStatus() {
-        EventBus.getDefault().register(this);
         setTintStatusColor(R.color.TRANSPARENT);
         initOnClickListner();
         initFragment();
         initBottomButton();
         initMenuIv();
-        startMessageService();
-
+        startMessager();
         getBindPresenter().getUserInfo();
     }
 
-    private void startMessageService(){
+    private void startMessager(){
         startService(new Intent(this, MessageService.class));
+        LocalClient.getInstance(context).bindLocalServer(MessageService.class);
     }
 
     @Override
@@ -229,10 +232,14 @@ public class MainActivity extends BaseFragmentActivity<MainActivityPresenter> im
                 startActivity(new Intent(MainActivity.this, UserActivity.class));
                 break;
             case R.id.layoutAutograph:
-                startActivity(new Intent(MainActivity.this, ContentEditActivity.class).putExtra(ContentEditActivity.TAG, Constant.EDIT_CONTENT_AUTOGRAPH));
+                startActivity(new Intent(MainActivity.this, ContentEditActivity.class)
+                        .putExtra(ContentEditActivity.TAG_TYPE, Constant.EDIT_CONTENT_AUTOGRAPH)
+                        .putExtra(ContentEditActivity.TAG_CONTENT, txtAutograph.getText().toString()));
                 break;
             case R.id.layoutFeedback:
-                startActivity(new Intent(MainActivity.this, ContentEditActivity.class).putExtra(ContentEditActivity.TAG, Constant.EDIT_CONTENT_FEEDBACK));
+                startActivity(new Intent(MainActivity.this, ContentEditActivity.class)
+                        .putExtra(ContentEditActivity.TAG_TYPE, Constant.EDIT_CONTENT_FEEDBACK)
+                        .putExtra(ContentEditActivity.TAG_CONTENT, ""));
                 break;
             case R.id.layoutNotice:
                 startActivity(new Intent(MainActivity.this, NoticeActivity.class));
@@ -286,6 +293,7 @@ public class MainActivity extends BaseFragmentActivity<MainActivityPresenter> im
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onStartChattingEvent(StartChattingEvent startChattingEvent){
         customViewPager.setCurrentItem(1, false);
+        navChat.performClick();
     }
 
     @Override
@@ -332,6 +340,6 @@ public class MainActivity extends BaseFragmentActivity<MainActivityPresenter> im
 
     @Override
     public void onPageDestroy() {
-        EventBus.getDefault().unregister(this);
+        LocalClient.getInstance(context).unBindLocalServer();
     }
 }

@@ -9,12 +9,11 @@ import com.bili.diushoujuaner.model.cachehelper.ACache;
 import com.bili.diushoujuaner.model.databasehelper.DBManager;
 import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
 import com.bili.diushoujuaner.model.preferhelper.SettingPreference;
-import com.bili.diushoujuaner.presenter.messager.Transceiver;
 import com.bili.diushoujuaner.utils.Common;
 import com.bili.diushoujuaner.utils.MessageNoticer;
+import com.bili.diushoujuaner.utils.okhttp.okhttputils.OkHttpUtils;
 import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.stetho.Stetho;
-import com.bili.diushoujuaner.utils.okhttp.okhttputils.OkHttpUtils;
 import com.orhanobut.logger.Logger;
 import com.squareup.leakcanary.LeakCanary;
 
@@ -33,9 +32,8 @@ public class CustomApplication extends Application {
         initAcache();// 初始化ACache
         initPrefs(); // 初始化SharedPreference
         initDatabase();// 初始化DBManager
-        MessageNoticer.init(this, R.raw.notify);
-        Transceiver.init();
-        if(Common.isApkDebugable(this)){
+        MessageNoticer.init(this, R.raw.notify);//消息通知
+        if(Common.isApkDebugable(this)){//在dubug模式下，启动下面的部分
             initStetho();
             initLogger(); //初始化日志处理
             CustomActivityOnCrash.install(this);

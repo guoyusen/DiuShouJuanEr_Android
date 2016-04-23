@@ -33,11 +33,12 @@ import java.util.List;
  */
 public class CommentAdapter extends CommonAdapter<CommentDto> {
 
-    private Hashtable<Long, ResponAdapter> responAdapterHashtable = new Hashtable<>();
+    private Hashtable<Long, ResponAdapter> responAdapterHashtable;
     private Drawable commentFocusDrawable;
 
     public CommentAdapter(Context context, List<CommentDto> list){
         super(context, list, R.layout.item_comment);
+        responAdapterHashtable = new Hashtable<>();
     }
 
     @Override

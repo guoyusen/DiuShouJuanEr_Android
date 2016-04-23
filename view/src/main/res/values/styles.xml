@@ -45,7 +45,7 @@
     </style>
 
     <style name="TextXLarge">
-        <item name="android:textSize">@dimen/x38</item>
+        <item name="android:textSize">@dimen/x36</item>
     </style>
 
     <style name="Btn" parent="TextLarge">

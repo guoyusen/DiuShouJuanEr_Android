@@ -63,6 +63,7 @@ public class DataLoader {
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<>();
+                headers.put("Charset", "UTF-8");
                 headers.put("Device-Type", "Client/Android");
                 headers.put("AccessToken", CustomSessionPreference.getInstance().getCustomSession().getAccessToken());
                 return headers;

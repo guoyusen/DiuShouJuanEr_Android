@@ -11,6 +11,4 @@ public interface SettingActivityPresenter {
 
     void saveSettings(SettingVo settingVo);
 
-    void getLogout();
-
 }

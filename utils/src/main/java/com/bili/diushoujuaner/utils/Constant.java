@@ -1,7 +1,5 @@
 package com.bili.diushoujuaner.utils;
 
-import android.os.Environment;
-
 /**
  * Created by BiLi on 2016/3/11.
  */
@@ -14,6 +12,8 @@ public interface Constant {
 
     int SHOW_TYPE_LOGIN = 0;
     int SHOW_TYPE_MAIN = 1;
+    int SHOW_TYPE_CHATTING_SETTING = 2;
+    int SHOW_TYPE_PARTY_DETAIL = 3;
 
     int ERROR_PARSE = -1;
 
@@ -61,9 +61,15 @@ public interface Constant {
     int EDIT_CONTENT_NONE = 0;
     int EDIT_CONTENT_AUTOGRAPH = 1;
     int EDIT_CONTENT_FEEDBACK = 2;
+    int EDIT_CONTENT_MEMBER_NAME = 3;
+    int EDIT_CONTENT_PARTY_NAME = 4;
+    int EDIT_CONTENT_PARTY_INTRODUCE = 5;
 
+    int EDIT_CONTENT_LENGTH_MEMBER_NAME = 50;
     int EDIT_CONTENT_LENGTH_AUTOGRAPH = 50;
+    int EDIT_CONTENT_LENGTH_PARTY_NAME = 50;
     int EDIT_CONTENT_LENGTH_FEEDBACK = 200;
+    int EDIT_CONTENT_LENGTH_PARTY_INTRODUCE = 100;
 
 
     int ACACHE_TIME_RECENT_RECALL = 600000;
@@ -100,6 +106,12 @@ public interface Constant {
     int CHAT_PAR = 5;
     int CHAT_GOOD = 6;
     int CHAT_STATUS = 7;
+    int CHAT_PARTY_NAME = 8;//群广播-群名称
+    int CHAT_PARTY_HEAD = 9;//群广播-头像
+    int CHAT_PARTY_MEMBER_UPDATE = 10;//群成员增删
+    int CHAT_PARTY_UNGROUP = 11;//群解散
+    int CHAT_PARTY_INTRODUCE = 12;//修改群介绍
+    int CHAT_PARTY_MEMBER_NAME = 13;//群成员修改自己的群名片
     // 聊天消息中content的类型
     int CHAT_CONTENT_EMPTY = 0;
     int CHAT_CONTENT_TEXT = 1;
@@ -112,5 +124,25 @@ public interface Constant {
     int MESSAGE_STATUS_SENDING = 0;
     int MESSAGE_STATUS_FAIL = 1;
     int MESSAGE_STATUS_SUCCESS = 2;
+
+    //service和client通信过程中的消息类型，对应于CHAT_...
+    int HANDLER_INIT = 1;
+    int HANDLER_CHAT = 2;
+    int HANDLER_TIME = 3;
+    int HANDLER_CLOSE = 4;
+    int HANDLER_GOOD = 5;
+    int HANDLER_STATUS = 6;
+    int HANDLER_LOGIN = 7;
+    int HANDLER_RELOGIN = 8;
+    int HANDLER_LOGINING = 9;
+    int HANDLER_LOGOUT = 10;
+    int HANDLER_PARTY_NAME = 11;//群广播-群名称
+    int HANDLER_PARTY_HEAD = 12;//群广播-头像
+    int HANDLER_PARTY_MEMBER_UPDATE = 13;//群成员增删
+    int HANDLER_PARTY_UNGROUP = 14;//群解散
+    int HANDLER_PARTY_MEMBER_NAME = 15;//修改群名片
+
+    int MEMBER_HEAD_SERVER = 1;
+    int MEMBER_HEAD_LOCAL = 2;
 
 }

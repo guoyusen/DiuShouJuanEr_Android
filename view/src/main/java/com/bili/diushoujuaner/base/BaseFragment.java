@@ -18,6 +18,9 @@ import com.bili.diushoujuaner.utils.Constant;
 import com.bili.diushoujuaner.widget.CustomProgress;
 import com.bili.diushoujuaner.widget.CustomToast;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.EventBusException;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -51,6 +54,9 @@ public class BaseFragment<T> extends Fragment {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
             resetStatus();
         }
+        try{
+            EventBus.getDefault().register(this);
+        }catch(EventBusException ebe){}
         setViewStatus();
         return view;
     }
@@ -103,11 +109,12 @@ public class BaseFragment<T> extends Fragment {
 
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
+        EventBus.getDefault().unregister(this);
         if(basePresenter != null){
             basePresenter.detachView();
         }
+        ButterKnife.unbind(this);
+        super.onDestroyView();
     }
 
     protected T getBindPresenter(){
@@ -177,5 +184,8 @@ public class BaseFragment<T> extends Fragment {
                 showWarning(context.getString(R.string.warning_file));
                 break;
         }
+    }
+
+    public void exitActivity(){
     }
 }

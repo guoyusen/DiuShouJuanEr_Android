@@ -4,8 +4,10 @@ import com.bili.diushoujuaner.utils.entity.vo.FriendVo;
 import com.bili.diushoujuaner.utils.entity.vo.MemberVo;
 import com.bili.diushoujuaner.utils.entity.vo.PartyVo;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Hashtable;
+import java.util.List;
 
 /**
  * Created by BiLi on 2016/3/23.
@@ -60,6 +62,50 @@ public class ContactTemper {
             return null;
         }else{
             return memberVoHashTable.get(partyNo).get(memberNo);
+        }
+    }
+
+    public void updateMemberName(long partyNo, long memberNo, String memberName){
+        if(memberVoHashTable.get(partyNo) == null || memberVoHashTable.get(partyNo).get(memberNo) == null){
+            return;
+        }else{
+            memberVoHashTable.get(partyNo).get(memberNo).setMemberName(memberName);
+        }
+    }
+
+    public void updatePartyIntroduce(long partyNo, String introduce){
+        if(partyVoHashtable.get(partyNo) == null){
+            return;
+        }
+        partyVoHashtable.get(partyNo).setInformation(introduce);
+    }
+
+    public void updatePartyName(long partyNo, String partyName){
+        if(partyVoHashtable.get(partyNo) == null){
+            return;
+        }
+        partyVoHashtable.get(partyNo).setDisplayName(partyName);
+    }
+
+    public void updatePartyHeadPic(long partyNo, String path){
+        if(partyVoHashtable.get(partyNo) == null){
+            return;
+        }
+        partyVoHashtable.get(partyNo).setPicPath(path);
+    }
+
+    public List<MemberVo> getMemberVoList(long partyNo){
+        List<MemberVo> memberVoList = new ArrayList<>();
+        if(memberVoHashTable.get(partyNo) == null){
+            return memberVoList;
+        }else{
+            for(MemberVo memberVo : memberVoHashTable.get(partyNo).values()){
+                memberVoList.add(memberVo);
+                if(memberVoList.size() >=  4){
+                    break;
+                }
+            }
+            return memberVoList;
         }
     }
 

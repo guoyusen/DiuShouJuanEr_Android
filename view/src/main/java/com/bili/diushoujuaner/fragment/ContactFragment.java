@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -48,18 +49,16 @@ public class ContactFragment extends BaseFragment<ContactFragmentPresenter> impl
     RelativeLayout layoutParty;
     @Bind(R.id.txtRight)
     TextView txtRight;
-    @Bind(R.id.ivNavHead)
-    SimpleDraweeView ivNavHead;
+    @Bind(R.id.btnMenu)
+    ImageButton btnMenu;
     @Bind(R.id.txtPartyCount)
     TextView txtPartyCount;
 
     private ContactAdapter contactAdapter;
     private List<FriendVo> friendVoList;
-    private String headPicUrl;
 
     public static ContactFragment instantiation(int position) {
         ContactFragment fragment = new ContactFragment();
-        EventBus.getDefault().register(fragment);
         Bundle args = new Bundle();
         args.putInt("position", position);
         fragment.setArguments(args);
@@ -82,10 +81,8 @@ public class ContactFragment extends BaseFragment<ContactFragmentPresenter> impl
         showPageHead("联系人", null, "添加");
 
         layoutParty.setOnClickListener(this);
-        ivNavHead.setOnClickListener(this);
+        btnMenu.setOnClickListener(this);
         txtRight.setOnClickListener(this);
-
-        Common.displayDraweeView(headPicUrl, ivNavHead);
 
         contactAdapter = new ContactAdapter(getContext(), friendVoList);
         customListView.setAdapter(contactAdapter);
@@ -110,7 +107,7 @@ public class ContactFragment extends BaseFragment<ContactFragmentPresenter> impl
             case R.id.txtRight:
                 startActivity(new Intent(getContext(), ContactSearchActivity.class));
                 break;
-            case R.id.ivNavHead:
+            case R.id.btnMenu:
                 EventBus.getDefault().post(new ShowMainMenuEvent());
                 break;
         }
@@ -127,17 +124,4 @@ public class ContactFragment extends BaseFragment<ContactFragmentPresenter> impl
         }
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onShowHeadEvent(ShowHeadEvent showHeadEvent) {
-        this.headPicUrl = showHeadEvent.getHeadPicUrl();
-        if(ivNavHead != null){
-            Common.displayDraweeView(this.headPicUrl, ivNavHead);
-        }
-    }
-
-    @Override
-    public void onDestroyView() {
-        EventBus.getDefault().unregister(this);
-        super.onDestroyView();
-    }
 }

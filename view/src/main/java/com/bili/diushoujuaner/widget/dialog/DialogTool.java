@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.bili.diushoujuaner.R;
 
@@ -17,6 +18,7 @@ public class DialogTool {
 
     public static void createDropInfoDialog(final Context context, final OnDialogPositiveClickListener onDialogPositiveClickListener) {
         final AlertDialog dialog = new AlertDialog.Builder(context).create();
+        dialog.setCanceledOnTouchOutside(false);
         dialog.show();
         Window window = dialog.getWindow();
         window.setContentView(R.layout.layout_dialog_drop_info);
@@ -33,6 +35,30 @@ public class DialogTool {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
+            }
+        });
+    }
+
+    public static void createLoginConflictDialog(final Context context, final OnBothClickListener onBothClickListener) {
+        final AlertDialog dialog = new AlertDialog.Builder(context).create();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
+        Window window = dialog.getWindow();
+        window.setContentView(R.layout.layout_dialog_login_conflict);
+        Button btnExit = (Button) window.findViewById(R.id.btnExit);
+        Button btnLogin = (Button) window.findViewById(R.id.btnLogin);
+        btnExit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                onBothClickListener.onNegativeClick();
+            }
+        });
+        btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                onBothClickListener.onPositiveClick();
             }
         });
     }
@@ -156,6 +182,49 @@ public class DialogTool {
             public void onClick(View v) {
                 dialog.dismiss();
                 onDialogPositiveClickListener.onPositiveClicked();
+            }
+        });
+    }
+
+    public static void createPartyDetailDialog(final Context context, boolean isOwner, final OnPartyDetailClickListener onPartyDetailClickListener){
+        final AlertDialog dialog = new AlertDialog.Builder(context).create();
+        dialog.show();
+        Window window = dialog.getWindow();
+        window.setContentView(R.layout.layout_dialog_party_detail);
+        window.setBackgroundDrawableResource(R.color.TRANSPARENT);
+        window.setWindowAnimations(R.style.dialogWindowAnim);
+        window.setGravity(Gravity.BOTTOM);
+        RelativeLayout layoutCancle = (RelativeLayout) window.findViewById(R.id.layoutCancle);
+        View line = window.findViewById(R.id.line);
+        RelativeLayout layoutExit = (RelativeLayout) window.findViewById(R.id.layoutExit);
+        RelativeLayout layoutHead = (RelativeLayout) window.findViewById(R.id.layoutHead);
+        if(isOwner){
+            layoutHead.setVisibility(View.VISIBLE);
+            line.setVisibility(View.VISIBLE);
+            ((TextView) window.findViewById(R.id.txtExit)).setText("解散该群");
+        }else{
+            layoutHead.setVisibility(View.GONE);
+            line.setVisibility(View.GONE);
+            ((TextView) window.findViewById(R.id.txtExit)).setText("退出该群");
+        }
+        layoutCancle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        layoutExit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                onPartyDetailClickListener.onPartyExit();
+            }
+        });
+        layoutHead.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                onPartyDetailClickListener.onUpdateHead();
             }
         });
     }

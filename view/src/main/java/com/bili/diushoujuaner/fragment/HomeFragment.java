@@ -31,7 +31,7 @@ import com.bili.diushoujuaner.model.eventhelper.GoodRecallEvent;
 import com.bili.diushoujuaner.model.eventhelper.UpdatedContactEvent;
 import com.bili.diushoujuaner.model.eventhelper.ShowHeadEvent;
 import com.bili.diushoujuaner.model.eventhelper.ShowMainMenuEvent;
-import com.bili.diushoujuaner.widget.LoadMoreListView;
+import com.bili.diushoujuaner.widget.BottomMoreListView;
 import com.bili.diushoujuaner.widget.TintedBitmapDrawable;
 import com.bili.diushoujuaner.widget.badgeview.BGABadgeRelativeLayout;
 import com.bili.diushoujuaner.widget.waveswipe.WaveSwipeRefreshLayout;
@@ -50,14 +50,14 @@ import butterknife.ButterKnife;
 /**
  * Created by BiLi on 2016/3/2.
  */
-public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements WaveSwipeRefreshLayout.OnRefreshListener, IHomeView, View.OnClickListener, LoadMoreListView.OnLoadMoreListener, OnPublishListener {
+public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements WaveSwipeRefreshLayout.OnRefreshListener, IHomeView, View.OnClickListener, BottomMoreListView.OnLoadMoreListener, OnPublishListener {
 
     @Bind(R.id.listviewRecall)
-    LoadMoreListView listviewRecall;
+    BottomMoreListView listviewRecall;
     @Bind(R.id.waveSwipeRefreshLayout)
     WaveSwipeRefreshLayout waveSwipeRefreshLayout;
-    @Bind(R.id.ivNavHead)
-    SimpleDraweeView ivNavHead;
+    @Bind(R.id.btnMenu)
+    ImageButton btnMenu;
     @Bind(R.id.layoutTip)
     RelativeLayout layoutTip;
     @Bind(R.id.ivTip)
@@ -76,7 +76,6 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
     private boolean isGoodStatusInited = false;
     private CustomRunnable customRunnable;
     private long goodRecallNo;
-    private String headPicUrl;
     private AnimationDrawable uplaodingAni;
 
 
@@ -91,7 +90,6 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
 
     public static HomeFragment instantiation(int position) {
         HomeFragment fragment = new HomeFragment();
-        EventBus.getDefault().register(fragment);
         Bundle args = new Bundle();
         args.putInt("position", position);
         fragment.setArguments(args);
@@ -121,12 +119,11 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
         waveSwipeRefreshLayout.setColorSchemeColors(Color.WHITE, Color.WHITE);
         waveSwipeRefreshLayout.setWaveColor(ContextCompat.getColor(context, R.color.COLOR_THEME_MAIN));
         waveSwipeRefreshLayout.setOnRefreshListener(this);
-        ivNavHead.setOnClickListener(this);
+        btnMenu.setOnClickListener(this);
         btnRight.setOnClickListener(this);
         layoutProgress.setOnClickListener(this);
 
         ivTip.setImageDrawable(new TintedBitmapDrawable(getResources(), R.mipmap.icon_nodata, ContextCompat.getColor(context, R.color.COLOR_BFBFBF)));
-        Common.displayDraweeView(headPicUrl, ivNavHead);
 
         recallAdapter = new RecallAdapter(getContext(), recallDtoList, Constant.RECALL_ADAPTER_HOME, Constant.RECALL_GOOD_HOME_INDEX);
         listviewRecall.setAdapter(recallAdapter);
@@ -148,7 +145,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.ivNavHead:
+            case R.id.btnMenu:
                 EventBus.getDefault().post(new ShowMainMenuEvent());
                 break;
             case R.id.btnRight:
@@ -254,14 +251,6 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onShowHeadEvent(ShowHeadEvent showHeadEvent) {
-        this.headPicUrl = showHeadEvent.getHeadPicUrl();
-        if (ivNavHead != null) {
-            Common.displayDraweeView(this.headPicUrl, ivNavHead);
-        }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onGoodRecallEvent(GoodRecallEvent goodRecallEvent) {
         if (!(goodRecallEvent.getIndex() == Constant.RECALL_GOOD_HOME_INDEX && goodRecallEvent.getType() == Constant.RECALL_ADAPTER_HOME)) {
             return;
@@ -282,7 +271,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onUpdatedContactEvent(UpdatedContactEvent updatedContactEvent) {
         if (recallAdapter != null) {
-            recallAdapter.notifyDataSetChanged();
+            recallAdapter.notifyDataSetInvalidated();
         }
     }
 
@@ -297,8 +286,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
     @Override
     public void onDestroyView() {
         RecallPublisher.getInstance(context).unregister(this);
-        EventBus.getDefault().unregister(this);
-        super.onDestroyView();
         ButterKnife.unbind(this);
+        super.onDestroyView();
     }
 }

@@ -8,6 +8,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.bili.diushoujuaner.R;
+import com.bili.diushoujuaner.activity.LoginActivity;
 import com.bili.diushoujuaner.utils.Constant;
 import com.bili.diushoujuaner.widget.CustomProgress;
 import com.bili.diushoujuaner.widget.CustomToast;
@@ -179,5 +180,10 @@ public class BaseFragmentActivity<T> extends AbstractBaseFragmentActivity {
                 showWarning(context.getString(R.string.warning_file));
                 break;
         }
+    }
+
+    @Override
+    public void exitActivity() {
+        startActivity(new Intent(this, LoginActivity.class));
     }
 }

@@ -103,7 +103,7 @@ public class ContactDetailActivity extends BaseActivity<ContactDetailActivityPre
 
     @Override
     public void setViewStatus() {
-        showPageHead(null, null, "更多");
+        showPageHead(null, R.mipmap.icon_menu, null);
         layoutHead.setBackgroundColor(ContextCompat.getColor(context, R.color.COLOR_THEME_MAIN));
 
         layoutRecent.setOnClickListener(this);

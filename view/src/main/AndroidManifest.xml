@@ -30,7 +30,10 @@
             android:name="com.bili.diushoujuaner.service.MessageService"
             android:enabled="true"
             android:icon="@mipmap/ic_launcher"
-            android:exported="false" />
+            android:exported="false"/>
+
+        <!--android:process=":MessageService"-->
+
 
         <activity
             android:name=".activity.MainActivity"
@@ -140,6 +143,18 @@
             android:name=".activity.ProgressActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".activity.ChattingSettingViewActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
+
+        <activity
+            android:name=".activity.PartyDetailActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
     </application>
 
 </manifest>

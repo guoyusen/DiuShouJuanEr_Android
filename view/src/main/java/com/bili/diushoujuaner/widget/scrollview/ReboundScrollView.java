@@ -82,7 +82,7 @@ public class ReboundScrollView extends ScrollView {
                 t.recycle();
             }
         }
-        startAlpha = (int)getResources().getDimension(R.dimen.y100);
+        startAlpha = (int)getResources().getDimension(R.dimen.y1);
         endAlpha = (int)getResources().getDimension(R.dimen.y200);
     }
 

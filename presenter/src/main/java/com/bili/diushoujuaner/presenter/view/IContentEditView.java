@@ -7,8 +7,6 @@ import com.bili.diushoujuaner.presenter.base.IBaseView;
  */
 public interface IContentEditView extends IBaseView {
 
-    void showHint(String content);
-
     void finishView();
 
 }

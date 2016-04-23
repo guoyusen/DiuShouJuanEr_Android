@@ -9,6 +9,10 @@ public interface ContentEditActivityPresenter {
 
     void publishNewFeedBack(String feedBack);
 
-    void getOldAutograph();
+    void publishNewMemberName(String memberName);
+
+    void publishNewPartyName(String partyName);
+
+    void publishNewPartyIntroduce(String introduce);
 
 }

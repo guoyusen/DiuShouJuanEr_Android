@@ -10,9 +10,19 @@ import android.view.WindowManager;
 
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.application.CustomApplication;
+import com.bili.diushoujuaner.model.eventhelper.ForceOutEvent;
 import com.bili.diushoujuaner.presenter.base.BasePresenter;
+import com.bili.diushoujuaner.presenter.messager.LocalClient;
+import com.bili.diushoujuaner.utils.Constant;
 import com.bili.diushoujuaner.utils.manager.ActivityManager;
 import com.bili.diushoujuaner.utils.manager.SystemBarTintManager;
+import com.bili.diushoujuaner.widget.dialog.DialogTool;
+import com.bili.diushoujuaner.widget.dialog.OnBothClickListener;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.EventBusException;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.ButterKnife;
 
@@ -47,6 +57,9 @@ public abstract class AbstractBaseActivity extends Activity implements IBaseActi
             tintStatusColor();
             resetStatus();
         }
+        try{
+            EventBus.getDefault().register(this);
+        }catch(EventBusException ebe){}
         setViewStatus();
     }
 
@@ -87,13 +100,14 @@ public abstract class AbstractBaseActivity extends Activity implements IBaseActi
 
     @Override
     protected void onDestroy() {
+        EventBus.getDefault().unregister(this);
         if(basePresenter != null){
             basePresenter.detachView();
         }
         onPageDestroy();
         ButterKnife.unbind(this);
-        super.onDestroy();
         ActivityManager.getInstance().removeActivity(this);
+        super.onDestroy();
     }
 
     @Override
@@ -106,6 +120,24 @@ public abstract class AbstractBaseActivity extends Activity implements IBaseActi
     protected void onResume() {
         super.onResume();
         onPageResume();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onForceOutEvent(ForceOutEvent forceOutEvent){
+        if(!ActivityManager.getInstance().getTopActivity().getComponentName().getClassName().equals(this.getComponentName().getClassName())){
+            return;
+        }
+        DialogTool.createLoginConflictDialog(context, new OnBothClickListener() {
+            @Override
+            public void onPositiveClick() {
+                LocalClient.getInstance(context).sendMessageToService(Constant.HANDLER_RELOGIN, null);
+            }
+
+            @Override
+            public void onNegativeClick() {
+                basePresenter.getLogout();
+            }
+        });
     }
 
 }

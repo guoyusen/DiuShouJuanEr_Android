@@ -58,7 +58,6 @@ public class AcountActivity extends BaseFragmentActivity {
 
     @Override
     public void setViewStatus() {
-        EventBus.getDefault().register(this);
         showPageHead(type == Constant.ACOUNT_UPDATE_REGIST  ? "注册账号" : "忘记密码",null,null);
 
         fragmentList.add(AcountMobileFragment.instantiation(type));
@@ -109,11 +108,6 @@ public class AcountActivity extends BaseFragmentActivity {
                 break;
         }
 
-    }
-
-    @Override
-    public void onPageDestroy() {
-        EventBus.getDefault().unregister(this);
     }
 
 }

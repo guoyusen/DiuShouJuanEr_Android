@@ -21,11 +21,12 @@ public class ImagePageAdapter extends PagerAdapter {
     private int screenWidth;
     private int screenHeight;
     private ImagePicker imagePicker;
-    private ArrayList<ImageItemVo> images = new ArrayList<>();
+    private ArrayList<ImageItemVo> images;
     private Activity mActivity;
     public PhotoViewClickListener listener;
 
     public ImagePageAdapter(Activity activity, ArrayList<ImageItemVo> images) {
+        this.images = new ArrayList<>();
         this.mActivity = activity;
         this.images = images;
 

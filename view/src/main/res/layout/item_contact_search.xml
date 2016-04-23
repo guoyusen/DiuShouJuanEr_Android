@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/y200"
+    android:background="@color/COLOR_WHITE"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/x24"
+    android:paddingRight="@dimen/x24">
+
+    <TextView
+        android:id="@+id/txtBar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y72"
+        android:textColor="@color/TC_8A8A8A"
+        style="@style/TextMiddle"
+        android:gravity="center|left"
+        android:text="搜索到的小伙伴"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y128"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/ivHead"
+            android:layout_width="@dimen/x96"
+            android:layout_height="@dimen/x96"
+            app:actualImageScaleType="centerCrop"
+            app:roundAsCircle="true" />
+
+        <RelativeLayout
+            android:id="@+id/layoutBadge"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/x24"
+            android:layout_marginStart="@dimen/x24">
+
+            <TextView
+                android:id="@+id/txtName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="@dimen/y20"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="三木同学"
+                android:textColor="@color/TC_040404"
+                android:textSize="@dimen/x30" />
+
+            <TextView
+                style="@style/TextSmall"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/x36"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginBottom="@dimen/y24"
+                android:ellipsize="end"
+                android:orientation="horizontal"
+                android:singleLine="true"
+                android:text="就让大雨冲刷记忆中的沙，让我了无牵挂浪迹在天涯"
+                android:textColor="@color/TC_8A8A8A" />
+
+            <View
+                style="@style/line"
+                android:layout_alignParentBottom="true" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

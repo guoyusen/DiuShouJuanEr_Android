@@ -384,7 +384,7 @@ public class DBManager {
     public List<MessageVo> getRecentMessage(){
         List<MessageVo> messageVoList = new ArrayList<>();
         long currentUserNo =  CustomSessionPreference.getInstance().getCustomSession().getUserNo();
-//        messageVoList.addAll(getMessageVoListBySql(getUnReadMessageSql(currentUserNo), true));
+        messageVoList.addAll(getMessageVoListBySql(getUnReadMessageSql(currentUserNo), true));
 
         List<Long> friendNoList = getRecentFriendNo(currentUserNo);
         List<Long> partyNoList = getRecentPartyNo(currentUserNo);
@@ -446,12 +446,13 @@ public class DBManager {
             }
         }
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("select _id,SERIAL_NO,FROM_NO,TO_NO,CONTENT,max(TIME) TIME,MSG_TYPE,CON_TYPE,STATUS,SHOW_TIME,READ ");
+        stringBuilder.append("select _id,SERIAL_NO,FROM_NO,TO_NO,CONTENT,max(TIME) TIME,MSG_TYPE,CON_TYPE,STATUS,SHOW_TIME,READ from ( ");
+        stringBuilder.append("select _id,SERIAL_NO,TO_NO FROM_NO,FROM_NO TO_NO,CONTENT,max(TIME) TIME,MSG_TYPE,CON_TYPE,STATUS,SHOW_TIME,READ ");
         stringBuilder.append("from chat where MSG_TYPE = " + Constant.CHAT_FRI + " and FROM_NO in (" + friendNoRange.toString() + ") and TO_NO = " + currentUserNo + " group by FROM_NO ");
         stringBuilder.append("UNION ");
-        stringBuilder.append("select _id,SERIAL_NO,TO_NO FROM_NO,FROM_NO TO_NO,CONTENT,max(TIME) TIME,MSG_TYPE,CON_TYPE,STATUS,SHOW_TIME,READ ");
-        stringBuilder.append("from chat where MSG_TYPE = " + Constant.CHAT_FRI + " and TO_NO in (" + friendNoRange.toString() + ") and FROM_NO = " + currentUserNo + " group by TO_NO ");
-        stringBuilder.append("order by 6 asc");
+        stringBuilder.append("select _id,SERIAL_NO,FROM_NO,TO_NO,CONTENT,max(TIME) TIME,MSG_TYPE,CON_TYPE,STATUS,SHOW_TIME,READ ");
+        stringBuilder.append("from chat where MSG_TYPE = " + Constant.CHAT_FRI + " and TO_NO in (" + friendNoRange.toString() + ") and FROM_NO = " + currentUserNo + " group by TO_NO )");
+        stringBuilder.append("group by TO_NO order by 6 asc");
         return stringBuilder.toString();
     }
 
@@ -513,8 +514,14 @@ public class DBManager {
         stringBuilder.append("select _id,SERIAL_NO, FROM_NO, TO_NO, CONTENT, TIME, MSG_TYPE, CON_TYPE, STATUS, SHOW_TIME, READ ");
         stringBuilder.append("from CHAT ");
         stringBuilder.append("where OWNER_NO = " + currentUserNo + " ");
-        stringBuilder.append("and MSG_TYPE in (" + Constant.CHAT_FRI + ","+ Constant.CHAT_PAR + ") ");
-        stringBuilder.append("and READ = 0");
+        stringBuilder.append("and MSG_TYPE = " + Constant.CHAT_PAR + " ");
+        stringBuilder.append("and READ = 0 ");
+        stringBuilder.append("UNION ");
+        stringBuilder.append("select _id,SERIAL_NO, TO_NO FROM_NO, FROM_NO TO_NO, CONTENT, TIME, MSG_TYPE, CON_TYPE, STATUS, SHOW_TIME, READ ");
+        stringBuilder.append("from CHAT ");
+        stringBuilder.append("where OWNER_NO = " + currentUserNo + " ");
+        stringBuilder.append("and MSG_TYPE = " + Constant.CHAT_FRI + " ");
+        stringBuilder.append("and READ = 0 ");
 
         return stringBuilder.toString();
     }
@@ -548,7 +555,7 @@ public class DBManager {
                 if(addToChatting){
                     //在首次加载消息列表时，要加入ChattingTemper
                     //从数据库加载数据，顺位加入，不需要设置是都显示时间
-                    ChattingTemper.getInstance().addChattingVoOld(messageVo);
+                    ChattingTemper.getInstance().addChattingVoFromLocal(messageVo);
                 }
             } while (cursor.moveToNext());
         }
@@ -580,19 +587,21 @@ public class DBManager {
 
     private String getMessageListSql(long lastId, int pageIndex, int pageSize){
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append("select _id,SERIAL_NO, FROM_NO, TO_NO, CONTENT, TIME, MSG_TYPE, CON_TYPE, STATUS, SHOW_TIME, READ ");
+        stringBuilder.append("select _id, SERIAL_NO, FROM_NO, TO_NO, CONTENT, TIME, MSG_TYPE, CON_TYPE, STATUS, SHOW_TIME, READ from (");
+        stringBuilder.append("select _id, SERIAL_NO, FROM_NO, TO_NO, CONTENT, TIME, MSG_TYPE, CON_TYPE, STATUS, SHOW_TIME, READ ");
         stringBuilder.append("from CHAT ");
         stringBuilder.append("where OWNER_NO = " + CustomSessionPreference.getInstance().getCustomSession().getUserNo() + " ");
         stringBuilder.append("and MSG_TYPE = " + ChattingTemper.getInstance().getMsgType() + " ");
         stringBuilder.append("and (FROM_NO = " + ChattingTemper.getInstance().getToNo() + " or TO_NO = " +  ChattingTemper.getInstance().getToNo() + ") ");
         if(pageIndex == 1){
-            stringBuilder.append("order by TIME asc ");
+            stringBuilder.append("order by TIME desc ");
             stringBuilder.append("limit 0," + pageSize + " ");
         }else if(pageIndex > 1){
             stringBuilder.append("and _id < " + lastId + " ");
-            stringBuilder.append("order by TIME asc ");
+            stringBuilder.append("order by TIME desc ");
             stringBuilder.append("limit " + ((pageIndex - 1) * pageSize - 1) + "," + pageSize);
         }
+        stringBuilder.append(") order by TIME asc");
 
         return stringBuilder.toString();
     }
@@ -651,6 +660,41 @@ public class DBManager {
         contentValues.put("RECENT", recent ? 1 : 0);
         daoSession.getDatabase().update("MEMBER",contentValues,
                 "PARTY_NO = " + partyNo + " and USER_NO = " + CustomSessionPreference.getInstance().getCustomSession().getUserNo(),
+                null);
+    }
+
+    public void updateMemberName(long partyNo, long memberNo, String memberName){
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("MEMBER_NAME", memberName);
+        daoSession.getDatabase().update("MEMBER",contentValues,
+                "PARTY_NO = " + partyNo + " and USER_NO = " + memberNo,
+                null);
+    }
+
+    public void updatePartyHeadPic(long partyNo, String picPath){
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("PIC_PATH", picPath);
+
+        daoSession.getDatabase().update("PARTY",contentValues,
+                "PARTY_NO = " + partyNo,
+                null);
+    }
+
+    public void updatePartyName(long partyNo, String partyName){
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("PARTY_NAME", partyName);
+
+        daoSession.getDatabase().update("PARTY",contentValues,
+                "PARTY_NO = " + partyNo,
+                null);
+    }
+
+    public void updatePartyIntroduce(long partyNo, String introduce){
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("INFORMATION", introduce);
+
+        daoSession.getDatabase().update("PARTY",contentValues,
+                "PARTY_NO = " + partyNo,
                 null);
     }
 

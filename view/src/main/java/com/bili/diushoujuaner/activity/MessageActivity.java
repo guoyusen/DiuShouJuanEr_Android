@@ -1,9 +1,13 @@
 package com.bili.diushoujuaner.activity;
 
+import android.content.Intent;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 
 import com.bili.diushoujuaner.R;
@@ -11,19 +15,20 @@ import com.bili.diushoujuaner.adapter.MessageAdapter;
 import com.bili.diushoujuaner.base.BaseActivity;
 import com.bili.diushoujuaner.callback.OnReSendListener;
 import com.bili.diushoujuaner.model.eventhelper.UpdateMessageEvent;
+import com.bili.diushoujuaner.model.eventhelper.UpdatePartyEvent;
 import com.bili.diushoujuaner.presenter.presenter.MessageActivityPresenter;
 import com.bili.diushoujuaner.presenter.presenter.impl.MessageActivityPresenterImpl;
 import com.bili.diushoujuaner.presenter.view.IMessageView;
+import com.bili.diushoujuaner.utils.Common;
 import com.bili.diushoujuaner.utils.Constant;
 import com.bili.diushoujuaner.utils.entity.vo.FriendVo;
 import com.bili.diushoujuaner.utils.entity.vo.MessageVo;
 import com.bili.diushoujuaner.utils.entity.vo.PartyVo;
 import com.bili.diushoujuaner.widget.CustomEditText;
-import com.bili.diushoujuaner.widget.PopKeepListView;
+import com.bili.diushoujuaner.widget.MessageListView;
 import com.bili.diushoujuaner.widget.dialog.DialogTool;
 import com.bili.diushoujuaner.widget.dialog.OnDialogPositiveClickListener;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -36,26 +41,32 @@ import butterknife.Bind;
 /**
  * Created by BiLi on 2016/3/9.
  */
-public class MessageActivity extends BaseActivity<MessageActivityPresenter> implements IMessageView, View.OnClickListener, OnReSendListener {
+public class MessageActivity extends BaseActivity<MessageActivityPresenter> implements IMessageView, View.OnClickListener, OnReSendListener, View.OnTouchListener, MessageListView.OnLoadMoreListener {
 
     public static final String TAG = "MessageActivity";
     @Bind(R.id.listView)
-    PopKeepListView listView;
+    MessageListView listView;
     @Bind(R.id.txtEditor)
     CustomEditText txtEditor;
     @Bind(R.id.layoutSend)
     RelativeLayout layoutSend;
+    @Bind(R.id.btnRight)
+    ImageButton btnRight;
 
     private MessageAdapter messageAdapter;
     private List<MessageVo> messageVoList;
     private HashMap<String, MessageVo> messageVoHashMap;
 
+    private boolean isPartyChatting = false;
+    private FriendVo friendVo;
+    private PartyVo partyVo;
+
     class CommentTextWatcher implements TextWatcher {
         @Override
         public void afterTextChanged(Editable s) {
-            if(s.toString().trim().length() > 0){
+            if (s.toString().trim().length() > 0) {
                 layoutSend.setBackground(ContextCompat.getDrawable(context, R.drawable.layout_send_ready_bg));
-            }else{
+            } else {
                 layoutSend.setBackground(ContextCompat.getDrawable(context, R.drawable.layout_send_close_bg));
             }
         }
@@ -83,43 +94,98 @@ public class MessageActivity extends BaseActivity<MessageActivityPresenter> impl
 
     @Override
     public void setViewStatus() {
-        EventBus.getDefault().register(this);
         showPageHead("", null, null);
 
         layoutSend.setOnClickListener(this);
+        btnRight.setOnClickListener(this);
 
         txtEditor.addTextChangedListener(new CommentTextWatcher());
         messageAdapter = new MessageAdapter(context, messageVoList, getBindPresenter().getOwnerNo());
         messageAdapter.setReSendListener(this);
         listView.setAdapter(messageAdapter);
+        listView.setOnTouchListener(this);
+        listView.setOnLoadMoreListener(this);
         getBindPresenter().getContactInfo();
         getBindPresenter().getMessageList();
     }
 
     @Override
+    public boolean onTouch(View v, MotionEvent event) {
+        Common.hideSoftInputFromWindow(context, txtEditor);
+        return false;
+    }
+
+    @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.layoutSend:
-                getBindPresenter().saveMessageVo(txtEditor.getText().toString(), Constant.CHAT_CONTENT_TEXT);
-                txtEditor.setText(null);
+                if(!TextUtils.isEmpty(txtEditor.getText())){
+                    getBindPresenter().saveMessageVo(txtEditor.getText().toString(), Constant.CHAT_CONTENT_TEXT);
+                    txtEditor.setText(null);
+                }
+                break;
+            case R.id.btnRight:
+                getBindPresenter().getNextActivity();
                 break;
         }
     }
 
     @Override
     public void showContactInfo(FriendVo friendVo) {
-        showPageHead(friendVo.getNickName(), R.mipmap.icon_menu_user, null);
+        showPageHead(friendVo.getDisplayName(), R.mipmap.icon_menu_user, null);
+        this.friendVo = friendVo;
+        this.isPartyChatting = false;
     }
 
     @Override
     public void showContactInfo(PartyVo partyVo) {
         showPageHead(partyVo.getDisplayName(), R.mipmap.icon_friend, null);
+        this.partyVo = partyVo;
+        this.isPartyChatting = true;
+    }
+
+    @Override
+    public void showNextActivity(int showType) {
+        switch (showType){
+            case Constant.SHOW_TYPE_CHATTING_SETTING:
+                startActivity(new Intent(MessageActivity.this, ChattingSettingViewActivity.class));
+                break;
+            case Constant.SHOW_TYPE_PARTY_DETAIL:
+                startActivity(new Intent(MessageActivity.this, PartyDetailActivity.class));
+                break;
+        }
+    }
+
+    @Override
+    public void loadComplete() {
+        listView.setListViewStateComplete();
+    }
+
+    @Override
+    public void loadFinish() {
+        listView.setListViewStateFinished();
+    }
+
+    @Override
+    public void onLoadMore() {
+        getBindPresenter().getMessageList();
+    }
+
+    @Override
+    public void showMoreMessageList(List<MessageVo> messageVoList) {
+        for (MessageVo messageVo : messageVoList) {
+            if (messageVo.getStatus() == Constant.MESSAGE_STATUS_SENDING) {
+                messageVoHashMap.put(messageVo.getSerialNo(), messageVo);
+            }
+        }
+        messageAdapter.addFirst(messageVoList);
+        listView.setSelection(messageVoList.size());
     }
 
     @Override
     public void showMessageList(List<MessageVo> messageVoList) {
-        for(MessageVo messageVo : messageVoList){
-            if(messageVo.getStatus() == Constant.MESSAGE_STATUS_SENDING){
+        for (MessageVo messageVo : messageVoList) {
+            if (messageVo.getStatus() == Constant.MESSAGE_STATUS_SENDING) {
                 messageVoHashMap.put(messageVo.getSerialNo(), messageVo);
             }
         }
@@ -138,12 +204,28 @@ public class MessageActivity extends BaseActivity<MessageActivityPresenter> impl
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onUpdateMessageEvent(UpdateMessageEvent updateMessageEvent){
-        if(!getBindPresenter().validateUpdateEvent(updateMessageEvent)){
+    public void onUpdatePartyEvent(UpdatePartyEvent updatePartyEvent){
+        if(this.isPartyChatting && this.partyVo.getPartyNo() == updatePartyEvent.getPartyNo()){
+            switch (updatePartyEvent.getType()){
+                case Constant.CHAT_PARTY_NAME:
+                    getBindPresenter().getContactInfo();
+                    break;
+                case Constant.CHAT_PARTY_MEMBER_NAME:
+                    if (messageAdapter != null) {
+                        messageAdapter.notifyDataSetInvalidated();
+                    }
+                    break;
+            }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onUpdateMessageEvent(UpdateMessageEvent updateMessageEvent) {
+        if (!getBindPresenter().validateUpdateEvent(updateMessageEvent)) {
             //该更新事件不属于这个页面的
             return;
         }
-        switch (updateMessageEvent.getType()){
+        switch (updateMessageEvent.getType()) {
             case UpdateMessageEvent.MESSAGE_SEND:
                 messageVoHashMap.put(updateMessageEvent.getMessageVo().getSerialNo(), updateMessageEvent.getMessageVo());
                 messageAdapter.addLast(updateMessageEvent.getMessageVo());
@@ -165,7 +247,6 @@ public class MessageActivity extends BaseActivity<MessageActivityPresenter> impl
     @Override
     public void onPageDestroy() {
         getBindPresenter().clearCurrentChat();
-        EventBus.getDefault().unregister(this);
         super.onPageDestroy();
     }
 }

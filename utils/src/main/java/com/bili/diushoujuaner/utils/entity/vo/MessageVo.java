@@ -1,9 +1,12 @@
 package com.bili.diushoujuaner.utils.entity.vo;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 /**
  * Created by BiLi on 2016/4/13.
  */
-public class MessageVo {
+public class MessageVo implements Parcelable {
 
     private String serialNo;
     private long id;//分页获取信息的标志
@@ -109,4 +112,49 @@ public class MessageVo {
         this.time = time;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.serialNo);
+        dest.writeLong(this.id);
+        dest.writeLong(this.fromNo);
+        dest.writeLong(this.toNo);
+        dest.writeString(this.time);
+        dest.writeString(this.content);
+        dest.writeInt(this.status);
+        dest.writeInt(this.msgType);
+        dest.writeInt(this.conType);
+        dest.writeByte(isTimeShow ? (byte) 1 : (byte) 0);
+        dest.writeByte(isRead ? (byte) 1 : (byte) 0);
+    }
+
+    protected MessageVo(Parcel in) {
+        this.serialNo = in.readString();
+        this.id = in.readLong();
+        this.fromNo = in.readLong();
+        this.toNo = in.readLong();
+        this.time = in.readString();
+        this.content = in.readString();
+        this.status = in.readInt();
+        this.msgType = in.readInt();
+        this.conType = in.readInt();
+        this.isTimeShow = in.readByte() != 0;
+        this.isRead = in.readByte() != 0;
+    }
+
+    public static final Parcelable.Creator<MessageVo> CREATOR = new Parcelable.Creator<MessageVo>() {
+        @Override
+        public MessageVo createFromParcel(Parcel source) {
+            return new MessageVo(source);
+        }
+
+        @Override
+        public MessageVo[] newArray(int size) {
+            return new MessageVo[size];
+        }
+    };
 }

@@ -2,6 +2,16 @@ package com.bili.diushoujuaner.presenter.base;
 
 import android.content.Context;
 
+import com.bili.diushoujuaner.model.actionhelper.action.UserInfoAction;
+import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
+import com.bili.diushoujuaner.model.cachehelper.ACache;
+import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
+import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
+import com.bili.diushoujuaner.model.tempHelper.ChattingTemper;
+import com.bili.diushoujuaner.model.tempHelper.ContactTemper;
+import com.bili.diushoujuaner.model.tempHelper.GoodTemper;
+import com.bili.diushoujuaner.model.tempHelper.RecallTemper;
+import com.bili.diushoujuaner.presenter.messager.LocalClient;
 import com.bili.diushoujuaner.utils.Constant;
 
 /**
@@ -93,5 +103,35 @@ public class BasePresenter<T extends IBaseView> {
             return;
         }
         baseView.showWarning(message);
+    }
+
+    public void getLogout(){
+        showLoading(Constant.LOADING_TOP,"正在退出账号");
+        UserInfoAction.getInstance(context).getLogout(new ActionStringCallbackListener<ActionRespon<Void>>() {
+            @Override
+            public void onSuccess(ActionRespon<Void> result) {
+                hideLoading(Constant.LOADING_TOP);
+                if(showMessage(result.getRetCode(), result.getMessage())){
+                    LocalClient.getInstance(context).sendMessageToService(Constant.HANDLER_LOGOUT, null);
+                    ACache.getInstance().remove(Constant.ACACHE_LAST_TIME_CONTACT);
+                    ACache.getInstance().remove(Constant.ACACHE_USER_RECALL_PREFIX + CustomSessionPreference.getInstance().getCustomSession().getUserNo());
+                    CustomSessionPreference.getInstance().clear();
+                    UserInfoAction.getInstance(context).clearUser();
+                    RecallTemper.getInstance().clear();
+                    GoodTemper.getInstance().clear();
+                    ContactTemper.getInstance().clear();
+                    ChattingTemper.getInstance().clear();
+                    if(isBindViewValid()){
+                        getBindView().exitActivity();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(int errorCode) {
+                showError(errorCode);
+                hideLoading(Constant.LOADING_TOP);
+            }
+        });
     }
 }
