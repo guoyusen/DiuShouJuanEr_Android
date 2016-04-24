@@ -174,7 +174,6 @@ public class SpaceActivity extends BaseFragmentActivity<SpaceActivityPresenter> 
 
         recallAdapter = new RecallAdapter(context, recallDtoList, Constant.RECALL_ADAPTER_SPACE, index);
         listviewRecall.setAdapter(recallAdapter);
-        listviewRecall.setEnabled(false);
         listviewRecall.setCanLoadMore(true);
         listviewRecall.setOnLoadMoreListener(this);
         listviewRecall.setOnItemClickListener(new AdapterView.OnItemClickListener() {
