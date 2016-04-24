@@ -7,7 +7,9 @@ import com.bili.diushoujuaner.model.actionhelper.action.RecallAction;
 import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
 import com.bili.diushoujuaner.model.apihelper.request.ContactInfoReq;
 import com.bili.diushoujuaner.model.apihelper.request.RecentRecallReq;
+import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
 import com.bili.diushoujuaner.model.tempHelper.ChattingTemper;
+import com.bili.diushoujuaner.model.tempHelper.ContactTemper;
 import com.bili.diushoujuaner.utils.entity.dto.RecallDto;
 import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
 import com.bili.diushoujuaner.presenter.base.BasePresenter;
@@ -24,6 +26,16 @@ public class ContactDetailActivityPresenterImpl extends BasePresenter<IContactDe
 
     public ContactDetailActivityPresenterImpl(IContactDetailView baseView, Context context) {
         super(baseView, context);
+    }
+
+    @Override
+    public boolean isOwner(long userNo) {
+        return CustomSessionPreference.getInstance().getCustomSession().getUserNo() == userNo;
+    }
+
+    @Override
+    public boolean isFriend(long userNo) {
+        return ContactTemper.getInstance().getFriendVo(userNo) != null;
     }
 
     @Override

@@ -32,12 +32,12 @@ public class MainActivityPresenterImpl extends BasePresenter<IMainView> implemen
     }
 
     @Override
-    public int getUnReadCount() {
-        int unReadCount = 0;
-        for(ChattingVo chattingVo : ChattingTemper.getInstance().getChattingVoList()){
-            unReadCount += chattingVo.getUnReadCount();
-        }
-        return unReadCount;
+    public void clear() {
+        UserInfoAction.getInstance(context).clearUser();
+        RecallTemper.getInstance().clear();
+        GoodTemper.getInstance().clear();
+        ContactTemper.getInstance().clear();
+        ChattingTemper.getInstance().clear();
     }
 
     @Override

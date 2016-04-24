@@ -7,4 +7,8 @@ public interface ContactFragmentPresenter {
 
     void getContactList();
 
+    void getAddUnReadCount();
+
+    void updateApplyRead();
+
 }

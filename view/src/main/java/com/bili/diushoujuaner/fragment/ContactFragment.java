@@ -9,19 +9,25 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bili.diushoujuaner.R;
+import com.bili.diushoujuaner.activity.ContactAddActivity;
 import com.bili.diushoujuaner.activity.ContactDetailActivity;
 import com.bili.diushoujuaner.activity.ContactSearchActivity;
 import com.bili.diushoujuaner.activity.PartyActivity;
 import com.bili.diushoujuaner.adapter.ContactAdapter;
 import com.bili.diushoujuaner.base.BaseFragment;
+import com.bili.diushoujuaner.model.eventhelper.AddContactEvent;
 import com.bili.diushoujuaner.model.eventhelper.ShowHeadEvent;
 import com.bili.diushoujuaner.model.eventhelper.ShowMainMenuEvent;
+import com.bili.diushoujuaner.model.eventhelper.UpdateContactEvent;
+import com.bili.diushoujuaner.model.eventhelper.UpdateReadCountEvent;
 import com.bili.diushoujuaner.presenter.presenter.ContactFragmentPresenter;
 import com.bili.diushoujuaner.presenter.presenter.impl.ContactFragmentPresenterImpl;
 import com.bili.diushoujuaner.presenter.view.IContactView;
 import com.bili.diushoujuaner.utils.Common;
+import com.bili.diushoujuaner.utils.Constant;
 import com.bili.diushoujuaner.utils.entity.vo.FriendVo;
 import com.bili.diushoujuaner.widget.CustomListView;
+import com.bili.diushoujuaner.widget.badgeview.BGABadgeTextView;
 import com.bili.diushoujuaner.widget.scrollview.ReboundScrollView;
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -53,6 +59,8 @@ public class ContactFragment extends BaseFragment<ContactFragmentPresenter> impl
     ImageButton btnMenu;
     @Bind(R.id.txtPartyCount)
     TextView txtPartyCount;
+    @Bind(R.id.txtAddContact)
+    BGABadgeTextView txtAddContact;
 
     private ContactAdapter contactAdapter;
     private List<FriendVo> friendVoList;
@@ -83,6 +91,7 @@ public class ContactFragment extends BaseFragment<ContactFragmentPresenter> impl
         layoutParty.setOnClickListener(this);
         btnMenu.setOnClickListener(this);
         txtRight.setOnClickListener(this);
+        layoutNewContact.setOnClickListener(this);
 
         contactAdapter = new ContactAdapter(getContext(), friendVoList);
         customListView.setAdapter(contactAdapter);
@@ -96,6 +105,7 @@ public class ContactFragment extends BaseFragment<ContactFragmentPresenter> impl
         });
 
         getBindPresenter().getContactList();
+        getBindPresenter().getAddUnReadCount();
     }
 
     @Override
@@ -110,7 +120,34 @@ public class ContactFragment extends BaseFragment<ContactFragmentPresenter> impl
             case R.id.btnMenu:
                 EventBus.getDefault().post(new ShowMainMenuEvent());
                 break;
+            case R.id.layoutNewContact:
+                getBindPresenter().updateApplyRead();
+                startActivity(new Intent(getContext(), ContactAddActivity.class));
+                break;
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onUpdateReadCountEvent(UpdateReadCountEvent updateReadCountEvent){
+        switch (updateReadCountEvent.getType()){
+            case Constant.UNREAD_COUNT_APPLY:
+                if(updateReadCountEvent.getCount() <= 0){
+                    txtAddContact.hiddenBadge();
+                }else {
+                    txtAddContact.showTextBadge(updateReadCountEvent.getCount() + "");
+                }
+                break;
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onUpdateContactEvent(UpdateContactEvent updateContactEvent){
+        getBindPresenter().getContactList();
+    }
+
+    @Subscribe(threadMode = ThreadMode.POSTING)
+    public void onAddContactEvent(AddContactEvent addContactEvent){
+        getBindPresenter().getAddUnReadCount();
     }
 
     @Override

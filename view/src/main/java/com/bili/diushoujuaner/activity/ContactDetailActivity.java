@@ -65,11 +65,14 @@ public class ContactDetailActivity extends BaseActivity<ContactDetailActivityPre
     FloatingActionButton btnFocus;
     @Bind(R.id.ivWallPaper)
     SimpleDraweeView ivWallPaper;
+    @Bind(R.id.layoutBottom)
+    RelativeLayout layoutBottom;
 
     private ContactRecentGalleryAdapter contactRecentGalleryAdapter;
     private List<PictureDto> pictureList;
     private FriendVo friendVo;
     private long userNo;
+    private boolean isFriended, isOwner;
     public static final String TAG = "ContactDetailActivity";
 
     @Override
@@ -103,12 +106,22 @@ public class ContactDetailActivity extends BaseActivity<ContactDetailActivityPre
 
     @Override
     public void setViewStatus() {
-        showPageHead(null, R.mipmap.icon_menu, null);
         layoutHead.setBackgroundColor(ContextCompat.getColor(context, R.color.COLOR_THEME_MAIN));
-
         layoutRecent.setOnClickListener(this);
         btnStartMsg.setOnClickListener(this);
-
+        ivArrowRight.setImageDrawable(new TintedBitmapDrawable(getResources(), R.mipmap.icon_arrow_right, ContextCompat.getColor(context, R.color.COLOR_8A8A8A)));
+        isFriended = getBindPresenter().isFriend(userNo);
+        isOwner = getBindPresenter().isOwner(userNo);
+        if(isFriended){
+            showPageHead(null, R.mipmap.icon_menu, null);
+            btnStartMsg.setText("发消息");
+        }else if(isOwner){
+            showPageHead(null, null, null);
+            layoutBottom.setVisibility(View.GONE);
+        }else{
+            showPageHead(null, null, null);
+            btnStartMsg.setText("加好友");
+        }
         getBindPresenter().getFriendVo(userNo);
         getBindPresenter().getRecentRecall(userNo);
     }
@@ -117,13 +130,20 @@ public class ContactDetailActivity extends BaseActivity<ContactDetailActivityPre
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.layoutRecent:
-                startActivity(new Intent(ContactDetailActivity.this, SpaceActivity.class).putExtra(SpaceActivity.TAG,this.friendVo.getFriendNo()));
+                startActivity(new Intent(ContactDetailActivity.this, SpaceActivity.class).putExtra(SpaceActivity.TAG, userNo));
                 break;
             case R.id.btnStartMsg:
-                getBindPresenter().setCurrentChatting(this.friendVo.getFriendNo(), Constant.CHAT_FRI);
-                EventBus.getDefault().post(new StartChattingEvent());
-                startActivity(new Intent(ContactDetailActivity.this, MessageActivity.class));
-                finish();
+                if(isFriended){
+                    getBindPresenter().setCurrentChatting(this.friendVo.getFriendNo(), Constant.CHAT_FRI);
+                    EventBus.getDefault().post(new StartChattingEvent());
+                    startActivity(new Intent(ContactDetailActivity.this, MessageActivity.class));
+                    finish();
+                }else {
+                    startActivity(new Intent(ContactDetailActivity.this, ContentEditActivity.class)
+                            .putExtra(ContentEditActivity.TAG_TYPE, Constant.EDIT_CONTENT_FRIEND_ADD)
+                            .putExtra(ContentEditActivity.TAG_CONTENT, "")
+                            .putExtra(ContentEditActivity.TAG_CONTNO, userNo));
+                }
                 break;
         }
     }
@@ -138,7 +158,6 @@ public class ContactDetailActivity extends BaseActivity<ContactDetailActivityPre
             setTintStatusColor(R.color.TRANSPARENT_BLACK);
 
             Common.displayDraweeView(friendVo.getPicPath(), ivWallPaper);
-            ivArrowRight.setImageDrawable(new TintedBitmapDrawable(getResources(), R.mipmap.icon_arrow_right, ContextCompat.getColor(context, R.color.COLOR_8A8A8A)));
             txtFriendName.setText(friendVo.getDisplayName());
             txtFriendAutograph.setText(friendVo.getAutograph());
         }else{

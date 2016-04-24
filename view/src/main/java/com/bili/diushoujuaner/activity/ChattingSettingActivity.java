@@ -21,7 +21,7 @@ import butterknife.Bind;
 /**
  * Created by BiLi on 2016/4/3.
  */
-public class ChattingSettingViewActivity extends BaseActivity<ChattingSettingActivityPresenter> implements IChattingSettingView {
+public class ChattingSettingActivity extends BaseActivity<ChattingSettingActivityPresenter> implements IChattingSettingView {
 
     @Bind(R.id.ivHead)
     SimpleDraweeView ivHead;

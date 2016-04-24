@@ -1,10 +1,10 @@
-package com.bili.diushoujuaner.utils.pinyin;
+package com.bili.diushoujuaner.utils.comparator;
 
 import java.util.Comparator;
 
 import com.bili.diushoujuaner.utils.entity.vo.SortVo;
 
-public class PinyinComparator implements Comparator<SortVo> {
+public class ContactComparator implements Comparator<SortVo> {
 
     @Override
     public int compare(SortVo arg0, SortVo arg1) {

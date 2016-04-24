@@ -1,11 +1,15 @@
 package com.bili.diushoujuaner.utils.entity.dto;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by BiLi on 2016/3/6.
  */
-public class ContactDto {
+public class ContactDto implements Parcelable {
     private Long contNo;
     private String displayName;
     private String picPath;
@@ -109,4 +113,61 @@ public class ContactDto {
     public void setMemberList(List<MemberDto> memberList) {
         this.memberList = memberList;
     }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(this.contNo);
+        dest.writeString(this.displayName);
+        dest.writeString(this.picPath);
+        dest.writeInt(this.type);
+        dest.writeString(this.startTime);
+        dest.writeString(this.nickName);
+        dest.writeString(this.autograph);
+        dest.writeValue(this.gender);
+        dest.writeString(this.homeTown);
+        dest.writeString(this.smallNick);
+        dest.writeString(this.wallPaper);
+        dest.writeValue(this.ownerNo);
+        dest.writeString(this.information);
+        dest.writeList(this.memberList);
+    }
+
+    public ContactDto() {
+    }
+
+    protected ContactDto(Parcel in) {
+        this.contNo = (Long) in.readValue(Long.class.getClassLoader());
+        this.displayName = in.readString();
+        this.picPath = in.readString();
+        this.type = in.readInt();
+        this.startTime = in.readString();
+        this.nickName = in.readString();
+        this.autograph = in.readString();
+        this.gender = (Integer) in.readValue(Integer.class.getClassLoader());
+        this.homeTown = in.readString();
+        this.smallNick = in.readString();
+        this.wallPaper = in.readString();
+        this.ownerNo = (Long) in.readValue(Long.class.getClassLoader());
+        this.information = in.readString();
+        this.memberList = new ArrayList<MemberDto>();
+        in.readList(this.memberList, MemberDto.class.getClassLoader());
+    }
+
+    public static final Parcelable.Creator<ContactDto> CREATOR = new Parcelable.Creator<ContactDto>() {
+        @Override
+        public ContactDto createFromParcel(Parcel source) {
+            return new ContactDto(source);
+        }
+
+        @Override
+        public ContactDto[] newArray(int size) {
+            return new ContactDto[size];
+        }
+    };
 }

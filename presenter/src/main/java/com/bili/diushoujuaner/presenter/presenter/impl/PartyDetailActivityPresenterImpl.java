@@ -30,6 +30,11 @@ public class PartyDetailActivityPresenterImpl extends BasePresenter<IPartyDetail
     }
 
     @Override
+    public boolean isPartied(long partyNo) {
+        return ContactTemper.getInstance().getPartyVo(partyNo) != null;
+    }
+
+    @Override
     public void updatePartyHeadPic(final long partyNo, String path) {
         showLoading(Constant.LOADING_TOP,"正在上传头像");
         FileAction.getInstance(context).upoadPartyHeadPic(new PartyHeadUpdateReq(partyNo), path, new ActionFileCallbackListener<ActionRespon<String>>() {
@@ -62,6 +67,11 @@ public class PartyDetailActivityPresenterImpl extends BasePresenter<IPartyDetail
     }
 
     @Override
+    public List<MemberVo> getMemberVoList(long partyNo) {
+        return ContactTemper.getInstance().getMemberVoList(partyNo);
+    }
+
+    @Override
     public List<MemberVo> getMemberVoList() {
         long partyNo = 0;
         if(ChattingTemper.getInstance().getMsgType() == Constant.CHAT_PAR && isBindViewValid()){
@@ -81,9 +91,12 @@ public class PartyDetailActivityPresenterImpl extends BasePresenter<IPartyDetail
     }
 
     @Override
+    public void getContactInfo(long partyNo) {
+        getBindView().showContactInfo(ContactTemper.getInstance().getPartyVo(partyNo));
+    }
+
+    @Override
     public void getContactInfo() {
-        if(ChattingTemper.getInstance().getMsgType() == Constant.CHAT_PAR && isBindViewValid()){
-            getBindView().showContactInfo(ContactTemper.getInstance().getPartyVo(ChattingTemper.getInstance().getToNo()));
-        }
+        getBindView().showContactInfo(ContactTemper.getInstance().getPartyVo(ChattingTemper.getInstance().getToNo()));
     }
 }

@@ -2,12 +2,14 @@ package com.bili.diushoujuaner.presenter.presenter.impl;
 
 import android.content.Context;
 
+import com.bili.diushoujuaner.model.actionhelper.action.ApplyAction;
 import com.bili.diushoujuaner.model.actionhelper.action.ContactAction;
 import com.bili.diushoujuaner.model.actionhelper.action.FeedBackAction;
 import com.bili.diushoujuaner.model.actionhelper.action.UserInfoAction;
 import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
 import com.bili.diushoujuaner.model.apihelper.request.AutographModifyReq;
 import com.bili.diushoujuaner.model.apihelper.request.FeedBackReq;
+import com.bili.diushoujuaner.model.apihelper.request.FriendAddReq;
 import com.bili.diushoujuaner.model.apihelper.request.MemberNameUpdateReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyIntroduceUpdateReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyNameUpdateReq;
@@ -30,6 +32,41 @@ public class ContentEditActivityPresenterImpl extends BasePresenter<IContentEdit
 
     public ContentEditActivityPresenterImpl(IContentEditView baseView, Context context) {
         super(baseView, context);
+    }
+
+    @Override
+    public void getFriendAdd(long friendNo, String content) {
+        if(Common.isEmpty(content)){
+            showWarning("验证信息不能为空");
+            return;
+        }
+        showLoading(Constant.LOADING_CENTER, "正在发送请求");
+        FriendAddReq friendAddReq = new FriendAddReq(friendNo, content);
+        ApplyAction.getInstance(context).getFriendAdd(friendAddReq, new ActionStringCallbackListener<ActionRespon<Void>>() {
+            @Override
+            public void onSuccess(ActionRespon<Void> result) {
+                hideLoading(Constant.LOADING_CENTER);
+                if(showMessage(result.getRetCode(), result.getMessage())){
+                    showWarning("请求成功，等待验证");
+                    if(isBindViewValid()){
+                        getBindView().finishView();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(int errorCode) {
+                showError(errorCode);
+            }
+        });
+    }
+
+    @Override
+    public void getPartyAdd(long partyNo, String content) {
+        if(Common.isEmpty(content)){
+            showWarning("验证信息不能为空");
+            return;
+        }
     }
 
     @Override

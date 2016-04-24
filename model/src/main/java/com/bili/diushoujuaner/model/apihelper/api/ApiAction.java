@@ -11,6 +11,8 @@ import com.bili.diushoujuaner.model.apihelper.request.CommentRemoveReq;
 import com.bili.diushoujuaner.model.apihelper.request.ContactInfoReq;
 import com.bili.diushoujuaner.model.apihelper.request.ContactsSearchReq;
 import com.bili.diushoujuaner.model.apihelper.request.FeedBackReq;
+import com.bili.diushoujuaner.model.apihelper.request.FriendAddReq;
+import com.bili.diushoujuaner.model.apihelper.request.FriendAgreeReq;
 import com.bili.diushoujuaner.model.apihelper.request.MemberNameUpdateReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyHeadUpdateReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyIntroduceUpdateReq;
@@ -203,6 +205,16 @@ public class ApiAction implements Api {
 
     @Override
     public void getContactsSearch(ContactsSearchReq contactsSearchReq, ApiStringCallbackListener apiStringCallbackListener) {
-        dataLoader.processStringRequest(Request.Method.GET, Api.getContactsSearch, Common.ConvertObjToMap(contactsSearchReq), apiStringCallbackListener);
+        dataLoader.processStringRequest(Request.Method.GET, Common.getCompleteUrl(Api.getContactsSearch, contactsSearchReq), null, apiStringCallbackListener);
+    }
+
+    @Override
+    public void getFriendAdd(FriendAddReq friendAddReq, ApiStringCallbackListener apiStringCallbackListener) {
+        dataLoader.processStringRequest(Request.Method.POST, Api.getFriendAdd, Common.ConvertObjToMap(friendAddReq), apiStringCallbackListener);
+    }
+
+    @Override
+    public void getFriendAgree(FriendAgreeReq friendAgreeReq, ApiStringCallbackListener apiStringCallbackListener) {
+        dataLoader.processStringRequest(Request.Method.POST, Api.getFriendAgree, Common.ConvertObjToMap(friendAgreeReq), apiStringCallbackListener);
     }
 }

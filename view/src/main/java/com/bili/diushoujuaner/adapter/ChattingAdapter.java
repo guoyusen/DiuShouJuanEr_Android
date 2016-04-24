@@ -90,6 +90,7 @@ public class ChattingAdapter extends CommonAdapter<ChattingVo> {
                 }
             }
             switch (chattingVo.getConType()){
+                case Constant.CHAT_CONTENT_FRIEND_AGREE:
                 case Constant.CHAT_CONTENT_TEXT:
                     content.append(chattingVo.getContent());
                     break;

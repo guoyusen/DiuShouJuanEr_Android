@@ -31,7 +31,7 @@ public class ChattingFragmentPresenterImpl extends BasePresenter<IChattingView> 
     @Override
     public void deleteChattingVo(long userNo, int msgType) {
         ChattingTemper.getInstance().deleteChattingVo(userNo, msgType);
-        EventBus.getDefault().post(new UpdateReadCountEvent());
+        EventBus.getDefault().post(new UpdateReadCountEvent(Constant.UNREAD_COUNT_MESSAGE, ChattingTemper.getUnReadCount()));
         ChattingAction.getInstance(context).deleteRecent(userNo, msgType);
     }
 
@@ -39,7 +39,7 @@ public class ChattingFragmentPresenterImpl extends BasePresenter<IChattingView> 
     public void updateMessageRead(long userNo,  int msgType) {
         ChattingTemper.getInstance().updateChattingVoRead(userNo, msgType);
         ChattingAction.getInstance(context).updateMessageRead(userNo, msgType);
-        EventBus.getDefault().post(new UpdateReadCountEvent());
+        EventBus.getDefault().post(new UpdateReadCountEvent(Constant.UNREAD_COUNT_MESSAGE, ChattingTemper.getUnReadCount()));
     }
 
     @Override
@@ -63,7 +63,7 @@ public class ChattingFragmentPresenterImpl extends BasePresenter<IChattingView> 
                     if(isBindViewValid()){
                         getBindView().showChatting(ChattingTemper.getInstance().getChattingVoList());
                     }
-                    EventBus.getDefault().post(new UpdateReadCountEvent());
+                    EventBus.getDefault().post(new UpdateReadCountEvent(Constant.UNREAD_COUNT_MESSAGE, ChattingTemper.getUnReadCount()));
                 }
             }
 
@@ -86,7 +86,7 @@ public class ChattingFragmentPresenterImpl extends BasePresenter<IChattingView> 
                     for(MessageVo messageVo : result.getData()){
                         ChattingTemper.getInstance().publishToListener(messageVo);
                     }
-                    EventBus.getDefault().post(new UpdateReadCountEvent());
+                    EventBus.getDefault().post(new UpdateReadCountEvent(Constant.UNREAD_COUNT_MESSAGE, ChattingTemper.getUnReadCount()));
                     if(isBindViewValid()){
                         getBindView().showChatting(ChattingTemper.getInstance().getChattingVoList());
                     }

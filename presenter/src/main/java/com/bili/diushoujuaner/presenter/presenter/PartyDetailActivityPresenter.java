@@ -11,12 +11,18 @@ public interface PartyDetailActivityPresenter {
 
     void getContactInfo();
 
+    void getContactInfo(long partyNo);
+
     List<MemberVo> getMemberVoList();
+
+    List<MemberVo> getMemberVoList(long partyNo);
 
     String getMemberName();
 
     long getUserNo();
 
     void updatePartyHeadPic(long partyNo, String path);
+
+    boolean isPartied(long partyNo);
 
 }

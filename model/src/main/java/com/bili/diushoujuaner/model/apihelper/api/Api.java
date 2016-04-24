@@ -9,6 +9,8 @@ import com.bili.diushoujuaner.model.apihelper.request.CommentRemoveReq;
 import com.bili.diushoujuaner.model.apihelper.request.ContactInfoReq;
 import com.bili.diushoujuaner.model.apihelper.request.ContactsSearchReq;
 import com.bili.diushoujuaner.model.apihelper.request.FeedBackReq;
+import com.bili.diushoujuaner.model.apihelper.request.FriendAddReq;
+import com.bili.diushoujuaner.model.apihelper.request.FriendAgreeReq;
 import com.bili.diushoujuaner.model.apihelper.request.MemberNameUpdateReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyHeadUpdateReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyIntroduceUpdateReq;
@@ -59,7 +61,9 @@ public interface Api {
     String getPartyHeadUpdate = Constant.HOST_ADDRESS + "1.0/file/party/headpic";
     String getPartyNameUpdate = Constant.HOST_ADDRESS + "1.0/party/modify/name";
     String getPartyIntroduceUpdate = Constant.HOST_ADDRESS + "1.0/party/modify/introduce";
-    String getContactsSearch = Constant.HOST_ADDRESS + "1.0/contacts/search";
+    String getContactsSearch = Constant.HOST_ADDRESS + "1.0/contacts/search?";
+    String getFriendAdd = Constant.HOST_ADDRESS + "1.0/friend/add";
+    String getFriendAgree = Constant.HOST_ADDRESS + "1.0/friend/agree";
 
     /**
      * 用户登录
@@ -264,4 +268,18 @@ public interface Api {
      * @param apiStringCallbackListener
      */
     void getContactsSearch(ContactsSearchReq contactsSearchReq, ApiStringCallbackListener apiStringCallbackListener);
+
+    /**
+     * 添加好友
+     * @param friendAddReq
+     * @param apiStringCallbackListener
+     */
+    void getFriendAdd(FriendAddReq friendAddReq, ApiStringCallbackListener apiStringCallbackListener);
+
+    /**
+     * 同意好友添加请求
+     * @param friendAgreeReq
+     * @param apiStringCallbackListener
+     */
+    void getFriendAgree(FriendAgreeReq friendAgreeReq,  ApiStringCallbackListener apiStringCallbackListener);
 }

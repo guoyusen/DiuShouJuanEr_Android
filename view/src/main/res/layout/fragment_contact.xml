@@ -48,11 +48,13 @@
                         app:placeholderImage="@mipmap/item_contact_new"
                         app:roundAsCircle="true" />
 
-                    <TextView
+                    <com.bili.diushoujuaner.widget.badgeview.BGABadgeTextView
+                        android:id="@+id/txtAddContact"
                         style="@style/TextMiddle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/x144"
+                        android:paddingRight="@dimen/x64"
                         android:layout_centerVertical="true"
                         android:text="新的朋友"
                         android:textColor="@color/TC_040404" />

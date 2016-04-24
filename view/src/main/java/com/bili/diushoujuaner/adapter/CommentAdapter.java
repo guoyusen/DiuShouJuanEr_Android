@@ -42,6 +42,12 @@ public class CommentAdapter extends CommonAdapter<CommentDto> {
     }
 
     @Override
+    public void refresh(List<CommentDto> list) {
+        responAdapterHashtable.clear();
+        super.refresh(list);
+    }
+
+    @Override
     public void convert(ViewHolder holder, final CommentDto commentDto, int position) throws Exception {
         if(commentDto != null){
             if(commentFocusDrawable == null){

@@ -32,7 +32,6 @@
             app:roundAsCircle="true" />
 
         <RelativeLayout
-            android:id="@+id/layoutBadge"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="@dimen/x24"
@@ -53,6 +52,7 @@
                 android:textSize="@dimen/x30" />
 
             <TextView
+                android:id="@+id/txtBrief"
                 style="@style/TextSmall"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/x36"

@@ -164,9 +164,8 @@ public class MessageAdapter extends BaseAdapter {
         holder.getView(R.id.ivHead).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!(messageVo.getFromNo() == CustomSessionPreference.getInstance().getCustomSession().getUserNo())){
-                    context.startActivity(new Intent(context, ContactDetailActivity.class).putExtra(ContactDetailActivity.TAG, messageVo.getFromNo()));
-                }
+                context.startActivity(new Intent(context, ContactDetailActivity.class)
+                        .putExtra(ContactDetailActivity.TAG, messageVo.getFromNo()));
             }
         });
         holder.getView(R.id.ivFail).setOnClickListener(new View.OnClickListener() {
@@ -182,6 +181,7 @@ public class MessageAdapter extends BaseAdapter {
     private void setMessageContent(ViewHolder holder, MessageVo messageVo){
         //设置消息内容
         switch (messageVo.getConType()){
+            case Constant.CHAT_CONTENT_FRIEND_AGREE:
             case Constant.CHAT_CONTENT_TEXT:
                 ((TextView)holder.getView(R.id.txtContent)).setText(messageVo.getContent());
                 break;

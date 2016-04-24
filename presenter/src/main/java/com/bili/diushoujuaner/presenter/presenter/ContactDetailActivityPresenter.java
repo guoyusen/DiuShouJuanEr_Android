@@ -11,4 +11,8 @@ public interface ContactDetailActivityPresenter {
 
     void setCurrentChatting(long userNo, int msgType);
 
+    boolean isFriend(long userNo);
+
+    boolean isOwner(long userNo);
+
 }

@@ -290,6 +290,7 @@
                         style="@style/TextSmall"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:paddingBottom="@dimen/y132"
                         android:layout_below="@+id/layoutIntroduceHead"
                         android:layout_marginTop="@dimen/y16"
                         android:text="发的是煎熬开发等哈说尽快发"
@@ -308,5 +309,25 @@
     <include
         android:id="@+id/layoutHead"
         layout="@layout/include_head_transparent" />
+
+    <RelativeLayout
+        android:id="@+id/layoutBottom"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y132"
+        android:layout_gravity="bottom"
+        android:visibility="gone"
+        android:background="@color/COLOR_WHITE">
+
+        <View
+            style="@style/line"
+            android:layout_alignParentTop="true" />
+
+        <Button
+            android:id="@+id/btnAddParty"
+            style="@style/BtnXLongBlue"
+            android:layout_centerVertical="true"
+            android:text="申请加群" />
+
+    </RelativeLayout>
 
 </FrameLayout>

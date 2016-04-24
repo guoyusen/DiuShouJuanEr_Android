@@ -33,4 +33,6 @@ public interface IContactAction {
     void getPartyIntroduceUpdate(PartyIntroduceUpdateReq partyIntroduceUpdateReq, ActionStringCallbackListener<ActionRespon<String>> actionStringCallbackListener);
 
     void getContactsSearch(ContactsSearchReq contactsSearchReq, ActionStringCallbackListener<ActionRespon<List<ContactDto>>> actionStringCallbackListener);
+
+    void getAddContact(long userNo);
 }

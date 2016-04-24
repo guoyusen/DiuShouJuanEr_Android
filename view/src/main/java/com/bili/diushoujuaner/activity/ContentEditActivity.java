@@ -1,7 +1,6 @@
 package com.bili.diushoujuaner.activity;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -18,7 +17,6 @@ import com.bili.diushoujuaner.utils.Constant;
 import com.bili.diushoujuaner.widget.CustomEditText;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 
 /**
  * Created by BiLi on 2016/3/9.
@@ -34,8 +32,12 @@ public class ContentEditActivity extends BaseActivity<ContentEditActivityPresent
 
     public static final String TAG_TYPE = "ContentEditActivity_Type";
     public static final String TAG_CONTENT = "ContentEditActivity_Content";
+    public static final String TAG_CONTNO = "ContentEditActivity_ContNo";
+    @Bind(R.id.txtRight)
+    TextView txtRight;
     private int type;
     private String content;
+    private long contactNo;
 
     class CustomTextWatcher implements TextWatcher {
         @Override
@@ -56,6 +58,12 @@ public class ContentEditActivity extends BaseActivity<ContentEditActivityPresent
                 case Constant.EDIT_CONTENT_PARTY_INTRODUCE:
                     textLeftCount.setText((Constant.EDIT_CONTENT_LENGTH_PARTY_INTRODUCE - s.toString().length()) + "");
                     break;
+                case Constant.EDIT_CONTENT_FRIEND_ADD:
+                    textLeftCount.setText((Constant.EDIT_CONTENT_LENGTH_FRIEND_ADD - s.toString().length()) + "");
+                    break;
+                case Constant.EDIT_CONTENT_PARTY_ADD:
+                    textLeftCount.setText((Constant.EDIT_CONTENT_LENGTH_PARTY_ADD - s.toString().length()) + "");
+                    break;
             }
         }
 
@@ -74,6 +82,9 @@ public class ContentEditActivity extends BaseActivity<ContentEditActivityPresent
     public void initIntentParam(Intent intent) {
         type = intent.getIntExtra(TAG_TYPE, Constant.EDIT_CONTENT_NONE);
         content = intent.getStringExtra(TAG_CONTENT);
+        if (type == Constant.EDIT_CONTENT_FRIEND_ADD || type == Constant.EDIT_CONTENT_PARTY_ADD) {
+            contactNo = intent.getLongExtra(TAG_CONTNO, -1);
+        }
     }
 
     @Override
@@ -89,6 +100,7 @@ public class ContentEditActivity extends BaseActivity<ContentEditActivityPresent
     @Override
     public void setViewStatus() {
         btnRight.setOnClickListener(this);
+        txtRight.setOnClickListener(this);
         edtEditor.addTextChangedListener(new CustomTextWatcher());
         setContentType();
     }
@@ -109,7 +121,7 @@ public class ContentEditActivity extends BaseActivity<ContentEditActivityPresent
                 break;
             case Constant.EDIT_CONTENT_MEMBER_NAME:
                 showPageHead("群名片", R.mipmap.icon_finish, null);
-                textLeftCount.setText(Constant.EDIT_CONTENT_LENGTH_MEMBER_NAME+ "");
+                textLeftCount.setText(Constant.EDIT_CONTENT_LENGTH_MEMBER_NAME + "");
                 edtEditor.setHint("更改您的群名片吧...");
                 edtEditor.setMaxLength(Constant.EDIT_CONTENT_LENGTH_MEMBER_NAME);
                 break;
@@ -125,6 +137,18 @@ public class ContentEditActivity extends BaseActivity<ContentEditActivityPresent
                 edtEditor.setHint("更改您的群介绍...");
                 edtEditor.setMaxLength(Constant.EDIT_CONTENT_LENGTH_PARTY_INTRODUCE);
                 break;
+            case Constant.EDIT_CONTENT_FRIEND_ADD:
+                showPageHead("身份验证", null, "发送");
+                textLeftCount.setText(Constant.EDIT_CONTENT_LENGTH_FRIEND_ADD + "");
+                edtEditor.setHint("请输入验证信息");
+                edtEditor.setMaxLength(Constant.EDIT_CONTENT_LENGTH_FRIEND_ADD);
+                break;
+            case Constant.EDIT_CONTENT_PARTY_ADD:
+                showPageHead("身份验证", null, "发送");
+                textLeftCount.setText(Constant.EDIT_CONTENT_LENGTH_PARTY_ADD + "");
+                edtEditor.setHint("请输入验证信息");
+                edtEditor.setMaxLength(Constant.EDIT_CONTENT_LENGTH_PARTY_ADD);
+                break;
         }
         edtEditor.setText(content);
         edtEditor.setSelection(edtEditor.getText().length());
@@ -134,6 +158,9 @@ public class ContentEditActivity extends BaseActivity<ContentEditActivityPresent
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnRight:
+                executeClickForFinish();
+                break;
+            case R.id.txtRight:
                 executeClickForFinish();
                 break;
         }
@@ -155,6 +182,12 @@ public class ContentEditActivity extends BaseActivity<ContentEditActivityPresent
                 break;
             case Constant.EDIT_CONTENT_PARTY_INTRODUCE:
                 getBindPresenter().publishNewPartyIntroduce(edtEditor.getText().toString());
+                break;
+            case Constant.EDIT_CONTENT_FRIEND_ADD:
+                getBindPresenter().getFriendAdd(contactNo, edtEditor.getText().toString());
+                break;
+            case Constant.EDIT_CONTENT_PARTY_ADD:
+                getBindPresenter().getPartyAdd(contactNo, edtEditor.getText().toString());
                 break;
         }
         Common.hideSoftInputFromWindow(context, edtEditor);

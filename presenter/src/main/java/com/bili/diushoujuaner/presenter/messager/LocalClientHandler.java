@@ -5,11 +5,15 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 
+import com.bili.diushoujuaner.model.actionhelper.action.ContactAction;
+import com.bili.diushoujuaner.model.cachehelper.ACache;
 import com.bili.diushoujuaner.model.databasehelper.DBManager;
+import com.bili.diushoujuaner.model.eventhelper.AddContactEvent;
 import com.bili.diushoujuaner.model.eventhelper.ForceOutEvent;
 import com.bili.diushoujuaner.model.eventhelper.LoginEvent;
 import com.bili.diushoujuaner.model.eventhelper.LoginngEvent;
 import com.bili.diushoujuaner.model.eventhelper.LogoutEvent;
+import com.bili.diushoujuaner.model.eventhelper.UpdateContactEvent;
 import com.bili.diushoujuaner.model.eventhelper.UpdateMessageEvent;
 import com.bili.diushoujuaner.model.eventhelper.UpdatePartyEvent;
 import com.bili.diushoujuaner.model.eventhelper.UpdateReadCountEvent;
@@ -83,6 +87,21 @@ public class LocalClientHandler extends Handler {
                 ContactTemper.getInstance().updateMemberName(messageVo.getToNo(), messageVo.getFromNo(), messageVo.getContent());
                 EventBus.getDefault().post(new UpdatePartyEvent(messageVo.getToNo(), messageVo.getContent(), Constant.CHAT_PARTY_MEMBER_NAME));
                 break;
+            case Constant.HANDLER_FRIEND_ADD:
+                messageVo = bundle.getParcelable("MessageVo");
+                if(messageVo == null){
+                    return;
+                }
+                ContactAction.getInstance(context).getAddContact(messageVo.getFromNo());
+                break;
+            case Constant.HANDLER_PARTY_ADD:
+                EventBus.getDefault().post(new AddContactEvent());
+                break;
+            case Constant.HANDLER_CONTACT_UPDATE:
+                //强制刷新联系人列表
+                ACache.getInstance().put(Constant.ACACHE_LAST_TIME_CONTACT, "");
+                EventBus.getDefault().post(new UpdateContactEvent());
+                break;
         }
     }
 
@@ -98,7 +117,7 @@ public class LocalClientHandler extends Handler {
             @Override
             public void onSuccess(Context context, MessageVo result) {
                 EventBus.getDefault().post(new UpdateMessageEvent(result, UpdateMessageEvent.MESSAGE_RECEIVE));
-                EventBus.getDefault().post(new UpdateReadCountEvent());
+                EventBus.getDefault().post(new UpdateReadCountEvent(Constant.UNREAD_COUNT_MESSAGE, ChattingTemper.getUnReadCount()));
             }
 
             @Override

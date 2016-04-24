@@ -17,9 +17,14 @@ import android.widget.Toast;
 
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.base.BaseFragmentActivity;
+import com.bili.diushoujuaner.model.actionhelper.action.UserInfoAction;
 import com.bili.diushoujuaner.model.eventhelper.ForceOutEvent;
 import com.bili.diushoujuaner.model.eventhelper.StartChattingEvent;
 import com.bili.diushoujuaner.model.eventhelper.UpdateReadCountEvent;
+import com.bili.diushoujuaner.model.tempHelper.ChattingTemper;
+import com.bili.diushoujuaner.model.tempHelper.ContactTemper;
+import com.bili.diushoujuaner.model.tempHelper.GoodTemper;
+import com.bili.diushoujuaner.model.tempHelper.RecallTemper;
 import com.bili.diushoujuaner.presenter.presenter.MainActivityPresenter;
 import com.bili.diushoujuaner.model.eventhelper.UpdateAutographEvent;
 import com.bili.diushoujuaner.model.eventhelper.ShowHeadEvent;
@@ -282,11 +287,21 @@ public class MainActivity extends BaseFragmentActivity<MainActivityPresenter> im
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onUpdateReadCountEvent(UpdateReadCountEvent updateReadCountEvent){
-        int unReadCount = getBindPresenter().getUnReadCount();
-        if(unReadCount <= 0) {
-            navChat.hiddenBadge();
-        }else{
-            navChat.showTextBadge(unReadCount + "");
+        switch (updateReadCountEvent.getType()){
+            case Constant.UNREAD_COUNT_MESSAGE:
+                if(updateReadCountEvent.getCount() <= 0) {
+                    navChat.hiddenBadge();
+                }else{
+                    navChat.showTextBadge(updateReadCountEvent.getCount() + "");
+                }
+                break;
+            case Constant.UNREAD_COUNT_APPLY:
+                if(updateReadCountEvent.getCount() <= 0){
+                    navCont.hiddenBadge();
+                }else {
+                    navCont.showTextBadge(updateReadCountEvent.getCount() + "");
+                }
+                break;
         }
     }
 
@@ -340,6 +355,7 @@ public class MainActivity extends BaseFragmentActivity<MainActivityPresenter> im
 
     @Override
     public void onPageDestroy() {
+        getBindPresenter().clear();
         LocalClient.getInstance(context).unBindLocalServer();
     }
 }

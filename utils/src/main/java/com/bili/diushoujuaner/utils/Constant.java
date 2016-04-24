@@ -64,12 +64,16 @@ public interface Constant {
     int EDIT_CONTENT_MEMBER_NAME = 3;
     int EDIT_CONTENT_PARTY_NAME = 4;
     int EDIT_CONTENT_PARTY_INTRODUCE = 5;
+    int EDIT_CONTENT_FRIEND_ADD = 6;
+    int EDIT_CONTENT_PARTY_ADD = 7;
 
     int EDIT_CONTENT_LENGTH_MEMBER_NAME = 50;
     int EDIT_CONTENT_LENGTH_AUTOGRAPH = 50;
     int EDIT_CONTENT_LENGTH_PARTY_NAME = 50;
     int EDIT_CONTENT_LENGTH_FEEDBACK = 200;
     int EDIT_CONTENT_LENGTH_PARTY_INTRODUCE = 100;
+    int EDIT_CONTENT_LENGTH_FRIEND_ADD = 50;
+    int EDIT_CONTENT_LENGTH_PARTY_ADD = 50;
 
 
     int ACACHE_TIME_RECENT_RECALL = 600000;
@@ -112,11 +116,15 @@ public interface Constant {
     int CHAT_PARTY_UNGROUP = 11;//群解散
     int CHAT_PARTY_INTRODUCE = 12;//修改群介绍
     int CHAT_PARTY_MEMBER_NAME = 13;//群成员修改自己的群名片
+    int CHAT_FRIEND_ADD = 14;//添加童友
+    int CHAT_PARTY_ADD = 15;//申请加群
+    int CHAT_FRIEND_RECOMMEND = 16;//好友推荐
     // 聊天消息中content的类型
     int CHAT_CONTENT_EMPTY = 0;
     int CHAT_CONTENT_TEXT = 1;
     int CHAT_CONTENT_IMG = 2;
     int CHAT_CONTENT_VOICE = 3;
+    int CHAT_CONTENT_FRIEND_AGREE = 4;
 
     int IDEL_TIMEOUT_FOR_INTERVAL = 20;//如果20S内没有收到来自服务端的心跳请求，则触发离线
     int CONNECTTIMEOUT = 5000;//5S连接超时
@@ -141,8 +149,19 @@ public interface Constant {
     int HANDLER_PARTY_MEMBER_UPDATE = 13;//群成员增删
     int HANDLER_PARTY_UNGROUP = 14;//群解散
     int HANDLER_PARTY_MEMBER_NAME = 15;//修改群名片
+    int HANDLER_FRIEND_ADD = 16;//添加童友
+    int HANDLER_PARTY_ADD = 17;//申请加群
+    int HANDLER_CONTACT_UPDATE = 18;//更新联系人
 
     int MEMBER_HEAD_SERVER = 1;
     int MEMBER_HEAD_LOCAL = 2;
+
+    int UNREAD_COUNT_MESSAGE = 1;
+    int UNREAD_COUNT_APPLY = 2;
+
+    int CONTACT_ADD_FRIEND = 1;
+    int CONTACT_ADD_PARTY = 2;
+    int CONTACT_ADDED = 3;
+    int CONTACT_MAY_KNOW = 4;
 
 }

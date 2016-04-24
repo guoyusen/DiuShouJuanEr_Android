@@ -132,6 +132,9 @@ public class MessageActivity extends BaseActivity<MessageActivityPresenter> impl
 
     @Override
     public void showContactInfo(FriendVo friendVo) {
+        if(friendVo == null){
+            return;
+        }
         showPageHead(friendVo.getDisplayName(), R.mipmap.icon_menu_user, null);
         this.friendVo = friendVo;
         this.isPartyChatting = false;
@@ -148,10 +151,11 @@ public class MessageActivity extends BaseActivity<MessageActivityPresenter> impl
     public void showNextActivity(int showType) {
         switch (showType){
             case Constant.SHOW_TYPE_CHATTING_SETTING:
-                startActivity(new Intent(MessageActivity.this, ChattingSettingViewActivity.class));
+                startActivity(new Intent(MessageActivity.this, ChattingSettingActivity.class));
                 break;
             case Constant.SHOW_TYPE_PARTY_DETAIL:
-                startActivity(new Intent(MessageActivity.this, PartyDetailActivity.class));
+                startActivity(new Intent(MessageActivity.this, PartyDetailActivity.class)
+                .putExtra(PartyDetailActivity.TAG_TYPE, PartyDetailActivity.TYPE_CONTACT));
                 break;
         }
     }

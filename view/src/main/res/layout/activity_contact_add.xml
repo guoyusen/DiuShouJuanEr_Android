@@ -6,104 +6,52 @@
 
     <include android:id="@+id/layoutHead"
         layout="@layout/include_head_custom"/>
-    
-    <RelativeLayout
+
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y100"
-        android:layout_marginTop="@dimen/y24"
-        android:background="@color/BG_F6F6F6">
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/ivSearch"
-            android:layout_width="@dimen/x60"
-            android:layout_height="@dimen/y60"
-            android:src="@mipmap/icon_search_contact"
-            android:layout_marginLeft="@dimen/x24"
-            android:layout_marginStart="@dimen/x24"
-            android:layout_centerVertical="true"/>
-
-        <com.bili.diushoujuaner.widget.CustomEditText
-            android:id="@+id/edtParamNo"
-            style="@style/TextMiddle"
+        <com.bili.diushoujuaner.widget.scrollview.ReboundScrollView
+            android:id="@+id/scrollView"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/y56"
-            android:layout_marginRight="@dimen/x120"
-            android:layout_marginEnd="@dimen/x120"
-            android:layout_toRightOf="@+id/ivSearch"
-            android:layout_toEndOf="@+id/ivSearch"
-            android:paddingLeft="@dimen/x5"
-            android:paddingRight="@dimen/x5"
-            android:singleLine="true"
-            android:layout_centerVertical="true"
-            android:background="@color/COLOR_WHITE"
-            android:textColor="@color/TC_333333"
-            android:layout_marginLeft="@dimen/x10"
-            android:layout_marginStart="@dimen/x10"
-            android:hint="输入手机号/群号"
-            android:textCursorDrawable="@drawable/cursor_blue"
-            android:textColorHint="@color/TC_ADADBB"/>
-
-        <TextView
-            android:id="@+id/txtSearch"
-            android:layout_width="@dimen/x120"
-            android:layout_height="@dimen/y100"
-            android:background="@color/BG_F6F6F6"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:gravity="center"
-            android:text="搜索"
-            style="@style/TextMiddle"
-            android:textColor="@color/TC_12B7F5"/>
-
-    </RelativeLayout>
-
-    <com.bili.diushoujuaner.widget.scrollview.ReboundScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:overScrollMode="never"
-        android:layout_marginTop="@dimen/y24">
-
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:overScrollMode="never">
 
             <com.bili.diushoujuaner.widget.CustomListView
-                android:id="@+id/listViewResult"
+                android:id="@+id/listView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:divider="@color/COLOR_WHITE"
                 android:dividerHeight="0dp"
                 android:overScrollMode="never"/>
 
-            <RelativeLayout
-                android:id="@+id/layoutTip"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/y64"
-                android:background="@color/COLOR_WHITE"
-                android:visibility="gone">
+        </com.bili.diushoujuaner.widget.scrollview.ReboundScrollView>
 
-                <ImageView
-                    android:id="@+id/ivTip"
-                    android:layout_width="@dimen/x108"
-                    android:layout_height="@dimen/y108"
-                    android:layout_centerInParent="true" />
+        <RelativeLayout
+            android:id="@+id/layoutTip"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/COLOR_WHITE"
+            android:visibility="gone">
 
-                <TextView
-                    style="@style/TextMiddle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/ivTip"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="@dimen/y64"
-                    android:text="无结果"
-                    android:textColor="@color/TC_BFBFBF" />
+            <ImageView
+                android:id="@+id/ivTip"
+                android:layout_width="@dimen/x108"
+                android:layout_height="@dimen/y108"
+                android:layout_centerInParent="true" />
 
-            </RelativeLayout>
+            <TextView
+                style="@style/TextMiddle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/ivTip"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/y32"
+                android:text="暂无数据"
+                android:textColor="@color/TC_BFBFBF" />
 
+        </RelativeLayout>
 
-        </FrameLayout>
-
-    </com.bili.diushoujuaner.widget.scrollview.ReboundScrollView>
+    </FrameLayout>
 
 </LinearLayout>

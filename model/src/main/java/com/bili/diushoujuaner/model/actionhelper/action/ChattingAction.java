@@ -7,8 +7,11 @@ import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
 import com.bili.diushoujuaner.model.apihelper.ApiRespon;
 import com.bili.diushoujuaner.model.apihelper.api.ApiAction;
 import com.bili.diushoujuaner.model.apihelper.callback.ApiStringCallbackListener;
+import com.bili.diushoujuaner.model.cachehelper.ACache;
 import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
 import com.bili.diushoujuaner.model.databasehelper.DBManager;
+import com.bili.diushoujuaner.model.eventhelper.AddContactEvent;
+import com.bili.diushoujuaner.model.eventhelper.UpdateContactEvent;
 import com.bili.diushoujuaner.model.eventhelper.UpdatePartyEvent;
 import com.bili.diushoujuaner.model.tempHelper.ChattingTemper;
 import com.bili.diushoujuaner.model.tempHelper.ContactTemper;
@@ -142,11 +145,17 @@ public class ChattingAction implements IChattingAction {
     }
 
     private ActionRespon<List<MessageVo>> processOffMessage(List<OffMsgDto> messageList){
-        //TODO 异步处理所有的消息，并返回消息界面需要的消息
         List<MessageVo> msgDtoList = new ArrayList<>();
         for(OffMsgDto item : messageList){
             switch(item.getMsgType()){
                 case Constant.CHAT_FRI:
+                    msgDtoList.add(processOffMessage(item));
+                    if(item.getConType() == Constant.CHAT_CONTENT_FRIEND_AGREE && DBManager.getInstance().isFriended(item.getFromNo())){
+                        //收到添加同意信息，强制刷新联系人列表
+                        ACache.getInstance().put(Constant.ACACHE_LAST_TIME_CONTACT, "");
+                        EventBus.getDefault().post(new UpdateContactEvent());
+                    }
+                    break;
                 case Constant.CHAT_PAR:
                     msgDtoList.add(processOffMessage(item));
                     break;
@@ -169,6 +178,14 @@ public class ChattingAction implements IChattingAction {
                     ContactTemper.getInstance().updateMemberName(item.getToNo(), item.getFromNo(), item.getContent());
                     DBManager.getInstance().updateMemberName(item.getToNo(), item.getFromNo(), item.getContent());
                     EventBus.getDefault().post(new UpdatePartyEvent(item.getToNo(), item.getContent(), Constant.CHAT_PARTY_MEMBER_NAME));
+                    break;
+                case Constant.CHAT_FRIEND_ADD:
+                    DBManager.getInstance().saveApply(item.getFromNo(), item.getToNo(),item.getContent(), item.getTime(), Constant.CHAT_FRIEND_ADD);
+                    ContactAction.getInstance(context).getAddContact(item.getFromNo());
+                    break;
+                case Constant.CHAT_PARTY_ADD:
+                    DBManager.getInstance().saveApply(item.getFromNo(), Long.valueOf(item.getTime()),item.getContent(), Common.getCurrentTimeYYMMDD_HHMMSS(), Constant.CHAT_PARTY_ADD);
+                    EventBus.getDefault().post(new AddContactEvent());
                     break;
             }
         }

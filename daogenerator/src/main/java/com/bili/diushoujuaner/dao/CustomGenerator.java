@@ -13,6 +13,7 @@ public class CustomGenerator {
         addParty(schema);
         addMember(schema);
         addChat(schema);
+        addApply(schema);
 
         new DaoGenerator().generateAll(schema, "../diushoujuaner/utils/src/main/java");
     }
@@ -90,6 +91,19 @@ public class CustomGenerator {
         chat.addIntProperty("status").notNull();
         chat.addBooleanProperty("showTime").notNull();
         chat.addBooleanProperty("read").notNull();
+    }
+
+    private static void addApply(Schema schema){
+        Entity apply = schema.addEntity("Apply");
+        apply.addIdProperty().autoincrement().primaryKey();
+        apply.addLongProperty("ownerNo").notNull();
+        apply.addLongProperty("fromNo").notNull();
+        apply.addLongProperty("toNo").notNull();
+        apply.addStringProperty("content");
+        apply.addStringProperty("time");
+        apply.addIntProperty("type");//1.群 2.好友
+        apply.addBooleanProperty("read");//是否阅读
+        apply.addBooleanProperty("accept");//是否同意
     }
 
 }

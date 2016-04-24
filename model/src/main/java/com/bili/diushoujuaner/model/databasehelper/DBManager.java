@@ -4,7 +4,15 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
+import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
 import com.bili.diushoujuaner.model.tempHelper.ChattingTemper;
+import com.bili.diushoujuaner.model.tempHelper.ContactTemper;
+import com.bili.diushoujuaner.utils.Common;
+import com.bili.diushoujuaner.utils.Constant;
+import com.bili.diushoujuaner.utils.comparator.ApplyComparator;
+import com.bili.diushoujuaner.utils.entity.dto.UserDto;
+import com.bili.diushoujuaner.utils.entity.po.Apply;
+import com.bili.diushoujuaner.utils.entity.po.ApplyDao;
 import com.bili.diushoujuaner.utils.entity.po.Chat;
 import com.bili.diushoujuaner.utils.entity.po.ChatDao;
 import com.bili.diushoujuaner.utils.entity.po.DaoMaster;
@@ -17,17 +25,14 @@ import com.bili.diushoujuaner.utils.entity.po.Party;
 import com.bili.diushoujuaner.utils.entity.po.PartyDao;
 import com.bili.diushoujuaner.utils.entity.po.User;
 import com.bili.diushoujuaner.utils.entity.po.UserDao;
-import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
-import com.bili.diushoujuaner.model.tempHelper.ContactTemper;
-import com.bili.diushoujuaner.utils.Common;
-import com.bili.diushoujuaner.utils.Constant;
+import com.bili.diushoujuaner.utils.entity.vo.ApplyVo;
 import com.bili.diushoujuaner.utils.entity.vo.FriendVo;
 import com.bili.diushoujuaner.utils.entity.vo.MemberVo;
 import com.bili.diushoujuaner.utils.entity.vo.MessageVo;
 import com.bili.diushoujuaner.utils.entity.vo.PartyVo;
-import com.bili.diushoujuaner.utils.entity.dto.UserDto;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -181,6 +186,14 @@ public class DBManager {
         for(Friend friend : friendList){
             saveFriend(friend);
         }
+    }
+
+    public boolean isFriended(long userNo){
+        List<Friend> friendList = daoSession.getFriendDao().queryBuilder()
+                .where(FriendDao.Properties.OwnerNo.eq(CustomSessionPreference.getInstance().getCustomSession().getUserNo()),
+                        FriendDao.Properties.FriendNo.eq(userNo))
+                .build().list();
+        return !friendList.isEmpty();
     }
 
     public FriendVo getFriendVo(long userNo){
@@ -695,6 +708,83 @@ public class DBManager {
 
         daoSession.getDatabase().update("PARTY",contentValues,
                 "PARTY_NO = " + partyNo,
+                null);
+    }
+
+    public void saveApply(long fromNo, long toNo, String content, String time, int type){
+        Apply apply = new Apply();
+        apply.setOwnerNo(CustomSessionPreference.getInstance().getCustomSession().getUserNo());
+        apply.setFromNo(fromNo);
+        apply.setToNo(toNo);
+        apply.setContent(content);
+        apply.setTime(time);
+        apply.setType(type);
+        apply.setRead(false);
+        apply.setAccept(false);
+
+        daoSession.getApplyDao().insertOrReplace(apply);
+    }
+
+    public int getAddUnReadCount(){
+        List<Apply> applyList = daoSession.getApplyDao().queryBuilder()
+                .where(ApplyDao.Properties.OwnerNo.eq(CustomSessionPreference.getInstance().getCustomSession().getUserNo()),
+                        ApplyDao.Properties.Accept.eq(false),
+                        ApplyDao.Properties.Read.eq(false))
+                .build()
+                .list();
+        return applyList.size();
+    }
+
+    public void updateApplyRead(){
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("READ", 1);
+        daoSession.getDatabase().update("APPLY",contentValues,
+                "OWNER_NO = " + CustomSessionPreference.getInstance().getCustomSession().getUserNo(),
+                null);
+    }
+
+    private String getApplyVoListSql(){
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("select A.FROM_NO FROM_NO, A.TO_NO TO_NO, A.CONTENT CONTENT, A.TIME TIME, A.TYPE TYPE, A.READ READ, A.ACCEPT ACCEPT, U.NICK_NAME NICK_NAME, U.PIC_PATH PIC_PATH ");
+        stringBuilder.append("from Apply A, User U ");
+        stringBuilder.append("where A.OWNER_NO = " + CustomSessionPreference.getInstance().getCustomSession().getUserNo() + " ");
+        stringBuilder.append("and A.FROM_NO = U.USER_NO ");
+        return stringBuilder.toString();
+    }
+
+    public List<ApplyVo> getApplyVoList(){
+        List<ApplyVo> applyVoList = new ArrayList<>();
+        Cursor cursor = daoSession.getDatabase().rawQuery(getApplyVoListSql(), null);
+        cursor.moveToFirst();
+
+        if(cursor.getCount() > 0) {
+            do {
+                ApplyVo applyVo = new ApplyVo();
+                applyVo.setFromNo(cursor.getLong(cursor.getColumnIndex("FROM_NO")));
+                applyVo.setToNo(cursor.getLong(cursor.getColumnIndex("TO_NO")));
+                applyVo.setContent(cursor.getString(cursor.getColumnIndex("CONTENT")));
+                applyVo.setTime(cursor.getString(cursor.getColumnIndex("TIME")));
+                applyVo.setType(cursor.getInt(cursor.getColumnIndex("TYPE")));
+                applyVo.setAccept(cursor.getInt(cursor.getColumnIndex("ACCEPT")) == 1);
+                applyVo.setRead(cursor.getInt(cursor.getColumnIndex("READ")) == 1);
+                applyVo.setUserName(cursor.getString(cursor.getColumnIndex("NICK_NAME")));
+                applyVo.setPicPath(cursor.getString(cursor.getColumnIndex("PIC_PATH")));
+
+                applyVoList.add(applyVo);
+            } while (cursor.moveToNext());
+        }
+        Collections.sort(applyVoList, new ApplyComparator());
+
+        return applyVoList;
+    }
+
+    public void updateApplyAccept(long fromNo, long toNo){
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("ACCEPT", 1);
+        daoSession.getDatabase().update("APPLY",contentValues,
+                "OWNER_NO = " + CustomSessionPreference.getInstance().getCustomSession().getUserNo()
+                        + " and FROM_NO = " + fromNo
+                        + " and TO_NO = " + toNo,
                 null);
     }
 

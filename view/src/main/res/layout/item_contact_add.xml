@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/COLOR_WHITE"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/x24"
+    android:paddingRight="@dimen/x24">
+
+    <TextView
+        android:id="@+id/txtBar"
+        style="@style/TextMiddle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y72"
+        android:gravity="center|left"
+        android:text="搜索到的小伙伴"
+        android:textColor="@color/TC_8A8A8A" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/ivHead"
+            android:layout_width="@dimen/x96"
+            android:layout_height="@dimen/x96"
+            android:layout_marginTop="@dimen/y20"
+            app:actualImageScaleType="centerCrop"
+            app:roundAsCircle="true" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/x24"
+            android:layout_marginLeft="@dimen/x24"
+            android:layout_marginRight="@dimen/x24"
+            android:layout_marginStart="@dimen/x24"
+            android:layout_toEndOf="@+id/ivHead"
+            android:layout_toLeftOf="@+id/btnAgree"
+            android:layout_toRightOf="@+id/ivHead"
+            android:layout_toStartOf="@+id/btnAgree"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/y20"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="三木同学"
+                android:textColor="@color/TC_040404"
+                android:textSize="@dimen/x30" />
+
+            <TextView
+                android:id="@+id/txtTip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/y20"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="申请加入 一群都比"
+                android:textColor="@color/TC_333333"
+                android:textSize="@dimen/x28"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/txtApply"
+                style="@style/TextSmall"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/y12"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:orientation="horizontal"
+                android:text="就让大雨冲刷记忆中的沙，让我了无牵挂浪迹在天涯"
+                android:textColor="@color/TC_8A8A8A" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/btnAgree"
+            android:layout_width="@dimen/x124"
+            android:layout_height="@dimen/y48"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="@dimen/y44"
+            android:gravity="center"
+            android:background="@drawable/selector_btn_white"
+            android:focusable="false"
+            android:text="同意"
+            android:textColor="@color/TC_12B7F5"
+            android:textSize="@dimen/x28" />
+
+    </RelativeLayout>
+
+    <View
+        style="@style/line"
+        android:layout_marginLeft="@dimen/x120"
+        android:layout_marginTop="@dimen/y6"/>
+
+</LinearLayout>

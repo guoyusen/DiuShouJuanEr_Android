@@ -21,7 +21,7 @@
                 android:id="@+id/layoutUser"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/y128"
-                android:layout_marginTop="@dimen/y16"
+                android:layout_marginTop="@dimen/y24"
                 android:background="@color/COLOR_WHITE"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"

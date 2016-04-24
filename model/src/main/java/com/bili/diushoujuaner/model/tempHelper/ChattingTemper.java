@@ -37,6 +37,14 @@ public class ChattingTemper {
         return chattingTemper;
     }
 
+    public static int getUnReadCount(){
+        int unReadCount = 0;
+        for(ChattingVo chattingVo : ChattingTemper.getInstance().getChattingVoList()){
+            unReadCount += chattingVo.getUnReadCount();
+        }
+        return unReadCount;
+    }
+
 
     public interface OnUpdateMessageListener{
         void onUpdateMessage(MessageVo messageVo);

@@ -12,6 +12,7 @@ import com.bili.diushoujuaner.model.apihelper.request.ContactsSearchReq;
 import com.bili.diushoujuaner.model.apihelper.request.MemberNameUpdateReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyIntroduceUpdateReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyNameUpdateReq;
+import com.bili.diushoujuaner.model.eventhelper.AddContactEvent;
 import com.bili.diushoujuaner.utils.entity.dto.UserDto;
 import com.bili.diushoujuaner.model.cachehelper.ACache;
 import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
@@ -27,14 +28,16 @@ import com.bili.diushoujuaner.utils.Constant;
 import com.bili.diushoujuaner.utils.GsonParser;
 import com.bili.diushoujuaner.utils.entity.vo.FriendVo;
 import com.bili.diushoujuaner.utils.entity.vo.PartyVo;
-import com.bili.diushoujuaner.utils.pinyin.PinyinComparator;
-import com.bili.diushoujuaner.utils.pinyin.PinyinUtil;
+import com.bili.diushoujuaner.utils.comparator.ContactComparator;
+import com.bili.diushoujuaner.utils.comparator.PinyinUtil;
 import com.bili.diushoujuaner.utils.entity.dto.ContactDto;
 import com.bili.diushoujuaner.utils.entity.dto.MemberDto;
 import com.google.gson.reflect.TypeToken;
 import com.nanotasks.BackgroundWork;
 import com.nanotasks.Completion;
 import com.nanotasks.Tasks;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -60,6 +63,47 @@ public class ContactAction implements IContactAction{
     }
 
     @Override
+    public void getAddContact(final long userNo) {
+        User user = DBManager.getInstance().getUser(userNo);
+        if(user == null){
+            ContactInfoReq contactInfoReq = new ContactInfoReq();
+            contactInfoReq.setUserNo(userNo);
+            ApiAction.getInstance().getContactInfo(contactInfoReq, new ApiStringCallbackListener() {
+                @Override
+                public void onSuccess(final String data) {
+                    Tasks.executeInBackground(context, new BackgroundWork<Void>() {
+                        @Override
+                        public Void doInBackground() throws Exception {
+                            ApiRespon<UserDto> result = GsonParser.getInstance().fromJson(data, new TypeToken<ApiRespon<UserDto>>() {
+                            }.getType());
+                            if(result.getIsLegal()) {
+                                DBManager.getInstance().saveUser(result.getData());
+                            }
+                            return null;
+                        }
+                    }, new Completion<Void>() {
+                        @Override
+                        public void onSuccess(Context context, Void result) {
+                            EventBus.getDefault().post(new AddContactEvent());
+                        }
+
+                        @Override
+                        public void onError(Context context, Exception e) {
+
+                        }
+                    });
+                }
+
+                @Override
+                public void onFailure(int errorCode) {
+                }
+            });
+        }else{
+            EventBus.getDefault().post(new AddContactEvent());
+        }
+    }
+
+    @Override
     public void getContactsSearch(ContactsSearchReq contactsSearchReq, final ActionStringCallbackListener<ActionRespon<List<ContactDto>>> actionStringCallbackListener) {
         ApiAction.getInstance().getContactsSearch(contactsSearchReq, new ApiStringCallbackListener() {
             @Override
@@ -67,7 +111,7 @@ public class ContactAction implements IContactAction{
                 Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<List<ContactDto>>>() {
                     @Override
                     public ActionRespon<List<ContactDto>> doInBackground() throws Exception {
-                        ApiRespon<List<ContactDto>> result = GsonParser.getInstance().fromJson(data, new TypeToken<ActionRespon<List<ContactDto>>>(){}.getType());
+                        ApiRespon<List<ContactDto>> result = GsonParser.getInstance().fromJson(data, new TypeToken<ApiRespon<List<ContactDto>>>(){}.getType());
                         return ActionRespon.getActionResponFromApiRespon(result);
                     }
                 }, new Completion<ActionRespon<List<ContactDto>>>() {
@@ -260,7 +304,7 @@ public class ContactAction implements IContactAction{
     @Override
     public List<PartyVo> getPartyVoList(){
         List<PartyVo> partyVoList = DBManager.getInstance().getPartyVoList();
-        Collections.sort(partyVoList, new PinyinComparator());
+        Collections.sort(partyVoList, new ContactComparator());
         if(partyVoList.size() == 1){
             char capital = PinyinUtil.getHeadCapitalByChar(partyVoList.get(0).getDisplayName().charAt(0));
             partyVoList.get(0).setSortLetter((capital >= 'A' && capital <= 'Z') ? (capital + "") : "#");
@@ -334,7 +378,7 @@ public class ContactAction implements IContactAction{
     private List<FriendVo> getFriendVoListFromDB(){
         List<FriendVo> friendVoList = DBManager.getInstance().getFriendVoList();
         DBManager.getInstance().getPartyVoList();
-        Collections.sort(friendVoList, new PinyinComparator());
+        Collections.sort(friendVoList, new ContactComparator());
         if(friendVoList.size() == 1){
             char capital = PinyinUtil.getHeadCapitalByChar(friendVoList.get(0).getDisplayName().charAt(0));
             friendVoList.get(0).setSortLetter((capital >= 'A' && capital <= 'Z') ? (capital + "") : "#");
