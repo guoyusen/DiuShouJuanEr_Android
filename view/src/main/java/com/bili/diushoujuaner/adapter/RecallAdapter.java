@@ -12,13 +12,14 @@ import com.bili.diushoujuaner.activity.SpaceActivity;
 import com.bili.diushoujuaner.adapter.viewholder.ViewHolder;
 import com.bili.diushoujuaner.model.actionhelper.action.UserInfoAction;
 import com.bili.diushoujuaner.presenter.base.IBaseView;
-import com.bili.diushoujuaner.utils.Constant;
+import com.bili.diushoujuaner.utils.ConstantUtil;
 import com.bili.diushoujuaner.model.eventhelper.RemoveRecallEvent;
 import com.bili.diushoujuaner.model.eventhelper.GoodRecallEvent;
 import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
 import com.bili.diushoujuaner.model.tempHelper.ContactTemper;
 import com.bili.diushoujuaner.model.tempHelper.GoodTemper;
-import com.bili.diushoujuaner.utils.Common;
+import com.bili.diushoujuaner.utils.CommonUtil;
+import com.bili.diushoujuaner.utils.TimeUtil;
 import com.bili.diushoujuaner.utils.entity.dto.GoodDto;
 import com.bili.diushoujuaner.utils.entity.dto.RecallDto;
 import com.bili.diushoujuaner.widget.TintedBitmapDrawable;
@@ -49,9 +50,9 @@ public class RecallAdapter extends CommonAdapter<RecallDto> {
         if(recallDto != null){
             //头像展示和头像点击事件
             if(recallDto.getUserNo() == CustomSessionPreference.getInstance().getCustomSession().getUserNo()){
-                Common.displayDraweeView(UserInfoAction.getInstance(context).getUserFromLocal().getPicPath(), (SimpleDraweeView) holder.getView(R.id.ivItemHead));
+                CommonUtil.displayDraweeView(UserInfoAction.getInstance(context).getUserFromLocal().getPicPath(), (SimpleDraweeView) holder.getView(R.id.ivItemHead));
             }else{
-                Common.displayDraweeView(recallDto.getUserPicPath(), (SimpleDraweeView) holder.getView(R.id.ivItemHead));
+                CommonUtil.displayDraweeView(recallDto.getUserPicPath(), (SimpleDraweeView) holder.getView(R.id.ivItemHead));
             }
             holder.getView(R.id.ivItemHead).setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -62,7 +63,7 @@ public class RecallAdapter extends CommonAdapter<RecallDto> {
             //显示展示的主图片
             if(recallDto.getPictureList().size() > 0){
                 holder.getView(R.id.layoutItemPic).setVisibility(View.VISIBLE);
-                Common.displayDraweeView(recallDto.getPictureList().get(0).getPicPath(), (SimpleDraweeView) holder.getView(R.id.ivItemPic));
+                CommonUtil.displayDraweeView(recallDto.getPictureList().get(0).getPicPath(), (SimpleDraweeView) holder.getView(R.id.ivItemPic));
                 if(recallDto.getPictureList().size() > 1){
                     holder.getView(R.id.txtItemPicCount).setVisibility(View.VISIBLE);
                     ((TextView)holder.getView(R.id.txtItemPicCount)).setText(recallDto.getPictureList().size() + "");
@@ -80,7 +81,7 @@ public class RecallAdapter extends CommonAdapter<RecallDto> {
                 ((TextView) holder.getView(R.id.txtItemUserName)).setText(recallDto.getUserName());
             }
             //根据Adapter的类型设置右侧的图标
-            if(type == Constant.RECALL_ADAPTER_SPACE){
+            if(type == ConstantUtil.RECALL_ADAPTER_SPACE){
                 // 空间类型，根据是否是用户自己，来设置是否显示删除按钮，并设置删除点击事件
                 holder.getView(R.id.ivItemFriend).setVisibility(View.GONE);
                 if(recallDto.getUserNo() == this.currentUserNo){
@@ -98,7 +99,7 @@ public class RecallAdapter extends CommonAdapter<RecallDto> {
                 }else{
                     holder.getView(R.id.layoutDelete).setVisibility(View.GONE);
                 }
-            }else if(type == Constant.RECALL_ADAPTER_HOME){
+            }else if(type == ConstantUtil.RECALL_ADAPTER_HOME){
                 // 首页类型，根据该该用户是否是好友类型，来设置时候显示好友标签
                 holder.getView(R.id.layoutDelete).setVisibility(View.GONE);
                 if(userName != null){
@@ -118,7 +119,7 @@ public class RecallAdapter extends CommonAdapter<RecallDto> {
             }
             ((ImageView)holder.getView(R.id.ivItemComment)).setImageDrawable(commentDrawable);
 
-            ((TextView)holder.getView(R.id.tetItemPublishTime)).setText(Common.getFormatTime(recallDto.getPublishTime()));
+            ((TextView)holder.getView(R.id.tetItemPublishTime)).setText(TimeUtil.getFormatTime(recallDto.getPublishTime()));
             ((TextView)holder.getView(R.id.tetItemContent)).setText(recallDto.getContent());
             ((TextView)holder.getView(R.id.txtCommentCount)).setText(recallDto.getCommentList().size() + "");
             ((TextView)holder.getView(R.id.txtGoodCount)).setText(recallDto.getGoodList().size() + "");

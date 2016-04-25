@@ -9,17 +9,9 @@ import android.widget.TextView;
 
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.activity.LoginActivity;
-import com.bili.diushoujuaner.model.eventhelper.ForceOutEvent;
-import com.bili.diushoujuaner.presenter.messager.LocalClient;
-import com.bili.diushoujuaner.utils.Constant;
-import com.bili.diushoujuaner.utils.manager.ActivityManager;
+import com.bili.diushoujuaner.utils.ConstantUtil;
 import com.bili.diushoujuaner.widget.CustomProgress;
 import com.bili.diushoujuaner.widget.CustomToast;
-import com.bili.diushoujuaner.widget.dialog.DialogTool;
-import com.bili.diushoujuaner.widget.dialog.OnBothClickListener;
-
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Created by BiLi on 2016/2/27.
@@ -126,13 +118,13 @@ public class BaseActivity<T> extends AbstractBaseActivity {
     @Override
     public void showLoading(int loadingType, String message) {
         switch (loadingType){
-            case Constant.LOADING_CENTER:
+            case ConstantUtil.LOADING_CENTER:
                 CustomProgress.getInstance(context).showCenter(message, true, null);
                 break;
-            case Constant.LOADING_TOP:
+            case ConstantUtil.LOADING_TOP:
                 CustomProgress.getInstance(context).showTop(message, true, null);
                 break;
-            case Constant.LOADING_DEFAULT:
+            case ConstantUtil.LOADING_DEFAULT:
                 if(defaultCircle != null){
                     defaultCircle.setVisibility(View.VISIBLE);
                     if(TextUtils.isEmpty(txtNavTitle.getText())){
@@ -146,11 +138,11 @@ public class BaseActivity<T> extends AbstractBaseActivity {
     @Override
     public void hideLoading(int loadingType) {
         switch (loadingType){
-            case Constant.LOADING_CENTER:
-            case Constant.LOADING_TOP:
+            case ConstantUtil.LOADING_CENTER:
+            case ConstantUtil.LOADING_TOP:
                 CustomProgress.getInstance(context).dismiss();
                 break;
-            case Constant.LOADING_DEFAULT:
+            case ConstantUtil.LOADING_DEFAULT:
                 if(findViewById(R.id.defaultCircle) != null){
                     findViewById(R.id.defaultCircle).setVisibility(View.GONE);
                 }
@@ -166,25 +158,25 @@ public class BaseActivity<T> extends AbstractBaseActivity {
     @Override
     public void showWarning(int warningType) {
         switch (warningType){
-            case Constant.WARNING_401:
+            case ConstantUtil.WARNING_401:
                 showWarning(context.getString(R.string.warning_401));
                 break;
-            case Constant.WARNING_403:
+            case ConstantUtil.WARNING_403:
                 showWarning(context.getString(R.string.warning_403));
                 break;
-            case Constant.WARNING_503:
+            case ConstantUtil.WARNING_503:
                 showWarning(context.getString(R.string.warning_503));
                 break;
-            case Constant.WARNING_500:
+            case ConstantUtil.WARNING_500:
                 showWarning(context.getString(R.string.warning_500));
                 break;
-            case Constant.WARNING_NET:
+            case ConstantUtil.WARNING_NET:
                 showWarning(context.getString(R.string.warning_net));
                 break;
-            case Constant.WARNING_PARSE:
+            case ConstantUtil.WARNING_PARSE:
                 showWarning(context.getString(R.string.warning_parse));
                 break;
-            case Constant.WARNING_FILE:
+            case ConstantUtil.WARNING_FILE:
                 showWarning(context.getString(R.string.warning_file));
                 break;
         }
@@ -193,5 +185,10 @@ public class BaseActivity<T> extends AbstractBaseActivity {
     @Override
     public void exitActivity() {
         startActivity(new Intent(this, LoginActivity.class));
+    }
+
+    @Override
+    public void finishView() {
+        finish();
     }
 }

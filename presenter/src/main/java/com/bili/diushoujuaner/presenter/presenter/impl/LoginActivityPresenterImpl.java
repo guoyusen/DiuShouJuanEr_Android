@@ -5,13 +5,13 @@ import android.text.TextUtils;
 
 import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
 import com.bili.diushoujuaner.presenter.presenter.LoginActivityPresenter;
-import com.bili.diushoujuaner.utils.Constant;
+import com.bili.diushoujuaner.utils.ConstantUtil;
 import com.bili.diushoujuaner.model.apihelper.request.UserAccountReq;
 import com.bili.diushoujuaner.model.actionhelper.action.CustomSessionAction;
 import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
 import com.bili.diushoujuaner.presenter.base.BasePresenter;
 import com.bili.diushoujuaner.presenter.view.ILoginView;
-import com.bili.diushoujuaner.utils.Common;
+import com.bili.diushoujuaner.utils.StringUtil;
 
 /**
  * Created by BiLi on 2016/3/10.
@@ -27,7 +27,7 @@ public class LoginActivityPresenterImpl extends BasePresenter<ILoginView> implem
         if(!validate(mobile, psd)){
             return;
         }
-        showLoading(Constant.LOADING_TOP,"登录中...");
+        showLoading(ConstantUtil.LOADING_TOP,"登录中...");
 
         UserAccountReq userAccountReq = new UserAccountReq();
         userAccountReq.setMobile(mobile);
@@ -40,12 +40,12 @@ public class LoginActivityPresenterImpl extends BasePresenter<ILoginView> implem
                         getBindView().loginSuccess();
                     }
                 }
-                hideLoading(Constant.LOADING_TOP);
+                hideLoading(ConstantUtil.LOADING_TOP);
             }
 
             @Override
             public void onFailure(int errorCode) {
-                hideLoading(Constant.LOADING_TOP);
+                hideLoading(ConstantUtil.LOADING_TOP);
                 showError(errorCode);
             }
         });
@@ -56,7 +56,7 @@ public class LoginActivityPresenterImpl extends BasePresenter<ILoginView> implem
             showWarning("请输入手机号");
             return false;
         }
-        if (!(Common.isMobile(mobile))) {
+        if (!(StringUtil.checkMobile(mobile))) {
             showWarning("请输入正确的手机号码");
             return false;
         }

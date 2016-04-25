@@ -17,14 +17,8 @@ import android.widget.Toast;
 
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.base.BaseFragmentActivity;
-import com.bili.diushoujuaner.model.actionhelper.action.UserInfoAction;
-import com.bili.diushoujuaner.model.eventhelper.ForceOutEvent;
 import com.bili.diushoujuaner.model.eventhelper.StartChattingEvent;
 import com.bili.diushoujuaner.model.eventhelper.UpdateReadCountEvent;
-import com.bili.diushoujuaner.model.tempHelper.ChattingTemper;
-import com.bili.diushoujuaner.model.tempHelper.ContactTemper;
-import com.bili.diushoujuaner.model.tempHelper.GoodTemper;
-import com.bili.diushoujuaner.model.tempHelper.RecallTemper;
 import com.bili.diushoujuaner.presenter.presenter.MainActivityPresenter;
 import com.bili.diushoujuaner.model.eventhelper.UpdateAutographEvent;
 import com.bili.diushoujuaner.model.eventhelper.ShowHeadEvent;
@@ -34,11 +28,11 @@ import com.bili.diushoujuaner.fragment.HomeFragment;
 import com.bili.diushoujuaner.fragment.ChattingFragment;
 import com.bili.diushoujuaner.presenter.messager.LocalClient;
 import com.bili.diushoujuaner.service.MessageService;
+import com.bili.diushoujuaner.utils.ConstantUtil;
 import com.bili.diushoujuaner.utils.entity.po.User;
 import com.bili.diushoujuaner.presenter.presenter.impl.MainActivityPresenterImpl;
 import com.bili.diushoujuaner.presenter.view.IMainView;
-import com.bili.diushoujuaner.utils.Common;
-import com.bili.diushoujuaner.utils.Constant;
+import com.bili.diushoujuaner.utils.CommonUtil;
 import com.bili.diushoujuaner.model.eventhelper.UpdateUserInfoEvent;
 import com.bili.diushoujuaner.model.eventhelper.UpdateWallPaperEvent;
 import com.bili.diushoujuaner.utils.manager.ActivityManager;
@@ -48,12 +42,8 @@ import com.bili.diushoujuaner.widget.badgeview.BGABadgeTextView;
 import com.bili.diushoujuaner.widget.badgeview.BGABottomNavigation;
 import com.bili.diushoujuaner.widget.badgeview.BGABottomNavigationItem;
 import com.bili.diushoujuaner.widget.badgeview.BGABottomNavigationItemView;
-import com.bili.diushoujuaner.widget.dialog.DialogTool;
-import com.bili.diushoujuaner.widget.dialog.OnBothClickListener;
-import com.bili.diushoujuaner.widget.dialog.OnDialogPositiveClickListener;
 import com.facebook.drawee.view.SimpleDraweeView;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -238,12 +228,12 @@ public class MainActivity extends BaseFragmentActivity<MainActivityPresenter> im
                 break;
             case R.id.layoutAutograph:
                 startActivity(new Intent(MainActivity.this, ContentEditActivity.class)
-                        .putExtra(ContentEditActivity.TAG_TYPE, Constant.EDIT_CONTENT_AUTOGRAPH)
+                        .putExtra(ContentEditActivity.TAG_TYPE, ConstantUtil.EDIT_CONTENT_AUTOGRAPH)
                         .putExtra(ContentEditActivity.TAG_CONTENT, txtAutograph.getText().toString()));
                 break;
             case R.id.layoutFeedback:
                 startActivity(new Intent(MainActivity.this, ContentEditActivity.class)
-                        .putExtra(ContentEditActivity.TAG_TYPE, Constant.EDIT_CONTENT_FEEDBACK)
+                        .putExtra(ContentEditActivity.TAG_TYPE, ConstantUtil.EDIT_CONTENT_FEEDBACK)
                         .putExtra(ContentEditActivity.TAG_CONTENT, ""));
                 break;
             case R.id.layoutNotice:
@@ -276,7 +266,7 @@ public class MainActivity extends BaseFragmentActivity<MainActivityPresenter> im
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onUpdateWallPaperEvent(UpdateWallPaperEvent updateWallPaperEvent){
-        Common.displayDraweeView(updateWallPaperEvent.getPath(), menuBg);
+        CommonUtil.displayDraweeView(updateWallPaperEvent.getPath(), menuBg);
         this.user.setWallPaper(updateWallPaperEvent.getPath());
     }
 
@@ -288,14 +278,14 @@ public class MainActivity extends BaseFragmentActivity<MainActivityPresenter> im
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onUpdateReadCountEvent(UpdateReadCountEvent updateReadCountEvent){
         switch (updateReadCountEvent.getType()){
-            case Constant.UNREAD_COUNT_MESSAGE:
+            case ConstantUtil.UNREAD_COUNT_MESSAGE:
                 if(updateReadCountEvent.getCount() <= 0) {
                     navChat.hiddenBadge();
                 }else{
                     navChat.showTextBadge(updateReadCountEvent.getCount() + "");
                 }
                 break;
-            case Constant.UNREAD_COUNT_APPLY:
+            case ConstantUtil.UNREAD_COUNT_APPLY:
                 if(updateReadCountEvent.getCount() <= 0){
                     navCont.hiddenBadge();
                 }else {
@@ -337,7 +327,7 @@ public class MainActivity extends BaseFragmentActivity<MainActivityPresenter> im
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onShowHeadEvent(ShowHeadEvent showHeadEvent){
         if(menuHead != null){
-            Common.displayDraweeView(showHeadEvent.getHeadPicUrl(), menuHead);
+            CommonUtil.displayDraweeView(showHeadEvent.getHeadPicUrl(), menuHead);
         }
         if(this.user != null){
             this.user.setPicPath(showHeadEvent.getHeadPicUrl());
@@ -347,8 +337,8 @@ public class MainActivity extends BaseFragmentActivity<MainActivityPresenter> im
     @Override
     public void showUserInfo(User user) {
         this.user = user;
-        Common.displayDraweeView(user.getPicPath(), menuHead);
-        Common.displayDraweeView(user.getWallPaper(), menuBg);
+        CommonUtil.displayDraweeView(user.getPicPath(), menuHead);
+        CommonUtil.displayDraweeView(user.getWallPaper(), menuBg);
         txtAutograph.setText(user.getAutograph());
         txtUserName.setText(user.getNickName());
     }

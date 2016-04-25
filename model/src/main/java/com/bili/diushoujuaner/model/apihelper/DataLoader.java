@@ -13,14 +13,12 @@ import com.bili.diushoujuaner.utils.okhttp.okhttpserver.upload.UploadManager;
 import com.bili.diushoujuaner.utils.okhttp.okhttputils.OkHttpUtils;
 import com.bili.diushoujuaner.utils.okhttp.okhttputils.model.HttpHeaders;
 import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
-import com.bili.diushoujuaner.utils.Constant;
+import com.bili.diushoujuaner.utils.ConstantUtil;
 import com.bili.diushoujuaner.utils.okhttp.okhttputils.model.HttpParams;
-import com.orhanobut.logger.Logger;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * Created by BiLi on 2016/3/11.
@@ -96,7 +94,7 @@ public class DataLoader {
             // 当前回调为主线程
             @Override
             public void onError(UploadInfo uploadInfo, String errorMsg, Exception e) {
-                apiFileCallbackListener.onFailure(Constant.WARNING_FILE);
+                apiFileCallbackListener.onFailure(ConstantUtil.WARNING_FILE);
             }
 
             @Override

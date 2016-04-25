@@ -5,8 +5,8 @@ import android.net.Uri;
 
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.adapter.viewholder.ViewHolder;
-import com.bili.diushoujuaner.utils.Common;
-import com.bili.diushoujuaner.utils.Constant;
+import com.bili.diushoujuaner.utils.CommonUtil;
+import com.bili.diushoujuaner.utils.ConstantUtil;
 import com.bili.diushoujuaner.utils.entity.vo.MemberPicVo;
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -24,9 +24,9 @@ public class PartyDetailMemberAdapter extends CommonAdapter<MemberPicVo> {
     @Override
     public void convert(ViewHolder holder, MemberPicVo memberPicVo, int position) throws Exception {
         if(memberPicVo != null){
-            if(memberPicVo.getType() == Constant.MEMBER_HEAD_SERVER){
-                Common.displayDraweeView(memberPicVo.getPath(), (SimpleDraweeView)holder.getView(R.id.ivMember));
-            }else if(memberPicVo.getType() == Constant.MEMBER_HEAD_LOCAL ){
+            if(memberPicVo.getType() == ConstantUtil.MEMBER_HEAD_SERVER){
+                CommonUtil.displayDraweeView(memberPicVo.getPath(), (SimpleDraweeView)holder.getView(R.id.ivMember));
+            }else if(memberPicVo.getType() == ConstantUtil.MEMBER_HEAD_LOCAL ){
                 ((SimpleDraweeView)holder.getView(R.id.ivMember)).setImageURI(Uri.parse("res://com.bili.diushoujuaner/" + memberPicVo.getResourceId()));
             }
         }

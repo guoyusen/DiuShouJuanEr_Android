@@ -9,8 +9,8 @@ import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.adapter.viewholder.ViewHolder;
 import com.bili.diushoujuaner.callback.OnContactAddListener;
 import com.bili.diushoujuaner.model.tempHelper.ContactTemper;
-import com.bili.diushoujuaner.utils.Common;
-import com.bili.diushoujuaner.utils.Constant;
+import com.bili.diushoujuaner.utils.CommonUtil;
+import com.bili.diushoujuaner.utils.ConstantUtil;
 import com.bili.diushoujuaner.utils.entity.vo.ApplyVo;
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -49,33 +49,33 @@ public class ApplyAdapter extends CommonAdapter<ApplyVo> {
             }else{
                 holder.getView(R.id.txtBar).setVisibility(View.GONE);
             }
-            if(type == Constant.CONTACT_ADD_FRIEND){
+            if(type == ConstantUtil.CONTACT_ADD_FRIEND){
                 ((TextView)holder.getView(R.id.txtBar)).setText("好友申请");
                 holder.getView(R.id.txtTip).setVisibility(View.GONE);
                 holder.getView(R.id.btnAgree).setEnabled(true);
                 ((TextView)holder.getView(R.id.btnAgree)).setText("同意");
                 ((TextView)holder.getView(R.id.btnAgree)).setTextColor(ContextCompat.getColor(context, R.color.TC_12B7F5));
-            }else if (type == Constant.CONTACT_ADD_PARTY){
+            }else if (type == ConstantUtil.CONTACT_ADD_PARTY){
                 ((TextView)holder.getView(R.id.txtBar)).setText("加群申请");
                 holder.getView(R.id.txtTip).setVisibility(View.VISIBLE);
                 ((TextView)holder.getView(R.id.txtTip)).setText("申请加入 " + ContactTemper.getInstance().getPartyName(applyVo.getToNo()));
                 (holder.getView(R.id.btnAgree)).setEnabled(true);
                 ((TextView)holder.getView(R.id.btnAgree)).setText("同意");
                 ((TextView)holder.getView(R.id.btnAgree)).setTextColor(ContextCompat.getColor(context, R.color.TC_12B7F5));
-            }else if (type == Constant.CONTACT_ADDED){
-                ((TextView)holder.getView(R.id.txtBar)).setText("已同意加入");
+            }else if (type == ConstantUtil.CONTACT_ADDED){
+                ((TextView)holder.getView(R.id.txtBar)).setText("已添加");
                 holder.getView(R.id.txtTip).setVisibility(View.GONE);
                 (holder.getView(R.id.btnAgree)).setEnabled(false);
                 ((TextView)holder.getView(R.id.btnAgree)).setText("已添加");
                 ((TextView)holder.getView(R.id.btnAgree)).setTextColor(ContextCompat.getColor(context, R.color.TC_ADADBB));
-            }else if(type == Constant.CONTACT_MAY_KNOW){
-                ((TextView)holder.getView(R.id.txtBar)).setText("您可能认识");
+            }else if(type == ConstantUtil.CONTACT_MAY_KNOW){
+                ((TextView)holder.getView(R.id.txtBar)).setText("童友推荐");
                 holder.getView(R.id.txtTip).setVisibility(View.GONE);
                 (holder.getView(R.id.btnAgree)).setEnabled(true);
                 ((TextView)holder.getView(R.id.btnAgree)).setText("添加");
                 ((TextView)holder.getView(R.id.btnAgree)).setTextColor(ContextCompat.getColor(context, R.color.TC_12B7F5));
             }
-            Common.displayDraweeView(applyVo.getPicPath(), (SimpleDraweeView)holder.getView(R.id.ivHead));
+            CommonUtil.displayDraweeView(applyVo.getPicPath(), (SimpleDraweeView)holder.getView(R.id.ivHead));
             ((TextView)holder.getView(R.id.txtName)).setText(applyVo.getUserName());
             ((TextView)holder.getView(R.id.txtApply)).setText("我是 " + applyVo.getContent());
             holder.getView(R.id.btnAgree).setOnClickListener(new View.OnClickListener() {
@@ -91,13 +91,13 @@ public class ApplyAdapter extends CommonAdapter<ApplyVo> {
 
     private int getTypeForPosition(int position){
         if(list.get(position).getAccept()){
-            return Constant.CONTACT_ADDED;
-        }else if (!list.get(position).getAccept() && list.get(position).getType() == Constant.CHAT_FRIEND_ADD){
-            return Constant.CONTACT_ADD_FRIEND;
-        }else if(!list.get(position).getAccept() && list.get(position).getType() == Constant.CHAT_PARTY_ADD){
-            return Constant.CONTACT_ADD_PARTY;
-        }else if (list.get(position).getType() == Constant.CHAT_FRIEND_RECOMMEND){
-            return Constant.CONTACT_MAY_KNOW;
+            return ConstantUtil.CONTACT_ADDED;
+        }else if (!list.get(position).getAccept() && list.get(position).getType() == ConstantUtil.CHAT_FRIEND_ADD){
+            return ConstantUtil.CONTACT_ADD_FRIEND;
+        }else if(!list.get(position).getAccept() && list.get(position).getType() == ConstantUtil.CHAT_PARTY_ADD){
+            return ConstantUtil.CONTACT_ADD_PARTY;
+        }else if (list.get(position).getType() == ConstantUtil.CHAT_FRIEND_RECOMMEND){
+            return ConstantUtil.CONTACT_MAY_KNOW;
         }else{
             return -1;
         }

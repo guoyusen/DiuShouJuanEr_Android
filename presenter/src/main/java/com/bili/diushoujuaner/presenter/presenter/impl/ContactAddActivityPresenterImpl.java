@@ -9,7 +9,7 @@ import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
 import com.bili.diushoujuaner.presenter.base.BasePresenter;
 import com.bili.diushoujuaner.presenter.presenter.ContactAddActivityPresenter;
 import com.bili.diushoujuaner.presenter.view.IContactAddView;
-import com.bili.diushoujuaner.utils.Constant;
+import com.bili.diushoujuaner.utils.ConstantUtil;
 import com.bili.diushoujuaner.utils.entity.vo.ApplyVo;
 
 import java.util.List;
@@ -24,12 +24,12 @@ public class ContactAddActivityPresenterImpl extends BasePresenter<IContactAddVi
     }
 
     @Override
-    public void getFriendAgree(long fromNo, long toNo) {
-        showLoading(Constant.LOADING_CENTER, "正在发送请求");
-        ApplyAction.getInstance(context).getFriendAgree(new FriendAgreeReq(fromNo, toNo), new ActionStringCallbackListener<ActionRespon<Void>>() {
+    public void getFriendAgree(long friendNo) {
+        showLoading(ConstantUtil.LOADING_CENTER, "正在发送请求");
+        ApplyAction.getInstance(context).getFriendAgree(new FriendAgreeReq(friendNo), new ActionStringCallbackListener<ActionRespon<Void>>() {
             @Override
             public void onSuccess(ActionRespon<Void> result) {
-                hideLoading(Constant.LOADING_CENTER);
+                hideLoading(ConstantUtil.LOADING_CENTER);
                 if(showMessage(result.getRetCode(), result.getMessage())){
                     getApplyVoList();
                 }

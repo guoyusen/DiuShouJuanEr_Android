@@ -12,7 +12,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.bili.diushoujuaner.R;
-import com.bili.diushoujuaner.utils.Common;
+import com.bili.diushoujuaner.utils.TimeUtil;
 
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
@@ -40,7 +40,7 @@ public class DatePickerTool {
 
     public DatePickerTool() {
 
-        startYear = Integer.valueOf(Common.getYearFromTime(Common.getCurrentTimeYYMMDD_HHMMSS())) - 100;
+        startYear = Integer.valueOf(TimeUtil.getYearFromTime(TimeUtil.getCurrentTimeYYMMDD_HHMMSS())) - 100;
         endYear = startYear + 200;
         for (int i = startYear; i <= endYear; i++) {
             lyear.add(String.valueOf(i));
@@ -106,9 +106,9 @@ public class DatePickerTool {
             tmpMonth = c.get(Calendar.MONTH);
             tmpDay = c.get(Calendar.DAY_OF_MONTH);
         }else{
-            tmpYear = Common.getYearFromTime(currentTime);
-            tmpMonth = Common.getMonthFromTime(currentTime) - 1;
-            tmpDay = Common.getDayFromTime(currentTime) - 1;
+            tmpYear = TimeUtil.getYearFromTime(currentTime);
+            tmpMonth = TimeUtil.getMonthFromTime(currentTime) - 1;
+            tmpDay = TimeUtil.getDayFromTime(currentTime) - 1;
             if(tmpYear < startYear){
                 tmpYear = startYear;
                 tmpMonth = 1;

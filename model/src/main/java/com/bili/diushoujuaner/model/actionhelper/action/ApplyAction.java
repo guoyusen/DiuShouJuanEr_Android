@@ -12,11 +12,10 @@ import com.bili.diushoujuaner.model.apihelper.request.FriendAgreeReq;
 import com.bili.diushoujuaner.model.cachehelper.ACache;
 import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
 import com.bili.diushoujuaner.model.databasehelper.DBManager;
-import com.bili.diushoujuaner.model.eventhelper.UpdateContactEvent;
+import com.bili.diushoujuaner.model.eventhelper.AddContactEvent;
 import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
-import com.bili.diushoujuaner.model.tempHelper.ContactTemper;
-import com.bili.diushoujuaner.utils.Constant;
-import com.bili.diushoujuaner.utils.GsonParser;
+import com.bili.diushoujuaner.utils.ConstantUtil;
+import com.bili.diushoujuaner.utils.GsonUtil;
 import com.bili.diushoujuaner.utils.entity.dto.ContactDto;
 import com.bili.diushoujuaner.utils.entity.po.Friend;
 import com.bili.diushoujuaner.utils.entity.vo.ApplyVo;
@@ -56,7 +55,7 @@ public class ApplyAction implements IApplyAction {
                 Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<Void>>() {
                     @Override
                     public ActionRespon<Void> doInBackground() throws Exception {
-                        ApiRespon<ContactDto> result = GsonParser.getInstance().fromJson(data, new TypeToken<ApiRespon<ContactDto>>() {
+                        ApiRespon<ContactDto> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<ContactDto>>() {
                         }.getType());
                         if(result.getIsLegal()){
                             Friend friend = new Friend();
@@ -65,15 +64,15 @@ public class ApplyAction implements IApplyAction {
                             friend.setFriendNo(result.getData().getContNo());
                             friend.setRemark(result.getData().getDisplayName());
                             DBManager.getInstance().saveFriend(friend);
-                            DBManager.getInstance().updateApplyAccept(friendAgreeReq.getToNo(), friendAgreeReq.getFromNo());
+                            DBManager.getInstance().updateApplyFriendAccept(friendAgreeReq.getFriendNo());
                         }
                         return ActionRespon.getActionRespon(result.getMessage(), result.getRetCode(), null);
                     }
                 }, new Completion<ActionRespon<Void>>() {
                     @Override
                     public void onSuccess(Context context, ActionRespon<Void> result) {
-                        ACache.getInstance().put(Constant.ACACHE_LAST_TIME_CONTACT, "");
-                        EventBus.getDefault().post(new UpdateContactEvent());
+                        ACache.getInstance().put(ConstantUtil.ACACHE_LAST_TIME_CONTACT, "");
+                        EventBus.getDefault().post(new AddContactEvent());
                         actionStringCallbackListener.onSuccess(result);
                     }
 
@@ -140,7 +139,7 @@ public class ApplyAction implements IApplyAction {
                 Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<Void>>() {
                     @Override
                     public ActionRespon<Void> doInBackground() throws Exception {
-                        ApiRespon<Void> result = GsonParser.getInstance().fromJson(data, new TypeToken<ApiRespon<Void>>(){}.getType());
+                        ApiRespon<Void> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<Void>>(){}.getType());
                         return ActionRespon.getActionResponFromApiRespon(result);
                     }
                 }, new Completion<ActionRespon<Void>>() {

@@ -10,6 +10,7 @@ import android.util.TypedValue;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -26,8 +27,8 @@ import com.bili.diushoujuaner.presenter.presenter.impl.SpaceActivityPresenterImp
 import com.bili.diushoujuaner.presenter.publisher.OnPublishListener;
 import com.bili.diushoujuaner.presenter.publisher.RecallPublisher;
 import com.bili.diushoujuaner.presenter.view.ISpaceView;
-import com.bili.diushoujuaner.utils.Common;
-import com.bili.diushoujuaner.utils.Constant;
+import com.bili.diushoujuaner.utils.CommonUtil;
+import com.bili.diushoujuaner.utils.ConstantUtil;
 import com.bili.diushoujuaner.utils.entity.vo.FriendVo;
 import com.bili.diushoujuaner.utils.entity.vo.PictureVo;
 import com.bili.diushoujuaner.model.eventhelper.GoodRecallEvent;
@@ -47,7 +48,6 @@ import com.bili.diushoujuaner.widget.scrollview.OnScrollRefreshListener;
 import com.bili.diushoujuaner.widget.scrollview.ReboundScrollView;
 import com.facebook.drawee.view.SimpleDraweeView;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -85,6 +85,8 @@ public class SpaceActivity extends BaseFragmentActivity<SpaceActivityPresenter> 
     ImageView ivUploading;
     @Bind(R.id.layoutProgress)
     BGABadgeRelativeLayout layoutProgress;
+    @Bind(R.id.btnRight)
+    ImageButton btnRight;
 
 
     public static int openCount = 0;
@@ -102,6 +104,7 @@ public class SpaceActivity extends BaseFragmentActivity<SpaceActivityPresenter> 
     private FriendVo currentFriendVo;
     private ImagePicker imagePicker;
     private AnimationDrawable uploadingAni;
+    private boolean isFriended, isOwner;
 
     class CustomRunnable implements Runnable {
         @Override
@@ -148,9 +151,16 @@ public class SpaceActivity extends BaseFragmentActivity<SpaceActivityPresenter> 
 
     @Override
     public void setViewStatus() {
-        showPageHead("最近发表", R.mipmap.icon_menu, null);
+        isFriended = getBindPresenter().isFriend(userNo);
+        isOwner = getBindPresenter().isOwner(userNo);
+        if(!(isFriended || isOwner)){
+            showPageHead("最近发表", R.mipmap.icon_menu, null);
+        }else {
+            showPageHead("最近发表", null, null);
+        }
         setTintStatusColor(R.color.TRANSPARENT_BLACK);
         layoutHead.setBackground(ContextCompat.getDrawable(context, R.drawable.transparent_black_down_bg));
+
 
         RecallPublisher.getInstance(context).register(this);
         uploadingAni = (AnimationDrawable)ivUploading.getDrawable();
@@ -165,6 +175,7 @@ public class SpaceActivity extends BaseFragmentActivity<SpaceActivityPresenter> 
         ivWallPaper.setOnClickListener(this);
         btnFloat.setOnClickListener(this);
         layoutProgress.setOnClickListener(this);
+        btnRight.setOnClickListener(this);
 
         reboundScrollView.setScrollRefreshListener(this);
         reboundScrollView.setChangeHeadStatusListener(this);
@@ -172,7 +183,7 @@ public class SpaceActivity extends BaseFragmentActivity<SpaceActivityPresenter> 
 
         ivTip.setImageDrawable(new TintedBitmapDrawable(getResources(), R.mipmap.icon_nodata, ContextCompat.getColor(context, R.color.COLOR_BFBFBF)));
 
-        recallAdapter = new RecallAdapter(context, recallDtoList, Constant.RECALL_ADAPTER_SPACE, index);
+        recallAdapter = new RecallAdapter(context, recallDtoList, ConstantUtil.RECALL_ADAPTER_SPACE, index);
         listviewRecall.setAdapter(recallAdapter);
         listviewRecall.setCanLoadMore(true);
         listviewRecall.setOnLoadMoreListener(this);
@@ -190,10 +201,10 @@ public class SpaceActivity extends BaseFragmentActivity<SpaceActivityPresenter> 
         imagePicker.setImageLoader(new GlideImageLoader());
         imagePicker.setMultiMode(false);
         imagePicker.setStyle(CropImageView.Style.RECTANGLE);
-        imagePicker.setFocusWidth((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, Constant.CORP_IMAGE_WALLPAPER_EAGE, getResources().getDisplayMetrics()));
-        imagePicker.setFocusHeight((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, Constant.CORP_IMAGE_WALLPAPER_EAGE, getResources().getDisplayMetrics()));
-        imagePicker.setOutPutX(Constant.CORP_IMAGE_OUT_WIDTH);
-        imagePicker.setOutPutY(Constant.CORP_IMAGE_OUT_HEIGHT);
+        imagePicker.setFocusWidth((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, ConstantUtil.CORP_IMAGE_WALLPAPER_EAGE, getResources().getDisplayMetrics()));
+        imagePicker.setFocusHeight((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, ConstantUtil.CORP_IMAGE_WALLPAPER_EAGE, getResources().getDisplayMetrics()));
+        imagePicker.setOutPutX(ConstantUtil.CORP_IMAGE_OUT_WIDTH);
+        imagePicker.setOutPutY(ConstantUtil.CORP_IMAGE_OUT_HEIGHT);
 
         getBindPresenter().getContactInfo(userNo);
         getBindPresenter().showRecallFromCache(userNo);
@@ -262,6 +273,17 @@ public class SpaceActivity extends BaseFragmentActivity<SpaceActivityPresenter> 
             case R.id.layoutProgress:
                 startActivity(new Intent(context, ProgressActivity.class));
                 break;
+            case R.id.btnRight:
+                DialogTool.createFriendAddDialog(context, new OnDialogPositiveClickListener() {
+                    @Override
+                    public void onPositiveClicked() {
+                        startActivity(new Intent(context, ContentEditActivity.class)
+                                .putExtra(ContentEditActivity.TAG_TYPE, ConstantUtil.EDIT_CONTENT_FRIEND_ADD)
+                                .putExtra(ContentEditActivity.TAG_CONTENT, "")
+                                .putExtra(ContentEditActivity.TAG_CONTNO, userNo));
+                    }
+                });
+                break;
         }
     }
 
@@ -282,8 +304,8 @@ public class SpaceActivity extends BaseFragmentActivity<SpaceActivityPresenter> 
     @Override
     public void showContactInfo(FriendVo friendVo) {
         currentFriendVo = friendVo;
-        Common.displayDraweeView(friendVo.getWallPaper(), ivWallPaper);
-        Common.displayDraweeView(friendVo.getPicPath(), userHead);
+        CommonUtil.displayDraweeView(friendVo.getWallPaper(), ivWallPaper);
+        CommonUtil.displayDraweeView(friendVo.getPicPath(), userHead);
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(friendVo.getNickName());
         if(stringBuilder.toString().length() > 4){
@@ -297,7 +319,7 @@ public class SpaceActivity extends BaseFragmentActivity<SpaceActivityPresenter> 
     @Override
     public void showRecallList(List<RecallDto> recallDtoList) {
         recallAdapter.refresh(recallDtoList);
-        if (Common.isEmpty(recallDtoList)) {
+        if (CommonUtil.isEmpty(recallDtoList)) {
             layoutTip.setVisibility(View.VISIBLE);
             listviewRecall.setVisibility(View.GONE);
             return;
@@ -332,7 +354,7 @@ public class SpaceActivity extends BaseFragmentActivity<SpaceActivityPresenter> 
     @Override
     public void showMoreRecallList(List<RecallDto> recallDtoList) {
         recallAdapter.add(recallDtoList);
-        if (Common.isEmpty(recallDtoList)) {
+        if (CommonUtil.isEmpty(recallDtoList)) {
             listviewRecall.setListViewStateComplete();
             return;
         }
@@ -346,13 +368,13 @@ public class SpaceActivity extends BaseFragmentActivity<SpaceActivityPresenter> 
     @Override
     public void updateWallPaper(String wallPaper) {
         currentFriendVo.setWallPaper(wallPaper);
-        Common.displayDraweeView(wallPaper, ivWallPaper);
+        CommonUtil.displayDraweeView(wallPaper, ivWallPaper);
     }
 
     @Override
     public void onHeadStatusChanged(int alpha) {
         if (alpha > 0) {
-            layoutHead.setBackgroundColor(Color.parseColor(Common.getThemeAlphaColor(alpha)));
+            layoutHead.setBackgroundColor(Color.parseColor(CommonUtil.getThemeAlphaColor(alpha)));
             setTintStatusColor(R.color.COLOR_THEME_MAIN);
             setTineStatusAlpha((float) alpha / 100);
         } else {
@@ -382,7 +404,7 @@ public class SpaceActivity extends BaseFragmentActivity<SpaceActivityPresenter> 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onGoodRecallEvent(GoodRecallEvent goodRecallEvent) {
-        if (!(goodRecallEvent.getIndex() == index && goodRecallEvent.getType() == Constant.RECALL_ADAPTER_SPACE)) {
+        if (!(goodRecallEvent.getIndex() == index && goodRecallEvent.getType() == ConstantUtil.RECALL_ADAPTER_SPACE)) {
             return;
         }
         if (!isGoodStatusInited) {

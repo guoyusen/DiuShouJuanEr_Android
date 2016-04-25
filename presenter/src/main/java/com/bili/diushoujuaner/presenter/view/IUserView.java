@@ -10,8 +10,6 @@ public interface IUserView extends IBaseView {
 
     void showUserInfo(User user);
 
-    void finishView();
-
     void updateHeadPic(String headPath);
 
 }

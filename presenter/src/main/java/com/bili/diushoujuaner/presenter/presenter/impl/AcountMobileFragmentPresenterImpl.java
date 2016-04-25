@@ -9,7 +9,7 @@ import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
 import com.bili.diushoujuaner.presenter.base.BasePresenter;
 import com.bili.diushoujuaner.presenter.base.IBaseView;
 import com.bili.diushoujuaner.presenter.presenter.AcountMobileFragmentPresenter;
-import com.bili.diushoujuaner.utils.Constant;
+import com.bili.diushoujuaner.utils.ConstantUtil;
 import com.bili.diushoujuaner.model.eventhelper.NextPageEvent;
 
 import org.greenrobot.eventbus.EventBus;
@@ -25,14 +25,14 @@ public class AcountMobileFragmentPresenterImpl extends BasePresenter<IBaseView> 
 
     @Override
     public void getVerifyCode(final String mobile, int type) {
-        showLoading(Constant.LOADING_CENTER,"正在发送短信");
+        showLoading(ConstantUtil.LOADING_CENTER,"正在发送短信");
         VerifyReq verifyReq = new VerifyReq();
         verifyReq.setType(type);
         verifyReq.setMobile(mobile);
         UserInfoAction.getInstance(context).getVerifyCode(verifyReq, new ActionStringCallbackListener<ActionRespon<Void>>() {
             @Override
             public void onSuccess(ActionRespon<Void> result) {
-                hideLoading(Constant.LOADING_CENTER);
+                hideLoading(ConstantUtil.LOADING_CENTER);
                 if(showMessage(result.getRetCode(), result.getMessage())){
                     EventBus.getDefault().post((new NextPageEvent(1)).setMobile(mobile));
                 }
@@ -41,7 +41,7 @@ public class AcountMobileFragmentPresenterImpl extends BasePresenter<IBaseView> 
             @Override
             public void onFailure(int errorCode) {
                 showError(errorCode);
-                hideLoading(Constant.LOADING_CENTER);
+                hideLoading(ConstantUtil.LOADING_CENTER);
             }
         });
 

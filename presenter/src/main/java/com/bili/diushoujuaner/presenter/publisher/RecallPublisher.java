@@ -8,13 +8,13 @@ import com.bili.diushoujuaner.model.actionhelper.action.RecallAction;
 import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
 import com.bili.diushoujuaner.model.apihelper.request.RecallPublishReq;
 import com.bili.diushoujuaner.model.apihelper.request.RecallSerialReq;
+import com.bili.diushoujuaner.utils.StringUtil;
 import com.bili.diushoujuaner.utils.entity.dto.RecallDto;
 import com.bili.diushoujuaner.model.callback.ActionFileCallbackListener;
 import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
 import com.bili.diushoujuaner.model.tempHelper.RecallTemper;
 import com.bili.diushoujuaner.model.eventhelper.PublishRecallEvent;
-import com.bili.diushoujuaner.utils.Common;
-import com.bili.diushoujuaner.utils.Constant;
+import com.bili.diushoujuaner.utils.ConstantUtil;
 import com.bili.diushoujuaner.utils.entity.vo.ImageItemVo;
 
 import org.greenrobot.eventbus.EventBus;
@@ -90,7 +90,7 @@ public class RecallPublisher {
 
     public void publishRecall(final ArrayList<ImageItemVo> imageItemVoList, String content){
         reset();
-        this.serial = Common.getSerialNo();
+        this.serial = StringUtil.getSerialNo();
         this.imageItemVoList.addAll(imageItemVoList);
         this.content = content;
         this.status = STATUS_UPLOADING;
@@ -107,7 +107,7 @@ public class RecallPublisher {
     }
 
     public void republishRecall(){
-        this.serial = Common.getSerialNo();
+        this.serial = StringUtil.getSerialNo();
         this.status = STATUS_UPLOADING;
         this.currentPosition = 0;
         this.isErrorOccured = false;
@@ -167,7 +167,7 @@ public class RecallPublisher {
         RecallAction.getInstance(context).getRecallPublish(new RecallPublishReq(content, imageItemVoList.size(),this.serial), new ActionStringCallbackListener<ActionRespon<RecallDto>>() {
             @Override
             public void onSuccess(ActionRespon<RecallDto> result) {
-                if(result.getRetCode().equals(Constant.RETCODE_SUCCESS)){
+                if(result.getRetCode().equals(ConstantUtil.RETCODE_SUCCESS)){
                     for(OnPublishListener publishListener : publishListeners){
                         publishListener.onFinishPublish();
                     }

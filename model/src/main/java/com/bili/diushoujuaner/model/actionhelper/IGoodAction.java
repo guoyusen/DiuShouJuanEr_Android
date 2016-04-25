@@ -8,7 +8,7 @@ import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
  */
 public interface IGoodAction {
 
-    void getGoodAdd(long recallNo, final ActionStringCallbackListener<ActionRespon<String>> actionStringCallbackListener);
+    void getGoodAdd(long recallNo, ActionStringCallbackListener<ActionRespon<String>> actionStringCallbackListener);
 
-    void getGoodRemove(long recallNo, final ActionStringCallbackListener<ActionRespon<String>> actionStringCallbackListener);
+    void getGoodRemove(long recallNo, ActionStringCallbackListener<ActionRespon<String>> actionStringCallbackListener);
 }

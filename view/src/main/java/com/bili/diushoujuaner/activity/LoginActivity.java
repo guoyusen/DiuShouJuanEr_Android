@@ -12,7 +12,7 @@ import com.bili.diushoujuaner.base.BaseActivity;
 import com.bili.diushoujuaner.presenter.presenter.LoginActivityPresenter;
 import com.bili.diushoujuaner.presenter.presenter.impl.LoginActivityPresenterImpl;
 import com.bili.diushoujuaner.presenter.view.ILoginView;
-import com.bili.diushoujuaner.utils.Constant;
+import com.bili.diushoujuaner.utils.ConstantUtil;
 import com.bili.diushoujuaner.utils.manager.ActivityManager;
 
 import butterknife.Bind;
@@ -63,10 +63,10 @@ public class LoginActivity extends BaseActivity<LoginActivityPresenter> implemen
                 getBindPresenter().getUserLogin(edtMobile.getText().toString().trim(), edtPassword.getText().toString().trim());
                 break;
             case R.id.layoutRegister:
-                startActivity(new Intent(this, AcountActivity.class).putExtra(AcountActivity.TAG, Constant.ACOUNT_UPDATE_REGIST));
+                startActivity(new Intent(this, AcountActivity.class).putExtra(AcountActivity.TAG, ConstantUtil.ACOUNT_UPDATE_REGIST));
                 break;
             case R.id.layoutReset:
-                startActivity(new Intent(this, AcountActivity.class).putExtra(AcountActivity.TAG, Constant.ACOUNT_UPDATE_RESET));
+                startActivity(new Intent(this, AcountActivity.class).putExtra(AcountActivity.TAG, ConstantUtil.ACOUNT_UPDATE_RESET));
                 break;
         }
     }

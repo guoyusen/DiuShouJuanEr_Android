@@ -43,9 +43,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_below="@+id/ivWallPaper"
-                    android:layout_marginTop="@dimen/y64"
+                    android:layout_marginTop="@dimen/y80"
                     android:background="@color/COLOR_WHITE"
-                    android:visibility="gone">
+                    android:visibility="visible">
 
                     <ImageView
                         android:id="@+id/ivTip"

@@ -15,7 +15,7 @@ import com.bili.diushoujuaner.base.BaseActivity;
 import com.bili.diushoujuaner.presenter.presenter.ContactSearchActivityPresenter;
 import com.bili.diushoujuaner.presenter.presenter.impl.ContactSearchActivityPresenterImpl;
 import com.bili.diushoujuaner.presenter.view.IContactSearchView;
-import com.bili.diushoujuaner.utils.Constant;
+import com.bili.diushoujuaner.utils.ConstantUtil;
 import com.bili.diushoujuaner.utils.entity.dto.ContactDto;
 import com.bili.diushoujuaner.widget.CustomEditText;
 import com.bili.diushoujuaner.widget.CustomListView;
@@ -70,7 +70,7 @@ public class ContactSearchActivity extends BaseActivity<ContactSearchActivityPre
         listViewResult.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(contactSearchAdapter.getItem(position).getType() == Constant.CONTACT_FRIEND){
+                if(contactSearchAdapter.getItem(position).getType() == ConstantUtil.CONTACT_FRIEND){
                     Intent intent = new Intent(context, ContactDetailActivity.class);
                     intent.putExtra(ContactDetailActivity.TAG, contactSearchAdapter.getItem(position).getContNo());
                     startActivity(intent);

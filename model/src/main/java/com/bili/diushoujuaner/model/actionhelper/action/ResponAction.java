@@ -11,7 +11,7 @@ import com.bili.diushoujuaner.model.apihelper.request.ResponAddReq;
 import com.bili.diushoujuaner.model.apihelper.request.ResponRemoveReq;
 import com.bili.diushoujuaner.utils.entity.dto.ResponDto;
 import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
-import com.bili.diushoujuaner.utils.GsonParser;
+import com.bili.diushoujuaner.utils.GsonUtil;
 import com.google.gson.reflect.TypeToken;
 import com.nanotasks.BackgroundWork;
 import com.nanotasks.Completion;
@@ -44,7 +44,7 @@ public class ResponAction implements IResponAction {
                 Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<ResponDto>>() {
                     @Override
                     public ActionRespon<ResponDto> doInBackground() throws Exception {
-                        ApiRespon<ResponDto> result = GsonParser.getInstance().fromJson(data, new TypeToken<ApiRespon<ResponDto>>() {
+                        ApiRespon<ResponDto> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<ResponDto>>() {
                         }.getType());
                         return ActionRespon.getActionResponFromApiRespon(result);
                     }
@@ -76,7 +76,7 @@ public class ResponAction implements IResponAction {
                 Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<Long>>() {
                     @Override
                     public ActionRespon<Long> doInBackground() throws Exception {
-                        ApiRespon<Long> result = GsonParser.getInstance().fromJson(data, new TypeToken<ApiRespon<Long>>() {
+                        ApiRespon<Long> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<Long>>() {
                         }.getType());
                         return ActionRespon.getActionResponFromApiRespon(result);
                     }

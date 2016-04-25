@@ -7,7 +7,7 @@ import android.widget.TextView;
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.adapter.viewholder.ViewHolder;
 import com.bili.diushoujuaner.model.tempHelper.ContactTemper;
-import com.bili.diushoujuaner.utils.Common;
+import com.bili.diushoujuaner.utils.CommonUtil;
 import com.bili.diushoujuaner.utils.entity.vo.PartyVo;
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -39,7 +39,7 @@ public class PartyAdapter extends CommonAdapter<PartyVo> {
                 holder.getView(R.id.txtItemMark).setVisibility(View.INVISIBLE);
                 holder.getView(R.id.line).setVisibility(View.INVISIBLE);
             }
-            Common.displayDraweeView(partyVo.getPicPath(), (SimpleDraweeView) holder.getView(R.id.ivItemHead));
+            CommonUtil.displayDraweeView(partyVo.getPicPath(), (SimpleDraweeView) holder.getView(R.id.ivItemHead));
             String displayName = ContactTemper.getInstance().getPartyName(partyVo.getPartyNo());
             ((TextView) holder.getView(R.id.txtContactName)).setText(displayName == null ? partyVo.getDisplayName() : displayName);
         }

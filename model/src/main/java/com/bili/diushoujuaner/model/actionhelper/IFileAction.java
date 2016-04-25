@@ -1,6 +1,7 @@
 package com.bili.diushoujuaner.model.actionhelper;
 
 import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
+import com.bili.diushoujuaner.model.apihelper.request.PartyAddReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyHeadUpdateReq;
 import com.bili.diushoujuaner.model.apihelper.request.RecallSerialReq;
 import com.bili.diushoujuaner.model.callback.ActionFileCallbackListener;
@@ -17,4 +18,5 @@ public interface IFileAction {
     void uploadRecallPic(RecallSerialReq recallSerialReq, String path, ActionFileCallbackListener<ActionRespon<String>> actionFileCallbackListener);
 
     void upoadPartyHeadPic(PartyHeadUpdateReq partyHeadUpdateReq, String path, ActionFileCallbackListener<ActionRespon<String>> actionFileCallbackListener);
+
 }

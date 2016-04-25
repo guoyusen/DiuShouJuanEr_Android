@@ -3,7 +3,7 @@ package com.bili.diushoujuaner.activity;
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.base.BaseActivity;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.bili.diushoujuaner.utils.Common;
+import com.bili.diushoujuaner.utils.CommonUtil;
 
 import butterknife.Bind;
 
@@ -23,7 +23,7 @@ public class AboutActivity extends BaseActivity {
     @Override
     public void setViewStatus() {
         showPageHead("关于", null, null);
-        Common.displayDraweeView("images/guoyusen/guoyusen.jpg", guoyusen);
+        CommonUtil.displayDraweeView("images/guoyusen/guoyusen.jpg", guoyusen);
     }
 
 }

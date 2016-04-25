@@ -14,12 +14,11 @@ import com.bili.diushoujuaner.base.BaseFragment;
 import com.bili.diushoujuaner.presenter.base.IBaseView;
 import com.bili.diushoujuaner.presenter.presenter.AcountVerifyFragmentPresenter;
 import com.bili.diushoujuaner.presenter.presenter.impl.AcountVerifyFragmentPresenterImpl;
-import com.bili.diushoujuaner.utils.Constant;
+import com.bili.diushoujuaner.utils.ConstantUtil;
 import com.bili.diushoujuaner.model.eventhelper.NextPageEvent;
 import com.bili.diushoujuaner.model.eventhelper.StartTimerEvent;
 import com.bili.diushoujuaner.widget.CustomEditText;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -102,10 +101,10 @@ public class AcountVerifyFragment extends BaseFragment<AcountVerifyFragmentPrese
     @Override
     public void setViewStatus() {
         switch (this.type){
-            case Constant.ACOUNT_UPDATE_REGIST:
+            case ConstantUtil.ACOUNT_UPDATE_REGIST:
                 btnSubmit.setText("注 册");
                 break;
-            case Constant.ACOUNT_UPDATE_RESET:
+            case ConstantUtil.ACOUNT_UPDATE_RESET:
                 btnSubmit.setText("重 置");
                 break;
         }
@@ -115,10 +114,10 @@ public class AcountVerifyFragment extends BaseFragment<AcountVerifyFragmentPrese
             @Override
             public void onClick(View v) {
                 switch (type){
-                    case Constant.ACOUNT_UPDATE_REGIST:
+                    case ConstantUtil.ACOUNT_UPDATE_REGIST:
                         getBindPresenter().getAcountRegister(mobile, edtPsd.getText().toString(), edtVerify.getText().toString().trim());
                         break;
-                    case Constant.ACOUNT_UPDATE_RESET:
+                    case ConstantUtil.ACOUNT_UPDATE_RESET:
                         getBindPresenter().getAcountReset(mobile, edtPsd.getText().toString(), edtVerify.getText().toString().trim());
                         break;
                 }

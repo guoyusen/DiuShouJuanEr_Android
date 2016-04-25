@@ -13,7 +13,9 @@ import com.bili.diushoujuaner.model.apihelper.request.ContactsSearchReq;
 import com.bili.diushoujuaner.model.apihelper.request.FeedBackReq;
 import com.bili.diushoujuaner.model.apihelper.request.FriendAddReq;
 import com.bili.diushoujuaner.model.apihelper.request.FriendAgreeReq;
+import com.bili.diushoujuaner.model.apihelper.request.FriendDeleteReq;
 import com.bili.diushoujuaner.model.apihelper.request.MemberNameUpdateReq;
+import com.bili.diushoujuaner.model.apihelper.request.PartyAddReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyHeadUpdateReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyIntroduceUpdateReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyNameUpdateReq;
@@ -22,12 +24,14 @@ import com.bili.diushoujuaner.model.apihelper.request.RecallPublishReq;
 import com.bili.diushoujuaner.model.apihelper.request.RecallRemoveReq;
 import com.bili.diushoujuaner.model.apihelper.request.RecallSerialReq;
 import com.bili.diushoujuaner.model.apihelper.request.RecentRecallReq;
+import com.bili.diushoujuaner.model.apihelper.request.RemarkUpdateReq;
 import com.bili.diushoujuaner.model.apihelper.request.ResponAddReq;
 import com.bili.diushoujuaner.model.apihelper.request.ResponRemoveReq;
 import com.bili.diushoujuaner.model.apihelper.request.UserAccountReq;
 import com.bili.diushoujuaner.model.apihelper.request.UserInfoReq;
 import com.bili.diushoujuaner.model.apihelper.request.VerifyReq;
-import com.bili.diushoujuaner.utils.Common;
+import com.bili.diushoujuaner.utils.CommonUtil;
+import com.bili.diushoujuaner.utils.StringUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -54,7 +58,7 @@ public class ApiAction implements Api {
 
     @Override
     public void getUserLogin(UserAccountReq userAccountReq, ApiStringCallbackListener apiStringCallbackListener) {
-        dataLoader.processStringRequest(Request.Method.POST, Api.getUserLogin, Common.ConvertObjToMap(userAccountReq), apiStringCallbackListener);
+        dataLoader.processStringRequest(Request.Method.POST, Api.getUserLogin, CommonUtil.ConvertObjToMap(userAccountReq), apiStringCallbackListener);
     }
 
     @Override
@@ -69,7 +73,7 @@ public class ApiAction implements Api {
 
     @Override
     public void getRecallList(RecallListReq recallListReq, ApiStringCallbackListener apiStringCallbackListener) {
-        dataLoader.processStringRequest(Request.Method.GET, Common.getCompleteUrl(Api.getRecallList, recallListReq), null, apiStringCallbackListener);
+        dataLoader.processStringRequest(Request.Method.GET, StringUtil.getCompleteUrl(Api.getRecallList, recallListReq), null, apiStringCallbackListener);
     }
 
     @Override
@@ -90,62 +94,62 @@ public class ApiAction implements Api {
 
     @Override
     public void getCommentAdd(CommentAddReq commentAddReq, ApiStringCallbackListener apiStringCallbackListener) {
-        dataLoader.processStringRequest(Request.Method.POST, Api.getCommentAdd, Common.ConvertObjToMap(commentAddReq), apiStringCallbackListener);
+        dataLoader.processStringRequest(Request.Method.POST, Api.getCommentAdd, CommonUtil.ConvertObjToMap(commentAddReq), apiStringCallbackListener);
     }
 
     @Override
     public void getResponAdd(ResponAddReq responAddReq, ApiStringCallbackListener apiStringCallbackListener) {
-        dataLoader.processStringRequest(Request.Method.POST, Api.getResponAdd, Common.ConvertObjToMap(responAddReq), apiStringCallbackListener);
+        dataLoader.processStringRequest(Request.Method.POST, Api.getResponAdd, CommonUtil.ConvertObjToMap(responAddReq), apiStringCallbackListener);
     }
 
     @Override
     public void getCommentRemove(CommentRemoveReq commentRemoveReq, ApiStringCallbackListener apiStringCallbackListener) {
-        dataLoader.processStringRequest(Request.Method.POST, Api.getCommentRemove, Common.ConvertObjToMap(commentRemoveReq), apiStringCallbackListener);
+        dataLoader.processStringRequest(Request.Method.POST, Api.getCommentRemove, CommonUtil.ConvertObjToMap(commentRemoveReq), apiStringCallbackListener);
     }
 
     @Override
     public void getResponRemove(ResponRemoveReq responRemoveReq, ApiStringCallbackListener apiStringCallbackListener) {
-        dataLoader.processStringRequest(Request.Method.POST, Api.getResponRemove, Common.ConvertObjToMap(responRemoveReq), apiStringCallbackListener);
+        dataLoader.processStringRequest(Request.Method.POST, Api.getResponRemove, CommonUtil.ConvertObjToMap(responRemoveReq), apiStringCallbackListener);
     }
 
     @Override
     public void getContactInfo(ContactInfoReq contactInfoReq, ApiStringCallbackListener apiStringCallbackListener) {
-        dataLoader.processStringRequest(Request.Method.GET, Common.getCompleteUrl(Api.getContactInfo, contactInfoReq), null, apiStringCallbackListener);
+        dataLoader.processStringRequest(Request.Method.GET, StringUtil.getCompleteUrl(Api.getContactInfo, contactInfoReq), null, apiStringCallbackListener);
     }
 
     @Override
     public void getRecentRecall(RecentRecallReq recentRecallReq, ApiStringCallbackListener apiStringCallbackListener) {
-        dataLoader.processStringRequest(Request.Method.GET, Common.getCompleteUrl(Api.getRecentRecall, recentRecallReq), null, apiStringCallbackListener);
+        dataLoader.processStringRequest(Request.Method.GET, StringUtil.getCompleteUrl(Api.getRecentRecall, recentRecallReq), null, apiStringCallbackListener);
     }
 
     @Override
     public void getAutographModify(AutographModifyReq autographModifyReq, ApiStringCallbackListener apiStringCallbackListener) {
-        dataLoader.processStringRequest(Request.Method.POST, Api.getAutographModify, Common.ConvertObjToMap(autographModifyReq), apiStringCallbackListener);
+        dataLoader.processStringRequest(Request.Method.POST, Api.getAutographModify, CommonUtil.ConvertObjToMap(autographModifyReq), apiStringCallbackListener);
     }
 
     @Override
     public void getFeedBackAdd(FeedBackReq feedBackReq, ApiStringCallbackListener apiStringCallbackListener) {
-        dataLoader.processStringRequest(Request.Method.POST, Api.getFeedBackAdd, Common.ConvertObjToMap(feedBackReq), apiStringCallbackListener);
+        dataLoader.processStringRequest(Request.Method.POST, Api.getFeedBackAdd, CommonUtil.ConvertObjToMap(feedBackReq), apiStringCallbackListener);
     }
 
     @Override
     public void getUserInfoUpdate(UserInfoReq userInfoReq, ApiStringCallbackListener apiStringCallbackListener) {
-        dataLoader.processStringRequest(Request.Method.POST, Api.getUserInfoUpdate, Common.ConvertObjToMap(userInfoReq), apiStringCallbackListener);
+        dataLoader.processStringRequest(Request.Method.POST, Api.getUserInfoUpdate, CommonUtil.ConvertObjToMap(userInfoReq), apiStringCallbackListener);
     }
 
     @Override
     public void getVerifyCode(VerifyReq verifyReq, ApiStringCallbackListener apiStringCallbackListener) {
-        dataLoader.processStringRequest(Request.Method.POST, Api.getVerifyCode, Common.ConvertObjToMap(verifyReq), apiStringCallbackListener);
+        dataLoader.processStringRequest(Request.Method.POST, Api.getVerifyCode, CommonUtil.ConvertObjToMap(verifyReq), apiStringCallbackListener);
     }
 
     @Override
     public void getAcountRegist(AcountUpdateReq acountUpdateReq, ApiStringCallbackListener apiStringCallbackListener) {
-        dataLoader.processStringRequest(Request.Method.POST, Api.getAcountRegist, Common.ConvertObjToMap(acountUpdateReq), apiStringCallbackListener);
+        dataLoader.processStringRequest(Request.Method.POST, Api.getAcountRegist, CommonUtil.ConvertObjToMap(acountUpdateReq), apiStringCallbackListener);
     }
 
     @Override
     public void getAcountReset(AcountUpdateReq acountUpdateReq, ApiStringCallbackListener apiStringCallbackListener) {
-        dataLoader.processStringRequest(Request.Method.POST, Api.getAcountReset, Common.ConvertObjToMap(acountUpdateReq), apiStringCallbackListener);
+        dataLoader.processStringRequest(Request.Method.POST, Api.getAcountReset, CommonUtil.ConvertObjToMap(acountUpdateReq), apiStringCallbackListener);
     }
 
     @Override
@@ -155,7 +159,7 @@ public class ApiAction implements Api {
 
     @Override
     public void getRecallRemove(RecallRemoveReq recallRemoveReq, ApiStringCallbackListener apiStringCallbackListener) {
-        dataLoader.processStringRequest(Request.Method.POST, Api.getRecallRemove, Common.ConvertObjToMap(recallRemoveReq), apiStringCallbackListener);
+        dataLoader.processStringRequest(Request.Method.POST, Api.getRecallRemove, CommonUtil.ConvertObjToMap(recallRemoveReq), apiStringCallbackListener);
     }
 
     @Override
@@ -170,12 +174,12 @@ public class ApiAction implements Api {
 
     @Override
     public void getRecallPicUpload(RecallSerialReq recallSerialReq, String path, ApiFileCallbackListener apiFileCallbackListener) {
-        dataLoader.processFileUpload(Api.getRecallPicUpload,Common.ConvertObjToMap(recallSerialReq), "file",path, apiFileCallbackListener);
+        dataLoader.processFileUpload(Api.getRecallPicUpload, CommonUtil.ConvertObjToMap(recallSerialReq), "file",path, apiFileCallbackListener);
     }
 
     @Override
     public void getRecallPublish(RecallPublishReq recallPublishReq, ApiStringCallbackListener apiStringCallbackListener) {
-        dataLoader.processStringRequest(Request.Method.POST, Api.getRecallPublish, Common.ConvertObjToMap(recallPublishReq), apiStringCallbackListener);
+        dataLoader.processStringRequest(Request.Method.POST, Api.getRecallPublish, CommonUtil.ConvertObjToMap(recallPublishReq), apiStringCallbackListener);
     }
 
     @Override
@@ -185,36 +189,51 @@ public class ApiAction implements Api {
 
     @Override
     public void getMemberNameUpdate(MemberNameUpdateReq memberNameUpdateReq, ApiStringCallbackListener apiStringCallbackListener) {
-        dataLoader.processStringRequest(Request.Method.POST, Api.getMemberNameUpdate, Common.ConvertObjToMap(memberNameUpdateReq), apiStringCallbackListener);
+        dataLoader.processStringRequest(Request.Method.POST, Api.getMemberNameUpdate, CommonUtil.ConvertObjToMap(memberNameUpdateReq), apiStringCallbackListener);
     }
 
     @Override
     public void getPartyHeadUpdate(PartyHeadUpdateReq partyHeadUpdateReq, String path, ApiFileCallbackListener apiFileCallbackListener) {
-        dataLoader.processFileUpload(Api.getPartyHeadUpdate,Common.ConvertObjToMap(partyHeadUpdateReq), "file",path, apiFileCallbackListener);
+        dataLoader.processFileUpload(Api.getPartyHeadUpdate, CommonUtil.ConvertObjToMap(partyHeadUpdateReq), "file",path, apiFileCallbackListener);
     }
 
     @Override
     public void getPartyNameUpdate(PartyNameUpdateReq partyNameUpdateReq, ApiStringCallbackListener apiStringCallbackListener) {
-        dataLoader.processStringRequest(Request.Method.POST, Api.getPartyNameUpdate, Common.ConvertObjToMap(partyNameUpdateReq), apiStringCallbackListener);
+        dataLoader.processStringRequest(Request.Method.POST, Api.getPartyNameUpdate, CommonUtil.ConvertObjToMap(partyNameUpdateReq), apiStringCallbackListener);
     }
 
     @Override
     public void getPartyIntroduceUpdate(PartyIntroduceUpdateReq partyIntroduceUpdateReq, ApiStringCallbackListener apiStringCallbackListener) {
-        dataLoader.processStringRequest(Request.Method.POST, Api.getPartyIntroduceUpdate, Common.ConvertObjToMap(partyIntroduceUpdateReq), apiStringCallbackListener);
+        dataLoader.processStringRequest(Request.Method.POST, Api.getPartyIntroduceUpdate, CommonUtil.ConvertObjToMap(partyIntroduceUpdateReq), apiStringCallbackListener);
     }
 
     @Override
     public void getContactsSearch(ContactsSearchReq contactsSearchReq, ApiStringCallbackListener apiStringCallbackListener) {
-        dataLoader.processStringRequest(Request.Method.GET, Common.getCompleteUrl(Api.getContactsSearch, contactsSearchReq), null, apiStringCallbackListener);
+        dataLoader.processStringRequest(Request.Method.GET, StringUtil.getCompleteUrl(Api.getContactsSearch, contactsSearchReq), null, apiStringCallbackListener);
     }
 
     @Override
     public void getFriendAdd(FriendAddReq friendAddReq, ApiStringCallbackListener apiStringCallbackListener) {
-        dataLoader.processStringRequest(Request.Method.POST, Api.getFriendAdd, Common.ConvertObjToMap(friendAddReq), apiStringCallbackListener);
+        dataLoader.processStringRequest(Request.Method.POST, Api.getFriendAdd, CommonUtil.ConvertObjToMap(friendAddReq), apiStringCallbackListener);
     }
 
     @Override
     public void getFriendAgree(FriendAgreeReq friendAgreeReq, ApiStringCallbackListener apiStringCallbackListener) {
-        dataLoader.processStringRequest(Request.Method.POST, Api.getFriendAgree, Common.ConvertObjToMap(friendAgreeReq), apiStringCallbackListener);
+        dataLoader.processStringRequest(Request.Method.POST, Api.getFriendAgree, CommonUtil.ConvertObjToMap(friendAgreeReq), apiStringCallbackListener);
+    }
+
+    @Override
+    public void getfriendRemarkUpdate(RemarkUpdateReq remarkUpdateReq, ApiStringCallbackListener apiStringCallbackListener) {
+        dataLoader.processStringRequest(Request.Method.POST, Api.getfriendRemarkUpdate, CommonUtil.ConvertObjToMap(remarkUpdateReq), apiStringCallbackListener);
+    }
+
+    @Override
+    public void getFriendDelete(FriendDeleteReq friendDeleteReq, ApiStringCallbackListener apiStringCallbackListener) {
+        dataLoader.processStringRequest(Request.Method.POST, Api.getFriendDelete, CommonUtil.ConvertObjToMap(friendDeleteReq), apiStringCallbackListener);
+    }
+
+    @Override
+    public void getPartyAdd(PartyAddReq partyAddReq, String path, ApiFileCallbackListener apiFileCallbackListener) {
+        dataLoader.processFileUpload(Api.getPartyAdd, CommonUtil.ConvertObjToMap(partyAddReq), "file", path, apiFileCallbackListener);
     }
 }

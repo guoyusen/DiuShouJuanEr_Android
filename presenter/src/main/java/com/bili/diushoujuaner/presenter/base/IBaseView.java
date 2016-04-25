@@ -15,4 +15,6 @@ public interface IBaseView {
 
     void exitActivity();
 
+    void finishView();
+
 }

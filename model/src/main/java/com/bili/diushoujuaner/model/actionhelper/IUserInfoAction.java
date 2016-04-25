@@ -15,19 +15,19 @@ public interface IUserInfoAction {
 
     User getUserFromLocal();
 
-    void getUserInfo(final ActionStringCallbackListener<ActionRespon<User>> actionStringCallbackListener);
+    void getUserInfo(ActionStringCallbackListener<ActionRespon<User>> actionStringCallbackListener);
 
-    void getAutographModify(AutographModifyReq autographModifyReq, final ActionStringCallbackListener<ActionRespon<String>> actionStringCallbackListener);
+    void getAutographModify(AutographModifyReq autographModifyReq, ActionStringCallbackListener<ActionRespon<String>> actionStringCallbackListener);
 
-    void getUserInfoUpdate(UserInfoReq userInfoReq, final ActionStringCallbackListener<ActionRespon<User>> actionStringCallbackListener);
+    void getUserInfoUpdate(UserInfoReq userInfoReq, ActionStringCallbackListener<ActionRespon<User>> actionStringCallbackListener);
 
     void clearUser();
 
-    void getVerifyCode(VerifyReq verifyReq, final ActionStringCallbackListener<ActionRespon<Void>> actionStringCallbackListener);
+    void getVerifyCode(VerifyReq verifyReq, ActionStringCallbackListener<ActionRespon<Void>> actionStringCallbackListener);
 
-    void getAcountRegist(AcountUpdateReq acountUpdateReq, final ActionStringCallbackListener<ActionRespon<Void>> actionStringCallbackListener);
+    void getAcountRegist(AcountUpdateReq acountUpdateReq, ActionStringCallbackListener<ActionRespon<Void>> actionStringCallbackListener);
 
-    void getAcountReset(AcountUpdateReq acountUpdateReq, final ActionStringCallbackListener<ActionRespon<Void>> actionStringCallbackListener);
+    void getAcountReset(AcountUpdateReq acountUpdateReq, ActionStringCallbackListener<ActionRespon<Void>> actionStringCallbackListener);
 
     void getLogout(final ActionStringCallbackListener<ActionRespon<Void>> actionStringCallbackListener);
 }

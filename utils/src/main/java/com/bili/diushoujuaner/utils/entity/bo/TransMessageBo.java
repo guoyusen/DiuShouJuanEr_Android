@@ -1,7 +1,7 @@
 package com.bili.diushoujuaner.utils.entity.bo;
 
-import com.bili.diushoujuaner.utils.Common;
-import com.bili.diushoujuaner.utils.Constant;
+import com.bili.diushoujuaner.utils.ConstantUtil;
+import com.bili.diushoujuaner.utils.TimeUtil;
 import com.bili.diushoujuaner.utils.entity.vo.MessageVo;
 
 /**
@@ -15,10 +15,10 @@ public class TransMessageBo {
     private int status;
 
     public TransMessageBo(MessageVo messageVo) {
-        this.lastTime = Common.getCurrentTimeFull();
+        this.lastTime = TimeUtil.getCurrentTimeFull();
         this.messageVo = messageVo;
         this.sendCount = 1;
-        this.status = Constant.MESSAGE_STATUS_SENDING;
+        this.status = ConstantUtil.MESSAGE_STATUS_SENDING;
     }
 
     public int getStatus() {
@@ -34,7 +34,7 @@ public class TransMessageBo {
     }
 
     public void reSetLastTime() {
-        this.lastTime = Common.getCurrentTimeFull();
+        this.lastTime = TimeUtil.getCurrentTimeFull();
     }
 
     public MessageVo getMessageVo() {

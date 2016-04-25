@@ -11,7 +11,7 @@ import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
  */
 public interface IResponAction {
 
-    void getResponAdd(ResponAddReq responAddReq, final ActionStringCallbackListener<ActionRespon<ResponDto>> actionStringCallbackListener);
+    void getResponAdd(ResponAddReq responAddReq, ActionStringCallbackListener<ActionRespon<ResponDto>> actionStringCallbackListener);
 
-    void getResponRemove(ResponRemoveReq responRemoveReq, final ActionStringCallbackListener<ActionRespon<Long>> actionStringCallbackListener);
+    void getResponRemove(ResponRemoveReq responRemoveReq, ActionStringCallbackListener<ActionRespon<Long>> actionStringCallbackListener);
 }

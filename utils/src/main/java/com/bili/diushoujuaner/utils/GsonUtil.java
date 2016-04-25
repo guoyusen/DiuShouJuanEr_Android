@@ -5,7 +5,7 @@ import com.google.gson.Gson;
 /**
  * Created by BiLi on 2016/3/13.
  */
-public class GsonParser {
+public class GsonUtil {
 
     private static Gson gson;
 

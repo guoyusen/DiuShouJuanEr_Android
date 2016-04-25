@@ -1,9 +1,7 @@
 package com.bili.diushoujuaner.model.tempHelper;
 
-import android.util.Log;
-
-import com.bili.diushoujuaner.utils.Common;
-import com.bili.diushoujuaner.utils.Constant;
+import com.bili.diushoujuaner.utils.ConstantUtil;
+import com.bili.diushoujuaner.utils.TimeUtil;
 import com.bili.diushoujuaner.utils.entity.bo.CurrentChatBo;
 import com.bili.diushoujuaner.utils.entity.vo.ChattingVo;
 import com.bili.diushoujuaner.utils.entity.vo.MessageVo;
@@ -111,8 +109,8 @@ public class ChattingTemper {
         //聊天类型相同
         //群聊或者单聊
         if(isChatting() && getMsgType() == messageVo.getMsgType() &&
-                ((getMsgType() == Constant.CHAT_PAR && getToNo() == messageVo.getToNo()) ||
-                        getMsgType() == Constant.CHAT_FRI && getToNo() == messageVo.getFromNo())){
+                ((getMsgType() == ConstantUtil.CHAT_PAR && getToNo() == messageVo.getToNo()) ||
+                        getMsgType() == ConstantUtil.CHAT_FRI && getToNo() == messageVo.getFromNo())){
             for(OnUpdateMessageListener messageListener : messageListenerList){
                 messageListener.onUpdateMessage(messageVo);
             }
@@ -128,7 +126,7 @@ public class ChattingTemper {
         String key = getKey(messageVo, true);
         ChattingVo chattingVo = hashtable.get(key);
         if(chattingVo != null){
-            return Common.getMinuteDifferenceBetweenTime(chattingVo.getLastShowTime(), messageVo.getTime()) > 5;
+            return TimeUtil.getMinuteDifferenceBetweenTime(chattingVo.getLastShowTime(), messageVo.getTime()) > 5;
         }
         return true;
     }
@@ -184,10 +182,10 @@ public class ChattingTemper {
             hashtable.remove(key);
             chattingVoList.remove(chattingVo);
             if(fromServer){
-                messageVo.setTimeShow(Common.getMinuteDifferenceBetweenTime(chattingVo.getLastShowTime(), messageVo.getTime()) > 5);
+                messageVo.setTimeShow(TimeUtil.getMinuteDifferenceBetweenTime(chattingVo.getLastShowTime(), messageVo.getTime()) > 5);
             }
             chattingVo.setLastShowTime(messageVo.getTime());
-            if((currentChat.isChatting() && (currentChat.getToNo() == (messageVo.getMsgType() == Constant.CHAT_FRI ? messageVo.getFromNo() : messageVo.getToNo()) && currentChat.getMsgType() == messageVo.getMsgType()))){
+            if((currentChat.isChatting() && (currentChat.getToNo() == (messageVo.getMsgType() == ConstantUtil.CHAT_FRI ? messageVo.getFromNo() : messageVo.getToNo()) && currentChat.getMsgType() == messageVo.getMsgType()))){
                 //正在聊天页面，且当前聊天的正好是接收人
                 chattingVo.setUnReadCount(0);
             }else if(!messageVo.isRead()){
@@ -201,12 +199,12 @@ public class ChattingTemper {
             chattingVo.setLastShowTime(messageVo.getTime());
             chattingVo.setUnReadCount(messageVo.isRead() ? 0 : 1);
             if(fromServer){
-                chattingVo.setUserNo(messageVo.getMsgType() == Constant.CHAT_FRI ? messageVo.getFromNo() : messageVo.getToNo());
+                chattingVo.setUserNo(messageVo.getMsgType() == ConstantUtil.CHAT_FRI ? messageVo.getFromNo() : messageVo.getToNo());
             }else{
                 chattingVo.setUserNo(messageVo.getToNo());
             }
         }
-        if(messageVo.getMsgType() == Constant.CHAT_PAR){
+        if(messageVo.getMsgType() == ConstantUtil.CHAT_PAR){
             chattingVo.setMemberNo(messageVo.getFromNo());
         }
         chattingVo.setSerialNo(messageVo.getSerialNo());
@@ -235,7 +233,7 @@ public class ChattingTemper {
     private static String getKey(MessageVo messageVo, boolean fromServer){
         String key;
         if(fromServer){//服务端发过来的数据
-            if(messageVo.getMsgType() == Constant.CHAT_FRI){
+            if(messageVo.getMsgType() == ConstantUtil.CHAT_FRI){
                 key = messageVo.getFromNo() + "_" + messageVo.getMsgType();
             }else{
                 key = messageVo.getToNo() + "_" + messageVo.getMsgType();

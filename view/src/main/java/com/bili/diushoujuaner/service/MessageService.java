@@ -6,17 +6,8 @@ import android.os.IBinder;
 import android.os.Messenger;
 import android.support.annotation.Nullable;
 
-import com.bili.diushoujuaner.model.eventhelper.LoginConflictEvent;
 import com.bili.diushoujuaner.presenter.messager.MessageServiceHandler;
-import com.bili.diushoujuaner.presenter.messager.MinaClienter;
 import com.bili.diushoujuaner.presenter.messager.Transceiver;
-import com.bili.diushoujuaner.utils.Constant;
-import com.bili.diushoujuaner.widget.dialog.DialogTool;
-import com.bili.diushoujuaner.widget.dialog.OnBothClickListener;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * Created by BiLi on 2016/4/15.

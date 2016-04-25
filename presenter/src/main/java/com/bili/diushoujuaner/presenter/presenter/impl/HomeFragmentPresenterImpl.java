@@ -9,7 +9,7 @@ import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
 import com.bili.diushoujuaner.model.tempHelper.GoodTemper;
 import com.bili.diushoujuaner.model.tempHelper.RecallTemper;
 import com.bili.diushoujuaner.presenter.presenter.HomeFragmentPresenter;
-import com.bili.diushoujuaner.utils.Constant;
+import com.bili.diushoujuaner.utils.ConstantUtil;
 import com.bili.diushoujuaner.model.apihelper.request.RecallListReq;
 import com.bili.diushoujuaner.utils.entity.dto.GoodDto;
 import com.bili.diushoujuaner.utils.entity.dto.RecallDto;
@@ -171,13 +171,13 @@ public class HomeFragmentPresenterImpl extends BasePresenter<IHomeView> implemen
     }
 
     private void showLoadingByRefreshType(int refreshType){
-        if(refreshType == Constant.REFRESH_DEFAULT){
-            showLoading(Constant.LOADING_DEFAULT, "");
+        if(refreshType == ConstantUtil.REFRESH_DEFAULT){
+            showLoading(ConstantUtil.LOADING_DEFAULT, "");
         }
     }
 
     private void hideLoading(){
-        hideLoading(Constant.LOADING_DEFAULT);
+        hideLoading(ConstantUtil.LOADING_DEFAULT);
         if(isBindViewValid()){
             getBindView().setRefreshingEnd();
         }
@@ -194,7 +194,7 @@ public class HomeFragmentPresenterImpl extends BasePresenter<IHomeView> implemen
     }
 
     private void initRecallListReq(){
-        recallListReq.setType(Constant.RECALL_ALL);
+        recallListReq.setType(ConstantUtil.RECALL_ALL);
         recallListReq.setPageIndex(1);
         recallListReq.setPageSize(20);
         //此处为查询所有用户的，为了和用户个人空间区分，这里设置userNo为-1  无效

@@ -3,23 +3,16 @@ package com.bili.diushoujuaner.widget;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Handler;
 import android.support.v4.content.ContextCompat;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.widget.RelativeLayout;
 
-import com.android.volley.toolbox.ImageLoader;
 import com.bili.diushoujuaner.R;
-import com.bili.diushoujuaner.base.BaseActivity;
-import com.bili.diushoujuaner.base.IBaseActivity;
-import com.bili.diushoujuaner.utils.Common;
-import com.bili.diushoujuaner.utils.manager.SystemBarTintManager;
+import com.bili.diushoujuaner.utils.StringUtil;
 import com.facebook.common.executors.CallerThreadExecutor;
 import com.facebook.common.references.CloseableReference;
 import com.facebook.datasource.DataSource;
@@ -102,12 +95,12 @@ public class CustomRelativeLayout extends RelativeLayout {
     }
 
     private void showTopBg(){
-        if(Common.isEmpty(this.bgUrl)){
+        if(StringUtil.isEmpty(this.bgUrl)){
             imageRequest = ImageRequestBuilder.newBuilderWithResourceId(R.mipmap.bg_menu_head)
                     .setProgressiveRenderingEnabled(true)
                     .build();
         }else{
-            imageRequest = ImageRequestBuilder.newBuilderWithSource(Uri.parse(Common.getCompleteUrl(this.bgUrl)))
+            imageRequest = ImageRequestBuilder.newBuilderWithSource(Uri.parse(StringUtil.getCompleteUrl(this.bgUrl)))
                     .setProgressiveRenderingEnabled(true)
                     .build();
         }

@@ -7,7 +7,7 @@ import com.bili.diushoujuaner.model.tempHelper.ChattingTemper;
 import com.bili.diushoujuaner.presenter.base.BasePresenter;
 import com.bili.diushoujuaner.presenter.presenter.PartyActivityPresenter;
 import com.bili.diushoujuaner.presenter.view.IPartyView;
-import com.bili.diushoujuaner.utils.Constant;
+import com.bili.diushoujuaner.utils.ConstantUtil;
 
 /**
  * Created by BiLi on 2016/3/19.
@@ -25,10 +25,10 @@ public class PartyActivityPresenterImpl extends BasePresenter<IPartyView> implem
 
     @Override
     public void getPartyList(){
-        showLoading(Constant.LOADING_DEFAULT, "");
+        showLoading(ConstantUtil.LOADING_DEFAULT, "");
         if(isBindViewValid()){
             getBindView().showPartyList(ContactAction.getInstance(context).getPartyVoList());
         }
-        hideLoading(Constant.LOADING_DEFAULT);
+        hideLoading(ConstantUtil.LOADING_DEFAULT);
     }
 }

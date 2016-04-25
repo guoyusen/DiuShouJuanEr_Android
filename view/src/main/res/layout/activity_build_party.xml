@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/MatchMatch.FitWindow"
+    android:background="@color/BG_ECEDF1">
+
+    <include
+        android:id="@+id/layoutHead"
+        layout="@layout/include_head_custom" />
+
+    <com.bili.diushoujuaner.widget.scrollview.ReboundScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/layoutHead"
+        android:overScrollMode="never">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/ivWallPaper"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y480"
+                app:actualImageScaleType="centerCrop"
+                app:placeholderImage="@mipmap/bg_menu_head"
+                app:placeholderImageScaleType="centerCrop" />
+
+            <RelativeLayout
+                android:id="@+id/layoutPartyHead"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/ivWallPaper"
+                android:layout_alignStart="@+id/ivWallPaper"
+                android:layout_alignBottom="@+id/ivWallPaper"
+                android:layout_alignRight="@+id/ivWallPaper"
+                android:layout_alignEnd="@+id/ivWallPaper"
+                android:layout_alignTop="@+id/ivWallPaper"
+                android:background="@color/TRANSPARENT_BLACK">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/TC_WHITE"
+                    android:layout_centerInParent="true"
+                    style="@style/TextMiddle"
+                    android:text="点击上传群头像"/>
+
+            </RelativeLayout>
+
+            <com.bili.diushoujuaner.widget.CustomEditText
+                android:id="@+id/edtEditor"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y100"
+                android:layout_below="@+id/layoutPartyHead"
+                android:layout_marginTop="@dimen/y32"
+                android:textCursorDrawable="@drawable/cursor_blue"
+                android:paddingLeft="@dimen/x24"
+                android:paddingRight="@dimen/x24"
+                android:textSize="@dimen/x28"
+                android:textColor="@color/TC_333333"
+                android:singleLine="true"
+                android:textColorHint="@color/TC_ADADBB"
+                android:maxLength="10"
+                android:hint="填写群名称（至少2个字）"
+                android:background="@color/COLOR_WHITE"/>
+
+            <TextView
+                android:id="@+id/txtCount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/edtEditor"
+                android:textColor="@color/TC_ADADBB"
+                style="@style/TextSmall"
+                android:text="0/10"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/x24"
+                android:layout_marginTop="@dimen/x16"/>
+
+        </RelativeLayout>
+
+    </com.bili.diushoujuaner.widget.scrollview.ReboundScrollView>
+
+</RelativeLayout>

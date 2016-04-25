@@ -14,8 +14,8 @@ import com.bili.diushoujuaner.callback.OnContactAddListener;
 import com.bili.diushoujuaner.presenter.presenter.ContactAddActivityPresenter;
 import com.bili.diushoujuaner.presenter.presenter.impl.ContactAddActivityPresenterImpl;
 import com.bili.diushoujuaner.presenter.view.IContactAddView;
-import com.bili.diushoujuaner.utils.Common;
-import com.bili.diushoujuaner.utils.Constant;
+import com.bili.diushoujuaner.utils.CommonUtil;
+import com.bili.diushoujuaner.utils.ConstantUtil;
 import com.bili.diushoujuaner.utils.entity.vo.ApplyVo;
 import com.bili.diushoujuaner.widget.CustomListView;
 import com.bili.diushoujuaner.widget.TintedBitmapDrawable;
@@ -78,15 +78,15 @@ public class ContactAddActivity extends BaseActivity<ContactAddActivityPresenter
     @Override
     public void onContactAdd(int position) {
         ApplyVo applyVo = applyAdapter.getItem(position);
-        if(!applyVo.getAccept() && applyVo.getType() == Constant.CHAT_FRIEND_ADD){
+        if(!applyVo.getAccept() && applyVo.getType() == ConstantUtil.CHAT_FRIEND_ADD){
             //好友申请
-            getBindPresenter().getFriendAgree(applyVo.getToNo(), applyVo.getFromNo());
+            getBindPresenter().getFriendAgree(applyVo.getFromNo());
         }
     }
 
     @Override
     public void showApplyVoList(List<ApplyVo> applyVoList) {
-        if (Common.isEmpty(applyVoList)) {
+        if (CommonUtil.isEmpty(applyVoList)) {
             layoutTip.setVisibility(View.VISIBLE);
             scrollView.setVisibility(View.GONE);
         }else{

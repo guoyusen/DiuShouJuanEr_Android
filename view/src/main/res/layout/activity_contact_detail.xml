@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/COLOR_WHITE"
-    style="@style/MatchMatch">
+    style="@style/MatchMatch"
+    android:background="@color/BG_ECEDF1">
 
     <RelativeLayout
         android:id="@+id/layoutDetail"
@@ -10,9 +10,9 @@
         android:layout_height="match_parent">
 
         <com.bili.diushoujuaner.widget.scrollview.ReboundScrollView
+            android:id="@+id/reboundScrollView"
             style="@style/MatchMatch"
             android:layout_above="@+id/layoutBottom"
-            android:background="@color/TRANSPARENT"
             android:overScrollMode="never"
             android:scrollbars="none"
             app:rs_scrollCanDown="false">
@@ -24,8 +24,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/y480"
                     app:actualImageScaleType="centerCrop"
-                    app:placeholderImageScaleType="centerCrop"
-                    app:placeholderImage="@mipmap/bg_menu_head" />
+                    app:placeholderImage="@mipmap/bg_menu_head"
+                    app:placeholderImageScaleType="centerCrop" />
 
                 <RelativeLayout
                     android:id="@+id/layoutContactName"
@@ -50,19 +50,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/layoutContactName"
-                    android:background="@color/COLOR_WHITE"
-                    android:orientation="vertical"
-                    android:paddingBottom="@dimen/y168"
-                    android:paddingTop="@dimen/y100">
+                    android:layout_marginTop="@dimen/y80"
+                    android:orientation="vertical">
 
                     <RelativeLayout
                         android:id="@+id/layoutAutograph"
                         style="@style/MatchWrap"
                         android:background="@color/COLOR_WHITE"
-                        android:paddingBottom="@dimen/x48"
+                        android:paddingBottom="@dimen/x32"
                         android:paddingLeft="@dimen/x24"
                         android:paddingRight="@dimen/x24"
-                        android:paddingTop="@dimen/x24">
+                        android:paddingTop="@dimen/x32">
 
                         <TextView
                             style="@style/TextMiddle"
@@ -76,18 +74,17 @@
                             style="@style/TextMiddle"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/x50"
                             android:layout_marginLeft="@dimen/x176"
                             android:layout_marginRight="@dimen/x50"
+                            android:layout_marginStart="@dimen/x176"
                             android:ellipsize="marquee"
                             android:maxLines="3"
                             android:textColor="@color/TC_333333" />
 
                     </RelativeLayout>
 
-                    <View
-                        android:id="@+id/line1"
-                        style="@style/line"
-                        android:layout_alignBottom="@+id/layoutAutograph" />
+                    <View style="@style/line" />
 
                     <RelativeLayout
                         android:id="@+id/layoutRecent"
@@ -95,8 +92,10 @@
                         android:layout_below="@+id/layoutAutograph"
                         android:background="@color/COLOR_WHITE"
                         android:gravity="center_vertical"
-                        android:visibility="gone"
-                        android:padding="@dimen/y24">
+                        android:paddingBottom="@dimen/x32"
+                        android:paddingLeft="@dimen/x24"
+                        android:paddingRight="@dimen/x24"
+                        android:paddingTop="@dimen/x32">
 
                         <TextView
                             style="@style/TextMiddle"
@@ -109,11 +108,12 @@
                             android:id="@+id/customGridView"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/x50"
                             android:layout_marginLeft="@dimen/x168"
                             android:layout_marginRight="@dimen/x50"
-                            android:numColumns="3">
-
-                        </com.bili.diushoujuaner.widget.CustomGridView>
+                            android:layout_marginStart="@dimen/x168"
+                            android:numColumns="3"
+                            android:overScrollMode="never" />
 
                         <TextView
                             android:id="@+id/txtRecent"
@@ -136,10 +136,130 @@
 
                     </RelativeLayout>
 
-                    <View
-                        android:id="@+id/line2"
-                        style="@style/line"
-                        android:layout_below="@+id/layoutRecent" />
+                    <RelativeLayout
+                        android:id="@+id/layoutGender"
+                        style="@style/MatchWrap"
+                        android:layout_marginTop="@dimen/y32"
+                        android:background="@color/COLOR_WHITE"
+                        android:paddingBottom="@dimen/x32"
+                        android:paddingLeft="@dimen/x24"
+                        android:paddingRight="@dimen/x24"
+                        android:paddingTop="@dimen/x32">
+
+                        <TextView
+                            style="@style/TextMiddle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="性    别"
+                            android:textColor="@color/TC_8A8A8A" />
+
+                        <TextView
+                            android:id="@+id/txtGender"
+                            style="@style/TextMiddle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/x50"
+                            android:layout_marginLeft="@dimen/x176"
+                            android:layout_marginRight="@dimen/x50"
+                            android:layout_marginStart="@dimen/x176"
+                            android:textColor="@color/TC_333333" />
+
+                    </RelativeLayout>
+
+                    <View style="@style/line" />
+
+                    <RelativeLayout
+                        android:id="@+id/layoutBirth"
+                        style="@style/MatchWrap"
+                        android:background="@color/COLOR_WHITE"
+                        android:paddingBottom="@dimen/x32"
+                        android:paddingLeft="@dimen/x24"
+                        android:paddingRight="@dimen/x24"
+                        android:paddingTop="@dimen/x32">
+
+                        <TextView
+                            style="@style/TextMiddle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="生    日"
+                            android:textColor="@color/TC_8A8A8A" />
+
+                        <TextView
+                            android:id="@+id/txtBirth"
+                            style="@style/TextMiddle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/x50"
+                            android:layout_marginLeft="@dimen/x176"
+                            android:layout_marginRight="@dimen/x50"
+                            android:layout_marginStart="@dimen/x176"
+                            android:textColor="@color/TC_333333" />
+
+                    </RelativeLayout>
+
+                    <View style="@style/line" />
+
+                    <RelativeLayout
+                        android:id="@+id/layoutLocat"
+                        style="@style/MatchWrap"
+                        android:layout_marginTop="@dimen/y32"
+                        android:background="@color/COLOR_WHITE"
+                        android:paddingBottom="@dimen/x32"
+                        android:paddingLeft="@dimen/x24"
+                        android:paddingRight="@dimen/x24"
+                        android:paddingTop="@dimen/x32">
+
+                        <TextView
+                            style="@style/TextMiddle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="所在地"
+                            android:textColor="@color/TC_8A8A8A" />
+
+                        <TextView
+                            android:id="@+id/txtLocat"
+                            style="@style/TextMiddle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/x50"
+                            android:layout_marginLeft="@dimen/x176"
+                            android:layout_marginRight="@dimen/x50"
+                            android:layout_marginStart="@dimen/x176"
+                            android:textColor="@color/TC_333333" />
+
+                    </RelativeLayout>
+
+                    <View style="@style/line" />
+
+                    <RelativeLayout
+                        android:id="@+id/layoutHomeTown"
+                        style="@style/MatchWrap"
+                        android:background="@color/COLOR_WHITE"
+                        android:paddingBottom="@dimen/x32"
+                        android:paddingLeft="@dimen/x24"
+                        android:paddingRight="@dimen/x24"
+                        android:paddingTop="@dimen/x32">
+
+                        <TextView
+                            style="@style/TextMiddle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="故    乡"
+                            android:textColor="@color/TC_8A8A8A" />
+
+                        <TextView
+                            android:id="@+id/txtHomeTown"
+                            style="@style/TextMiddle"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/x50"
+                            android:layout_marginLeft="@dimen/x176"
+                            android:layout_marginRight="@dimen/x50"
+                            android:layout_marginStart="@dimen/x176"
+                            android:textColor="@color/TC_333333" />
+
+                    </RelativeLayout>
+
 
                 </LinearLayout>
 

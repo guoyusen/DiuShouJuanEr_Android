@@ -7,8 +7,10 @@ import android.database.Cursor;
 import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
 import com.bili.diushoujuaner.model.tempHelper.ChattingTemper;
 import com.bili.diushoujuaner.model.tempHelper.ContactTemper;
-import com.bili.diushoujuaner.utils.Common;
-import com.bili.diushoujuaner.utils.Constant;
+import com.bili.diushoujuaner.utils.CommonUtil;
+import com.bili.diushoujuaner.utils.ConstantUtil;
+import com.bili.diushoujuaner.utils.EntityUtil;
+import com.bili.diushoujuaner.utils.TimeUtil;
 import com.bili.diushoujuaner.utils.comparator.ApplyComparator;
 import com.bili.diushoujuaner.utils.entity.dto.UserDto;
 import com.bili.diushoujuaner.utils.entity.po.Apply;
@@ -58,7 +60,7 @@ public class DBManager {
 
     private DaoMaster getDaoMaster(Context context) {
         if (daoMaster == null) {
-            DaoMaster.OpenHelper helper = new DaoMaster.DevOpenHelper(context, Constant.DATABASE_NAME, null);
+            DaoMaster.OpenHelper helper = new DaoMaster.DevOpenHelper(context, ConstantUtil.DATABASE_NAME, null);
             daoMaster = new DaoMaster(helper.getWritableDatabase());
         }
         return daoMaster;
@@ -103,10 +105,10 @@ public class DBManager {
 
     public void saveUser(User user, boolean isUpdateTime, boolean selective){
         if(isUpdateTime){
-            user.setUpdateTime(Common.getCurrentTimeYYMMDD_HHMMSS());
+            user.setUpdateTime(TimeUtil.getCurrentTimeYYMMDD_HHMMSS());
         }
         List<User> userList = daoSession.getUserDao().queryBuilder()
-                .where(UserDao.Properties.UserNo.eq(Common.getLongValue(user.getUserNo())))
+                .where(UserDao.Properties.UserNo.eq(CommonUtil.getLongValue(user.getUserNo())))
                 .build()
                 .list();
         if (userList.isEmpty()) {
@@ -115,7 +117,7 @@ public class DBManager {
             for(User item : userList){
                 //greendao通过行Id来进行更新，所以直接设置行id就可以全量跟新
                 if(selective){
-                    daoSession.getUserDao().insertOrReplace(DataTypeUtil.updateUserBySelective(item, user));
+                    daoSession.getUserDao().insertOrReplace(EntityUtil.updateUserBySelective(item, user));
                 }else{
                     user.setId(item.getId());
                     daoSession.getUserDao().insertOrReplace(user);
@@ -125,7 +127,7 @@ public class DBManager {
     }
 
     public void saveUser(UserDto userDto) {
-        User user = DataTypeUtil.changeUserDtoToUser(userDto);
+        User user = EntityUtil.getUserFromUserDto(userDto);
         saveUser(user, true, false);
     }
 
@@ -150,30 +152,19 @@ public class DBManager {
     }
 
     public void updateHeadPic(String headPic){
-        List<User> userList = daoSession.getUserDao().queryBuilder()
-                .where(UserDao.Properties.UserNo.eq(CustomSessionPreference.getInstance().getCustomSession().getUserNo()))
-                .build()
-                .list();
-        if(!userList.isEmpty()){
-            User user = userList.get(0);
-            user.setPicPath(headPic);
-            daoSession.getUserDao().insertOrReplace(user);
-        }
-//        ContentValues contentValues = new ContentValues();
-//        contentValues.put("");
-//        daoSession.getDatabase().update("USER",)
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("PIC_PATH", headPic);
+        daoSession.getDatabase().update("USER",contentValues,
+                "USER_NO = " + CustomSessionPreference.getInstance().getCustomSession().getUserNo(),
+                null);
     }
 
     public void updateWallpaper(String wallpaper){
-        List<User> userList = daoSession.getUserDao().queryBuilder()
-                .where(UserDao.Properties.UserNo.eq(CustomSessionPreference.getInstance().getCustomSession().getUserNo()))
-                .build()
-                .list();
-        if(!userList.isEmpty()){
-            User user = userList.get(0);
-            user.setWallPaper(wallpaper);
-            daoSession.getUserDao().insertOrReplace(user);
-        }
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("WALL_PAPER", wallpaper);
+        daoSession.getDatabase().update("USER",contentValues,
+                "USER_NO = " + CustomSessionPreference.getInstance().getCustomSession().getUserNo(),
+                null);
     }
 
     /**
@@ -267,19 +258,29 @@ public class DBManager {
         return friendVoList;
     }
 
+    public void deleteFriend(long friendNo){
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("delete from FRIEND ");
+        stringBuilder.append("where OWNER_NO = " + CustomSessionPreference.getInstance().getCustomSession().getUserNo() + " ");
+        stringBuilder.append("and FRIEND_NO = " + friendNo);
+
+        daoSession.getDatabase().delete("FRIEND","OWNER_NO = ? and FRIEND_NO = ?",
+                new String[]{CustomSessionPreference.getInstance().getCustomSession().getUserNo() + "",
+                        friendNo + ""});
+    }
+
     public void saveFriend(Friend friend){
         //好友列表如果没有，则增量更新，有则修改，不可以全部更新，因为friend表中包含有最近的聊天字段
         List<Friend> friendList = daoSession.getFriendDao().queryBuilder()
                 .where(FriendDao.Properties.OwnerNo.eq(CustomSessionPreference.getInstance().getCustomSession().getUserNo())
-                        , FriendDao.Properties.FriendNo.eq(Common.getLongValue(friend.getFriendNo())))
+                        , FriendDao.Properties.FriendNo.eq(CommonUtil.getLongValue(friend.getFriendNo())))
                 .build()
                 .list();
         if (friendList.isEmpty()) {
-            friend.setRecent(false);
             daoSession.getFriendDao().insertOrReplace(friend);
         } else {
             for(Friend item : friendList){
-                daoSession.getFriendDao().insertOrReplace(DataTypeUtil.updateFriendByNewer(item, friend));
+                daoSession.getFriendDao().insertOrReplace(EntityUtil.updateFriendByNewer(item, friend));
             }
         }
     }
@@ -296,7 +297,7 @@ public class DBManager {
 
     public void saveParty(Party party){
         List<Party> partyList = daoSession.getPartyDao().queryBuilder()
-                .where(PartyDao.Properties.PartyNo.eq(Common.getLongValue(party.getPartyNo())))
+                .where(PartyDao.Properties.PartyNo.eq(CommonUtil.getLongValue(party.getPartyNo())))
                 .build()
                 .list();
         if (partyList.isEmpty()) {
@@ -376,8 +377,8 @@ public class DBManager {
 
     public void saveMember(Member member){
         List<Member> memberList = daoSession.getMemberDao().queryBuilder()
-                .where(MemberDao.Properties.PartyNo.eq(Common.getLongValue(member.getPartyNo()))
-                        , MemberDao.Properties.UserNo.eq(Common.getLongValue(member.getUserNo())))
+                .where(MemberDao.Properties.PartyNo.eq(CommonUtil.getLongValue(member.getPartyNo()))
+                        , MemberDao.Properties.UserNo.eq(CommonUtil.getLongValue(member.getUserNo())))
                 .build()
                 .list();
         if (memberList.isEmpty()) {
@@ -385,7 +386,7 @@ public class DBManager {
             daoSession.getMemberDao().insertOrReplace(member);
         } else {
             for(Member item : memberList){
-                daoSession.getMemberDao().insertOrReplace(DataTypeUtil.updateMemberByNewer(item, member));
+                daoSession.getMemberDao().insertOrReplace(EntityUtil.updateMemberByNewer(item, member));
             }
         }
     }
@@ -402,9 +403,9 @@ public class DBManager {
         List<Long> friendNoList = getRecentFriendNo(currentUserNo);
         List<Long> partyNoList = getRecentPartyNo(currentUserNo);
         for(MessageVo messageVo : messageVoList){
-            if(messageVo.getMsgType() == Constant.CHAT_FRI){
+            if(messageVo.getMsgType() == ConstantUtil.CHAT_FRI){
                 friendNoList.remove(messageVo.getFromNo());
-            }else if(messageVo.getMsgType() == Constant.CHAT_PAR){
+            }else if(messageVo.getMsgType() == ConstantUtil.CHAT_PAR){
                 partyNoList.remove(messageVo.getToNo());
             }
         }
@@ -437,7 +438,7 @@ public class DBManager {
         stringBuilder.append("from chat ");
         stringBuilder.append("where TO_NO in (" + partyNoRange.toString() + ") ");
         stringBuilder.append("and OWNER_NO = " + currentUserNo + " ");
-        stringBuilder.append("and MSG_TYPE = " +  Constant.CHAT_PAR + " ");
+        stringBuilder.append("and MSG_TYPE = " +  ConstantUtil.CHAT_PAR + " ");
         stringBuilder.append("group by TO_NO");
 
         return stringBuilder.toString();
@@ -461,10 +462,10 @@ public class DBManager {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("select _id,SERIAL_NO,FROM_NO,TO_NO,CONTENT,max(TIME) TIME,MSG_TYPE,CON_TYPE,STATUS,SHOW_TIME,READ from ( ");
         stringBuilder.append("select _id,SERIAL_NO,TO_NO FROM_NO,FROM_NO TO_NO,CONTENT,max(TIME) TIME,MSG_TYPE,CON_TYPE,STATUS,SHOW_TIME,READ ");
-        stringBuilder.append("from chat where MSG_TYPE = " + Constant.CHAT_FRI + " and FROM_NO in (" + friendNoRange.toString() + ") and TO_NO = " + currentUserNo + " group by FROM_NO ");
+        stringBuilder.append("from chat where MSG_TYPE = " + ConstantUtil.CHAT_FRI + " and FROM_NO in (" + friendNoRange.toString() + ") and TO_NO = " + currentUserNo + " group by FROM_NO ");
         stringBuilder.append("UNION ");
         stringBuilder.append("select _id,SERIAL_NO,FROM_NO,TO_NO,CONTENT,max(TIME) TIME,MSG_TYPE,CON_TYPE,STATUS,SHOW_TIME,READ ");
-        stringBuilder.append("from chat where MSG_TYPE = " + Constant.CHAT_FRI + " and TO_NO in (" + friendNoRange.toString() + ") and FROM_NO = " + currentUserNo + " group by TO_NO )");
+        stringBuilder.append("from chat where MSG_TYPE = " + ConstantUtil.CHAT_FRI + " and TO_NO in (" + friendNoRange.toString() + ") and FROM_NO = " + currentUserNo + " group by TO_NO )");
         stringBuilder.append("group by TO_NO order by 6 asc");
         return stringBuilder.toString();
     }
@@ -527,13 +528,13 @@ public class DBManager {
         stringBuilder.append("select _id,SERIAL_NO, FROM_NO, TO_NO, CONTENT, TIME, MSG_TYPE, CON_TYPE, STATUS, SHOW_TIME, READ ");
         stringBuilder.append("from CHAT ");
         stringBuilder.append("where OWNER_NO = " + currentUserNo + " ");
-        stringBuilder.append("and MSG_TYPE = " + Constant.CHAT_PAR + " ");
+        stringBuilder.append("and MSG_TYPE = " + ConstantUtil.CHAT_PAR + " ");
         stringBuilder.append("and READ = 0 ");
         stringBuilder.append("UNION ");
         stringBuilder.append("select _id,SERIAL_NO, TO_NO FROM_NO, FROM_NO TO_NO, CONTENT, TIME, MSG_TYPE, CON_TYPE, STATUS, SHOW_TIME, READ ");
         stringBuilder.append("from CHAT ");
         stringBuilder.append("where OWNER_NO = " + currentUserNo + " ");
-        stringBuilder.append("and MSG_TYPE = " + Constant.CHAT_FRI + " ");
+        stringBuilder.append("and MSG_TYPE = " + ConstantUtil.CHAT_FRI + " ");
         stringBuilder.append("and READ = 0 ");
 
         return stringBuilder.toString();
@@ -653,9 +654,9 @@ public class DBManager {
     }
 
     public void deleteRecent(long userNo, int msgType){
-        if(msgType == Constant.CHAT_FRI){
+        if(msgType == ConstantUtil.CHAT_FRI){
             updateFriendRecent(userNo, false);
-        }else if(msgType == Constant.CHAT_PAR){
+        }else if(msgType == ConstantUtil.CHAT_PAR){
             updateMemberRecent(userNo, false);
         }
     }
@@ -663,6 +664,14 @@ public class DBManager {
     public void updateFriendRecent(long friendNo, boolean recent){
         ContentValues contentValues = new ContentValues();
         contentValues.put("RECENT", recent ? 1 : 0);
+        daoSession.getDatabase().update("FRIEND", contentValues,
+                "OWNER_NO = " + CustomSessionPreference.getInstance().getCustomSession().getUserNo() + " and FRIEND_NO = " + friendNo,
+                null);
+    }
+
+    public void updateFriendRemark(long friendNo, String remark){
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("REMARK", remark);
         daoSession.getDatabase().update("FRIEND", contentValues,
                 "OWNER_NO = " + CustomSessionPreference.getInstance().getCustomSession().getUserNo() + " and FRIEND_NO = " + friendNo,
                 null);
@@ -778,13 +787,13 @@ public class DBManager {
         return applyVoList;
     }
 
-    public void updateApplyAccept(long fromNo, long toNo){
+    public void updateApplyFriendAccept(long friendNo){
         ContentValues contentValues = new ContentValues();
         contentValues.put("ACCEPT", 1);
         daoSession.getDatabase().update("APPLY",contentValues,
                 "OWNER_NO = " + CustomSessionPreference.getInstance().getCustomSession().getUserNo()
-                        + " and FROM_NO = " + fromNo
-                        + " and TO_NO = " + toNo,
+                        + " and FROM_NO = " + friendNo
+                        + " and TO_NO = " + CustomSessionPreference.getInstance().getCustomSession().getUserNo(),
                 null);
     }
 

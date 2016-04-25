@@ -13,7 +13,7 @@ import com.bili.diushoujuaner.model.tempHelper.ContactTemper;
 import com.bili.diushoujuaner.presenter.base.BasePresenter;
 import com.bili.diushoujuaner.presenter.presenter.PartyDetailActivityPresenter;
 import com.bili.diushoujuaner.presenter.view.IPartyDetailView;
-import com.bili.diushoujuaner.utils.Constant;
+import com.bili.diushoujuaner.utils.ConstantUtil;
 import com.bili.diushoujuaner.utils.entity.vo.MemberVo;
 
 import org.greenrobot.eventbus.EventBus;
@@ -36,21 +36,21 @@ public class PartyDetailActivityPresenterImpl extends BasePresenter<IPartyDetail
 
     @Override
     public void updatePartyHeadPic(final long partyNo, String path) {
-        showLoading(Constant.LOADING_TOP,"正在上传头像");
+        showLoading(ConstantUtil.LOADING_TOP,"正在上传头像");
         FileAction.getInstance(context).upoadPartyHeadPic(new PartyHeadUpdateReq(partyNo), path, new ActionFileCallbackListener<ActionRespon<String>>() {
             @Override
             public void onSuccess(ActionRespon<String> result) {
-                hideLoading(Constant.LOADING_TOP);
+                hideLoading(ConstantUtil.LOADING_TOP);
                 if(showMessage(result.getRetCode(), result.getMessage())){
                     if(isBindViewValid()){
-                        EventBus.getDefault().post(new UpdatePartyEvent(partyNo, result.getData(), Constant.CHAT_PARTY_HEAD));
+                        EventBus.getDefault().post(new UpdatePartyEvent(partyNo, result.getData(), ConstantUtil.CHAT_PARTY_HEAD));
                     }
                 }
             }
 
             @Override
             public void onFailure(int errorCode) {
-                hideLoading(Constant.LOADING_TOP);
+                hideLoading(ConstantUtil.LOADING_TOP);
                 showError(errorCode);
             }
 
@@ -74,7 +74,7 @@ public class PartyDetailActivityPresenterImpl extends BasePresenter<IPartyDetail
     @Override
     public List<MemberVo> getMemberVoList() {
         long partyNo = 0;
-        if(ChattingTemper.getInstance().getMsgType() == Constant.CHAT_PAR && isBindViewValid()){
+        if(ChattingTemper.getInstance().getMsgType() == ConstantUtil.CHAT_PAR && isBindViewValid()){
             partyNo = ChattingTemper.getInstance().getToNo();
         }
         return ContactTemper.getInstance().getMemberVoList(partyNo);
@@ -83,7 +83,7 @@ public class PartyDetailActivityPresenterImpl extends BasePresenter<IPartyDetail
     @Override
     public String getMemberName() {
         long partyNo = 0;
-        if(ChattingTemper.getInstance().getMsgType() == Constant.CHAT_PAR && isBindViewValid()){
+        if(ChattingTemper.getInstance().getMsgType() == ConstantUtil.CHAT_PAR && isBindViewValid()){
             partyNo = ChattingTemper.getInstance().getToNo();
         }
         MemberVo memberVo = ContactTemper.getInstance().getMemberVo(partyNo, CustomSessionPreference.getInstance().getCustomSession().getUserNo());

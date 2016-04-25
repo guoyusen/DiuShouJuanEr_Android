@@ -9,7 +9,7 @@ import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
 import com.bili.diushoujuaner.presenter.base.BasePresenter;
 import com.bili.diushoujuaner.presenter.presenter.ContactSearchActivityPresenter;
 import com.bili.diushoujuaner.presenter.view.IContactSearchView;
-import com.bili.diushoujuaner.utils.Constant;
+import com.bili.diushoujuaner.utils.ConstantUtil;
 import com.bili.diushoujuaner.utils.entity.dto.ContactDto;
 
 import java.util.List;
@@ -25,12 +25,12 @@ public class ContactSearchActivityPresenterImpl extends BasePresenter<IContactSe
 
     @Override
     public void getContactsSearch(String paramNo) {
-        showLoading(Constant.LOADING_CENTER, "正在搜索...");
+        showLoading(ConstantUtil.LOADING_CENTER, "正在搜索...");
         ContactsSearchReq contactsSearchReq = new ContactsSearchReq(paramNo);
         ContactAction.getInstance(context).getContactsSearch(contactsSearchReq, new ActionStringCallbackListener<ActionRespon<List<ContactDto>>>() {
             @Override
             public void onSuccess(ActionRespon<List<ContactDto>> result) {
-                hideLoading(Constant.LOADING_CENTER);
+                hideLoading(ConstantUtil.LOADING_CENTER);
                 if(showMessage(result.getRetCode(), result.getMessage())){
                     if(isBindViewValid() && result.getData() != null){
                         getBindView().showSearchContactsResult(result.getData());
@@ -40,7 +40,7 @@ public class ContactSearchActivityPresenterImpl extends BasePresenter<IContactSe
 
             @Override
             public void onFailure(int errorCode) {
-                hideLoading(Constant.LOADING_CENTER);
+                hideLoading(ConstantUtil.LOADING_CENTER);
                 showError(errorCode);
             }
         });

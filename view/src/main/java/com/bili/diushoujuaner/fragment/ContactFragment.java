@@ -15,21 +15,21 @@ import com.bili.diushoujuaner.activity.ContactSearchActivity;
 import com.bili.diushoujuaner.activity.PartyActivity;
 import com.bili.diushoujuaner.adapter.ContactAdapter;
 import com.bili.diushoujuaner.base.BaseFragment;
-import com.bili.diushoujuaner.model.eventhelper.AddContactEvent;
-import com.bili.diushoujuaner.model.eventhelper.ShowHeadEvent;
+import com.bili.diushoujuaner.model.eventhelper.RequestContactEvent;
+import com.bili.diushoujuaner.model.eventhelper.DeleteContactEvent;
 import com.bili.diushoujuaner.model.eventhelper.ShowMainMenuEvent;
-import com.bili.diushoujuaner.model.eventhelper.UpdateContactEvent;
+import com.bili.diushoujuaner.model.eventhelper.AddContactEvent;
 import com.bili.diushoujuaner.model.eventhelper.UpdateReadCountEvent;
+import com.bili.diushoujuaner.model.eventhelper.UpdateRemarkEvent;
 import com.bili.diushoujuaner.presenter.presenter.ContactFragmentPresenter;
 import com.bili.diushoujuaner.presenter.presenter.impl.ContactFragmentPresenterImpl;
 import com.bili.diushoujuaner.presenter.view.IContactView;
-import com.bili.diushoujuaner.utils.Common;
-import com.bili.diushoujuaner.utils.Constant;
+import com.bili.diushoujuaner.utils.CommonUtil;
+import com.bili.diushoujuaner.utils.ConstantUtil;
 import com.bili.diushoujuaner.utils.entity.vo.FriendVo;
 import com.bili.diushoujuaner.widget.CustomListView;
 import com.bili.diushoujuaner.widget.badgeview.BGABadgeTextView;
 import com.bili.diushoujuaner.widget.scrollview.ReboundScrollView;
-import com.facebook.drawee.view.SimpleDraweeView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -130,7 +130,7 @@ public class ContactFragment extends BaseFragment<ContactFragmentPresenter> impl
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onUpdateReadCountEvent(UpdateReadCountEvent updateReadCountEvent){
         switch (updateReadCountEvent.getType()){
-            case Constant.UNREAD_COUNT_APPLY:
+            case ConstantUtil.UNREAD_COUNT_APPLY:
                 if(updateReadCountEvent.getCount() <= 0){
                     txtAddContact.hiddenBadge();
                 }else {
@@ -141,19 +141,33 @@ public class ContactFragment extends BaseFragment<ContactFragmentPresenter> impl
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onUpdateContactEvent(UpdateContactEvent updateContactEvent){
+    public void onDeleteContactEvent(DeleteContactEvent deleteContactEvent){
+        //删除联系人
+        getBindPresenter().getContactList();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onAddContactEvent(AddContactEvent addContactEvent){
+        //添加联系人
         getBindPresenter().getContactList();
     }
 
     @Subscribe(threadMode = ThreadMode.POSTING)
-    public void onAddContactEvent(AddContactEvent addContactEvent){
+    public void onRequestContactEvent(RequestContactEvent requestContactEvent){
+        // 有添加请求
         getBindPresenter().getAddUnReadCount();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onUpdateRemarkEvent(UpdateRemarkEvent updateRemarkEvent){
+        //更新备注名
+        getBindPresenter().getContactList();
     }
 
     @Override
     public void showContactList(List<FriendVo> friendVoList) {
         contactAdapter.refresh(friendVoList);
-        if(Common.isEmpty(friendVoList)){
+        if(CommonUtil.isEmpty(friendVoList)){
             txtPartyCount.setText("暂无联系人");
             return;
         } else{

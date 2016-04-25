@@ -9,7 +9,7 @@ import com.bili.diushoujuaner.model.apihelper.ApiRespon;
 import com.bili.diushoujuaner.model.apihelper.api.ApiAction;
 import com.bili.diushoujuaner.model.apihelper.callback.ApiStringCallbackListener;
 import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
-import com.bili.diushoujuaner.utils.GsonParser;
+import com.bili.diushoujuaner.utils.GsonUtil;
 import com.bili.diushoujuaner.utils.entity.dto.CustomSession;
 import com.bili.diushoujuaner.model.apihelper.request.UserAccountReq;
 import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
@@ -50,7 +50,7 @@ public class CustomSessionAction implements ICustomSessionAction {
                 Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<Void>>() {
                 @Override
                 public ActionRespon<Void> doInBackground() throws Exception {
-                    ApiRespon<CustomSession> result = GsonParser.getInstance().fromJson(data, new TypeToken<ApiRespon<CustomSession>>() {
+                    ApiRespon<CustomSession> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<CustomSession>>() {
                     }.getType());
                     if(result.getIsLegal()){
                         CustomSessionPreference.getInstance().saveCustomSession(result.getData());

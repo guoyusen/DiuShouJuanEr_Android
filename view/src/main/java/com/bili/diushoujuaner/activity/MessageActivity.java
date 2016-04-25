@@ -14,13 +14,14 @@ import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.adapter.MessageAdapter;
 import com.bili.diushoujuaner.base.BaseActivity;
 import com.bili.diushoujuaner.callback.OnReSendListener;
+import com.bili.diushoujuaner.model.eventhelper.DeleteContactEvent;
 import com.bili.diushoujuaner.model.eventhelper.UpdateMessageEvent;
 import com.bili.diushoujuaner.model.eventhelper.UpdatePartyEvent;
 import com.bili.diushoujuaner.presenter.presenter.MessageActivityPresenter;
 import com.bili.diushoujuaner.presenter.presenter.impl.MessageActivityPresenterImpl;
 import com.bili.diushoujuaner.presenter.view.IMessageView;
-import com.bili.diushoujuaner.utils.Common;
-import com.bili.diushoujuaner.utils.Constant;
+import com.bili.diushoujuaner.utils.CommonUtil;
+import com.bili.diushoujuaner.utils.ConstantUtil;
 import com.bili.diushoujuaner.utils.entity.vo.FriendVo;
 import com.bili.diushoujuaner.utils.entity.vo.MessageVo;
 import com.bili.diushoujuaner.utils.entity.vo.PartyVo;
@@ -111,7 +112,7 @@ public class MessageActivity extends BaseActivity<MessageActivityPresenter> impl
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        Common.hideSoftInputFromWindow(context, txtEditor);
+        CommonUtil.hideSoftInputFromWindow(context, txtEditor);
         return false;
     }
 
@@ -120,7 +121,7 @@ public class MessageActivity extends BaseActivity<MessageActivityPresenter> impl
         switch (v.getId()) {
             case R.id.layoutSend:
                 if(!TextUtils.isEmpty(txtEditor.getText())){
-                    getBindPresenter().saveMessageVo(txtEditor.getText().toString(), Constant.CHAT_CONTENT_TEXT);
+                    getBindPresenter().saveMessageVo(txtEditor.getText().toString(), ConstantUtil.CHAT_CONTENT_TEXT);
                     txtEditor.setText(null);
                 }
                 break;
@@ -150,10 +151,10 @@ public class MessageActivity extends BaseActivity<MessageActivityPresenter> impl
     @Override
     public void showNextActivity(int showType) {
         switch (showType){
-            case Constant.SHOW_TYPE_CHATTING_SETTING:
+            case ConstantUtil.SHOW_TYPE_CHATTING_SETTING:
                 startActivity(new Intent(MessageActivity.this, ChattingSettingActivity.class));
                 break;
-            case Constant.SHOW_TYPE_PARTY_DETAIL:
+            case ConstantUtil.SHOW_TYPE_PARTY_DETAIL:
                 startActivity(new Intent(MessageActivity.this, PartyDetailActivity.class)
                 .putExtra(PartyDetailActivity.TAG_TYPE, PartyDetailActivity.TYPE_CONTACT));
                 break;
@@ -178,7 +179,7 @@ public class MessageActivity extends BaseActivity<MessageActivityPresenter> impl
     @Override
     public void showMoreMessageList(List<MessageVo> messageVoList) {
         for (MessageVo messageVo : messageVoList) {
-            if (messageVo.getStatus() == Constant.MESSAGE_STATUS_SENDING) {
+            if (messageVo.getStatus() == ConstantUtil.MESSAGE_STATUS_SENDING) {
                 messageVoHashMap.put(messageVo.getSerialNo(), messageVo);
             }
         }
@@ -189,7 +190,7 @@ public class MessageActivity extends BaseActivity<MessageActivityPresenter> impl
     @Override
     public void showMessageList(List<MessageVo> messageVoList) {
         for (MessageVo messageVo : messageVoList) {
-            if (messageVo.getStatus() == Constant.MESSAGE_STATUS_SENDING) {
+            if (messageVo.getStatus() == ConstantUtil.MESSAGE_STATUS_SENDING) {
                 messageVoHashMap.put(messageVo.getSerialNo(), messageVo);
             }
         }
@@ -211,15 +212,24 @@ public class MessageActivity extends BaseActivity<MessageActivityPresenter> impl
     public void onUpdatePartyEvent(UpdatePartyEvent updatePartyEvent){
         if(this.isPartyChatting && this.partyVo.getPartyNo() == updatePartyEvent.getPartyNo()){
             switch (updatePartyEvent.getType()){
-                case Constant.CHAT_PARTY_NAME:
+                case ConstantUtil.CHAT_PARTY_NAME:
                     getBindPresenter().getContactInfo();
                     break;
-                case Constant.CHAT_PARTY_MEMBER_NAME:
+                case ConstantUtil.CHAT_PARTY_MEMBER_NAME:
                     if (messageAdapter != null) {
                         messageAdapter.notifyDataSetInvalidated();
                     }
                     break;
             }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onDeleteContactEvent(DeleteContactEvent deleteContactEvent){
+        if(deleteContactEvent.getType() == ConstantUtil.DELETE_CONTACT_FRIEND
+                && !this.isPartyChatting
+                && deleteContactEvent.getContNo() == this.friendVo.getFriendNo()){
+            finish();
         }
     }
 

@@ -8,7 +8,7 @@ import com.bili.diushoujuaner.model.apihelper.ApiRespon;
 import com.bili.diushoujuaner.model.apihelper.api.ApiAction;
 import com.bili.diushoujuaner.model.apihelper.callback.ApiStringCallbackListener;
 import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
-import com.bili.diushoujuaner.utils.GsonParser;
+import com.bili.diushoujuaner.utils.GsonUtil;
 import com.google.gson.reflect.TypeToken;
 import com.nanotasks.BackgroundWork;
 import com.nanotasks.Completion;
@@ -41,7 +41,7 @@ public class GoodAction implements IGoodAction {
                 Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<String>>() {
                     @Override
                     public ActionRespon<String> doInBackground() throws Exception {
-                        ApiRespon<String> result = GsonParser.getInstance().fromJson(data, new TypeToken<ApiRespon<String>>() {
+                        ApiRespon<String> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<String>>() {
                         }.getType());
                         return ActionRespon.getActionResponFromApiRespon(result);
                     }
@@ -73,7 +73,7 @@ public class GoodAction implements IGoodAction {
                 Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<String>>() {
                     @Override
                     public ActionRespon<String> doInBackground() throws Exception {
-                        ApiRespon<String> result = GsonParser.getInstance().fromJson(data, new TypeToken<ApiRespon<String>>() {
+                        ApiRespon<String> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<String>>() {
                         }.getType());
                         return ActionRespon.getActionResponFromApiRespon(result);
                     }

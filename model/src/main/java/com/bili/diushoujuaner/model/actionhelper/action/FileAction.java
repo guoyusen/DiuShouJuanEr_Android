@@ -7,12 +7,15 @@ import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
 import com.bili.diushoujuaner.model.apihelper.ApiRespon;
 import com.bili.diushoujuaner.model.apihelper.api.ApiAction;
 import com.bili.diushoujuaner.model.apihelper.callback.ApiFileCallbackListener;
+import com.bili.diushoujuaner.model.apihelper.request.PartyAddReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyHeadUpdateReq;
 import com.bili.diushoujuaner.model.apihelper.request.RecallSerialReq;
 import com.bili.diushoujuaner.model.callback.ActionFileCallbackListener;
 import com.bili.diushoujuaner.model.databasehelper.DBManager;
 import com.bili.diushoujuaner.model.tempHelper.ContactTemper;
-import com.bili.diushoujuaner.utils.GsonParser;
+import com.bili.diushoujuaner.utils.ConstantUtil;
+import com.bili.diushoujuaner.utils.GsonUtil;
+import com.bili.diushoujuaner.utils.entity.dto.ContactDto;
 import com.google.gson.reflect.TypeToken;
 import com.nanotasks.BackgroundWork;
 import com.nanotasks.Completion;
@@ -45,7 +48,7 @@ public class FileAction implements IFileAction {
                 Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<String>>() {
                     @Override
                     public ActionRespon<String> doInBackground() throws Exception {
-                        ApiRespon<String> result = GsonParser.getInstance().fromJson(data, new TypeToken<ApiRespon<String>>() {
+                        ApiRespon<String> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<String>>() {
                         }.getType());
                         if(result.getIsLegal()){
                             ContactTemper.getInstance().updatePartyHeadPic(partyHeadUpdateReq.getPartyNo(), result.getData());
@@ -86,7 +89,7 @@ public class FileAction implements IFileAction {
                 Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<String>>() {
                     @Override
                     public ActionRespon<String> doInBackground() throws Exception {
-                        ApiRespon<String> result = GsonParser.getInstance().fromJson(data, new TypeToken<ApiRespon<String>>() {
+                        ApiRespon<String> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<String>>() {
                         }.getType());
                         return ActionRespon.getActionResponFromApiRespon(result);
                     }
@@ -123,7 +126,7 @@ public class FileAction implements IFileAction {
                 Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<String>>() {
                     @Override
                     public ActionRespon<String> doInBackground() throws Exception {
-                        ApiRespon<String> result = GsonParser.getInstance().fromJson(data, new TypeToken<ApiRespon<String>>() {
+                        ApiRespon<String> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<String>>() {
                         }.getType());
                         if(result.getIsLegal()){
                             DBManager.getInstance().updateWallpaper(result.getData());
@@ -165,7 +168,7 @@ public class FileAction implements IFileAction {
                 Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<String>>() {
                     @Override
                     public ActionRespon<String> doInBackground() throws Exception {
-                        ApiRespon<String> result = GsonParser.getInstance().fromJson(data, new TypeToken<ApiRespon<String>>() {
+                        ApiRespon<String> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<String>>() {
                         }.getType());
                         if(result.getIsLegal()){
                             DBManager.getInstance().updateHeadPic(result.getData());

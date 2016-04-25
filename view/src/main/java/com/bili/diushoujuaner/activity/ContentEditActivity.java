@@ -9,11 +9,11 @@ import android.widget.TextView;
 
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.base.BaseActivity;
+import com.bili.diushoujuaner.presenter.base.IBaseView;
 import com.bili.diushoujuaner.presenter.presenter.ContentEditActivityPresenter;
 import com.bili.diushoujuaner.presenter.presenter.impl.ContentEditActivityPresenterImpl;
-import com.bili.diushoujuaner.presenter.view.IContentEditView;
-import com.bili.diushoujuaner.utils.Common;
-import com.bili.diushoujuaner.utils.Constant;
+import com.bili.diushoujuaner.utils.CommonUtil;
+import com.bili.diushoujuaner.utils.ConstantUtil;
 import com.bili.diushoujuaner.widget.CustomEditText;
 
 import butterknife.Bind;
@@ -21,7 +21,7 @@ import butterknife.Bind;
 /**
  * Created by BiLi on 2016/3/9.
  */
-public class ContentEditActivity extends BaseActivity<ContentEditActivityPresenter> implements IContentEditView, View.OnClickListener {
+public class ContentEditActivity extends BaseActivity<ContentEditActivityPresenter> implements IBaseView, View.OnClickListener {
 
     @Bind(R.id.textLeftCount)
     TextView textLeftCount;
@@ -43,26 +43,29 @@ public class ContentEditActivity extends BaseActivity<ContentEditActivityPresent
         @Override
         public void afterTextChanged(Editable s) {
             switch (type) {
-                case Constant.EDIT_CONTENT_AUTOGRAPH:
-                    textLeftCount.setText((Constant.EDIT_CONTENT_LENGTH_AUTOGRAPH - s.toString().length()) + "");
+                case ConstantUtil.EDIT_CONTENT_AUTOGRAPH:
+                    textLeftCount.setText((ConstantUtil.EDIT_CONTENT_LENGTH_AUTOGRAPH - s.toString().length()) + "");
                     break;
-                case Constant.EDIT_CONTENT_FEEDBACK:
-                    textLeftCount.setText((Constant.EDIT_CONTENT_LENGTH_FEEDBACK - s.toString().length()) + "");
+                case ConstantUtil.EDIT_CONTENT_FEEDBACK:
+                    textLeftCount.setText((ConstantUtil.EDIT_CONTENT_LENGTH_FEEDBACK - s.toString().length()) + "");
                     break;
-                case Constant.EDIT_CONTENT_MEMBER_NAME:
-                    textLeftCount.setText((Constant.EDIT_CONTENT_LENGTH_MEMBER_NAME - s.toString().length()) + "");
+                case ConstantUtil.EDIT_CONTENT_MEMBER_NAME:
+                    textLeftCount.setText((ConstantUtil.EDIT_CONTENT_LENGTH_MEMBER_NAME - s.toString().length()) + "");
                     break;
-                case Constant.EDIT_CONTENT_PARTY_NAME:
-                    textLeftCount.setText((Constant.EDIT_CONTENT_LENGTH_PARTY_NAME - s.toString().length()) + "");
+                case ConstantUtil.EDIT_CONTENT_PARTY_NAME:
+                    textLeftCount.setText((ConstantUtil.EDIT_CONTENT_LENGTH_PARTY_NAME - s.toString().length()) + "");
                     break;
-                case Constant.EDIT_CONTENT_PARTY_INTRODUCE:
-                    textLeftCount.setText((Constant.EDIT_CONTENT_LENGTH_PARTY_INTRODUCE - s.toString().length()) + "");
+                case ConstantUtil.EDIT_CONTENT_PARTY_INTRODUCE:
+                    textLeftCount.setText((ConstantUtil.EDIT_CONTENT_LENGTH_PARTY_INTRODUCE - s.toString().length()) + "");
                     break;
-                case Constant.EDIT_CONTENT_FRIEND_ADD:
-                    textLeftCount.setText((Constant.EDIT_CONTENT_LENGTH_FRIEND_ADD - s.toString().length()) + "");
+                case ConstantUtil.EDIT_CONTENT_FRIEND_ADD:
+                    textLeftCount.setText((ConstantUtil.EDIT_CONTENT_LENGTH_FRIEND_ADD - s.toString().length()) + "");
                     break;
-                case Constant.EDIT_CONTENT_PARTY_ADD:
-                    textLeftCount.setText((Constant.EDIT_CONTENT_LENGTH_PARTY_ADD - s.toString().length()) + "");
+                case ConstantUtil.EDIT_CONTENT_PARTY_ADD:
+                    textLeftCount.setText((ConstantUtil.EDIT_CONTENT_LENGTH_PARTY_ADD - s.toString().length()) + "");
+                    break;
+                case ConstantUtil.EDIT_CONTENT_FRIEND_REMARK:
+                    textLeftCount.setText((ConstantUtil.EDIT_CONTENT_LENGTH_FRIEND_REMARK - s.toString().length()) + "");
                     break;
             }
         }
@@ -80,9 +83,11 @@ public class ContentEditActivity extends BaseActivity<ContentEditActivityPresent
 
     @Override
     public void initIntentParam(Intent intent) {
-        type = intent.getIntExtra(TAG_TYPE, Constant.EDIT_CONTENT_NONE);
+        type = intent.getIntExtra(TAG_TYPE, ConstantUtil.EDIT_CONTENT_NONE);
         content = intent.getStringExtra(TAG_CONTENT);
-        if (type == Constant.EDIT_CONTENT_FRIEND_ADD || type == Constant.EDIT_CONTENT_PARTY_ADD) {
+        if (type == ConstantUtil.EDIT_CONTENT_FRIEND_ADD
+                || type == ConstantUtil.EDIT_CONTENT_PARTY_ADD
+                || type == ConstantUtil.EDIT_CONTENT_FRIEND_REMARK) {
             contactNo = intent.getLongExtra(TAG_CONTNO, -1);
         }
     }
@@ -107,47 +112,53 @@ public class ContentEditActivity extends BaseActivity<ContentEditActivityPresent
 
     private void setContentType() {
         switch (type) {
-            case Constant.EDIT_CONTENT_AUTOGRAPH:
+            case ConstantUtil.EDIT_CONTENT_AUTOGRAPH:
                 showPageHead("个性签名", R.mipmap.icon_finish, null);
-                textLeftCount.setText(Constant.EDIT_CONTENT_LENGTH_AUTOGRAPH + "");
+                textLeftCount.setText(ConstantUtil.EDIT_CONTENT_LENGTH_AUTOGRAPH + "");
                 edtEditor.setHint("输入新的签名吧...");
-                edtEditor.setMaxLength(Constant.EDIT_CONTENT_LENGTH_AUTOGRAPH);
+                edtEditor.setMaxLength(ConstantUtil.EDIT_CONTENT_LENGTH_AUTOGRAPH);
                 break;
-            case Constant.EDIT_CONTENT_FEEDBACK:
+            case ConstantUtil.EDIT_CONTENT_FEEDBACK:
                 showPageHead("意见反馈", R.mipmap.icon_finish, null);
-                textLeftCount.setText(Constant.EDIT_CONTENT_LENGTH_FEEDBACK + "");
+                textLeftCount.setText(ConstantUtil.EDIT_CONTENT_LENGTH_FEEDBACK + "");
                 edtEditor.setHint("尽情吐槽吧...");
-                edtEditor.setMaxLength(Constant.EDIT_CONTENT_LENGTH_FEEDBACK);
+                edtEditor.setMaxLength(ConstantUtil.EDIT_CONTENT_LENGTH_FEEDBACK);
                 break;
-            case Constant.EDIT_CONTENT_MEMBER_NAME:
+            case ConstantUtil.EDIT_CONTENT_MEMBER_NAME:
                 showPageHead("群名片", R.mipmap.icon_finish, null);
-                textLeftCount.setText(Constant.EDIT_CONTENT_LENGTH_MEMBER_NAME + "");
+                textLeftCount.setText(ConstantUtil.EDIT_CONTENT_LENGTH_MEMBER_NAME + "");
                 edtEditor.setHint("更改您的群名片吧...");
-                edtEditor.setMaxLength(Constant.EDIT_CONTENT_LENGTH_MEMBER_NAME);
+                edtEditor.setMaxLength(ConstantUtil.EDIT_CONTENT_LENGTH_MEMBER_NAME);
                 break;
-            case Constant.EDIT_CONTENT_PARTY_NAME:
+            case ConstantUtil.EDIT_CONTENT_PARTY_NAME:
                 showPageHead("群名称", R.mipmap.icon_finish, null);
-                textLeftCount.setText(Constant.EDIT_CONTENT_LENGTH_PARTY_NAME + "");
+                textLeftCount.setText(ConstantUtil.EDIT_CONTENT_LENGTH_PARTY_NAME + "");
                 edtEditor.setHint("更改您的群名称...");
-                edtEditor.setMaxLength(Constant.EDIT_CONTENT_LENGTH_PARTY_NAME);
+                edtEditor.setMaxLength(ConstantUtil.EDIT_CONTENT_LENGTH_PARTY_NAME);
                 break;
-            case Constant.EDIT_CONTENT_PARTY_INTRODUCE:
+            case ConstantUtil.EDIT_CONTENT_PARTY_INTRODUCE:
                 showPageHead("群介绍", R.mipmap.icon_finish, null);
-                textLeftCount.setText(Constant.EDIT_CONTENT_LENGTH_PARTY_INTRODUCE + "");
+                textLeftCount.setText(ConstantUtil.EDIT_CONTENT_LENGTH_PARTY_INTRODUCE + "");
                 edtEditor.setHint("更改您的群介绍...");
-                edtEditor.setMaxLength(Constant.EDIT_CONTENT_LENGTH_PARTY_INTRODUCE);
+                edtEditor.setMaxLength(ConstantUtil.EDIT_CONTENT_LENGTH_PARTY_INTRODUCE);
                 break;
-            case Constant.EDIT_CONTENT_FRIEND_ADD:
+            case ConstantUtil.EDIT_CONTENT_FRIEND_ADD:
                 showPageHead("身份验证", null, "发送");
-                textLeftCount.setText(Constant.EDIT_CONTENT_LENGTH_FRIEND_ADD + "");
+                textLeftCount.setText(ConstantUtil.EDIT_CONTENT_LENGTH_FRIEND_ADD + "");
                 edtEditor.setHint("请输入验证信息");
-                edtEditor.setMaxLength(Constant.EDIT_CONTENT_LENGTH_FRIEND_ADD);
+                edtEditor.setMaxLength(ConstantUtil.EDIT_CONTENT_LENGTH_FRIEND_ADD);
                 break;
-            case Constant.EDIT_CONTENT_PARTY_ADD:
+            case ConstantUtil.EDIT_CONTENT_PARTY_ADD:
                 showPageHead("身份验证", null, "发送");
-                textLeftCount.setText(Constant.EDIT_CONTENT_LENGTH_PARTY_ADD + "");
+                textLeftCount.setText(ConstantUtil.EDIT_CONTENT_LENGTH_PARTY_ADD + "");
                 edtEditor.setHint("请输入验证信息");
-                edtEditor.setMaxLength(Constant.EDIT_CONTENT_LENGTH_PARTY_ADD);
+                edtEditor.setMaxLength(ConstantUtil.EDIT_CONTENT_LENGTH_PARTY_ADD);
+                break;
+            case ConstantUtil.EDIT_CONTENT_FRIEND_REMARK:
+                showPageHead("修改备注名", null, "发送");
+                textLeftCount.setText(ConstantUtil.EDIT_CONTENT_LENGTH_FRIEND_REMARK + "");
+                edtEditor.setHint("请输入备注名");
+                edtEditor.setMaxLength(ConstantUtil.EDIT_CONTENT_LENGTH_FRIEND_REMARK);
                 break;
         }
         edtEditor.setText(content);
@@ -168,33 +179,32 @@ public class ContentEditActivity extends BaseActivity<ContentEditActivityPresent
 
     private void executeClickForFinish() {
         switch (type) {
-            case Constant.EDIT_CONTENT_AUTOGRAPH:
+            case ConstantUtil.EDIT_CONTENT_AUTOGRAPH:
                 getBindPresenter().publishNewAutograph(edtEditor.getText().toString());
                 break;
-            case Constant.EDIT_CONTENT_FEEDBACK:
+            case ConstantUtil.EDIT_CONTENT_FEEDBACK:
                 getBindPresenter().publishNewFeedBack(edtEditor.getText().toString());
                 break;
-            case Constant.EDIT_CONTENT_MEMBER_NAME:
+            case ConstantUtil.EDIT_CONTENT_MEMBER_NAME:
                 getBindPresenter().publishNewMemberName(edtEditor.getText().toString());
                 break;
-            case Constant.EDIT_CONTENT_PARTY_NAME:
+            case ConstantUtil.EDIT_CONTENT_PARTY_NAME:
                 getBindPresenter().publishNewPartyName(edtEditor.getText().toString());
                 break;
-            case Constant.EDIT_CONTENT_PARTY_INTRODUCE:
+            case ConstantUtil.EDIT_CONTENT_PARTY_INTRODUCE:
                 getBindPresenter().publishNewPartyIntroduce(edtEditor.getText().toString());
                 break;
-            case Constant.EDIT_CONTENT_FRIEND_ADD:
+            case ConstantUtil.EDIT_CONTENT_FRIEND_ADD:
                 getBindPresenter().getFriendAdd(contactNo, edtEditor.getText().toString());
                 break;
-            case Constant.EDIT_CONTENT_PARTY_ADD:
+            case ConstantUtil.EDIT_CONTENT_PARTY_ADD:
                 getBindPresenter().getPartyAdd(contactNo, edtEditor.getText().toString());
                 break;
+            case ConstantUtil.EDIT_CONTENT_FRIEND_REMARK:
+                getBindPresenter().getFriendRemarkUpdate(contactNo, edtEditor.getText().toString());
+                break;
         }
-        Common.hideSoftInputFromWindow(context, edtEditor);
+        CommonUtil.hideSoftInputFromWindow(context, edtEditor);
     }
 
-    @Override
-    public void finishView() {
-        finish();
-    }
 }

@@ -8,7 +8,7 @@ import com.bili.diushoujuaner.base.BaseActivity;
 import com.bili.diushoujuaner.presenter.presenter.SplashActivityPresenter;
 import com.bili.diushoujuaner.presenter.presenter.impl.SplashActivityPresenterImpl;
 import com.bili.diushoujuaner.presenter.view.ISplashView;
-import com.bili.diushoujuaner.utils.Constant;
+import com.bili.diushoujuaner.utils.ConstantUtil;
 import com.bili.diushoujuaner.widget.RevealTextView;
 
 /**
@@ -48,10 +48,10 @@ public class SplashActivity extends BaseActivity<SplashActivityPresenter> implem
     @Override
     public void showNextActivity(int showType) {
         switch (showType){
-            case Constant.SHOW_TYPE_LOGIN:
+            case ConstantUtil.SHOW_TYPE_LOGIN:
                 startActivity(new Intent(SplashActivity.this, LoginActivity.class));
                 break;
-            case Constant.SHOW_TYPE_MAIN:
+            case ConstantUtil.SHOW_TYPE_MAIN:
                 startActivity(new Intent(SplashActivity.this, MainActivity.class));
                 break;
         }

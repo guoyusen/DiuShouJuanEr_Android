@@ -16,6 +16,7 @@ import com.bili.diushoujuaner.model.apihelper.request.CommentAddReq;
 import com.bili.diushoujuaner.model.apihelper.request.CommentRemoveReq;
 import com.bili.diushoujuaner.model.apihelper.request.ResponAddReq;
 import com.bili.diushoujuaner.model.apihelper.request.ResponRemoveReq;
+import com.bili.diushoujuaner.utils.TimeUtil;
 import com.bili.diushoujuaner.utils.entity.dto.PictureDto;
 import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
 import com.bili.diushoujuaner.model.databasehelper.DBManager;
@@ -26,7 +27,6 @@ import com.bili.diushoujuaner.model.tempHelper.RecallTemper;
 import com.bili.diushoujuaner.presenter.base.BasePresenter;
 import com.bili.diushoujuaner.presenter.presenter.RecallDetailActivityPresenter;
 import com.bili.diushoujuaner.presenter.view.IRecallDetailView;
-import com.bili.diushoujuaner.utils.Common;
 import com.bili.diushoujuaner.utils.entity.dto.CommentDto;
 import com.bili.diushoujuaner.utils.entity.dto.GoodDto;
 import com.bili.diushoujuaner.utils.entity.dto.RecallDto;
@@ -262,7 +262,7 @@ public class RecallDetailActivityPresenterImpl extends BasePresenter<IRecallDeta
     private ResponDto addResponDtoToLocal(long recallNo, long commentNo, long toNo, String content, String nickNameTo){
         ResponDto responDto = new ResponDto();
         responDto.setCommentNo(commentNo);
-        responDto.setAddTime(Common.getCurrentTimeYYMMDD_HHMMSS());
+        responDto.setAddTime(TimeUtil.getCurrentTimeYYMMDD_HHMMSS());
         responDto.setFromNo(CustomSessionPreference.getInstance().getCustomSession().getUserNo());
         responDto.setToNo(toNo);
         responDto.setContent(content);
@@ -281,7 +281,7 @@ public class RecallDetailActivityPresenterImpl extends BasePresenter<IRecallDeta
         commentDto.setContent(content);
         commentDto.setRecallNo(recallNo);
         commentDto.setNickName(UserInfoAction.getInstance(context).getUserFromLocal().getNickName());
-        commentDto.setAddTime(Common.getCurrentTimeYYMMDD_HHMMSS());
+        commentDto.setAddTime(TimeUtil.getCurrentTimeYYMMDD_HHMMSS());
         commentDto.setFromNo(UserInfoAction.getInstance(context).getUserFromLocal().getUserNo());
         commentDto.setFromPicPath(UserInfoAction.getInstance(context).getUserFromLocal().getPicPath());
         commentDto.setResponList(new ArrayList<ResponDto>());

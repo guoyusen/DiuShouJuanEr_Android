@@ -4,9 +4,11 @@ import android.util.Log;
 
 import com.bili.diushoujuaner.model.databasehelper.DBManager;
 import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
-import com.bili.diushoujuaner.utils.Common;
-import com.bili.diushoujuaner.utils.Constant;
-import com.bili.diushoujuaner.utils.MessageNoticer;
+import com.bili.diushoujuaner.utils.CommonUtil;
+import com.bili.diushoujuaner.utils.ConstantUtil;
+import com.bili.diushoujuaner.utils.EntityUtil;
+import com.bili.diushoujuaner.utils.NoticeUtil;
+import com.bili.diushoujuaner.utils.TimeUtil;
 import com.bili.diushoujuaner.utils.entity.vo.MessageVo;
 
 import org.apache.mina.core.service.IoHandlerAdapter;
@@ -26,79 +28,85 @@ public class MinaClientHanler extends IoHandlerAdapter {
 
     @Override
     public void messageReceived(IoSession session, Object message) throws Exception {
-        MessageVo messageVo = Common.getMessageVoFromReceive(message.toString());
+        MessageVo messageVo = EntityUtil.getMessageVoFromReceive(message.toString());
         if(messageVo == null){
             return;
         }
         switch (messageVo.getMsgType()){
-            case Constant.CHAT_FRI:
+            case ConstantUtil.CHAT_FRI:
                 processMessage(messageVo, session);
-                if(messageVo.getConType() == Constant.CHAT_CONTENT_FRIEND_AGREE && !DBManager.getInstance().isFriended(messageVo.getFromNo())){
-                    MessageServiceHandler.getInstance().sendMessageToClient(Constant.HANDLER_CONTACT_UPDATE, null);
+                if(messageVo.getConType() == ConstantUtil.CHAT_CONTENT_FRIEND_AGREE && !DBManager.getInstance().isFriended(messageVo.getFromNo())){
+                    MessageServiceHandler.getInstance().sendMessageToClient(ConstantUtil.HANDLER_CONTACT_ADDED, messageVo);
                 }
                 break;
-            case Constant.CHAT_PAR:
+            case ConstantUtil.CHAT_PAR:
                 processMessage(messageVo, session);
                 break;
-            case Constant.CHAT_GOOD:
+            case ConstantUtil.CHAT_GOOD:
                 break;
-            case Constant.CHAT_STATUS:
+            case ConstantUtil.CHAT_STATUS:
                 Transceiver.getInstance().updateStatusSuccess(messageVo.getSerialNo());
                 break;
-            case Constant.CHAT_CLOSE:
-                MessageServiceHandler.getInstance().sendMessageToClient(Constant.HANDLER_CLOSE, messageVo);
+            case ConstantUtil.CHAT_CLOSE:
+                MessageServiceHandler.getInstance().sendMessageToClient(ConstantUtil.HANDLER_CLOSE, messageVo);
                 break;
-            case Constant.CHAT_PARTY_HEAD:
-                session.write(Common.getEmptyMessage(messageVo.getSerialNo(), -1, Constant.CHAT_STATUS));
+            case ConstantUtil.CHAT_PARTY_HEAD:
+                session.write(EntityUtil.getEmptyMessage(messageVo.getSerialNo(), -1, ConstantUtil.CHAT_STATUS));
                 DBManager.getInstance().updatePartyHeadPic(messageVo.getToNo(), messageVo.getContent());
-                MessageServiceHandler.getInstance().sendMessageToClient(Constant.HANDLER_PARTY_HEAD, messageVo);
+                MessageServiceHandler.getInstance().sendMessageToClient(ConstantUtil.HANDLER_PARTY_HEAD, messageVo);
                 break;
-            case Constant.CHAT_PARTY_NAME:
-                session.write(Common.getEmptyMessage(messageVo.getSerialNo(), -1, Constant.CHAT_STATUS));
+            case ConstantUtil.CHAT_PARTY_NAME:
+                session.write(EntityUtil.getEmptyMessage(messageVo.getSerialNo(), -1, ConstantUtil.CHAT_STATUS));
                 DBManager.getInstance().updatePartyName(messageVo.getToNo(), messageVo.getContent());
-                MessageServiceHandler.getInstance().sendMessageToClient(Constant.HANDLER_PARTY_NAME, messageVo);
+                MessageServiceHandler.getInstance().sendMessageToClient(ConstantUtil.HANDLER_PARTY_NAME, messageVo);
                 break;
-            case Constant.CHAT_PARTY_MEMBER_NAME:
-                session.write(Common.getEmptyMessage(messageVo.getSerialNo(), -1, Constant.CHAT_STATUS));
+            case ConstantUtil.CHAT_PARTY_MEMBER_NAME:
+                session.write(EntityUtil.getEmptyMessage(messageVo.getSerialNo(), -1, ConstantUtil.CHAT_STATUS));
                 DBManager.getInstance().updateMemberName(messageVo.getToNo(), messageVo.getFromNo(), messageVo.getContent());
-                MessageServiceHandler.getInstance().sendMessageToClient(Constant.HANDLER_PARTY_MEMBER_NAME, messageVo);
+                MessageServiceHandler.getInstance().sendMessageToClient(ConstantUtil.HANDLER_PARTY_MEMBER_NAME, messageVo);
                 break;
-            case Constant.CHAT_FRIEND_ADD:
-                session.write(Common.getEmptyMessage(messageVo.getSerialNo(), -1, Constant.CHAT_STATUS));
-                DBManager.getInstance().saveApply(messageVo.getFromNo(), messageVo.getToNo(),messageVo.getContent(), messageVo.getTime(), Constant.CHAT_FRIEND_ADD);
-                MessageServiceHandler.getInstance().sendMessageToClient(Constant.HANDLER_FRIEND_ADD, messageVo);
+            case ConstantUtil.CHAT_FRIEND_ADD:
+                NoticeUtil.getInstance().playNotice();
+                session.write(EntityUtil.getEmptyMessage(messageVo.getSerialNo(), -1, ConstantUtil.CHAT_STATUS));
+                DBManager.getInstance().saveApply(messageVo.getFromNo(), messageVo.getToNo(),messageVo.getContent(), messageVo.getTime(), ConstantUtil.CHAT_FRIEND_ADD);
+                MessageServiceHandler.getInstance().sendMessageToClient(ConstantUtil.HANDLER_FRIEND_ADD, messageVo);
                 break;
-            case Constant.CHAT_PARTY_ADD:
-                session.write(Common.getEmptyMessage(messageVo.getSerialNo(), -1, Constant.CHAT_STATUS));
-                DBManager.getInstance().saveApply(messageVo.getFromNo(), Long.valueOf(messageVo.getTime()),messageVo.getContent(), Common.getCurrentTimeYYMMDD_HHMMSS(), Constant.CHAT_PARTY_ADD);
-                MessageServiceHandler.getInstance().sendMessageToClient(Constant.HANDLER_PARTY_ADD, null);
+            case ConstantUtil.CHAT_PARTY_ADD:
+                session.write(EntityUtil.getEmptyMessage(messageVo.getSerialNo(), -1, ConstantUtil.CHAT_STATUS));
+                DBManager.getInstance().saveApply(messageVo.getFromNo(), Long.valueOf(messageVo.getTime()),messageVo.getContent(), TimeUtil.getCurrentTimeYYMMDD_HHMMSS(), ConstantUtil.CHAT_PARTY_ADD);
+                MessageServiceHandler.getInstance().sendMessageToClient(ConstantUtil.HANDLER_PARTY_ADD, null);
+                break;
+            case ConstantUtil.CHAT_FRIEND_DELETE:
+                session.write(EntityUtil.getEmptyMessage(messageVo.getSerialNo(), -1, ConstantUtil.CHAT_STATUS));
+                DBManager.getInstance().deleteFriend(messageVo.getFromNo());
+                MessageServiceHandler.getInstance().sendMessageToClient(ConstantUtil.HANDLER_FRIEND_DELETE, messageVo);
                 break;
         }
     }
 
     private void processMessage(MessageVo messageVo, IoSession session){
-        if(messageVo.getMsgType() == Constant.CHAT_FRI){
+        if(messageVo.getMsgType() == ConstantUtil.CHAT_FRI){
             DBManager.getInstance().updateFriendRecent(messageVo.getFromNo(), true);
-        }else if(messageVo.getMsgType() == Constant.CHAT_PAR){
+        }else if(messageVo.getMsgType() == ConstantUtil.CHAT_PAR){
             DBManager.getInstance().updateMemberRecent(messageVo.getToNo(), true);
         }
-        session.write(Common.getEmptyMessage(messageVo.getSerialNo(), -1, Constant.CHAT_STATUS));
-        messageVo.setContent(Common.htmlEscapeCharsToString(messageVo.getContent()));
-        MessageNoticer.getInstance().playNotice();
-        MessageServiceHandler.getInstance().sendMessageToClient(Constant.HANDLER_CHAT, messageVo);
+        session.write(EntityUtil.getEmptyMessage(messageVo.getSerialNo(), -1, ConstantUtil.CHAT_STATUS));
+        messageVo.setContent(CommonUtil.htmlEscapeCharsToString(messageVo.getContent()));
+        NoticeUtil.getInstance().playNotice();
+        MessageServiceHandler.getInstance().sendMessageToClient(ConstantUtil.HANDLER_CHAT, messageVo);
     }
 
     @Override
     public void sessionClosed(IoSession session) throws Exception {
         Log.d("guoyusenm","通信关闭");
-        MessageServiceHandler.getInstance().sendMessageToClient(Constant.HANDLER_LOGOUT, null);
+        MessageServiceHandler.getInstance().sendMessageToClient(ConstantUtil.HANDLER_LOGOUT, null);
     }
 
     @Override
     public void sessionCreated(IoSession session) throws Exception {
         //创建session后，发送该客户端的账号，在服务端进行注册session在线
-        MessageServiceHandler.getInstance().sendMessageToClient(Constant.HANDLER_LOGINING, null);
-        Transceiver.getInstance().addSendTask(Common.getEmptyMessageVo(CustomSessionPreference.getInstance().getCustomSession().getUserNo(), Constant.CHAT_INIT));
+        MessageServiceHandler.getInstance().sendMessageToClient(ConstantUtil.HANDLER_LOGINING, null);
+        Transceiver.getInstance().addSendTask(EntityUtil.getEmptyMessageVo(CustomSessionPreference.getInstance().getCustomSession().getUserNo(), ConstantUtil.CHAT_INIT));
     }
 
     @Override

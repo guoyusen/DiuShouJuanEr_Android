@@ -6,7 +6,7 @@ import com.bili.diushoujuaner.model.actionhelper.action.CustomSessionAction;
 import com.bili.diushoujuaner.presenter.base.BasePresenter;
 import com.bili.diushoujuaner.presenter.presenter.SplashActivityPresenter;
 import com.bili.diushoujuaner.presenter.view.ISplashView;
-import com.bili.diushoujuaner.utils.Constant;
+import com.bili.diushoujuaner.utils.ConstantUtil;
 
 /**
  * Created by BiLi on 2016/3/11.
@@ -21,11 +21,11 @@ public class SplashActivityPresenterImpl extends BasePresenter<ISplashView> impl
     public void getNextActivity() {
         if(CustomSessionAction.getInstance(context).getIsLogined()){
             if(isBindViewValid()){
-                getBindView().showNextActivity(Constant.SHOW_TYPE_MAIN);
+                getBindView().showNextActivity(ConstantUtil.SHOW_TYPE_MAIN);
             }
         }else{
             if(isBindViewValid()){
-                getBindView().showNextActivity(Constant.SHOW_TYPE_LOGIN);
+                getBindView().showNextActivity(ConstantUtil.SHOW_TYPE_LOGIN);
             }
         }
     }

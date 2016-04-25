@@ -9,7 +9,7 @@ import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.base.BaseFragmentActivity;
 import com.bili.diushoujuaner.fragment.AcountMobileFragment;
 import com.bili.diushoujuaner.fragment.AcountVerifyFragment;
-import com.bili.diushoujuaner.utils.Constant;
+import com.bili.diushoujuaner.utils.ConstantUtil;
 import com.bili.diushoujuaner.model.eventhelper.NextPageEvent;
 import com.bili.diushoujuaner.model.eventhelper.StartTimerEvent;
 import com.bili.diushoujuaner.widget.CustomViewPager;
@@ -58,13 +58,13 @@ public class AcountActivity extends BaseFragmentActivity {
 
     @Override
     public void setViewStatus() {
-        showPageHead(type == Constant.ACOUNT_UPDATE_REGIST  ? "注册账号" : "忘记密码",null,null);
+        showPageHead(type == ConstantUtil.ACOUNT_UPDATE_REGIST  ? "注册账号" : "忘记密码",null,null);
 
         fragmentList.add(AcountMobileFragment.instantiation(type));
         fragmentList.add(AcountVerifyFragment.instantiation(type));
 
         stepsView.setCompletedPosition(0)
-                .setLabels(type == Constant.ACOUNT_UPDATE_REGIST ? stepsRegist : stepsReset)
+                .setLabels(type == ConstantUtil.ACOUNT_UPDATE_REGIST ? stepsRegist : stepsReset)
                 .setBarColorIndicator(ContextCompat.getColor(context, R.color.BG_ECECEC))
                 .setProgressColorIndicator(ContextCompat.getColor(context, R.color.COLOR_THEME_MAIN))
                 .setLabelColorIndicator(ContextCompat.getColor(context, R.color.COLOR_THEME_MAIN))
@@ -97,10 +97,10 @@ public class AcountActivity extends BaseFragmentActivity {
             case 2:
                 stepsView.setCompletedPosition(2);
                 switch(type){
-                    case Constant.ACOUNT_UPDATE_REGIST:
+                    case ConstantUtil.ACOUNT_UPDATE_REGIST:
                         showWarning("账户注册成功");
                         break;
-                    case Constant.ACOUNT_UPDATE_RESET:
+                    case ConstantUtil.ACOUNT_UPDATE_RESET:
                         showWarning("密码重置成功");
                         break;
                 }

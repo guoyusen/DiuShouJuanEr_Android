@@ -19,4 +19,6 @@ public interface ContentEditActivityPresenter {
 
     void getPartyAdd(long partyNo, String content);
 
+    void getFriendRemarkUpdate(long friendNo, String remark);
+
 }

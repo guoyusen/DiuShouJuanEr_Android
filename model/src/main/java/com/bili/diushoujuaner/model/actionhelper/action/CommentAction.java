@@ -11,7 +11,7 @@ import com.bili.diushoujuaner.model.apihelper.request.CommentAddReq;
 import com.bili.diushoujuaner.model.apihelper.request.CommentRemoveReq;
 import com.bili.diushoujuaner.utils.entity.dto.CommentDto;
 import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
-import com.bili.diushoujuaner.utils.GsonParser;
+import com.bili.diushoujuaner.utils.GsonUtil;
 import com.google.gson.reflect.TypeToken;
 import com.nanotasks.BackgroundWork;
 import com.nanotasks.Completion;
@@ -44,7 +44,7 @@ public class CommentAction implements ICommentAction {
                 Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<CommentDto>>() {
                     @Override
                     public ActionRespon<CommentDto> doInBackground() throws Exception {
-                        ApiRespon<CommentDto> result = GsonParser.getInstance().fromJson(data, new TypeToken<ApiRespon<CommentDto>>() {
+                        ApiRespon<CommentDto> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<CommentDto>>() {
                         }.getType());
                         return ActionRespon.getActionResponFromApiRespon(result);
                     }
@@ -76,7 +76,7 @@ public class CommentAction implements ICommentAction {
                 Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<Long>>() {
                     @Override
                     public ActionRespon<Long> doInBackground() throws Exception {
-                        ApiRespon<Long> result = GsonParser.getInstance().fromJson(data, new TypeToken<ApiRespon<Long>>() {
+                        ApiRespon<Long> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<Long>>() {
                         }.getType());
                         return ActionRespon.getActionResponFromApiRespon(result);
                     }

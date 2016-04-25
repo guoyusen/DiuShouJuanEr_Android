@@ -7,7 +7,6 @@ import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -19,13 +18,14 @@ import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.base.BaseFragmentActivity;
 import com.bili.diushoujuaner.fragment.PictureFragment;
 import com.bili.diushoujuaner.model.apihelper.request.UserInfoReq;
+import com.bili.diushoujuaner.utils.ConstantUtil;
 import com.bili.diushoujuaner.utils.entity.po.User;
 import com.bili.diushoujuaner.presenter.presenter.UserActivityPresenter;
 import com.bili.diushoujuaner.presenter.presenter.impl.UserActivityPresenterImpl;
 import com.bili.diushoujuaner.presenter.view.IUserView;
-import com.bili.diushoujuaner.utils.Common;
-import com.bili.diushoujuaner.utils.Constant;
+import com.bili.diushoujuaner.utils.CommonUtil;
 import com.bili.diushoujuaner.utils.entity.vo.PictureVo;
+import com.bili.diushoujuaner.widget.CustomEditText;
 import com.bili.diushoujuaner.widget.TintedBitmapDrawable;
 import com.bili.diushoujuaner.widget.dialog.DialogTool;
 import com.bili.diushoujuaner.widget.dialog.OnGenderChoseListener;
@@ -55,7 +55,7 @@ public class UserActivity extends BaseFragmentActivity<UserActivityPresenter> im
     @Bind(R.id.ivUserName)
     ImageView ivUserName;
     @Bind(R.id.edtUserName)
-    EditText edtUserName;
+    CustomEditText edtUserName;
     @Bind(R.id.btnCamera)
     FloatingActionButton btnCamera;
     @Bind(R.id.layoutHead)
@@ -63,9 +63,9 @@ public class UserActivity extends BaseFragmentActivity<UserActivityPresenter> im
     @Bind(R.id.ivEmail)
     ImageView ivEmail;
     @Bind(R.id.edtEmail)
-    EditText edtEmail;
+    CustomEditText edtEmail;
     @Bind(R.id.edtSmallName)
-    EditText edtSmallName;
+    CustomEditText edtSmallName;
     @Bind(R.id.ivLocation)
     ImageView ivLocation;
     @Bind(R.id.ivHomeTown)
@@ -179,6 +179,10 @@ public class UserActivity extends BaseFragmentActivity<UserActivityPresenter> im
 
         reboundScrollView.setChangeHeadStatusListener(this);
 
+        edtUserName.setMaxLength(10);
+        edtEmail.setMaxLength(40);
+        edtSmallName.setMaxLength(50);
+
         layoutBirth.setOnClickListener(this);
         layoutHomeTown.setOnClickListener(this);
         layoutLocation.setOnClickListener(this);
@@ -194,10 +198,10 @@ public class UserActivity extends BaseFragmentActivity<UserActivityPresenter> im
         imagePicker.setImageLoader(new GlideImageLoader());
         imagePicker.setMultiMode(false);
         imagePicker.setStyle(CropImageView.Style.RECTANGLE);
-        imagePicker.setFocusWidth((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, Constant.CORP_IMAGE_HEAD_EAGE, getResources().getDisplayMetrics()));
-        imagePicker.setFocusHeight((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, Constant.CORP_IMAGE_HEAD_EAGE, getResources().getDisplayMetrics()));
-        imagePicker.setOutPutX(Constant.CORP_IMAGE_OUT_WIDTH);
-        imagePicker.setOutPutY(Constant.CORP_IMAGE_OUT_HEIGHT);
+        imagePicker.setFocusWidth((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, ConstantUtil.CORP_IMAGE_HEAD_EAGE, getResources().getDisplayMetrics()));
+        imagePicker.setFocusHeight((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, ConstantUtil.CORP_IMAGE_HEAD_EAGE, getResources().getDisplayMetrics()));
+        imagePicker.setOutPutX(ConstantUtil.CORP_IMAGE_OUT_WIDTH);
+        imagePicker.setOutPutY(ConstantUtil.CORP_IMAGE_OUT_HEIGHT);
 
         getBindPresenter().getUserInfo();
     }
@@ -257,7 +261,7 @@ public class UserActivity extends BaseFragmentActivity<UserActivityPresenter> im
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == ImagePicker.RESULT_CODE_ITEMS && data != null && requestCode == 100) {
             ArrayList<ImageItemVo> images = data.getBundleExtra(ImagePicker.EXTRA_IMAGES_BUNDLE).getParcelableArrayList(ImagePicker.EXTRA_RESULT_ITEMS);
-            if(Common.isEmpty(images)){
+            if(CommonUtil.isEmpty(images)){
                 return;
             }
             getBindPresenter().updateHeadPic(images.get(0).path);
@@ -287,7 +291,7 @@ public class UserActivity extends BaseFragmentActivity<UserActivityPresenter> im
     @Override
     public void onHeadStatusChanged(int alpha) {
         if (alpha > 0) {
-            layoutHead.setBackgroundColor(Color.parseColor(Common.getThemeAlphaColor(alpha)));
+            layoutHead.setBackgroundColor(Color.parseColor(CommonUtil.getThemeAlphaColor(alpha)));
             setTintStatusColor(R.color.COLOR_THEME_MAIN);
             setTineStatusAlpha((float)alpha / 100);
         } else {
@@ -314,18 +318,13 @@ public class UserActivity extends BaseFragmentActivity<UserActivityPresenter> im
             txtHomeTown.setText(user.getHomeTown());
             edtSmallName.setText(user.getSmallNick());
             edtEmail.setText(user.getEmail());
-            Common.displayDraweeView(user.getPicPath(), ivWallPaper);
+            CommonUtil.displayDraweeView(user.getPicPath(), ivWallPaper);
         }
     }
 
     @Override
-    public void finishView() {
-        finish();
-    }
-
-    @Override
     public void updateHeadPic(String headPath) {
-        Common.displayDraweeView(headPath, ivWallPaper);
+        CommonUtil.displayDraweeView(headPath, ivWallPaper);
     }
 
     @Override

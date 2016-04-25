@@ -1,4 +1,4 @@
-package com.bili.diushoujuaner.utils.comparator;
+package com.bili.diushoujuaner.utils;
 
 import net.sourceforge.pinyin4j.PinyinHelper;
 import net.sourceforge.pinyin4j.format.HanyuPinyinCaseType;

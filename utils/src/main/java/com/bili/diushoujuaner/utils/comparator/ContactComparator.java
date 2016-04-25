@@ -2,6 +2,7 @@ package com.bili.diushoujuaner.utils.comparator;
 
 import java.util.Comparator;
 
+import com.bili.diushoujuaner.utils.PinyinUtil;
 import com.bili.diushoujuaner.utils.entity.vo.SortVo;
 
 public class ContactComparator implements Comparator<SortVo> {

@@ -1,10 +1,10 @@
 package com.bili.diushoujuaner.model.tempHelper;
 
+import com.bili.diushoujuaner.utils.ConstantUtil;
 import com.bili.diushoujuaner.utils.entity.dto.ResponDto;
 import com.bili.diushoujuaner.model.cachehelper.ACache;
 import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
-import com.bili.diushoujuaner.utils.Constant;
-import com.bili.diushoujuaner.utils.GsonParser;
+import com.bili.diushoujuaner.utils.GsonUtil;
 import com.bili.diushoujuaner.utils.entity.dto.CommentDto;
 import com.bili.diushoujuaner.utils.entity.dto.GoodDto;
 import com.bili.diushoujuaner.utils.entity.dto.RecallDto;
@@ -167,9 +167,9 @@ public class RecallTemper {
     public void saveRecallListToCache(){
         // 本地缓存只存储20条数据
         if(recallList.size() >= 20){
-            ACache.getInstance().put(Constant.ACACHE_RECALL_LIST, GsonParser.getInstance().toJson(recallList.subList(0,20)));
+            ACache.getInstance().put(ConstantUtil.ACACHE_RECALL_LIST, GsonUtil.getInstance().toJson(recallList.subList(0,20)));
         }else{
-            ACache.getInstance().put(Constant.ACACHE_RECALL_LIST, GsonParser.getInstance().toJson(recallList.subList(0,recallList.size())));
+            ACache.getInstance().put(ConstantUtil.ACACHE_RECALL_LIST, GsonUtil.getInstance().toJson(recallList.subList(0,recallList.size())));
         }
     }
 

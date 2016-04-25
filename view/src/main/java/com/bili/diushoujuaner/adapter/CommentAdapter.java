@@ -17,9 +17,10 @@ import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
 import com.bili.diushoujuaner.presenter.base.IBaseView;
 import com.bili.diushoujuaner.model.eventhelper.ResponEvent;
 import com.bili.diushoujuaner.model.tempHelper.ContactTemper;
-import com.bili.diushoujuaner.utils.Common;
+import com.bili.diushoujuaner.utils.CommonUtil;
+import com.bili.diushoujuaner.utils.ConstantUtil;
+import com.bili.diushoujuaner.utils.TimeUtil;
 import com.bili.diushoujuaner.utils.entity.dto.CommentDto;
-import com.bili.diushoujuaner.utils.Constant;
 import com.bili.diushoujuaner.widget.TintedBitmapDrawable;
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -56,9 +57,9 @@ public class CommentAdapter extends CommonAdapter<CommentDto> {
             ((ImageView)holder.getView(R.id.ivComment)).setImageDrawable(commentFocusDrawable);
 
             if(commentDto.getFromNo() == CustomSessionPreference.getInstance().getCustomSession().getUserNo()){
-                Common.displayDraweeView(UserInfoAction.getInstance(context).getUserFromLocal().getPicPath(), (SimpleDraweeView) holder.getView(R.id.ivItemHead));
+                CommonUtil.displayDraweeView(UserInfoAction.getInstance(context).getUserFromLocal().getPicPath(), (SimpleDraweeView) holder.getView(R.id.ivItemHead));
             }else{
-                Common.displayDraweeView(commentDto.getFromPicPath(), (SimpleDraweeView) holder.getView(R.id.ivItemHead));
+                CommonUtil.displayDraweeView(commentDto.getFromPicPath(), (SimpleDraweeView) holder.getView(R.id.ivItemHead));
             }
             holder.getView(R.id.ivItemHead).setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -80,7 +81,7 @@ public class CommentAdapter extends CommonAdapter<CommentDto> {
                 }
             });
 
-            ((TextView) holder.getView(R.id.itemCommentTime)).setText(Common.getFormatTime(commentDto.getAddTime()));
+            ((TextView) holder.getView(R.id.itemCommentTime)).setText(TimeUtil.getFormatTime(commentDto.getAddTime()));
             ((TextView) holder.getView(R.id.txtCommentContent)).setText(commentDto.getContent());
             holder.getView(R.id.txtCommentContent).setOnTouchListener(new View.OnTouchListener() {
                 @Override
@@ -91,7 +92,7 @@ public class CommentAdapter extends CommonAdapter<CommentDto> {
                             break;
                         case MotionEvent.ACTION_UP:
                             v.setBackgroundColor(ContextCompat.getColor(context, R.color.COLOR_WHITE));
-                            EventBus.getDefault().post(ResponEvent.getResponEvent(commentDto.getCommentNo(), null, commentDto.getFromNo(), Constant.COMMENT_CLICK_COMMENT_CONTENT, commentDto.getNickName()));
+                            EventBus.getDefault().post(ResponEvent.getResponEvent(commentDto.getCommentNo(), null, commentDto.getFromNo(), ConstantUtil.COMMENT_CLICK_COMMENT_CONTENT, commentDto.getNickName()));
                             break;
                         case MotionEvent.ACTION_CANCEL:
                             v.setBackgroundColor(ContextCompat.getColor(context, R.color.COLOR_WHITE));
@@ -103,7 +104,7 @@ public class CommentAdapter extends CommonAdapter<CommentDto> {
             holder.getView(R.id.layoutRespon).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    EventBus.getDefault().post(ResponEvent.getResponEvent(commentDto.getCommentNo(), null, commentDto.getFromNo(), Constant.COMMENT_CLICK_LAYOUT_RESPON, commentDto.getNickName()));
+                    EventBus.getDefault().post(ResponEvent.getResponEvent(commentDto.getCommentNo(), null, commentDto.getFromNo(), ConstantUtil.COMMENT_CLICK_LAYOUT_RESPON, commentDto.getNickName()));
                 }
             });
             if(responAdapterHashtable.get(commentDto.getCommentNo()) == null){

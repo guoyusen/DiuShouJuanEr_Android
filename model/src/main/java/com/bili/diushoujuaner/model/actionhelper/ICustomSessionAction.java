@@ -11,6 +11,6 @@ public interface ICustomSessionAction {
 
     boolean getIsLogined();
 
-    void getUserLogin(UserAccountReq userAccountReq, final ActionStringCallbackListener<ActionRespon<Void>> actionStringCallbackListener);
+    void getUserLogin(UserAccountReq userAccountReq, ActionStringCallbackListener<ActionRespon<Void>> actionStringCallbackListener);
 
 }

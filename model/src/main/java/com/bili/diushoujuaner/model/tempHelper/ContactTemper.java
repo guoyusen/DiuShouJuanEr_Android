@@ -65,6 +65,13 @@ public class ContactTemper {
         }
     }
 
+    public void updateFriendRemark(long friendNo, String remark){
+        if(friendVoHashtable.get(friendNo) == null){
+            return;
+        }
+        friendVoHashtable.get(friendNo).setDisplayName(remark);
+    }
+
     public void updateMemberName(long partyNo, long memberNo, String memberName){
         if(memberVoHashTable.get(partyNo) == null || memberVoHashTable.get(partyNo).get(memberNo) == null){
             return;

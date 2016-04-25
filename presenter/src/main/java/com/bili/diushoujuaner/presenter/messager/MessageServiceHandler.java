@@ -7,7 +7,7 @@ import android.os.Messenger;
 import android.os.RemoteException;
 import android.util.Log;
 
-import com.bili.diushoujuaner.utils.Constant;
+import com.bili.diushoujuaner.utils.ConstantUtil;
 import com.bili.diushoujuaner.utils.entity.vo.MessageVo;
 
 /**
@@ -33,21 +33,21 @@ public class MessageServiceHandler extends Handler {
     @Override
     public void handleMessage(Message msg) {
         switch (msg.what){
-            case Constant.HANDLER_INIT:
+            case ConstantUtil.HANDLER_INIT:
                 Log.d("guoyusenmm","初始化。。。");
                 localMessager = msg.replyTo;
                 MinaClienter.getInstance().connect();
                 break;
-            case Constant.HANDLER_CHAT:
+            case ConstantUtil.HANDLER_CHAT:
                 Bundle bundle = msg.getData();
                 bundle.setClassLoader(MessageVo.class.getClassLoader());
                 Transceiver.getInstance().addSendTask((MessageVo)bundle.getParcelable("MessageVo"));
                 break;
-            case Constant.HANDLER_LOGOUT:
+            case ConstantUtil.HANDLER_LOGOUT:
                 localMessager = null;
                 MinaClienter.getInstance().disConnect();
                 break;
-            case Constant.HANDLER_RELOGIN:
+            case ConstantUtil.HANDLER_RELOGIN:
                 MinaClienter.getInstance().connect();
                 break;
         }

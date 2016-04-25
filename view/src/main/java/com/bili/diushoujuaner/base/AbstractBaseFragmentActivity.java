@@ -17,11 +17,11 @@ import com.bili.diushoujuaner.application.CustomApplication;
 import com.bili.diushoujuaner.model.eventhelper.ForceOutEvent;
 import com.bili.diushoujuaner.presenter.base.BasePresenter;
 import com.bili.diushoujuaner.presenter.messager.LocalClient;
-import com.bili.diushoujuaner.utils.Constant;
+import com.bili.diushoujuaner.utils.ConstantUtil;
 import com.bili.diushoujuaner.utils.manager.ActivityManager;
 import com.bili.diushoujuaner.utils.manager.SystemBarTintManager;
 import com.bili.diushoujuaner.widget.dialog.DialogTool;
-import com.bili.diushoujuaner.widget.dialog.OnBothClickListener;
+import com.bili.diushoujuaner.widget.dialog.OnConflictClickListener;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.EventBusException;
@@ -127,14 +127,14 @@ public abstract class AbstractBaseFragmentActivity extends FragmentActivity impl
         if(!ActivityManager.getInstance().getTopActivity().getComponentName().getClassName().equals(this.getComponentName().getClassName())){
             return;
         }
-        DialogTool.createLoginConflictDialog(context, new OnBothClickListener() {
+        DialogTool.createLoginConflictDialog(context, new OnConflictClickListener() {
             @Override
-            public void onPositiveClick() {
-                LocalClient.getInstance(context).sendMessageToService(Constant.HANDLER_RELOGIN, null);
+            public void onReLoginClick() {
+                LocalClient.getInstance(context).sendMessageToService(ConstantUtil.HANDLER_RELOGIN, null);
             }
 
             @Override
-            public void onNegativeClick() {
+            public void onExitClick() {
                 basePresenter.getLogout();
             }
         });

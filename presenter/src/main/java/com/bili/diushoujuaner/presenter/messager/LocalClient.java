@@ -10,7 +10,7 @@ import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
 
-import com.bili.diushoujuaner.utils.Constant;
+import com.bili.diushoujuaner.utils.ConstantUtil;
 import com.bili.diushoujuaner.utils.entity.vo.MessageVo;
 
 /**
@@ -43,7 +43,7 @@ public class LocalClient {
     }
 
     private void initLocalServer(){
-        Message msg = Message.obtain(null, Constant.HANDLER_INIT);
+        Message msg = Message.obtain(null, ConstantUtil.HANDLER_INIT);
         msg.replyTo = localMessager;
         try {
             serverMessager.send(msg);

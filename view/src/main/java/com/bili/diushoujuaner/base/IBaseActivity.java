@@ -83,4 +83,9 @@ public interface IBaseActivity {
      */
     void exitActivity();
 
+    /**
+     * 关闭当前页面
+     */
+    void finishView();
+
 }

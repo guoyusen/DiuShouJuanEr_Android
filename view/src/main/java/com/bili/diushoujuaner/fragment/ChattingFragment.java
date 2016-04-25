@@ -14,26 +14,25 @@ import com.bili.diushoujuaner.activity.MessageActivity;
 import com.bili.diushoujuaner.adapter.ChattingAdapter;
 import com.bili.diushoujuaner.base.BaseFragment;
 import com.bili.diushoujuaner.callback.OnChatReadDismissListener;
+import com.bili.diushoujuaner.model.eventhelper.DeleteContactEvent;
 import com.bili.diushoujuaner.model.eventhelper.LoginEvent;
 import com.bili.diushoujuaner.model.eventhelper.LoginngEvent;
 import com.bili.diushoujuaner.model.eventhelper.LogoutEvent;
-import com.bili.diushoujuaner.model.eventhelper.ShowHeadEvent;
 import com.bili.diushoujuaner.model.eventhelper.ShowMainMenuEvent;
 import com.bili.diushoujuaner.model.eventhelper.UpdateMessageEvent;
 import com.bili.diushoujuaner.model.eventhelper.UpdatePartyEvent;
-import com.bili.diushoujuaner.model.eventhelper.UpdatedContactEvent;
+import com.bili.diushoujuaner.model.eventhelper.UpdateRemarkEvent;
+import com.bili.diushoujuaner.model.eventhelper.ContactUpdatedEvent;
 import com.bili.diushoujuaner.presenter.presenter.ChattingFragmentPresenter;
 import com.bili.diushoujuaner.presenter.presenter.impl.ChattingFragmentPresenterImpl;
 import com.bili.diushoujuaner.presenter.view.IChattingView;
-import com.bili.diushoujuaner.utils.Common;
-import com.bili.diushoujuaner.utils.Constant;
+import com.bili.diushoujuaner.utils.ConstantUtil;
 import com.bili.diushoujuaner.utils.entity.vo.ChattingVo;
 import com.bili.diushoujuaner.widget.swipemenu.SwipeMenu;
 import com.bili.diushoujuaner.widget.swipemenu.SwipeMenuCreator;
 import com.bili.diushoujuaner.widget.swipemenu.SwipeMenuItem;
 import com.bili.diushoujuaner.widget.swipemenu.SwipeMenuListView;
 import com.bili.diushoujuaner.widget.waveswipe.WaveSwipeRefreshLayout;
-import com.facebook.drawee.view.SimpleDraweeView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -84,6 +83,7 @@ public class ChattingFragment extends BaseFragment<ChattingFragmentPresenter> im
         if(chattingAdapter == null){
             return;
         }
+        chattingAdapter.clear();
         chattingAdapter.refresh(chattingVoList);
     }
 
@@ -166,10 +166,24 @@ public class ChattingFragment extends BaseFragment<ChattingFragmentPresenter> im
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onUpdatedContactEvent(UpdatedContactEvent updatedContactEvent) {
-        if (chattingAdapter != null) {
-            chattingAdapter.notifyDataSetInvalidated();
+    public void onDeleteContactEvent(DeleteContactEvent deleteContactEvent){
+        getBindPresenter().getChattingVoListFromTemper();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onContactUpdatedEvent(ContactUpdatedEvent contactUpdatedEvent) {
+        if (chattingAdapter == null) {
+            return;
         }
+        chattingAdapter.notifyDataSetInvalidated();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onUpdateRemarkEvent(UpdateRemarkEvent updateRemarkEvent){
+        if (chattingAdapter == null) {
+            return;
+        }
+        chattingAdapter.notifyDataSetInvalidated();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -199,17 +213,17 @@ public class ChattingFragment extends BaseFragment<ChattingFragmentPresenter> im
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onUpdatePartyEvent(UpdatePartyEvent updatePartyEvent){
         switch (updatePartyEvent.getType()){
-            case Constant.CHAT_PARTY_HEAD:
+            case ConstantUtil.CHAT_PARTY_HEAD:
                 if (chattingAdapter != null) {
                     chattingAdapter.notifyDataSetInvalidated();
                 }
                 break;
-            case Constant.CHAT_PARTY_NAME:
+            case ConstantUtil.CHAT_PARTY_NAME:
                 if (chattingAdapter != null) {
                     chattingAdapter.notifyDataSetInvalidated();
                 }
                 break;
-            case Constant.CHAT_PARTY_MEMBER_NAME:
+            case ConstantUtil.CHAT_PARTY_MEMBER_NAME:
                 if (chattingAdapter != null) {
                     chattingAdapter.notifyDataSetInvalidated();
                 }

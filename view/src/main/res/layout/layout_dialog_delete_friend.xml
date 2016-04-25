@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@drawable/rectangle_solid_white"
+    android:orientation="vertical">
+
+    <TextView
+        style="@style/TextLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/COLOR_WHITE"
+        android:paddingBottom="@dimen/y32"
+        android:paddingTop="@dimen/y48"
+        android:text="确认解除童友关系？"
+        android:textColor="@color/TC_040404" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/x2"
+        android:background="#E8E8E8" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y100"
+        android:layout_gravity="center">
+
+        <Button
+            android:id="@+id/btnCancle"
+            style="@style/TextLarge"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/y80"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:background="@null"
+            android:text="取消"
+            android:textColor="@color/TC_12B7F5" />
+
+        <View
+            android:layout_width="@dimen/x2"
+            android:layout_height="@dimen/y100"
+            android:background="#E8E8E8" />
+
+        <Button
+            android:id="@+id/btnSure"
+            style="@style/TextLarge"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/y80"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:background="@null"
+            android:text="确认"
+            android:textColor="@color/TC_12B7F5" />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -11,13 +11,14 @@ import com.bili.diushoujuaner.model.apihelper.request.AcountUpdateReq;
 import com.bili.diushoujuaner.model.apihelper.request.AutographModifyReq;
 import com.bili.diushoujuaner.model.apihelper.request.UserInfoReq;
 import com.bili.diushoujuaner.model.apihelper.request.VerifyReq;
+import com.bili.diushoujuaner.utils.StringUtil;
+import com.bili.diushoujuaner.utils.TimeUtil;
 import com.bili.diushoujuaner.utils.entity.dto.CustomSession;
 import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
 import com.bili.diushoujuaner.model.databasehelper.DBManager;
 import com.bili.diushoujuaner.utils.entity.po.User;
 import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
-import com.bili.diushoujuaner.utils.Common;
-import com.bili.diushoujuaner.utils.GsonParser;
+import com.bili.diushoujuaner.utils.GsonUtil;
 import com.bili.diushoujuaner.utils.entity.dto.UserDto;
 import com.google.gson.reflect.TypeToken;
 import com.nanotasks.BackgroundWork;
@@ -52,7 +53,7 @@ public class UserInfoAction implements IUserInfoAction {
                 Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<Void>>() {
                     @Override
                     public ActionRespon<Void> doInBackground() throws Exception {
-                        ApiRespon<Void> result = GsonParser.getInstance().fromJson(data, new TypeToken<ApiRespon<Void>>() {
+                        ApiRespon<Void> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<Void>>() {
                         }.getType());
                         return ActionRespon.getActionResponFromApiRespon(result);
                     }
@@ -111,7 +112,7 @@ public class UserInfoAction implements IUserInfoAction {
         Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<Void>>() {
             @Override
             public ActionRespon<Void> doInBackground() throws Exception {
-                ApiRespon<CustomSession> result = GsonParser.getInstance().fromJson(data, new TypeToken<ApiRespon<CustomSession>>() {
+                ApiRespon<CustomSession> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<CustomSession>>() {
                 }.getType());
                 if(result.getIsLegal()){
                     CustomSessionPreference.getInstance().saveCustomSession(result.getData());
@@ -139,7 +140,7 @@ public class UserInfoAction implements IUserInfoAction {
                 Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<Void>>() {
                     @Override
                     public ActionRespon<Void> doInBackground() throws Exception {
-                        ApiRespon<Void> result = GsonParser.getInstance().fromJson(data, new TypeToken<ApiRespon<Void>>() {
+                        ApiRespon<Void> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<Void>>() {
                         }.getType());
                         return ActionRespon.getActionResponFromApiRespon(result);
                     }
@@ -176,7 +177,7 @@ public class UserInfoAction implements IUserInfoAction {
                 Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<User>>() {
                     @Override
                     public ActionRespon<User> doInBackground() throws Exception {
-                        ApiRespon<UserDto> result = GsonParser.getInstance().fromJson(data, new TypeToken<ApiRespon<UserDto>>() {
+                        ApiRespon<UserDto> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<UserDto>>() {
                         }.getType());
                         if(result.getIsLegal()) {
                             DBManager.getInstance().saveUser(result.getData());
@@ -212,7 +213,7 @@ public class UserInfoAction implements IUserInfoAction {
                 Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<String>>() {
                     @Override
                     public ActionRespon<String> doInBackground() throws Exception {
-                        ApiRespon<String> result = GsonParser.getInstance().fromJson(data, new TypeToken<ApiRespon<String>>() {
+                        ApiRespon<String> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<String>>() {
                         }.getType());
                         return ActionRespon.getActionResponFromApiRespon(result);
                     }
@@ -254,14 +255,14 @@ public class UserInfoAction implements IUserInfoAction {
             actionStringCallbackListener.onSuccess(ActionRespon.getActionRespon(getUserFromLocal()));
         }
         //TODO 更改重新全量获取用户数据的时间间隔
-        if(tmpUser == null || Common.isEmpty(tmpUser.getUpdateTime()) || Common.getHourDifferenceBetweenTime(tmpUser.getUpdateTime(), Common.getCurrentTimeYYMMDD_HHMMSS()) > 1){
+        if(tmpUser == null || StringUtil.isEmpty(tmpUser.getUpdateTime()) || TimeUtil.getHourDifferenceBetweenTime(tmpUser.getUpdateTime(), TimeUtil.getCurrentTimeYYMMDD_HHMMSS()) > 1){
             ApiAction.getInstance().getUserInfo(new ApiStringCallbackListener() {
                 @Override
                 public void onSuccess(final String data) {
                     Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<User>>() {
                         @Override
                         public ActionRespon<User> doInBackground() throws Exception {
-                            ApiRespon<UserDto> result = GsonParser.getInstance().fromJson(data, new TypeToken<ApiRespon<UserDto>>() {
+                            ApiRespon<UserDto> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<UserDto>>() {
                             }.getType());
                             if(result.getIsLegal()) {
                                 DBManager.getInstance().saveUser(result.getData());

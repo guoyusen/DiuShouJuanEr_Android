@@ -6,18 +6,23 @@ import com.bili.diushoujuaner.model.actionhelper.action.ContactAction;
 import com.bili.diushoujuaner.model.actionhelper.action.RecallAction;
 import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
 import com.bili.diushoujuaner.model.apihelper.request.ContactInfoReq;
+import com.bili.diushoujuaner.model.apihelper.request.FriendDeleteReq;
 import com.bili.diushoujuaner.model.apihelper.request.RecentRecallReq;
+import com.bili.diushoujuaner.model.eventhelper.DeleteContactEvent;
 import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
 import com.bili.diushoujuaner.model.tempHelper.ChattingTemper;
 import com.bili.diushoujuaner.model.tempHelper.ContactTemper;
+import com.bili.diushoujuaner.utils.ConstantUtil;
+import com.bili.diushoujuaner.utils.StringUtil;
+import com.bili.diushoujuaner.utils.TimeUtil;
 import com.bili.diushoujuaner.utils.entity.dto.RecallDto;
 import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
 import com.bili.diushoujuaner.presenter.base.BasePresenter;
 import com.bili.diushoujuaner.presenter.presenter.ContactDetailActivityPresenter;
 import com.bili.diushoujuaner.presenter.view.IContactDetailView;
-import com.bili.diushoujuaner.utils.Common;
-import com.bili.diushoujuaner.utils.Constant;
 import com.bili.diushoujuaner.utils.entity.vo.FriendVo;
+
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by BiLi on 2016/4/3.
@@ -26,6 +31,29 @@ public class ContactDetailActivityPresenterImpl extends BasePresenter<IContactDe
 
     public ContactDetailActivityPresenterImpl(IContactDetailView baseView, Context context) {
         super(baseView, context);
+    }
+
+    @Override
+    public void getFriendDelete(final long friendNo) {
+        showLoading(ConstantUtil.LOADING_CENTER, "正在删除");
+        ContactAction.getInstance(context).getFriendDelete(new FriendDeleteReq(friendNo), new ActionStringCallbackListener<ActionRespon<Void>>() {
+            @Override
+            public void onSuccess(ActionRespon<Void> result) {
+                hideLoading(ConstantUtil.LOADING_CENTER);
+                if(showMessage(result.getRetCode(), result.getMessage())){
+                    EventBus.getDefault().post(new DeleteContactEvent(ConstantUtil.DELETE_CONTACT_FRIEND, friendNo));
+                    if(isBindViewValid()){
+                        getBindView().finishView();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(int errorCode) {
+                hideLoading(ConstantUtil.LOADING_CENTER);
+                showError(errorCode);
+            }
+        });
     }
 
     @Override
@@ -66,14 +94,14 @@ public class ContactDetailActivityPresenterImpl extends BasePresenter<IContactDe
 
     @Override
     public void getFriendVo(final long userNo) {
-        showLoading(Constant.LOADING_DEFAULT, "");
+        showLoading(ConstantUtil.LOADING_DEFAULT, "");
         ContactAction.getInstance(context).getContactFromLocal(userNo, new ActionStringCallbackListener<ActionRespon<FriendVo>>() {
             @Override
             public void onSuccess(ActionRespon<FriendVo> result) {
                 //数据不合法，不去做界面处理，走api
                 if (showMessage(result.getRetCode(), result.getMessage())) {
                     //TODO 更新获取联系人全量信息的时间间隔
-                    if (result.getData() == null || Common.isEmpty(result.getData().getUpdateTime()) || Common.getHourDifferenceBetweenTime(result.getData().getUpdateTime(), Common.getCurrentTimeYYMMDD_HHMMSS()) > 1) {
+                    if (result.getData() == null || StringUtil.isEmpty(result.getData().getUpdateTime()) || TimeUtil.getHourDifferenceBetweenTime(result.getData().getUpdateTime(), TimeUtil.getCurrentTimeYYMMDD_HHMMSS()) > 1) {
                         //数据已经无效，则在不为空的情况下，先进行显示，在进行更新获取
                         if (result.getData() != null && isBindViewValid()) {
                             getBindView().showContactInfo(result.getData());
@@ -84,7 +112,7 @@ public class ContactDetailActivityPresenterImpl extends BasePresenter<IContactDe
                         if(isBindViewValid()){
                             getBindView().showContactInfo(result.getData());
                         }
-                        hideLoading(Constant.LOADING_DEFAULT);
+                        hideLoading(ConstantUtil.LOADING_DEFAULT);
                     }
                 }
             }
@@ -107,13 +135,13 @@ public class ContactDetailActivityPresenterImpl extends BasePresenter<IContactDe
                         getBindView().showContactInfo(result.getData());
                     }
                 }
-                hideLoading(Constant.LOADING_DEFAULT);
+                hideLoading(ConstantUtil.LOADING_DEFAULT);
             }
 
             @Override
             public void onFailure(int errorCode) {
                 showError(errorCode);
-                hideLoading(Constant.LOADING_DEFAULT);
+                hideLoading(ConstantUtil.LOADING_DEFAULT);
             }
         });
     }

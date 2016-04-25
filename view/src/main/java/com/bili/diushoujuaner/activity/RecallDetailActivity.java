@@ -24,9 +24,10 @@ import com.bili.diushoujuaner.fragment.PictureFragment;
 import com.bili.diushoujuaner.presenter.presenter.RecallDetailActivityPresenter;
 import com.bili.diushoujuaner.presenter.presenter.impl.RecallDetailActivityPresenterImpl;
 import com.bili.diushoujuaner.presenter.view.IRecallDetailView;
-import com.bili.diushoujuaner.utils.Common;
+import com.bili.diushoujuaner.utils.CommonUtil;
 
-import com.bili.diushoujuaner.utils.Constant;
+import com.bili.diushoujuaner.utils.ConstantUtil;
+import com.bili.diushoujuaner.utils.TimeUtil;
 import com.bili.diushoujuaner.utils.entity.vo.PictureVo;
 import com.bili.diushoujuaner.utils.entity.dto.CommentDto;
 import com.bili.diushoujuaner.utils.entity.dto.GoodDto;
@@ -42,7 +43,6 @@ import com.bili.diushoujuaner.widget.TintedBitmapDrawable;
 import com.bili.diushoujuaner.widget.aligntextview.CBAlignTextView;
 import com.facebook.drawee.view.SimpleDraweeView;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
@@ -276,7 +276,7 @@ public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActiv
         public void onFocusChange(View v, boolean hasFocus) {
             if(!hasFocus){
                 layoutBottom.setVisibility(View.GONE);
-                Common.hideSoftInputFromWindow(context, txtComment);
+                CommonUtil.hideSoftInputFromWindow(context, txtComment);
             }
         }
     }
@@ -343,9 +343,9 @@ public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActiv
 
     @Override
     public void showRecallDetail(RecallDto recallDto) {
-        showPageHead(null, null, Common.getFormatTime(recallDto.getPublishTime()));
+        showPageHead(null, null, TimeUtil.getFormatTime(recallDto.getPublishTime()));
         txtRecallDetail.setText(recallDto.getContent());
-        Common.displayDraweeView(recallDto.getUserPicPath(), ivNavHead);
+        CommonUtil.displayDraweeView(recallDto.getUserPicPath(), ivNavHead);
         txtAuthor.setText(recallDto.getUserName());
         showGoodDetail(recallDto.getGoodList());
 
@@ -379,7 +379,7 @@ public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActiv
      * @param goodDtoList
      */
     private void showGoodDetail(List<GoodDto> goodDtoList) {
-        if (Common.isEmpty(goodDtoList)) {
+        if (CommonUtil.isEmpty(goodDtoList)) {
             layoutGoodContent.setVisibility(View.GONE);
             return;
         } else {
@@ -421,7 +421,7 @@ public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActiv
         commentConfig.setReceiveNo(getBindPresenter().getRecallDtoByRecallNo(recallNo).getUserNo());
         commentConfig.setType(CommentConfig.TYPE_COMMENT);
         txtComment.setText(commentConfig.getDraft());
-        Common.showSoftInputFromWindow(this, txtComment);
+        CommonUtil.showSoftInputFromWindow(this, txtComment);
     }
 
     private void executeClickForSend(){
@@ -439,7 +439,7 @@ public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActiv
         txtComment.setText(null);
         txtComment.setHint("说点什么呗...");
         layoutBottom.setVisibility(View.GONE);
-        Common.hideSoftInputFromWindow(context, txtComment);
+        CommonUtil.hideSoftInputFromWindow(context, txtComment);
     }
 
     @Override
@@ -456,7 +456,7 @@ public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActiv
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onResponEvent(ResponEvent responEvent){
         switch (responEvent.getType()){
-            case Constant.COMMENT_CLICK_LAYOUT_RESPON:
+            case ConstantUtil.COMMENT_CLICK_LAYOUT_RESPON:
                 if(responEvent.getCommentNo() == null){
                     return;
                 }
@@ -465,12 +465,12 @@ public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActiv
                 commentConfig.setReceiveNo(responEvent.getToNo());
                 commentConfig.setNickNameTo(responEvent.getNickName());
                 break;
-            case Constant.COMMENT_CLICK_COMMENT_CONTENT:
+            case ConstantUtil.COMMENT_CLICK_COMMENT_CONTENT:
                 if(responEvent.getCommentNo() == null){
                     return;
                 }
                 if(responEvent.getToNo() == getBindPresenter().getLoginedUserNo()){
-                    showFooterDialog(responEvent.getCommentNo(), -1, Constant.DELETE_COMMENT);
+                    showFooterDialog(responEvent.getCommentNo(), -1, ConstantUtil.DELETE_COMMENT);
                     return;
                 }else{
                     commentConfig.setType(CommentConfig.TYPE_RESPON_FIRST);
@@ -479,12 +479,12 @@ public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActiv
                     commentConfig.setNickNameTo(responEvent.getNickName());
                 }
                 break;
-            case Constant.COMMENT_CLICK_SUB_RESPON:
+            case ConstantUtil.COMMENT_CLICK_SUB_RESPON:
                 if(responEvent.getResponNo() == null){
                     return;
                 }
                 if(responEvent.getToNo() == getBindPresenter().getLoginedUserNo()){
-                    showFooterDialog(responEvent.getCommentNo(), responEvent.getResponNo(), Constant.DELETE_RESPON);
+                    showFooterDialog(responEvent.getCommentNo(), responEvent.getResponNo(), ConstantUtil.DELETE_RESPON);
                     return;
                 }else{
                     commentConfig.setType(CommentConfig.TYPE_RESPON_SECOND);
@@ -498,7 +498,7 @@ public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActiv
         txtComment.requestFocus();
         txtComment.setHint("回复" + commentConfig.getNickNameTo() + ":");
         txtComment.setText(commentConfig.getDraft());
-        Common.showSoftInputFromWindow(context, txtComment);
+        CommonUtil.showSoftInputFromWindow(context, txtComment);
         layoutBottom.setVisibility(View.VISIBLE);
     }
 
@@ -506,9 +506,9 @@ public class RecallDetailActivity extends BaseFragmentActivity<RecallDetailActiv
         DialogTool.createDeleteCommentDialog(context, new OnDialogPositiveClickListener() {
             @Override
             public void onPositiveClicked() {
-                if(type == Constant.DELETE_COMMENT){
+                if(type == ConstantUtil.DELETE_COMMENT){
                     getBindPresenter().getCommentRemove(recallNo, commentNo);
-                }else if(type == Constant.DELETE_RESPON){
+                }else if(type == ConstantUtil.DELETE_RESPON){
                     getBindPresenter().getResponRemove(recallNo, commentNo, responNo);
                 }
             }

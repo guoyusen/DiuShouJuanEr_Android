@@ -1,8 +1,9 @@
 package com.bili.diushoujuaner.model.filterhelper;
 
 import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
-import com.bili.diushoujuaner.utils.Common;
-import com.bili.diushoujuaner.utils.Constant;
+import com.bili.diushoujuaner.utils.CommonUtil;
+import com.bili.diushoujuaner.utils.ConstantUtil;
+import com.bili.diushoujuaner.utils.EntityUtil;
 
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.keepalive.KeepAliveMessageFactory;
@@ -19,16 +20,16 @@ public class KeepAliveMessageFactoryImpl implements KeepAliveMessageFactory {
 
     @Override
     public boolean isRequest(IoSession ioSession, Object o) {
-        return Common.isMessageForHeartBeat(o.toString());
+        return CommonUtil.isMessageForHeartBeat(o.toString());
     }
 
     @Override
     public boolean isResponse(IoSession ioSession, Object o) {
-        return Common.isMessageForHeartBeat(o.toString());
+        return CommonUtil.isMessageForHeartBeat(o.toString());
     }
 
     @Override
     public Object getResponse(IoSession ioSession, Object o) {
-        return Common.getEmptyMessage("",CustomSessionPreference.getInstance().getCustomSession().getUserNo(), Constant.CHAT_PONG);
+        return EntityUtil.getEmptyMessage("",CustomSessionPreference.getInstance().getCustomSession().getUserNo(), ConstantUtil.CHAT_PONG);
     }
 }

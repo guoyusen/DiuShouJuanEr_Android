@@ -5,27 +5,17 @@ package com.bili.diushoujuaner.model.apihelper.request;
  */
 public class FriendAgreeReq {
 
-    private long fromNo;
-    private long toNo;
+    private long friendNo;
 
-    public FriendAgreeReq(long fromNo, long toNo) {
-        this.fromNo = fromNo;
-        this.toNo = toNo;
+    public FriendAgreeReq(long friendNo) {
+        this.friendNo = friendNo;
     }
 
-    public long getFromNo() {
-        return fromNo;
+    public long getFriendNo() {
+        return friendNo;
     }
 
-    public void setFromNo(long fromNo) {
-        this.fromNo = fromNo;
-    }
-
-    public long getToNo() {
-        return toNo;
-    }
-
-    public void setToNo(long toNo) {
-        this.toNo = toNo;
+    public void setFriendNo(long friendNo) {
+        this.friendNo = friendNo;
     }
 }

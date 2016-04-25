@@ -11,7 +11,7 @@ import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
  */
 public interface ICommentAction {
 
-    void getCommentAdd(CommentAddReq commentAddReq, final ActionStringCallbackListener<ActionRespon<CommentDto>> actionStringCallbackListener);
+    void getCommentAdd(CommentAddReq commentAddReq, ActionStringCallbackListener<ActionRespon<CommentDto>> actionStringCallbackListener);
 
-    void getCommentRemove(CommentRemoveReq commentRemoveReq, final ActionStringCallbackListener<ActionRespon<Long>> actionStringCallbackListener);
+    void getCommentRemove(CommentRemoveReq commentRemoveReq, ActionStringCallbackListener<ActionRespon<Long>> actionStringCallbackListener);
 }

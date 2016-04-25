@@ -6,30 +6,30 @@ import android.media.MediaPlayer;
 /**
  * Created by BiLi on 2016/4/16.
  */
-public class MessageNoticer {
+public class NoticeUtil {
 
     private MediaPlayer player;
     private Context context;
     private int audioId;
-    private static MessageNoticer messageNoticer;
+    private static NoticeUtil noticeUtil;
 
-    public MessageNoticer(Context context, int audioId) {
+    public NoticeUtil(Context context, int audioId) {
         this.context = context;
         this.audioId = audioId;
         player = MediaPlayer.create(context, audioId);
     }
 
     public static void init(Context context, int audioId){
-        if(messageNoticer == null){
-            messageNoticer = new MessageNoticer(context, audioId);
+        if(noticeUtil == null){
+            noticeUtil = new NoticeUtil(context, audioId);
         }
     }
 
-    public static synchronized MessageNoticer getInstance(){
-        if(messageNoticer == null){
+    public static synchronized NoticeUtil getInstance(){
+        if(noticeUtil == null){
             throw new RuntimeException("消息通知没有初始化");
         }
-        return messageNoticer;
+        return noticeUtil;
     }
 
     public void playNotice(){

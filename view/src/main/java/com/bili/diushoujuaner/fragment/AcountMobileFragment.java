@@ -12,7 +12,7 @@ import com.bili.diushoujuaner.base.BaseFragment;
 import com.bili.diushoujuaner.presenter.base.IBaseView;
 import com.bili.diushoujuaner.presenter.presenter.AcountMobileFragmentPresenter;
 import com.bili.diushoujuaner.presenter.presenter.impl.AcountMobileFragmentPresenterImpl;
-import com.bili.diushoujuaner.utils.Common;
+import com.bili.diushoujuaner.utils.StringUtil;
 import com.bili.diushoujuaner.widget.CustomEditText;
 
 import butterknife.Bind;
@@ -35,7 +35,7 @@ public class AcountMobileFragment extends BaseFragment<AcountMobileFragmentPrese
     class CustomTextWatcher implements TextWatcher{
         @Override
         public void afterTextChanged(Editable s) {
-            if(Common.isMobile(s.toString().trim())){
+            if(StringUtil.checkMobile(s.toString().trim())){
                 btnNext.setEnabled(true);
                 btnNext.setBackground(ContextCompat.getDrawable(context, R.drawable.selector_btn_blue));
                 btnNext.setTextColor(ContextCompat.getColor(context, R.color.COLOR_WHITE));

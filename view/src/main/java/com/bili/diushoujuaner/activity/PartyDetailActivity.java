@@ -2,7 +2,6 @@ package com.bili.diushoujuaner.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
 import android.view.View;
@@ -20,8 +19,10 @@ import com.bili.diushoujuaner.model.eventhelper.UpdatePartyEvent;
 import com.bili.diushoujuaner.presenter.presenter.PartyDetailActivityPresenter;
 import com.bili.diushoujuaner.presenter.presenter.impl.PartyDetailActivityPresenterImpl;
 import com.bili.diushoujuaner.presenter.view.IPartyDetailView;
-import com.bili.diushoujuaner.utils.Common;
-import com.bili.diushoujuaner.utils.Constant;
+import com.bili.diushoujuaner.utils.CommonUtil;
+import com.bili.diushoujuaner.utils.ConstantUtil;
+import com.bili.diushoujuaner.utils.StringUtil;
+import com.bili.diushoujuaner.utils.TimeUtil;
 import com.bili.diushoujuaner.utils.entity.dto.ContactDto;
 import com.bili.diushoujuaner.utils.entity.dto.MemberDto;
 import com.bili.diushoujuaner.utils.entity.vo.ImageItemVo;
@@ -46,7 +47,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
-import butterknife.ButterKnife;
 
 /**
  * Created by BiLi on 2016/4/3.
@@ -179,10 +179,10 @@ public class PartyDetailActivity extends BaseActivity<PartyDetailActivityPresent
             imagePicker.setImageLoader(new GlideImageLoader());
             imagePicker.setMultiMode(false);
             imagePicker.setStyle(CropImageView.Style.RECTANGLE);
-            imagePicker.setFocusWidth((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, Constant.CORP_IMAGE_HEAD_EAGE, getResources().getDisplayMetrics()));
-            imagePicker.setFocusHeight((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, Constant.CORP_IMAGE_HEAD_EAGE, getResources().getDisplayMetrics()));
-            imagePicker.setOutPutX(Constant.CORP_IMAGE_OUT_WIDTH);
-            imagePicker.setOutPutY(Constant.CORP_IMAGE_OUT_HEIGHT);
+            imagePicker.setFocusWidth((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, ConstantUtil.CORP_IMAGE_HEAD_EAGE, getResources().getDisplayMetrics()));
+            imagePicker.setFocusHeight((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, ConstantUtil.CORP_IMAGE_HEAD_EAGE, getResources().getDisplayMetrics()));
+            imagePicker.setOutPutX(ConstantUtil.CORP_IMAGE_OUT_WIDTH);
+            imagePicker.setOutPutY(ConstantUtil.CORP_IMAGE_OUT_HEIGHT);
 
             if(type == TYPE_CONTACT){
                 getBindPresenter().getContactInfo();
@@ -196,10 +196,10 @@ public class PartyDetailActivity extends BaseActivity<PartyDetailActivityPresent
             layoutBottom.setVisibility(View.VISIBLE);
             btnAddParty.setOnClickListener(this);
 
-            Common.displayDraweeView(contactDto.getPicPath(), ivWallPaper);
+            CommonUtil.displayDraweeView(contactDto.getPicPath(), ivWallPaper);
             txtNavTitle.setText(contactDto.getDisplayName());
-            txtTime.setText("创建于" + Common.getYYMMDDFromTime(contactDto.getStartTime()));
-            txtIntroduce.setText(Common.isEmpty(contactDto.getInformation()) ? "暂无介绍" : contactDto.getInformation());
+            txtTime.setText("创建于" + TimeUtil.getYYMMDDFromTime(contactDto.getStartTime()));
+            txtIntroduce.setText(StringUtil.isEmpty(contactDto.getInformation()) ? "暂无介绍" : contactDto.getInformation());
             showMemberList();
         }
 
@@ -214,7 +214,7 @@ public class PartyDetailActivity extends BaseActivity<PartyDetailActivityPresent
                 break;
             case R.id.layoutMemberName:
                 startActivity(new Intent(PartyDetailActivity.this, ContentEditActivity.class)
-                        .putExtra(ContentEditActivity.TAG_TYPE, Constant.EDIT_CONTENT_MEMBER_NAME)
+                        .putExtra(ContentEditActivity.TAG_TYPE, ConstantUtil.EDIT_CONTENT_MEMBER_NAME)
                         .putExtra(ContentEditActivity.TAG_CONTENT, txtMemberName.getText().toString()));
                 break;
             case R.id.btnRight:
@@ -233,17 +233,17 @@ public class PartyDetailActivity extends BaseActivity<PartyDetailActivityPresent
                 break;
             case R.id.layoutPartyName:
                 startActivity(new Intent(PartyDetailActivity.this, ContentEditActivity.class)
-                        .putExtra(ContentEditActivity.TAG_TYPE, Constant.EDIT_CONTENT_PARTY_NAME)
+                        .putExtra(ContentEditActivity.TAG_TYPE, ConstantUtil.EDIT_CONTENT_PARTY_NAME)
                         .putExtra(ContentEditActivity.TAG_CONTENT, txtPartyName.getText().toString()));
                 break;
             case R.id.layoutIntroduce:
                 startActivity(new Intent(PartyDetailActivity.this, ContentEditActivity.class)
-                        .putExtra(ContentEditActivity.TAG_TYPE, Constant.EDIT_CONTENT_PARTY_INTRODUCE)
+                        .putExtra(ContentEditActivity.TAG_TYPE, ConstantUtil.EDIT_CONTENT_PARTY_INTRODUCE)
                         .putExtra(ContentEditActivity.TAG_CONTENT, txtIntroduce.getText().toString()));
                 break;
             case R.id.btnAddParty:
                 startActivity(new Intent(PartyDetailActivity.this, ContentEditActivity.class)
-                        .putExtra(ContentEditActivity.TAG_TYPE, Constant.EDIT_CONTENT_PARTY_ADD)
+                        .putExtra(ContentEditActivity.TAG_TYPE, ConstantUtil.EDIT_CONTENT_PARTY_ADD)
                         .putExtra(ContentEditActivity.TAG_CONTENT, "")
                         .putExtra(ContentEditActivity.TAG_CONTNO, contactDto.getContNo()));
                 break;
@@ -255,7 +255,7 @@ public class PartyDetailActivity extends BaseActivity<PartyDetailActivityPresent
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == ImagePicker.RESULT_CODE_ITEMS && data != null && requestCode == 100) {
             ArrayList<ImageItemVo> images = data.getBundleExtra(ImagePicker.EXTRA_IMAGES_BUNDLE).getParcelableArrayList(ImagePicker.EXTRA_RESULT_ITEMS);
-            if (Common.isEmpty(images)) {
+            if (CommonUtil.isEmpty(images)) {
                 return;
             }
             getBindPresenter().updatePartyHeadPic(this.partyVo.getPartyNo(), images.get(0).path);
@@ -266,24 +266,24 @@ public class PartyDetailActivity extends BaseActivity<PartyDetailActivityPresent
     public void onUpdatePartyHeadEvent(UpdatePartyEvent updatePartyEvent) {
         if (updatePartyEvent.getPartyNo() == this.partyVo.getPartyNo()) {
             switch (updatePartyEvent.getType()) {
-                case Constant.CHAT_PARTY_HEAD:
-                    Common.displayDraweeView(updatePartyEvent.getContent(), ivWallPaper);
+                case ConstantUtil.CHAT_PARTY_HEAD:
+                    CommonUtil.displayDraweeView(updatePartyEvent.getContent(), ivWallPaper);
                     break;
-                case Constant.CHAT_PARTY_NAME:
+                case ConstantUtil.CHAT_PARTY_NAME:
                     txtPartyName.setText(updatePartyEvent.getContent());
                     txtNavTitle.setText(updatePartyEvent.getContent());
                     break;
-                case Constant.CHAT_PARTY_MEMBER_UPDATE:
+                case ConstantUtil.CHAT_PARTY_MEMBER_UPDATE:
 
                     break;
-                case Constant.CHAT_PARTY_UNGROUP:
+                case ConstantUtil.CHAT_PARTY_UNGROUP:
 
                     break;
-                case Constant.CHAT_PARTY_MEMBER_NAME:
+                case ConstantUtil.CHAT_PARTY_MEMBER_NAME:
                     txtMemberName.setText(updatePartyEvent.getContent());
                     break;
-                case Constant.CHAT_PARTY_INTRODUCE:
-                    txtIntroduce.setText(Common.isEmpty(updatePartyEvent.getContent()) ? "暂无介绍" : updatePartyEvent.getContent());
+                case ConstantUtil.CHAT_PARTY_INTRODUCE:
+                    txtIntroduce.setText(StringUtil.isEmpty(updatePartyEvent.getContent()) ? "暂无介绍" : updatePartyEvent.getContent());
                     break;
             }
         }
@@ -292,7 +292,7 @@ public class PartyDetailActivity extends BaseActivity<PartyDetailActivityPresent
     @Override
     public void onHeadStatusChanged(int alpha) {
         if (alpha > 0) {
-            layoutHead.setBackgroundColor(Color.parseColor(Common.getThemeAlphaColor(alpha)));
+            layoutHead.setBackgroundColor(Color.parseColor(CommonUtil.getThemeAlphaColor(alpha)));
             setTintStatusColor(R.color.COLOR_THEME_MAIN);
             setTineStatusAlpha((float) alpha / 100);
         } else {
@@ -308,10 +308,10 @@ public class PartyDetailActivity extends BaseActivity<PartyDetailActivityPresent
             return;
         }
         this.partyVo = partyVo;
-        Common.displayDraweeView(partyVo.getPicPath(), ivWallPaper);
+        CommonUtil.displayDraweeView(partyVo.getPicPath(), ivWallPaper);
         txtNavTitle.setText(partyVo.getDisplayName());
-        txtTime.setText("创建于" + Common.getYYMMDDFromTime(partyVo.getRegisterTime()));
-        txtIntroduce.setText(Common.isEmpty(partyVo.getInformation()) ? "暂无介绍" : partyVo.getInformation());
+        txtTime.setText("创建于" + TimeUtil.getYYMMDDFromTime(partyVo.getRegisterTime()));
+        txtIntroduce.setText(StringUtil.isEmpty(partyVo.getInformation()) ? "暂无介绍" : partyVo.getInformation());
         if (partyVo.getOwnerNo() == getBindPresenter().getUserNo()) {
             layoutPartyName.setVisibility(View.VISIBLE);
             layoutPartyName.setOnClickListener(this);
@@ -334,7 +334,7 @@ public class PartyDetailActivity extends BaseActivity<PartyDetailActivityPresent
             }else{
                 memberVoList = getBindPresenter().getMemberVoList(contactDto.getContNo());
             }
-            if (Common.isEmpty(memberVoList)) {
+            if (CommonUtil.isEmpty(memberVoList)) {
                 txtMemberCount.setText("0人");
                 return;
             }
@@ -342,7 +342,7 @@ public class PartyDetailActivity extends BaseActivity<PartyDetailActivityPresent
             for (int i = 0, len = memberVoList.size(); i < len; i++) {
                 MemberPicVo memberPicVo = new MemberPicVo();
                 memberPicVo.setPath(memberVoList.get(i).getPicPath());
-                memberPicVo.setType(Constant.MEMBER_HEAD_SERVER);
+                memberPicVo.setType(ConstantUtil.MEMBER_HEAD_SERVER);
                 memberPicVoList.add(memberPicVo);
                 if (i >= 3) {
                     break;
@@ -350,7 +350,7 @@ public class PartyDetailActivity extends BaseActivity<PartyDetailActivityPresent
             }
             MemberPicVo memberPicVo = new MemberPicVo();
             memberPicVo.setResourceId(R.mipmap.icon_add_member);
-            memberPicVo.setType(Constant.MEMBER_HEAD_LOCAL);
+            memberPicVo.setType(ConstantUtil.MEMBER_HEAD_LOCAL);
             memberPicVoList.add(memberPicVo);
         } else if (type == TYPE_SEARCH) {
             List<MemberDto> memberDtoList = contactDto.getMemberList();
@@ -361,7 +361,7 @@ public class PartyDetailActivity extends BaseActivity<PartyDetailActivityPresent
             for (int i = 0, len = memberDtoList.size(); i < len; i++) {
                 MemberPicVo memberPicVo = new MemberPicVo();
                 memberPicVo.setPath(memberDtoList.get(i).getPicPath());
-                memberPicVo.setType(Constant.MEMBER_HEAD_SERVER);
+                memberPicVo.setType(ConstantUtil.MEMBER_HEAD_SERVER);
                 memberPicVoList.add(memberPicVo);
                 if (i >= 4) {
                     break;

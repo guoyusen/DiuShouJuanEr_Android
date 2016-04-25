@@ -2,12 +2,10 @@ package com.bili.diushoujuaner.presenter.messager;
 
 import android.os.Handler;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.bili.diushoujuaner.model.eventhelper.LogoutEvent;
 import com.bili.diushoujuaner.model.filterhelper.HeartBeatFilter;
-import com.bili.diushoujuaner.utils.Constant;
-import com.bili.diushoujuaner.utils.GsonParser;
+import com.bili.diushoujuaner.utils.ConstantUtil;
+import com.bili.diushoujuaner.utils.GsonUtil;
 import com.bili.diushoujuaner.utils.entity.dto.MessageDto;
 
 import org.apache.mina.core.future.CloseFuture;
@@ -18,7 +16,6 @@ import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolCodecFilter;
 import org.apache.mina.filter.codec.serialization.ObjectSerializationCodecFactory;
 import org.apache.mina.transport.socket.nio.NioSocketConnector;
-import org.greenrobot.eventbus.EventBus;
 
 import java.net.InetSocketAddress;
 
@@ -36,7 +33,7 @@ public class MinaClienter extends Thread{
 
     public MinaClienter(){
         connector = new NioSocketConnector();
-        connector.setConnectTimeoutMillis(Constant.CONNECTTIMEOUT);
+        connector.setConnectTimeoutMillis(ConstantUtil.CONNECTTIMEOUT);
         connector.getSessionConfig().setKeepAlive(true);
 
         protocolCodecFilter = new ProtocolCodecFilter(new ObjectSerializationCodecFactory());
@@ -44,7 +41,7 @@ public class MinaClienter extends Thread{
 
         heartBeatFilter = new HeartBeatFilter();
         heartBeatFilter.setForwardEvent(true);// 是否跳到下一个filter
-        heartBeatFilter.setRequestInterval(Constant.IDEL_TIMEOUT_FOR_INTERVAL);
+        heartBeatFilter.setRequestInterval(ConstantUtil.IDEL_TIMEOUT_FOR_INTERVAL);
         connector.getFilterChain().addLast("HeartBeatFilter", heartBeatFilter);
         //设定消息处理器
         connector.setHandler(new MinaClientHanler());
@@ -70,7 +67,7 @@ public class MinaClienter extends Thread{
     @Override
     public void run() {
         try{
-            ConnectFuture future = connector.connect(new InetSocketAddress(Constant.SERVER_IP, 1314));
+            ConnectFuture future = connector.connect(new InetSocketAddress(ConstantUtil.SERVER_IP, 1314));
             future.awaitUninterruptibly();
             session = future.getSession();
             if(session != null){
@@ -102,7 +99,7 @@ public class MinaClienter extends Thread{
         if(session == null){
             return;
         }
-        session.write(GsonParser.getInstance().toJson(messageDto));
+        session.write(GsonUtil.getInstance().toJson(messageDto));
     }
 
     public void disConnect(){

@@ -7,7 +7,7 @@ import com.bili.diushoujuaner.model.tempHelper.ContactTemper;
 import com.bili.diushoujuaner.presenter.base.BasePresenter;
 import com.bili.diushoujuaner.presenter.presenter.ChattingSettingActivityPresenter;
 import com.bili.diushoujuaner.presenter.view.IChattingSettingView;
-import com.bili.diushoujuaner.utils.Constant;
+import com.bili.diushoujuaner.utils.ConstantUtil;
 
 /**
  * Created by BiLi on 2016/4/22.
@@ -20,7 +20,7 @@ public class ChattingSettingActivityPresenterImpl extends BasePresenter<IChattin
 
     @Override
     public void getContactInfo() {
-        if(ChattingTemper.getInstance().getMsgType() == Constant.CHAT_FRI && isBindViewValid()){
+        if(ChattingTemper.getInstance().getMsgType() == ConstantUtil.CHAT_FRI && isBindViewValid()){
             getBindView().showContactInfo(ContactTemper.getInstance().getFriendVo(ChattingTemper.getInstance().getToNo()));
         }
     }

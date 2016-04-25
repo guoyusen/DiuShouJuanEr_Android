@@ -2,8 +2,8 @@ package com.bili.diushoujuaner.model.filterhelper;
 
 import android.util.Log;
 
-import com.bili.diushoujuaner.utils.Common;
-import com.bili.diushoujuaner.utils.Constant;
+import com.bili.diushoujuaner.utils.ConstantUtil;
+import com.bili.diushoujuaner.utils.EntityUtil;
 import com.bili.diushoujuaner.utils.entity.dto.MessageDto;
 
 import org.apache.mina.core.session.IdleStatus;
@@ -39,8 +39,8 @@ public class HeartBeatFilter extends KeepAliveFilter {
      */
     private boolean getPermitSent(String message) {
         if (message.substring(0, 1).equals("{") && message.substring(message.length() - 1,message.length()).equals("}")) {
-            MessageDto messageDto = Common.getMessageDtoFromJSONString(message);
-            return !(messageDto == null || messageDto.getMsgType() == Constant.CHAT_PING || messageDto.getMsgType() == Constant.CHAT_PONG);
+            MessageDto messageDto = EntityUtil.getMessageDtoFromJSONString(message);
+            return !(messageDto == null || messageDto.getMsgType() == ConstantUtil.CHAT_PING || messageDto.getMsgType() == ConstantUtil.CHAT_PONG);
         } else {
             return false;
         }

@@ -9,6 +9,6 @@ import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
  */
 public interface IFeedBackAction {
 
-    void getFeedBackAdd(FeedBackReq feedBackReq, final ActionStringCallbackListener<ActionRespon<Void>> actionStringCallbackListener);
+    void getFeedBackAdd(FeedBackReq feedBackReq, ActionStringCallbackListener<ActionRespon<Void>> actionStringCallbackListener);
 
 }

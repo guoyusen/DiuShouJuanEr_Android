@@ -3,7 +3,7 @@ package com.bili.diushoujuaner.model.preferhelper;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.bili.diushoujuaner.utils.Common;
+import com.bili.diushoujuaner.utils.StringUtil;
 import com.bili.diushoujuaner.utils.entity.dto.CustomSession;
 
 /**
@@ -31,16 +31,16 @@ public class CustomSessionPreference {
     public void saveCustomSession(CustomSession customSession){
         SharedPreferences preferences = mContext.getSharedPreferences(FILENAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
-        if (!Common.isEmpty(customSession.getAccessToken())) {
+        if (!StringUtil.isEmpty(customSession.getAccessToken())) {
             editor.putString("accessToken", customSession.getAccessToken());
         }
-        if (!Common.isEmpty(customSession.getLastTime())) {
+        if (!StringUtil.isEmpty(customSession.getLastTime())) {
             editor.putString("lastTime", customSession.getLastTime());
         }
         if (customSession.getUserNo() != null) {
             editor.putLong("userNo", customSession.getUserNo());
         }
-        if(!Common.isEmpty(customSession.getPassWord())){
+        if(!StringUtil.isEmpty(customSession.getPassWord())){
             editor.putString("passWord", customSession.getPassWord());
         }
         editor.apply();

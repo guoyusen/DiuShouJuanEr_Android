@@ -6,8 +6,8 @@ import android.widget.TextView;
 
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.adapter.viewholder.ViewHolder;
-import com.bili.diushoujuaner.utils.Common;
-import com.bili.diushoujuaner.utils.Constant;
+import com.bili.diushoujuaner.utils.CommonUtil;
+import com.bili.diushoujuaner.utils.ConstantUtil;
 import com.bili.diushoujuaner.utils.entity.dto.ContactDto;
 import com.facebook.drawee.view.SimpleDraweeView;
 
@@ -32,7 +32,7 @@ public class ContactSearchAdapter extends CommonAdapter<ContactDto> {
             int type = getContTypeForPosition(position);
             if(position == getPositionForConType(type)){
                 holder.getView(R.id.txtBar).setVisibility(View.VISIBLE);
-                if(type == Constant.CONTACT_FRIEND){
+                if(type == ConstantUtil.CONTACT_FRIEND){
                     ((TextView)holder.getView(R.id.txtBar)).setText("搜索到的小伙伴");
                 }else{
                     ((TextView)holder.getView(R.id.txtBar)).setText("搜索到的群组");
@@ -40,8 +40,8 @@ public class ContactSearchAdapter extends CommonAdapter<ContactDto> {
             }else{
                 holder.getView(R.id.txtBar).setVisibility(View.GONE);
             }
-            Common.displayDraweeView(contactDto.getPicPath(), (SimpleDraweeView)holder.getView(R.id.ivHead));
-            if(type == Constant.CONTACT_FRIEND){
+            CommonUtil.displayDraweeView(contactDto.getPicPath(), (SimpleDraweeView)holder.getView(R.id.ivHead));
+            if(type == ConstantUtil.CONTACT_FRIEND){
                 ((TextView)holder.getView(R.id.txtName)).setText(contactDto.getNickName());
                 ((TextView)holder.getView(R.id.txtBrief)).setText(contactDto.getAutograph());
             }else{

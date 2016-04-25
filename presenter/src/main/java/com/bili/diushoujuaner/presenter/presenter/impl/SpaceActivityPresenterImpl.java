@@ -11,6 +11,10 @@ import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
 import com.bili.diushoujuaner.model.apihelper.request.ContactInfoReq;
 import com.bili.diushoujuaner.model.apihelper.request.RecallListReq;
 import com.bili.diushoujuaner.model.apihelper.request.RecallRemoveReq;
+import com.bili.diushoujuaner.model.tempHelper.ContactTemper;
+import com.bili.diushoujuaner.utils.ConstantUtil;
+import com.bili.diushoujuaner.utils.StringUtil;
+import com.bili.diushoujuaner.utils.TimeUtil;
 import com.bili.diushoujuaner.utils.entity.dto.GoodDto;
 import com.bili.diushoujuaner.utils.entity.dto.RecallDto;
 import com.bili.diushoujuaner.model.callback.ActionFileCallbackListener;
@@ -21,8 +25,6 @@ import com.bili.diushoujuaner.model.tempHelper.RecallTemper;
 import com.bili.diushoujuaner.presenter.base.BasePresenter;
 import com.bili.diushoujuaner.presenter.presenter.SpaceActivityPresenter;
 import com.bili.diushoujuaner.presenter.view.ISpaceView;
-import com.bili.diushoujuaner.utils.Common;
-import com.bili.diushoujuaner.utils.Constant;
 import com.bili.diushoujuaner.utils.entity.vo.FriendVo;
 import com.bili.diushoujuaner.model.eventhelper.UpdateWallPaperEvent;
 
@@ -42,12 +44,22 @@ public class SpaceActivityPresenterImpl extends BasePresenter<ISpaceView> implem
     }
 
     @Override
+    public boolean isOwner(long userNo) {
+        return CustomSessionPreference.getInstance().getCustomSession().getUserNo() == userNo;
+    }
+
+    @Override
+    public boolean isFriend(long userNo) {
+        return ContactTemper.getInstance().getFriendVo(userNo) != null;
+    }
+
+    @Override
     public void updateWallpaper(String path) {
-        showLoading(Constant.LOADING_TOP,"正在上传壁纸");
+        showLoading(ConstantUtil.LOADING_TOP,"正在上传壁纸");
         FileAction.getInstance(context).uploadWallpaper(path, new ActionFileCallbackListener<ActionRespon<String>>() {
             @Override
             public void onSuccess(ActionRespon<String> result) {
-                hideLoading(Constant.LOADING_TOP);
+                hideLoading(ConstantUtil.LOADING_TOP);
                 if(showMessage(result.getRetCode(), result.getMessage())){
                     if(isBindViewValid()){
                         getBindView().updateWallPaper(result.getData());
@@ -58,7 +70,7 @@ public class SpaceActivityPresenterImpl extends BasePresenter<ISpaceView> implem
 
             @Override
             public void onFailure(int errorCode) {
-                hideLoading(Constant.LOADING_TOP);
+                hideLoading(ConstantUtil.LOADING_TOP);
                 showError(errorCode);
             }
 
@@ -71,11 +83,11 @@ public class SpaceActivityPresenterImpl extends BasePresenter<ISpaceView> implem
 
     @Override
     public void getRecallRemove(final long recallNo, final int position) {
-        showLoading(Constant.LOADING_CENTER, "正在删除...");
+        showLoading(ConstantUtil.LOADING_CENTER, "正在删除...");
         RecallAction.getInstance(context).getRecallRemove(new RecallRemoveReq(recallNo), new ActionStringCallbackListener<ActionRespon<Long>>() {
             @Override
             public void onSuccess(ActionRespon<Long> result) {
-                hideLoading(Constant.LOADING_CENTER);
+                hideLoading(ConstantUtil.LOADING_CENTER);
                 if(showMessage(result.getRetCode(), result.getMessage())){
                     getBindView().removeRecallByPosition(position);
                     RecallTemper.getInstance().removeRecallDto(result.getData());
@@ -85,7 +97,7 @@ public class SpaceActivityPresenterImpl extends BasePresenter<ISpaceView> implem
             @Override
             public void onFailure(int errorCode) {
                 showError(errorCode);
-                hideLoading(Constant.LOADING_CENTER);
+                hideLoading(ConstantUtil.LOADING_CENTER);
             }
         });
     }
@@ -191,7 +203,7 @@ public class SpaceActivityPresenterImpl extends BasePresenter<ISpaceView> implem
                 //数据不合法，不去做界面处理，走api
                 if (showMessage(result.getRetCode(), result.getMessage())) {
                     //TODO 更新获取联系人全量信息的时间间隔
-                    if (result.getData() == null || Common.isEmpty(result.getData().getUpdateTime()) || Common.getHourDifferenceBetweenTime(result.getData().getUpdateTime(), Common.getCurrentTimeYYMMDD_HHMMSS()) > 1) {
+                    if (result.getData() == null || StringUtil.isEmpty(result.getData().getUpdateTime()) || TimeUtil.getHourDifferenceBetweenTime(result.getData().getUpdateTime(), TimeUtil.getCurrentTimeYYMMDD_HHMMSS()) > 1) {
                         //数据已经无效，则在不为空的情况下，先进行显示，在进行更新获取
                         if (result.getData() != null && isBindViewValid()) {
                             getBindView().showContactInfo(result.getData());
@@ -202,7 +214,7 @@ public class SpaceActivityPresenterImpl extends BasePresenter<ISpaceView> implem
                         if(isBindViewValid()){
                             getBindView().showContactInfo(result.getData());
                         }
-                        hideLoading(Constant.LOADING_DEFAULT);
+                        hideLoading(ConstantUtil.LOADING_DEFAULT);
                     }
                 }
             }
@@ -225,13 +237,13 @@ public class SpaceActivityPresenterImpl extends BasePresenter<ISpaceView> implem
                         getBindView().showContactInfo(result.getData());
                     }
                 }
-                hideLoading(Constant.LOADING_DEFAULT);
+                hideLoading(ConstantUtil.LOADING_DEFAULT);
             }
 
             @Override
             public void onFailure(int errorCode) {
                 showError(errorCode);
-                hideLoading(Constant.LOADING_DEFAULT);
+                hideLoading(ConstantUtil.LOADING_DEFAULT);
             }
         });
     }
@@ -265,7 +277,7 @@ public class SpaceActivityPresenterImpl extends BasePresenter<ISpaceView> implem
     @Override
     public void getRecallList(long userNo) {
         initRecallListReq(userNo);
-        showLoading(Constant.LOADING_DEFAULT,"");
+        showLoading(ConstantUtil.LOADING_DEFAULT,"");
 
         RecallAction.getInstance(context).getRecallList(recallListReq, new ActionStringCallbackListener<ActionRespon<List<RecallDto>>>() {
             @Override
@@ -276,13 +288,13 @@ public class SpaceActivityPresenterImpl extends BasePresenter<ISpaceView> implem
                     }
                     updateRequestParam(result.getData());
                 }
-                hideLoading(Constant.LOADING_DEFAULT);
+                hideLoading(ConstantUtil.LOADING_DEFAULT);
             }
 
             @Override
             public void onFailure(int errorCode) {
                 showError(errorCode);
-                hideLoading(Constant.LOADING_DEFAULT);
+                hideLoading(ConstantUtil.LOADING_DEFAULT);
             }
         });
     }
@@ -315,7 +327,7 @@ public class SpaceActivityPresenterImpl extends BasePresenter<ISpaceView> implem
     }
 
     private void initRecallListReq(long userNo){
-        recallListReq.setType(Constant.RECALL_USER);
+        recallListReq.setType(ConstantUtil.RECALL_USER);
         recallListReq.setPageIndex(1);
         recallListReq.setPageSize(20);
         recallListReq.setUserNo(userNo);

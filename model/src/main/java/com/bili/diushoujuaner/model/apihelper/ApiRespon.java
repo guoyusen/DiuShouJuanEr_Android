@@ -1,6 +1,6 @@
 package com.bili.diushoujuaner.model.apihelper;
 
-import com.bili.diushoujuaner.utils.Constant;
+import com.bili.diushoujuaner.utils.ConstantUtil;
 
 import java.io.Serializable;
 
@@ -38,7 +38,7 @@ public class ApiRespon<T>  implements Serializable {
     }
 
     public boolean getIsLegal(){
-        return this.getRetCode().equals(Constant.RETCODE_SUCCESS);
+        return this.getRetCode().equals(ConstantUtil.RETCODE_SUCCESS);
     }
 
 }

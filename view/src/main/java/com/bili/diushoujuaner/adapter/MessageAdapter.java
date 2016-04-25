@@ -9,14 +9,14 @@ import android.widget.TextView;
 
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.activity.ContactDetailActivity;
-import com.bili.diushoujuaner.activity.SpaceActivity;
 import com.bili.diushoujuaner.adapter.viewholder.ViewHolder;
 import com.bili.diushoujuaner.callback.OnReSendListener;
 import com.bili.diushoujuaner.model.actionhelper.action.UserInfoAction;
 import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
 import com.bili.diushoujuaner.model.tempHelper.ContactTemper;
-import com.bili.diushoujuaner.utils.Common;
-import com.bili.diushoujuaner.utils.Constant;
+import com.bili.diushoujuaner.utils.CommonUtil;
+import com.bili.diushoujuaner.utils.ConstantUtil;
+import com.bili.diushoujuaner.utils.TimeUtil;
 import com.bili.diushoujuaner.utils.entity.vo.FriendVo;
 import com.bili.diushoujuaner.utils.entity.vo.MemberVo;
 import com.bili.diushoujuaner.utils.entity.vo.MessageVo;
@@ -135,7 +135,7 @@ public class MessageAdapter extends BaseAdapter {
 
     private void setTime(ViewHolder holder, final MessageVo messageVo){
         if(messageVo.isTimeShow()){
-            ((TextView)holder.getView(R.id.txtTime)).setText(Common.getFormatTime(messageVo.getTime()));
+            ((TextView)holder.getView(R.id.txtTime)).setText(TimeUtil.getFormatTime(messageVo.getTime()));
             holder.getView(R.id.txtTime).setVisibility(View.VISIBLE);
         }else{
             holder.getView(R.id.txtTime).setVisibility(View.GONE);
@@ -143,20 +143,20 @@ public class MessageAdapter extends BaseAdapter {
     }
 
     private void setNickName(ViewHolder holder, final MessageVo messageVo){
-        if(messageVo.getMsgType() == Constant.CHAT_FRI){
+        if(messageVo.getMsgType() == ConstantUtil.CHAT_FRI){
             holder.getView(R.id.txtName).setVisibility(View.GONE);
             if(messageVo.getFromNo() == CustomSessionPreference.getInstance().getCustomSession().getUserNo()){
                 String picPath = UserInfoAction.getInstance(context).getUserFromLocal().getPicPath();
-                Common.displayDraweeView(picPath != null ? picPath : "", (SimpleDraweeView)holder.getView(R.id.ivHead));
+                CommonUtil.displayDraweeView(picPath != null ? picPath : "", (SimpleDraweeView)holder.getView(R.id.ivHead));
             }else{
                 FriendVo friendVo = ContactTemper.getInstance().getFriendVo(messageVo.getFromNo());
-                Common.displayDraweeView(friendVo != null ? friendVo.getPicPath() : "", (SimpleDraweeView)holder.getView(R.id.ivHead));
+                CommonUtil.displayDraweeView(friendVo != null ? friendVo.getPicPath() : "", (SimpleDraweeView)holder.getView(R.id.ivHead));
             }
-        }else if(messageVo.getMsgType() == Constant.CHAT_PAR){
+        }else if(messageVo.getMsgType() == ConstantUtil.CHAT_PAR){
             holder.getView(R.id.txtName).setVisibility(View.VISIBLE);
             MemberVo memberVo = ContactTemper.getInstance().getMemberVo(messageVo.getToNo(), messageVo.getFromNo());
             ((TextView)holder.getView(R.id.txtName)).setText(memberVo != null ? memberVo.getMemberName() : "");
-            Common.displayDraweeView(memberVo != null ? memberVo.getPicPath() : "", (SimpleDraweeView)holder.getView(R.id.ivHead));
+            CommonUtil.displayDraweeView(memberVo != null ? memberVo.getPicPath() : "", (SimpleDraweeView)holder.getView(R.id.ivHead));
         }
     }
 
@@ -181,14 +181,14 @@ public class MessageAdapter extends BaseAdapter {
     private void setMessageContent(ViewHolder holder, MessageVo messageVo){
         //设置消息内容
         switch (messageVo.getConType()){
-            case Constant.CHAT_CONTENT_FRIEND_AGREE:
-            case Constant.CHAT_CONTENT_TEXT:
+            case ConstantUtil.CHAT_CONTENT_FRIEND_AGREE:
+            case ConstantUtil.CHAT_CONTENT_TEXT:
                 ((TextView)holder.getView(R.id.txtContent)).setText(messageVo.getContent());
                 break;
-            case Constant.CHAT_CONTENT_IMG:
+            case ConstantUtil.CHAT_CONTENT_IMG:
 
                 break;
-            case Constant.CHAT_CONTENT_VOICE:
+            case ConstantUtil.CHAT_CONTENT_VOICE:
 
                 break;
         }
@@ -196,17 +196,17 @@ public class MessageAdapter extends BaseAdapter {
 
     private void setMessageVoStatus(ViewHolder holder, MessageVo messageVo){
         switch (messageVo.getStatus()){
-            case Constant.MESSAGE_STATUS_FAIL:
+            case ConstantUtil.MESSAGE_STATUS_FAIL:
                 holder.getView(R.id.ivFail).setVisibility(View.VISIBLE);
                 holder.getView(R.id.ivSending).setVisibility(View.GONE);
                 ((RotateImageView)holder.getView(R.id.ivSending)).stopRotate(true);
                 break;
-            case Constant.MESSAGE_STATUS_SENDING:
+            case ConstantUtil.MESSAGE_STATUS_SENDING:
                 holder.getView(R.id.ivFail).setVisibility(View.GONE);
                 holder.getView(R.id.ivSending).setVisibility(View.VISIBLE);
                 ((RotateImageView)holder.getView(R.id.ivSending)).stopRotate(false);
                 break;
-            case Constant.MESSAGE_STATUS_SUCCESS:
+            case ConstantUtil.MESSAGE_STATUS_SUCCESS:
                 holder.getView(R.id.ivFail).setVisibility(View.GONE);
                 holder.getView(R.id.ivSending).setVisibility(View.GONE);
                 ((RotateImageView)holder.getView(R.id.ivSending)).stopRotate(true);

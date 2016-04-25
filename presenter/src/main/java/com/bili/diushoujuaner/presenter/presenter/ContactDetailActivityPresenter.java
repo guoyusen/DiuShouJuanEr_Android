@@ -15,4 +15,6 @@ public interface ContactDetailActivityPresenter {
 
     boolean isOwner(long userNo);
 
+    void getFriendDelete(long friendNo);
+
 }

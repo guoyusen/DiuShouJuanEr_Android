@@ -43,7 +43,7 @@ public abstract class CommonAdapter<T> extends BaseAdapter {
      * @param list
      */
     public void refresh(List<T> list) {
-        if (list == null || list.size() <= 0) {
+        if (list == null) {
             return;
         }
         this.list.clear();

@@ -14,14 +14,13 @@ import android.widget.TextView;
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.application.CustomApplication;
 import com.bili.diushoujuaner.presenter.base.BasePresenter;
-import com.bili.diushoujuaner.utils.Constant;
+import com.bili.diushoujuaner.utils.ConstantUtil;
 import com.bili.diushoujuaner.widget.CustomProgress;
 import com.bili.diushoujuaner.widget.CustomToast;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.EventBusException;
 
-import butterknife.Bind;
 import butterknife.ButterKnife;
 
 /**
@@ -123,13 +122,13 @@ public class BaseFragment<T> extends Fragment {
 
     public void showLoading(int loadingType, String message) {
         switch (loadingType){
-            case Constant.LOADING_CENTER:
+            case ConstantUtil.LOADING_CENTER:
                 CustomProgress.getInstance(context).showCenter(message, true, null);
                 break;
-            case Constant.LOADING_TOP:
+            case ConstantUtil.LOADING_TOP:
                 CustomProgress.getInstance(context).showTop(message, true, null);
                 break;
-            case Constant.LOADING_DEFAULT:
+            case ConstantUtil.LOADING_DEFAULT:
                 if(defaultCircle != null){
                     defaultCircle.setVisibility(View.VISIBLE);
                 }
@@ -143,11 +142,11 @@ public class BaseFragment<T> extends Fragment {
 
     public void hideLoading(int loadingType) {
         switch (loadingType){
-            case Constant.LOADING_CENTER:
-            case Constant.LOADING_TOP:
+            case ConstantUtil.LOADING_CENTER:
+            case ConstantUtil.LOADING_TOP:
                 CustomProgress.getInstance(context).dismiss();
                 break;
-            case Constant.LOADING_DEFAULT:
+            case ConstantUtil.LOADING_DEFAULT:
                 if(defaultCircle != null){
                     defaultCircle.setVisibility(View.GONE);
                 }
@@ -162,28 +161,30 @@ public class BaseFragment<T> extends Fragment {
 
     public void showWarning(int warningType) {
         switch (warningType){
-            case Constant.WARNING_401:
+            case ConstantUtil.WARNING_401:
                 showWarning(context.getString(R.string.warning_401));
                 break;
-            case Constant.WARNING_403:
+            case ConstantUtil.WARNING_403:
                 showWarning(context.getString(R.string.warning_403));
                 break;
-            case Constant.WARNING_503:
+            case ConstantUtil.WARNING_503:
                 showWarning(context.getString(R.string.warning_503));
                 break;
-            case Constant.WARNING_500:
+            case ConstantUtil.WARNING_500:
                 showWarning(context.getString(R.string.warning_500));
                 break;
-            case Constant.WARNING_NET:
+            case ConstantUtil.WARNING_NET:
                 showWarning(context.getString(R.string.warning_net));
                 break;
-            case Constant.WARNING_PARSE:
+            case ConstantUtil.WARNING_PARSE:
                 showWarning(context.getString(R.string.warning_parse));
                 break;
-            case Constant.WARNING_FILE:
+            case ConstantUtil.WARNING_FILE:
                 showWarning(context.getString(R.string.warning_file));
                 break;
         }
+    }
+    public void finishView(){
     }
 
     public void exitActivity(){

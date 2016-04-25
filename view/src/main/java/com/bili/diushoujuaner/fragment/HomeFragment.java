@@ -18,6 +18,9 @@ import com.bili.diushoujuaner.activity.RecallAddActivity;
 import com.bili.diushoujuaner.activity.RecallDetailActivity;
 import com.bili.diushoujuaner.adapter.RecallAdapter;
 import com.bili.diushoujuaner.base.BaseFragment;
+import com.bili.diushoujuaner.model.eventhelper.DeleteContactEvent;
+import com.bili.diushoujuaner.model.eventhelper.UpdateRemarkEvent;
+import com.bili.diushoujuaner.utils.ConstantUtil;
 import com.bili.diushoujuaner.utils.entity.dto.RecallDto;
 import com.bili.diushoujuaner.model.eventhelper.PublishRecallEvent;
 import com.bili.diushoujuaner.presenter.presenter.HomeFragmentPresenter;
@@ -25,17 +28,14 @@ import com.bili.diushoujuaner.presenter.presenter.impl.HomeFragmentPresenterImpl
 import com.bili.diushoujuaner.presenter.publisher.OnPublishListener;
 import com.bili.diushoujuaner.presenter.publisher.RecallPublisher;
 import com.bili.diushoujuaner.presenter.view.IHomeView;
-import com.bili.diushoujuaner.utils.Common;
-import com.bili.diushoujuaner.utils.Constant;
+import com.bili.diushoujuaner.utils.CommonUtil;
 import com.bili.diushoujuaner.model.eventhelper.GoodRecallEvent;
-import com.bili.diushoujuaner.model.eventhelper.UpdatedContactEvent;
-import com.bili.diushoujuaner.model.eventhelper.ShowHeadEvent;
+import com.bili.diushoujuaner.model.eventhelper.ContactUpdatedEvent;
 import com.bili.diushoujuaner.model.eventhelper.ShowMainMenuEvent;
 import com.bili.diushoujuaner.widget.BottomMoreListView;
 import com.bili.diushoujuaner.widget.TintedBitmapDrawable;
 import com.bili.diushoujuaner.widget.badgeview.BGABadgeRelativeLayout;
 import com.bili.diushoujuaner.widget.waveswipe.WaveSwipeRefreshLayout;
-import com.facebook.drawee.view.SimpleDraweeView;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -125,7 +125,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
 
         ivTip.setImageDrawable(new TintedBitmapDrawable(getResources(), R.mipmap.icon_nodata, ContextCompat.getColor(context, R.color.COLOR_BFBFBF)));
 
-        recallAdapter = new RecallAdapter(getContext(), recallDtoList, Constant.RECALL_ADAPTER_HOME, Constant.RECALL_GOOD_HOME_INDEX);
+        recallAdapter = new RecallAdapter(getContext(), recallDtoList, ConstantUtil.RECALL_ADAPTER_HOME, ConstantUtil.RECALL_GOOD_HOME_INDEX);
         listviewRecall.setAdapter(recallAdapter);
         listviewRecall.setCanLoadMore(true);
         listviewRecall.setOnLoadMoreListener(this);
@@ -139,7 +139,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
         });
 
         getBindPresenter().showRecallFromCache();
-        getBindPresenter().getRecallList(Constant.REFRESH_DEFAULT);
+        getBindPresenter().getRecallList(ConstantUtil.REFRESH_DEFAULT);
     }
 
     @Override
@@ -200,7 +200,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
     @Override
     public void onRefresh() {
         listviewRecall.setListViewStateRefresh();
-        getBindPresenter().getRecallList(Constant.REFRESH_INTENT);
+        getBindPresenter().getRecallList(ConstantUtil.REFRESH_INTENT);
     }
 
     @Override
@@ -211,7 +211,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
     @Override
     public void showRecallList(List<RecallDto> recallDtoList) {
         recallAdapter.refresh(recallDtoList);
-        if (Common.isEmpty(recallDtoList)) {
+        if (CommonUtil.isEmpty(recallDtoList)) {
             layoutTip.setVisibility(View.VISIBLE);
             listviewRecall.setVisibility(View.GONE);
             return;
@@ -229,7 +229,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
     @Override
     public void showMoreRecallList(List<RecallDto> recallDtoList) {
         recallAdapter.add(recallDtoList);
-        if (Common.isEmpty(recallDtoList)) {
+        if (CommonUtil.isEmpty(recallDtoList)) {
             listviewRecall.setListViewStateComplete();
             return;
         }
@@ -252,7 +252,7 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onGoodRecallEvent(GoodRecallEvent goodRecallEvent) {
-        if (!(goodRecallEvent.getIndex() == Constant.RECALL_GOOD_HOME_INDEX && goodRecallEvent.getType() == Constant.RECALL_ADAPTER_HOME)) {
+        if (!(goodRecallEvent.getIndex() == ConstantUtil.RECALL_GOOD_HOME_INDEX && goodRecallEvent.getType() == ConstantUtil.RECALL_ADAPTER_HOME)) {
             return;
         }
         if (!isGoodStatusInited) {
@@ -269,18 +269,36 @@ public class HomeFragment extends BaseFragment<HomeFragmentPresenter> implements
 
     // 通讯录更新之后，需要重新刷新recall的右侧标志
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onUpdatedContactEvent(UpdatedContactEvent updatedContactEvent) {
-        if (recallAdapter != null) {
-            recallAdapter.notifyDataSetInvalidated();
+    public void onContactUpdatedEvent(ContactUpdatedEvent contactUpdatedEvent) {
+        if (recallAdapter == null) {
+            return;
         }
+        recallAdapter.notifyDataSetInvalidated();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onDeleteContactEvent(DeleteContactEvent deleteContactEvent){
+        if (recallAdapter == null) {
+            return;
+        }
+        recallAdapter.notifyDataSetInvalidated();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onUpdateRemarkEvent(UpdateRemarkEvent updateRemarkEvent){
+        if (recallAdapter == null) {
+            return;
+        }
+        recallAdapter.notifyDataSetInvalidated();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onPublishRecallEvent(PublishRecallEvent publishRecallEvent){
-        if (recallAdapter != null) {
-            recallAdapter.addFirst(publishRecallEvent.getRecallDto());
-            recallAdapter.notifyDataSetChanged();
+        if (recallAdapter == null) {
+            return;
         }
+        recallAdapter.addFirst(publishRecallEvent.getRecallDto());
+        recallAdapter.notifyDataSetChanged();
     }
 
     @Override

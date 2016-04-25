@@ -7,17 +7,17 @@ import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
 import com.bili.diushoujuaner.model.apihelper.ApiRespon;
 import com.bili.diushoujuaner.model.apihelper.api.ApiAction;
 import com.bili.diushoujuaner.model.apihelper.callback.ApiStringCallbackListener;
-import com.bili.diushoujuaner.model.cachehelper.ACache;
 import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
 import com.bili.diushoujuaner.model.databasehelper.DBManager;
-import com.bili.diushoujuaner.model.eventhelper.AddContactEvent;
-import com.bili.diushoujuaner.model.eventhelper.UpdateContactEvent;
+import com.bili.diushoujuaner.model.eventhelper.RequestContactEvent;
+import com.bili.diushoujuaner.model.eventhelper.DeleteContactEvent;
 import com.bili.diushoujuaner.model.eventhelper.UpdatePartyEvent;
 import com.bili.diushoujuaner.model.tempHelper.ChattingTemper;
 import com.bili.diushoujuaner.model.tempHelper.ContactTemper;
-import com.bili.diushoujuaner.utils.Common;
-import com.bili.diushoujuaner.utils.Constant;
-import com.bili.diushoujuaner.utils.GsonParser;
+import com.bili.diushoujuaner.utils.ConstantUtil;
+import com.bili.diushoujuaner.utils.EntityUtil;
+import com.bili.diushoujuaner.utils.GsonUtil;
+import com.bili.diushoujuaner.utils.TimeUtil;
 import com.bili.diushoujuaner.utils.entity.dto.OffMsgDto;
 import com.bili.diushoujuaner.utils.entity.vo.MessageVo;
 import com.google.gson.reflect.TypeToken;
@@ -116,7 +116,7 @@ public class ChattingAction implements IChattingAction {
                 Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<List<MessageVo>>>() {
                     @Override
                     public ActionRespon<List<MessageVo>> doInBackground() throws Exception {
-                        ApiRespon<List<OffMsgDto>> result = GsonParser.getInstance().fromJson(data, new TypeToken<ApiRespon<List<OffMsgDto>>>(){}.getType());
+                        ApiRespon<List<OffMsgDto>> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<List<OffMsgDto>>>(){}.getType());
                         if(result.getIsLegal()){
                             return processOffMessage(result.getData());
                         }else{
@@ -148,44 +148,48 @@ public class ChattingAction implements IChattingAction {
         List<MessageVo> msgDtoList = new ArrayList<>();
         for(OffMsgDto item : messageList){
             switch(item.getMsgType()){
-                case Constant.CHAT_FRI:
+                case ConstantUtil.CHAT_FRI:
                     msgDtoList.add(processOffMessage(item));
-                    if(item.getConType() == Constant.CHAT_CONTENT_FRIEND_AGREE && DBManager.getInstance().isFriended(item.getFromNo())){
-                        //收到添加同意信息，强制刷新联系人列表
-                        ACache.getInstance().put(Constant.ACACHE_LAST_TIME_CONTACT, "");
-                        EventBus.getDefault().post(new UpdateContactEvent());
+                    if(item.getConType() == ConstantUtil.CHAT_CONTENT_FRIEND_AGREE && DBManager.getInstance().isFriended(item.getFromNo())){
+                        //收到添加同意信息，获取或者更新本地联系人信息
+                        ContactAction.getInstance(context).getAddContact(item.getFromNo(), ConstantUtil.CONTACT_INFO_ADD_AFTER);
                     }
                     break;
-                case Constant.CHAT_PAR:
+                case ConstantUtil.CHAT_PAR:
                     msgDtoList.add(processOffMessage(item));
                     break;
-                case Constant.CHAT_GOOD:
+                case ConstantUtil.CHAT_GOOD:
                     //发送Event通知
                     break;
-                case Constant.CHAT_TIME:
+                case ConstantUtil.CHAT_TIME:
                     break;
-                case Constant.CHAT_PARTY_HEAD:
+                case ConstantUtil.CHAT_PARTY_HEAD:
                     ContactTemper.getInstance().updatePartyHeadPic(item.getToNo(), item.getContent());
                     DBManager.getInstance().updatePartyHeadPic(item.getToNo(), item.getContent());
-                    EventBus.getDefault().post(new UpdatePartyEvent(item.getToNo(), item.getContent(), Constant.CHAT_PARTY_HEAD));
+                    EventBus.getDefault().post(new UpdatePartyEvent(item.getToNo(), item.getContent(), ConstantUtil.CHAT_PARTY_HEAD));
                     break;
-                case Constant.CHAT_PARTY_NAME:
+                case ConstantUtil.CHAT_PARTY_NAME:
                     ContactTemper.getInstance().updatePartyName(item.getToNo(), item.getContent());
                     DBManager.getInstance().updatePartyName(item.getToNo(), item.getContent());
-                    EventBus.getDefault().post(new UpdatePartyEvent(item.getToNo(), item.getContent(), Constant.CHAT_PARTY_NAME));
+                    EventBus.getDefault().post(new UpdatePartyEvent(item.getToNo(), item.getContent(), ConstantUtil.CHAT_PARTY_NAME));
                     break;
-                case Constant.CHAT_PARTY_MEMBER_NAME:
+                case ConstantUtil.CHAT_PARTY_MEMBER_NAME:
                     ContactTemper.getInstance().updateMemberName(item.getToNo(), item.getFromNo(), item.getContent());
                     DBManager.getInstance().updateMemberName(item.getToNo(), item.getFromNo(), item.getContent());
-                    EventBus.getDefault().post(new UpdatePartyEvent(item.getToNo(), item.getContent(), Constant.CHAT_PARTY_MEMBER_NAME));
+                    EventBus.getDefault().post(new UpdatePartyEvent(item.getToNo(), item.getContent(), ConstantUtil.CHAT_PARTY_MEMBER_NAME));
                     break;
-                case Constant.CHAT_FRIEND_ADD:
-                    DBManager.getInstance().saveApply(item.getFromNo(), item.getToNo(),item.getContent(), item.getTime(), Constant.CHAT_FRIEND_ADD);
-                    ContactAction.getInstance(context).getAddContact(item.getFromNo());
+                case ConstantUtil.CHAT_FRIEND_ADD:
+                    DBManager.getInstance().saveApply(item.getFromNo(), item.getToNo(),item.getContent(), item.getTime(), ConstantUtil.CHAT_FRIEND_ADD);
+                    ContactAction.getInstance(context).getAddContact(item.getFromNo(), ConstantUtil.CONTACT_INFO_ADD_BEFORE);
                     break;
-                case Constant.CHAT_PARTY_ADD:
-                    DBManager.getInstance().saveApply(item.getFromNo(), Long.valueOf(item.getTime()),item.getContent(), Common.getCurrentTimeYYMMDD_HHMMSS(), Constant.CHAT_PARTY_ADD);
-                    EventBus.getDefault().post(new AddContactEvent());
+                case ConstantUtil.CHAT_PARTY_ADD:
+                    DBManager.getInstance().saveApply(item.getFromNo(), Long.valueOf(item.getTime()),item.getContent(), TimeUtil.getCurrentTimeYYMMDD_HHMMSS(), ConstantUtil.CHAT_PARTY_ADD);
+                    EventBus.getDefault().post(new RequestContactEvent());
+                    break;
+                case ConstantUtil.CHAT_FRIEND_DELETE:
+                    DBManager.getInstance().deleteFriend(item.getFromNo());
+                    ChattingTemper.getInstance().deleteChattingVo(item.getFromNo(), ConstantUtil.CHAT_FRI);
+                    EventBus.getDefault().post(new DeleteContactEvent(ConstantUtil.DELETE_CONTACT_FRIEND, item.getFromNo()));
                     break;
             }
         }
@@ -193,12 +197,12 @@ public class ChattingAction implements IChattingAction {
     }
 
     private MessageVo processOffMessage(OffMsgDto item){
-        MessageVo messageVo = Common.getMessageVoFromOffMsgDto(item);
+        MessageVo messageVo = EntityUtil.getMessageVoFromOffMsgDto(item);
         //接收到的离线信息，需要插在首位，且此时需要判断是否显示时间
         ChattingTemper.getInstance().addChattingVoFromServer(messageVo);
-        if(messageVo.getMsgType() == Constant.CHAT_FRI){
+        if(messageVo.getMsgType() == ConstantUtil.CHAT_FRI){
             DBManager.getInstance().updateFriendRecent(messageVo.getFromNo(), true);
-        }else if(messageVo.getMsgType() == Constant.CHAT_PAR){
+        }else if(messageVo.getMsgType() == ConstantUtil.CHAT_PAR){
             DBManager.getInstance().updateMemberRecent(messageVo.getToNo(), true);
         }
         //插入完成会返回包含id的messageVo

@@ -12,10 +12,10 @@ import com.bili.diushoujuaner.model.apihelper.request.RecallRemoveReq;
 import com.bili.diushoujuaner.model.apihelper.request.RecentRecallReq;
 import com.bili.diushoujuaner.model.cachehelper.ACache;
 import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
-import com.bili.diushoujuaner.utils.Common;
-import com.bili.diushoujuaner.utils.Constant;
-import com.bili.diushoujuaner.utils.GsonParser;
+import com.bili.diushoujuaner.utils.ConstantUtil;
+import com.bili.diushoujuaner.utils.GsonUtil;
 import com.bili.diushoujuaner.model.apihelper.request.RecallListReq;
+import com.bili.diushoujuaner.utils.StringUtil;
 import com.bili.diushoujuaner.utils.entity.dto.RecallDto;
 import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
 import com.google.gson.reflect.TypeToken;
@@ -53,16 +53,16 @@ public class RecallAction implements IRecallAction {
                 Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<RecallDto>>() {
                     @Override
                     public ActionRespon<RecallDto> doInBackground() throws Exception {
-                        ApiRespon<RecallDto> result = GsonParser.getInstance().fromJson(data, new TypeToken<ApiRespon<RecallDto>>() {
+                        ApiRespon<RecallDto> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<RecallDto>>() {
                         }.getType());
                         //更新space列表缓存
-                        String data = ACache.getInstance().getAsString(Constant.ACACHE_USER_RECALL_PREFIX + CustomSessionPreference.getInstance().getCustomSession().getUserNo());
+                        String data = ACache.getInstance().getAsString(ConstantUtil.ACACHE_USER_RECALL_PREFIX + CustomSessionPreference.getInstance().getCustomSession().getUserNo());
                         List<RecallDto> recallDtoList = new ArrayList<RecallDto>();
-                        if(!Common.isEmpty(data)) {
-                            recallDtoList.addAll((List<RecallDto>)GsonParser.getInstance().fromJson(data, new TypeToken<List<RecallDto>>() {}.getType()));
+                        if(!StringUtil.isEmpty(data)) {
+                            recallDtoList.addAll((List<RecallDto>) GsonUtil.getInstance().fromJson(data, new TypeToken<List<RecallDto>>() {}.getType()));
                         }
                         recallDtoList.add(0, result.getData());
-                        ACache.getInstance().put(Constant.ACACHE_USER_RECALL_PREFIX + CustomSessionPreference.getInstance().getCustomSession().getUserNo(),GsonParser.getInstance().toJson(recallDtoList));
+                        ACache.getInstance().put(ConstantUtil.ACACHE_USER_RECALL_PREFIX + CustomSessionPreference.getInstance().getCustomSession().getUserNo(), GsonUtil.getInstance().toJson(recallDtoList));
 
                         return ActionRespon.getActionResponFromApiRespon(result);
                     }
@@ -94,7 +94,7 @@ public class RecallAction implements IRecallAction {
                 Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<Long>>() {
                     @Override
                     public ActionRespon<Long> doInBackground() throws Exception {
-                        ApiRespon<Long> result = GsonParser.getInstance().fromJson(data, new TypeToken<ApiRespon<Long>>() {
+                        ApiRespon<Long> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<Long>>() {
                         }.getType());
                         return ActionRespon.getActionResponFromApiRespon(result);
                     }
@@ -121,18 +121,18 @@ public class RecallAction implements IRecallAction {
     @Override
     public void getRecentRecall(final RecentRecallReq recentRecallReq, final ActionStringCallbackListener<ActionRespon<RecallDto>> actionStringCallbackListener) {
         //获取十分钟内的缓存
-        RecallDto recallDto = GsonParser.getInstance().fromJson(ACache.getInstance().getAsString(Constant.ACACHE_RECENT_RECALL_PREFIX + recentRecallReq.getUserNo()), new TypeToken<RecallDto>() {
+        RecallDto recallDto = GsonUtil.getInstance().fromJson(ACache.getInstance().getAsString(ConstantUtil.ACACHE_RECENT_RECALL_PREFIX + recentRecallReq.getUserNo()), new TypeToken<RecallDto>() {
         }.getType());
         if(recallDto != null){
-            actionStringCallbackListener.onSuccess(ActionRespon.getActionRespon(Constant.ACTION_LOAD_LOCAL_SUCCESS,Constant.RETCODE_SUCCESS,recallDto));
+            actionStringCallbackListener.onSuccess(ActionRespon.getActionRespon(ConstantUtil.ACTION_LOAD_LOCAL_SUCCESS, ConstantUtil.RETCODE_SUCCESS,recallDto));
         }else{
             ApiAction.getInstance().getRecentRecall(recentRecallReq, new ApiStringCallbackListener() {
                 @Override
                 public void onSuccess(String data) {
-                    ApiRespon<RecallDto> result = GsonParser.getInstance().fromJson(data, new TypeToken<ApiRespon<RecallDto>>() {
+                    ApiRespon<RecallDto> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<RecallDto>>() {
                     }.getType());
                     if(result.getIsLegal()){
-                        ACache.getInstance().put(Constant.ACACHE_RECENT_RECALL_PREFIX + recentRecallReq.getUserNo(),GsonParser.getInstance().toJson(result.getData()),Constant.ACACHE_TIME_RECENT_RECALL);
+                        ACache.getInstance().put(ConstantUtil.ACACHE_RECENT_RECALL_PREFIX + recentRecallReq.getUserNo(), GsonUtil.getInstance().toJson(result.getData()), ConstantUtil.ACACHE_TIME_RECENT_RECALL);
                     }
                     actionStringCallbackListener.onSuccess(ActionRespon.getActionRespon(result.getMessage(),result.getRetCode(),result.getData()));
                 }
@@ -150,9 +150,9 @@ public class RecallAction implements IRecallAction {
         Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<List<RecallDto>>>() {
             @Override
             public ActionRespon<List<RecallDto>> doInBackground() throws Exception {
-                String data = ACache.getInstance().getAsString(Constant.ACACHE_USER_RECALL_PREFIX + userNo);
-                if(!Common.isEmpty(data)){
-                    List<RecallDto> recallDtoList = GsonParser.getInstance().fromJson(data, new TypeToken<List<RecallDto>>() {
+                String data = ACache.getInstance().getAsString(ConstantUtil.ACACHE_USER_RECALL_PREFIX + userNo);
+                if(!StringUtil.isEmpty(data)){
+                    List<RecallDto> recallDtoList = GsonUtil.getInstance().fromJson(data, new TypeToken<List<RecallDto>>() {
                     }.getType());
                     return ActionRespon.getActionRespon(recallDtoList);
                 }
@@ -176,7 +176,7 @@ public class RecallAction implements IRecallAction {
         Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<List<RecallDto>>>() {
             @Override
             public ActionRespon<List<RecallDto>> doInBackground() throws Exception {
-                List<RecallDto> recallDtoList = GsonParser.getInstance().fromJson(ACache.getInstance().getAsString(Constant.ACACHE_RECALL_LIST), new TypeToken<List<RecallDto>>() {
+                List<RecallDto> recallDtoList = GsonUtil.getInstance().fromJson(ACache.getInstance().getAsString(ConstantUtil.ACACHE_RECALL_LIST), new TypeToken<List<RecallDto>>() {
                 }.getType());
                 return ActionRespon.getActionRespon(recallDtoList);
             }
@@ -201,11 +201,11 @@ public class RecallAction implements IRecallAction {
                 Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<List<RecallDto>>>() {
                     @Override
                     public ActionRespon<List<RecallDto>> doInBackground() throws Exception {
-                        ApiRespon<List<RecallDto>> result = GsonParser.getInstance().fromJson(data, new TypeToken<ApiRespon<List<RecallDto>>>() {
+                        ApiRespon<List<RecallDto>> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<List<RecallDto>>>() {
                         }.getType());
                         if(recallListReq.getUserNo() == CustomSessionPreference.getInstance().getCustomSession().getUserNo()){
                             //如果是当前用户自己的请求，那么表明用户在查看自己的空间，进行缓存
-                            ACache.getInstance().put(Constant.ACACHE_USER_RECALL_PREFIX + CustomSessionPreference.getInstance().getCustomSession().getUserNo(),GsonParser.getInstance().toJson(result.getData()));
+                            ACache.getInstance().put(ConstantUtil.ACACHE_USER_RECALL_PREFIX + CustomSessionPreference.getInstance().getCustomSession().getUserNo(), GsonUtil.getInstance().toJson(result.getData()));
                         }
                         return ActionRespon.getActionResponFromApiRespon(result);
                     }

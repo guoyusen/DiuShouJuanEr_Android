@@ -11,7 +11,9 @@ import com.bili.diushoujuaner.model.apihelper.request.ContactsSearchReq;
 import com.bili.diushoujuaner.model.apihelper.request.FeedBackReq;
 import com.bili.diushoujuaner.model.apihelper.request.FriendAddReq;
 import com.bili.diushoujuaner.model.apihelper.request.FriendAgreeReq;
+import com.bili.diushoujuaner.model.apihelper.request.FriendDeleteReq;
 import com.bili.diushoujuaner.model.apihelper.request.MemberNameUpdateReq;
+import com.bili.diushoujuaner.model.apihelper.request.PartyAddReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyHeadUpdateReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyIntroduceUpdateReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyNameUpdateReq;
@@ -19,11 +21,12 @@ import com.bili.diushoujuaner.model.apihelper.request.RecallPublishReq;
 import com.bili.diushoujuaner.model.apihelper.request.RecallRemoveReq;
 import com.bili.diushoujuaner.model.apihelper.request.RecallSerialReq;
 import com.bili.diushoujuaner.model.apihelper.request.RecentRecallReq;
+import com.bili.diushoujuaner.model.apihelper.request.RemarkUpdateReq;
 import com.bili.diushoujuaner.model.apihelper.request.ResponAddReq;
 import com.bili.diushoujuaner.model.apihelper.request.ResponRemoveReq;
 import com.bili.diushoujuaner.model.apihelper.request.UserInfoReq;
 import com.bili.diushoujuaner.model.apihelper.request.VerifyReq;
-import com.bili.diushoujuaner.utils.Constant;
+import com.bili.diushoujuaner.utils.ConstantUtil;
 import com.bili.diushoujuaner.model.apihelper.request.RecallListReq;
 import com.bili.diushoujuaner.model.apihelper.request.UserAccountReq;
 
@@ -32,38 +35,41 @@ import com.bili.diushoujuaner.model.apihelper.request.UserAccountReq;
  */
 public interface Api {
 
-    String getUserLogin = Constant.HOST_ADDRESS + "1.0/users/login";
-    String getUserInfo = Constant.HOST_ADDRESS + "1.0/users/info";
-    String getContactList = Constant.HOST_ADDRESS + "1.0/contacts";
-    String getRecallList = Constant.HOST_ADDRESS + "1.0/recalls?";
-    String getGoodAdd = Constant.HOST_ADDRESS + "1.0/goods/add";
-    String getGoodRemove = Constant.HOST_ADDRESS + "1.0/goods/remove";
-    String getCommentAdd = Constant.HOST_ADDRESS + "1.0/comments/add";
-    String getCommentRemove = Constant.HOST_ADDRESS + "1.0/comments/remove";
-    String getResponAdd = Constant.HOST_ADDRESS + "1.0/respons/add";
-    String getResponRemove = Constant.HOST_ADDRESS + "1.0/respons/remove";
-    String getContactInfo = Constant.HOST_ADDRESS + "1.0/users/info/user?";
-    String getRecentRecall = Constant.HOST_ADDRESS + "1.0/recalls/recent?";
-    String getAutographModify = Constant.HOST_ADDRESS + "1.0/users/modify/autograph";
-    String getFeedBackAdd = Constant.HOST_ADDRESS + "1.0/feedback/add";
-    String getUserInfoUpdate = Constant.HOST_ADDRESS + "1.0/users/info/update";
-    String getVerifyCode = Constant.HOST_ADDRESS + "1.0/verify/code";
-    String getAcountRegist = Constant.HOST_ADDRESS + "1.0/users/regist";
-    String getAcountReset = Constant.HOST_ADDRESS + "1.0/users/reset";
-    String getLogout = Constant.HOST_ADDRESS + "1.0/users/logout";
-    String getRecallRemove = Constant.HOST_ADDRESS + "1.0/recalls/remove";
-    String getHeadUpdate = Constant.HOST_ADDRESS + "1.0/file/headpic";
-    String getWallpaperUpdate = Constant.HOST_ADDRESS + "1.0/file/wallpaper";
-    String getRecallPicUpload = Constant.HOST_ADDRESS + "1.0/file/recallpic";
-    String getRecallPublish = Constant.HOST_ADDRESS + "1.0/recalls/add";
-    String getOffMsg = Constant.HOST_ADDRESS + "1.0/offmsgs";
-    String getMemberNameUpdate = Constant.HOST_ADDRESS + "1.0/member/modify/name";
-    String getPartyHeadUpdate = Constant.HOST_ADDRESS + "1.0/file/party/headpic";
-    String getPartyNameUpdate = Constant.HOST_ADDRESS + "1.0/party/modify/name";
-    String getPartyIntroduceUpdate = Constant.HOST_ADDRESS + "1.0/party/modify/introduce";
-    String getContactsSearch = Constant.HOST_ADDRESS + "1.0/contacts/search?";
-    String getFriendAdd = Constant.HOST_ADDRESS + "1.0/friend/add";
-    String getFriendAgree = Constant.HOST_ADDRESS + "1.0/friend/agree";
+    String getUserLogin = ConstantUtil.HOST_ADDRESS + "1.0/users/login";
+    String getUserInfo = ConstantUtil.HOST_ADDRESS + "1.0/users/info";
+    String getContactList = ConstantUtil.HOST_ADDRESS + "1.0/contacts";
+    String getRecallList = ConstantUtil.HOST_ADDRESS + "1.0/recalls?";
+    String getGoodAdd = ConstantUtil.HOST_ADDRESS + "1.0/goods/add";
+    String getGoodRemove = ConstantUtil.HOST_ADDRESS + "1.0/goods/remove";
+    String getCommentAdd = ConstantUtil.HOST_ADDRESS + "1.0/comments/add";
+    String getCommentRemove = ConstantUtil.HOST_ADDRESS + "1.0/comments/remove";
+    String getResponAdd = ConstantUtil.HOST_ADDRESS + "1.0/respons/add";
+    String getResponRemove = ConstantUtil.HOST_ADDRESS + "1.0/respons/remove";
+    String getContactInfo = ConstantUtil.HOST_ADDRESS + "1.0/users/info/user?";
+    String getRecentRecall = ConstantUtil.HOST_ADDRESS + "1.0/recalls/recent?";
+    String getAutographModify = ConstantUtil.HOST_ADDRESS + "1.0/users/modify/autograph";
+    String getFeedBackAdd = ConstantUtil.HOST_ADDRESS + "1.0/feedback/add";
+    String getUserInfoUpdate = ConstantUtil.HOST_ADDRESS + "1.0/users/info/update";
+    String getVerifyCode = ConstantUtil.HOST_ADDRESS + "1.0/verify/code";
+    String getAcountRegist = ConstantUtil.HOST_ADDRESS + "1.0/users/regist";
+    String getAcountReset = ConstantUtil.HOST_ADDRESS + "1.0/users/reset";
+    String getLogout = ConstantUtil.HOST_ADDRESS + "1.0/users/logout";
+    String getRecallRemove = ConstantUtil.HOST_ADDRESS + "1.0/recalls/remove";
+    String getHeadUpdate = ConstantUtil.HOST_ADDRESS + "1.0/file/headpic";
+    String getWallpaperUpdate = ConstantUtil.HOST_ADDRESS + "1.0/file/wallpaper";
+    String getRecallPicUpload = ConstantUtil.HOST_ADDRESS + "1.0/file/recallpic";
+    String getRecallPublish = ConstantUtil.HOST_ADDRESS + "1.0/recalls/add";
+    String getOffMsg = ConstantUtil.HOST_ADDRESS + "1.0/offmsgs";
+    String getMemberNameUpdate = ConstantUtil.HOST_ADDRESS + "1.0/member/modify/name";
+    String getPartyHeadUpdate = ConstantUtil.HOST_ADDRESS + "1.0/file/party/headpic";
+    String getPartyNameUpdate = ConstantUtil.HOST_ADDRESS + "1.0/party/modify/name";
+    String getPartyIntroduceUpdate = ConstantUtil.HOST_ADDRESS + "1.0/party/modify/introduce";
+    String getContactsSearch = ConstantUtil.HOST_ADDRESS + "1.0/contacts/search?";
+    String getFriendAdd = ConstantUtil.HOST_ADDRESS + "1.0/friend/add";
+    String getFriendAgree = ConstantUtil.HOST_ADDRESS + "1.0/friend/agree";
+    String getFriendDelete = ConstantUtil.HOST_ADDRESS + "1.0/friend/delete";
+    String getfriendRemarkUpdate = ConstantUtil.HOST_ADDRESS + "1.0/friend/remark/modify";
+    String getPartyAdd = ConstantUtil.HOST_ADDRESS + "1.0/party/add";
 
     /**
      * 用户登录
@@ -282,4 +288,26 @@ public interface Api {
      * @param apiStringCallbackListener
      */
     void getFriendAgree(FriendAgreeReq friendAgreeReq,  ApiStringCallbackListener apiStringCallbackListener);
+
+    /**
+     * 删除好友关系
+     * @param friendDeleteReq
+     * @param apiStringCallbackListener
+     */
+    void getFriendDelete(FriendDeleteReq friendDeleteReq, ApiStringCallbackListener apiStringCallbackListener);
+
+    /**
+     * 修改备注名
+     * @param remarkUpdateReq
+     * @param apiStringCallbackListener
+     */
+    void getfriendRemarkUpdate(RemarkUpdateReq remarkUpdateReq, ApiStringCallbackListener apiStringCallbackListener);
+
+    /**
+     * 创建群
+     * @param partyAddReq
+     * @param path
+     * @param apiFileCallbackListener
+     */
+    void getPartyAdd(PartyAddReq partyAddReq, String path, ApiFileCallbackListener apiFileCallbackListener);
 }

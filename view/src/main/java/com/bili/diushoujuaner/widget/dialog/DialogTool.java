@@ -39,7 +39,7 @@ public class DialogTool {
         });
     }
 
-    public static void createLoginConflictDialog(final Context context, final OnBothClickListener onBothClickListener) {
+    public static void createLoginConflictDialog(final Context context, final OnConflictClickListener onConflictClickListener) {
         final AlertDialog dialog = new AlertDialog.Builder(context).create();
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
@@ -51,14 +51,14 @@ public class DialogTool {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                onBothClickListener.onNegativeClick();
+                onConflictClickListener.onExitClick();
             }
         });
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
-                onBothClickListener.onPositiveClick();
+                onConflictClickListener.onReLoginClick();
             }
         });
     }
@@ -136,6 +136,28 @@ public class DialogTool {
         });
     }
 
+    public static void createDeleteFriendDialog(final Context context, final OnDialogPositiveClickListener onDialogPositiveClickListener){
+        final AlertDialog dialog = new AlertDialog.Builder(context).create();
+        dialog.show();
+        Window window = dialog.getWindow();
+        window.setContentView(R.layout.layout_dialog_delete_friend);
+        Button btnCancle = (Button) window.findViewById(R.id.btnCancle);
+        Button btnSure = (Button) window.findViewById(R.id.btnSure);
+        btnCancle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        btnSure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                onDialogPositiveClickListener.onPositiveClicked();
+            }
+        });
+    }
+
     public static void createPictureSaveDialog(final Context context, final OnDialogPositiveClickListener onDialogPositiveClickListener){
         final AlertDialog dialog = new AlertDialog.Builder(context).create();
         dialog.show();
@@ -161,6 +183,39 @@ public class DialogTool {
         });
     }
 
+    public static void createPartyOperateDialog(final Context context, final OnPartyClickListener onPartyClickListener){
+        final AlertDialog dialog = new AlertDialog.Builder(context).create();
+        dialog.show();
+        Window window = dialog.getWindow();
+        window.setContentView(R.layout.layout_dialog_party);
+        window.setBackgroundDrawableResource(R.color.TRANSPARENT);
+        window.setWindowAnimations(R.style.dialogWindowAnim);
+        window.setGravity(Gravity.BOTTOM);
+        RelativeLayout layoutCancle = (RelativeLayout) window.findViewById(R.id.layoutCancle);
+        RelativeLayout layoutBuild = (RelativeLayout) window.findViewById(R.id.layoutBuild);
+        RelativeLayout layoutSearch = (RelativeLayout) window.findViewById(R.id.layoutSearch);
+        layoutCancle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        layoutBuild.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                onPartyClickListener.onBuildPartyClick();
+            }
+        });
+        layoutSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                onPartyClickListener.onSearchPartyClick();
+            }
+        });
+    }
+
     public static void createReSendDialog(final Context context, final OnDialogPositiveClickListener onDialogPositiveClickListener){
         final AlertDialog dialog = new AlertDialog.Builder(context).create();
         dialog.show();
@@ -182,6 +237,65 @@ public class DialogTool {
             public void onClick(View v) {
                 dialog.dismiss();
                 onDialogPositiveClickListener.onPositiveClicked();
+            }
+        });
+    }
+
+    public static void createFriendAddDialog(final Context context, final OnDialogPositiveClickListener onDialogPositiveClickListener){
+        final AlertDialog dialog = new AlertDialog.Builder(context).create();
+        dialog.show();
+        Window window = dialog.getWindow();
+        window.setContentView(R.layout.layout_dialog_space_add);
+        window.setBackgroundDrawableResource(R.color.TRANSPARENT);
+        window.setWindowAnimations(R.style.dialogWindowAnim);
+        window.setGravity(Gravity.BOTTOM);
+        RelativeLayout layoutCancle = (RelativeLayout) window.findViewById(R.id.layoutCancle);
+        RelativeLayout layoutAdd = (RelativeLayout) window.findViewById(R.id.layoutAdd);
+        layoutCancle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        layoutAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                onDialogPositiveClickListener.onPositiveClicked();
+            }
+        });
+    }
+
+    public static void createFriendDetailDialog(Context context, final OnFriendDetailClickListener friendDetailClickListener){
+        final AlertDialog dialog = new AlertDialog.Builder(context).create();
+        dialog.show();
+        Window window = dialog.getWindow();
+        window.setContentView(R.layout.layout_dialog_friend_detail);
+        window.setBackgroundDrawableResource(R.color.TRANSPARENT);
+        window.setWindowAnimations(R.style.dialogWindowAnim);
+        window.setGravity(Gravity.BOTTOM);
+        RelativeLayout layoutCancle = (RelativeLayout) window.findViewById(R.id.layoutCancle);
+        RelativeLayout layoutDelete = (RelativeLayout) window.findViewById(R.id.layoutDelete);
+        RelativeLayout layoutRemark = (RelativeLayout) window.findViewById(R.id.layoutRemark);
+
+        layoutCancle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        layoutDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                friendDetailClickListener.onDeleteFriendClick();
+            }
+        });
+        layoutRemark.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                friendDetailClickListener.onModifyRemarkClick();
             }
         });
     }

@@ -9,7 +9,7 @@ import com.bili.diushoujuaner.model.apihelper.api.ApiAction;
 import com.bili.diushoujuaner.model.apihelper.callback.ApiStringCallbackListener;
 import com.bili.diushoujuaner.model.apihelper.request.FeedBackReq;
 import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
-import com.bili.diushoujuaner.utils.GsonParser;
+import com.bili.diushoujuaner.utils.GsonUtil;
 import com.google.gson.reflect.TypeToken;
 import com.nanotasks.BackgroundWork;
 import com.nanotasks.Completion;
@@ -40,7 +40,7 @@ public class FeedBackAction implements IFeedBackAction {
                 Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<Void>>() {
                     @Override
                     public ActionRespon<Void> doInBackground() throws Exception {
-                        ApiRespon<Void> result = GsonParser.getInstance().fromJson(data, new TypeToken<ApiRespon<Void>>() {
+                        ApiRespon<Void> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<Void>>() {
                         }.getType());
                         return ActionRespon.getActionResponFromApiRespon(result);
                     }

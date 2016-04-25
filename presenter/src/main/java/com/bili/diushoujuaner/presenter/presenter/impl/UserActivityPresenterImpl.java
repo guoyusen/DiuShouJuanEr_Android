@@ -8,11 +8,11 @@ import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
 import com.bili.diushoujuaner.model.apihelper.request.UserInfoReq;
 import com.bili.diushoujuaner.model.callback.ActionFileCallbackListener;
 import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
+import com.bili.diushoujuaner.utils.ConstantUtil;
 import com.bili.diushoujuaner.utils.entity.po.User;
 import com.bili.diushoujuaner.presenter.base.BasePresenter;
 import com.bili.diushoujuaner.presenter.presenter.UserActivityPresenter;
 import com.bili.diushoujuaner.presenter.view.IUserView;
-import com.bili.diushoujuaner.utils.Constant;
 import com.bili.diushoujuaner.model.eventhelper.ShowHeadEvent;
 import com.bili.diushoujuaner.model.eventhelper.UpdateUserInfoEvent;
 
@@ -29,11 +29,11 @@ public class UserActivityPresenterImpl extends BasePresenter<IUserView> implemen
 
     @Override
     public void updateHeadPic(String path) {
-        showLoading(Constant.LOADING_TOP,"正在上传头像");
+        showLoading(ConstantUtil.LOADING_TOP,"正在上传头像");
         FileAction.getInstance(context).uploadHeadPic(path, new ActionFileCallbackListener<ActionRespon<String>>() {
             @Override
             public void onSuccess(ActionRespon<String> result) {
-                hideLoading(Constant.LOADING_TOP);
+                hideLoading(ConstantUtil.LOADING_TOP);
                 if(showMessage(result.getRetCode(), result.getMessage())){
                     if(isBindViewValid()){
                         EventBus.getDefault().post(new ShowHeadEvent(result.getData()));
@@ -44,7 +44,7 @@ public class UserActivityPresenterImpl extends BasePresenter<IUserView> implemen
 
             @Override
             public void onFailure(int errorCode) {
-                hideLoading(Constant.LOADING_TOP);
+                hideLoading(ConstantUtil.LOADING_TOP);
                 showError(errorCode);
             }
 
@@ -57,7 +57,7 @@ public class UserActivityPresenterImpl extends BasePresenter<IUserView> implemen
 
     @Override
     public void updateUserInfo(UserInfoReq userInfoReq) {
-        showLoading(Constant.LOADING_TOP, "正在保存资料");
+        showLoading(ConstantUtil.LOADING_TOP, "正在保存资料");
         UserInfoAction.getInstance(context).getUserInfoUpdate(userInfoReq, new ActionStringCallbackListener<ActionRespon<User>>() {
             @Override
             public void onSuccess(ActionRespon<User> result) {
@@ -65,7 +65,7 @@ public class UserActivityPresenterImpl extends BasePresenter<IUserView> implemen
                     EventBus.getDefault().post(new UpdateUserInfoEvent());
                 }
                 showWarning("资料保存成功");
-                hideLoading(Constant.LOADING_TOP);
+                hideLoading(ConstantUtil.LOADING_TOP);
                 if(isBindViewValid()){
                     getBindView().finishView();
                 }
@@ -74,7 +74,7 @@ public class UserActivityPresenterImpl extends BasePresenter<IUserView> implemen
             @Override
             public void onFailure(int errorCode) {
                 showError(errorCode);
-                hideLoading(Constant.LOADING_TOP);
+                hideLoading(ConstantUtil.LOADING_TOP);
             }
         });
     }

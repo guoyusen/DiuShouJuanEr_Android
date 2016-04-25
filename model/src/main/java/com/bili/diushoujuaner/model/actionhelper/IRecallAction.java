@@ -15,16 +15,16 @@ import java.util.List;
  */
 public interface IRecallAction {
 
-    void getRecallListFromACache(final ActionStringCallbackListener<ActionRespon<List<RecallDto>>> actionStringCallbackListener);
+    void getRecallListFromACache(ActionStringCallbackListener<ActionRespon<List<RecallDto>>> actionStringCallbackListener);
 
-    void getUserRecallListFromACache(long userNo, final ActionStringCallbackListener<ActionRespon<List<RecallDto>>> actionStringCallbackListener);
+    void getUserRecallListFromACache(long userNo, ActionStringCallbackListener<ActionRespon<List<RecallDto>>> actionStringCallbackListener);
 
-    void getRecallList(RecallListReq recallListReq, final ActionStringCallbackListener<ActionRespon<List<RecallDto>>> actionStringCallbackListener);
+    void getRecallList(RecallListReq recallListReq, ActionStringCallbackListener<ActionRespon<List<RecallDto>>> actionStringCallbackListener);
 
-    void getRecentRecall(RecentRecallReq recentRecallReq, final ActionStringCallbackListener<ActionRespon<RecallDto>> actionStringCallbackListener);
+    void getRecentRecall(RecentRecallReq recentRecallReq, ActionStringCallbackListener<ActionRespon<RecallDto>> actionStringCallbackListener);
 
-    void getRecallRemove(RecallRemoveReq recallRemoveReq, final ActionStringCallbackListener<ActionRespon<Long>> actionStringCallbackListener);
+    void getRecallRemove(RecallRemoveReq recallRemoveReq, ActionStringCallbackListener<ActionRespon<Long>> actionStringCallbackListener);
 
-    void getRecallPublish(RecallPublishReq recallPublishReq, final ActionStringCallbackListener<ActionRespon<RecallDto>> actionStringCallbackListener);
+    void getRecallPublish(RecallPublishReq recallPublishReq, ActionStringCallbackListener<ActionRespon<RecallDto>> actionStringCallbackListener);
 
 }

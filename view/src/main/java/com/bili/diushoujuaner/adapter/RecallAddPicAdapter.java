@@ -5,14 +5,10 @@ import android.net.Uri;
 
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.adapter.viewholder.ViewHolder;
-import com.bili.diushoujuaner.utils.Constant;
+import com.bili.diushoujuaner.utils.CommonUtil;
+import com.bili.diushoujuaner.utils.ConstantUtil;
 import com.bili.diushoujuaner.utils.entity.vo.RecallAddPicVo;
-import com.facebook.drawee.backends.pipeline.Fresco;
-import com.facebook.drawee.backends.pipeline.PipelineDraweeControllerBuilder;
 import com.facebook.drawee.view.SimpleDraweeView;
-import com.facebook.imagepipeline.common.ResizeOptions;
-import com.facebook.imagepipeline.request.ImageRequest;
-import com.facebook.imagepipeline.request.ImageRequestBuilder;
 
 import java.util.List;
 
@@ -28,16 +24,9 @@ public class RecallAddPicAdapter extends CommonAdapter<RecallAddPicVo> {
     @Override
     public void convert(ViewHolder holder, RecallAddPicVo pictureVo, int position) throws Exception {
         if(pictureVo != null){
-            if(pictureVo.getType() == Constant.RECALL_ADD_PIC_PATH){
-                ImageRequest request = ImageRequestBuilder.newBuilderWithSource(Uri.parse("file://" + pictureVo.getPath()))
-                        .setResizeOptions(new ResizeOptions(200, 200))
-                        .build();
-                PipelineDraweeControllerBuilder controller = Fresco.newDraweeControllerBuilder();
-                controller.setOldController(((SimpleDraweeView)holder.getView(R.id.itemImg)).getController());
-                controller.setImageRequest(request);
-                controller.build();
-                ((SimpleDraweeView)holder.getView(R.id.itemImg)).setController(controller.build());
-            }else if(pictureVo.getType() == Constant.RECALL_ADD_PIC_RES){
+            if(pictureVo.getType() == ConstantUtil.RECALL_ADD_PIC_PATH){
+                CommonUtil.displayDraweeViewFromLocal(pictureVo.getPath(), (SimpleDraweeView)holder.getView(R.id.itemImg));
+            }else if(pictureVo.getType() == ConstantUtil.RECALL_ADD_PIC_RES){
                 ((SimpleDraweeView)holder.getView(R.id.itemImg)).setImageURI(Uri.parse("res://com.bili.diushoujuaner/" + pictureVo.getResourceId()));
             }
         }

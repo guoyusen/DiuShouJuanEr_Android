@@ -16,7 +16,8 @@ import android.widget.Toast;
 
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.base.BaseFragmentActivity;
-import com.bili.diushoujuaner.utils.Common;
+import com.bili.diushoujuaner.utils.CommonUtil;
+import com.bili.diushoujuaner.utils.StringUtil;
 import com.bili.diushoujuaner.utils.entity.vo.PictureVo;
 import com.bili.diushoujuaner.widget.CircleIndicator;
 import com.bili.diushoujuaner.widget.dialog.DialogTool;
@@ -104,7 +105,7 @@ public class PictureFragment extends Fragment{
             if(hashMap.get(position) == null){
                 photoDraweeView = new PhotoDraweeView(viewGroup.getContext());
                 PipelineDraweeControllerBuilder controller = Fresco.newDraweeControllerBuilder();
-                controller.setUri(Uri.parse(Common.getCompleteUrl(pictureVoList.get(position).getPicPath())));
+                controller.setUri(Uri.parse(StringUtil.getCompleteUrl(pictureVoList.get(position).getPicPath())));
                 controller.setOldController(photoDraweeView.getController());
                 controller.setControllerListener(new BaseControllerListener<ImageInfo>() {
                     @Override
@@ -117,7 +118,7 @@ public class PictureFragment extends Fragment{
                     }
                 });
                 photoDraweeView.setController(controller.build());
-                photoDraweeView.setTag(Common.getCompleteUrl(pictureVoList.get(position).getPicPath()));
+                photoDraweeView.setTag(StringUtil.getCompleteUrl(pictureVoList.get(position).getPicPath()));
                 try {
                     viewGroup.addView(photoDraweeView, ViewGroup.LayoutParams.MATCH_PARENT,
                             ViewGroup.LayoutParams.MATCH_PARENT);
@@ -149,7 +150,7 @@ public class PictureFragment extends Fragment{
             DialogTool.createPictureSaveDialog(getContext(), new OnDialogPositiveClickListener() {
                 @Override
                 public void onPositiveClicked() {
-                    if(Common.isImageDownloaded(Uri.parse(v.getTag().toString())) && Common.savePictureFromFresco(getContext(),v.getTag().toString())){
+                    if(CommonUtil.isImageDownloaded(Uri.parse(v.getTag().toString())) && CommonUtil.savePictureFromFresco(getContext(),v.getTag().toString())){
                         Toast.makeText(getContext(),"图片保存成功",Toast.LENGTH_SHORT).show();
                     }else{
                         Toast.makeText(getContext(),"资源未获取，稍后再试",Toast.LENGTH_SHORT).show();

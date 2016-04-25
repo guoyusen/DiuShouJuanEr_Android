@@ -13,8 +13,9 @@ import com.bili.diushoujuaner.presenter.base.BasePresenter;
 import com.bili.diushoujuaner.presenter.messager.LocalClient;
 import com.bili.diushoujuaner.presenter.presenter.MessageActivityPresenter;
 import com.bili.diushoujuaner.presenter.view.IMessageView;
-import com.bili.diushoujuaner.utils.Common;
-import com.bili.diushoujuaner.utils.Constant;
+import com.bili.diushoujuaner.utils.ConstantUtil;
+import com.bili.diushoujuaner.utils.StringUtil;
+import com.bili.diushoujuaner.utils.TimeUtil;
 import com.bili.diushoujuaner.utils.entity.vo.MessageVo;
 
 import org.greenrobot.eventbus.EventBus;
@@ -85,13 +86,13 @@ public class MessageActivityPresenterImpl extends BasePresenter<IMessageView> im
 
     @Override
     public void getNextActivity() {
-        if(ChattingTemper.getInstance().getMsgType() == Constant.CHAT_FRI){
+        if(ChattingTemper.getInstance().getMsgType() == ConstantUtil.CHAT_FRI){
             if(isBindViewValid()){
-                getBindView().showNextActivity(Constant.SHOW_TYPE_CHATTING_SETTING);
+                getBindView().showNextActivity(ConstantUtil.SHOW_TYPE_CHATTING_SETTING);
             }
         }else{
             if(isBindViewValid()){
-                getBindView().showNextActivity(Constant.SHOW_TYPE_PARTY_DETAIL);
+                getBindView().showNextActivity(ConstantUtil.SHOW_TYPE_PARTY_DETAIL);
             }
         }
     }
@@ -108,8 +109,8 @@ public class MessageActivityPresenterImpl extends BasePresenter<IMessageView> im
             case UpdateMessageEvent.MESSAGE_STATUS:
                 return updateMessageEvent.getMessageVo().getToNo() == ChattingTemper.getInstance().getToNo();
             case UpdateMessageEvent.MESSAGE_RECEIVE:
-                return (updateMessageEvent.getMessageVo().getMsgType() == Constant.CHAT_FRI && updateMessageEvent.getMessageVo().getFromNo() == ChattingTemper.getInstance().getToNo())
-                        || (updateMessageEvent.getMessageVo().getMsgType() == Constant.CHAT_PAR && updateMessageEvent.getMessageVo().getToNo() == ChattingTemper.getInstance().getToNo());
+                return (updateMessageEvent.getMessageVo().getMsgType() == ConstantUtil.CHAT_FRI && updateMessageEvent.getMessageVo().getFromNo() == ChattingTemper.getInstance().getToNo())
+                        || (updateMessageEvent.getMessageVo().getMsgType() == ConstantUtil.CHAT_PAR && updateMessageEvent.getMessageVo().getToNo() == ChattingTemper.getInstance().getToNo());
         }
         return false;
     }
@@ -124,7 +125,7 @@ public class MessageActivityPresenterImpl extends BasePresenter<IMessageView> im
                     ChattingTemper.getInstance().addChattingVoFromLocal(result.getData());
                     EventBus.getDefault().post(new UpdateMessageEvent(result.getData(), UpdateMessageEvent.MESSAGE_SEND));
                     //发送到service
-                    LocalClient.getInstance(context).sendMessageToService(Constant.HANDLER_CHAT, result.getData());
+                    LocalClient.getInstance(context).sendMessageToService(ConstantUtil.HANDLER_CHAT, result.getData());
                 }
             }
 
@@ -138,15 +139,15 @@ public class MessageActivityPresenterImpl extends BasePresenter<IMessageView> im
     private MessageVo getSendingMessageVo(String content, int conType){
         MessageVo messageVo = new MessageVo();
         messageVo.setMsgType(ChattingTemper.getInstance().getMsgType());
-        messageVo.setTime(Common.getCurrentTimeYYMMDD_HHMMSS());
+        messageVo.setTime(TimeUtil.getCurrentTimeYYMMDD_HHMMSS());
         messageVo.setContent(content);
         messageVo.setConType(conType);
         messageVo.setFromNo(CustomSessionPreference.getInstance().getCustomSession().getUserNo());
         messageVo.setToNo(ChattingTemper.getInstance().getToNo());
         messageVo.setRead(true);
-        messageVo.setStatus(Constant.MESSAGE_STATUS_SENDING);
+        messageVo.setStatus(ConstantUtil.MESSAGE_STATUS_SENDING);
         messageVo.setTimeShow(ChattingTemper.getInstance().getIsNeedShowTime(messageVo));
-        messageVo.setSerialNo(Common.getSerialNo());
+        messageVo.setSerialNo(StringUtil.getSerialNo());
 
         return messageVo;
     }
@@ -165,9 +166,9 @@ public class MessageActivityPresenterImpl extends BasePresenter<IMessageView> im
 
     @Override
     public void getContactInfo() {
-        if(ChattingTemper.getInstance().getMsgType() == Constant.CHAT_PAR){
+        if(ChattingTemper.getInstance().getMsgType() == ConstantUtil.CHAT_PAR){
             getBindView().showContactInfo(ContactTemper.getInstance().getPartyVo(ChattingTemper.getInstance().getToNo()));
-        }else if(ChattingTemper.getInstance().getMsgType() == Constant.CHAT_FRI){
+        }else if(ChattingTemper.getInstance().getMsgType() == ConstantUtil.CHAT_FRI){
             getBindView().showContactInfo(ContactTemper.getInstance().getFriendVo(ChattingTemper.getInstance().getToNo()));
         }
 

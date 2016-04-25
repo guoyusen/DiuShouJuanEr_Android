@@ -8,13 +8,18 @@ import android.widget.TextView;
 
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.base.BaseActivity;
+import com.bili.diushoujuaner.model.eventhelper.DeleteContactEvent;
 import com.bili.diushoujuaner.presenter.presenter.ChattingSettingActivityPresenter;
 import com.bili.diushoujuaner.presenter.presenter.impl.ChattingSettingActivityPresenterImpl;
 import com.bili.diushoujuaner.presenter.view.IChattingSettingView;
-import com.bili.diushoujuaner.utils.Common;
+import com.bili.diushoujuaner.utils.CommonUtil;
+import com.bili.diushoujuaner.utils.ConstantUtil;
 import com.bili.diushoujuaner.utils.entity.vo.FriendVo;
 import com.bili.diushoujuaner.widget.TintedBitmapDrawable;
 import com.facebook.drawee.view.SimpleDraweeView;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import butterknife.Bind;
 
@@ -43,6 +48,7 @@ public class ChattingSettingActivity extends BaseActivity<ChattingSettingActivit
     Button btnDelete;
 
     private TintedBitmapDrawable arrowRightDrawable;
+    private FriendVo friendVo;
 
     @Override
     public void beforeInitView() {
@@ -68,9 +74,18 @@ public class ChattingSettingActivity extends BaseActivity<ChattingSettingActivit
         if(friendVo == null){
             return;
         }
-        Common.displayDraweeView(friendVo.getPicPath(), ivHead);
+        this.friendVo = friendVo;
+        CommonUtil.displayDraweeView(friendVo.getPicPath(), ivHead);
         txtName.setText(friendVo.getDisplayName());
         txtContent.setText(friendVo.getAutograph());
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onDeleteContactEvent(DeleteContactEvent deleteContactEvent){
+        if(deleteContactEvent.getType() == ConstantUtil.DELETE_CONTACT_FRIEND
+                && deleteContactEvent.getContNo() == this.friendVo.getFriendNo()){
+            finish();
+        }
     }
 
 }
