@@ -12,6 +12,7 @@ import com.bili.diushoujuaner.model.apihelper.request.FeedBackReq;
 import com.bili.diushoujuaner.model.apihelper.request.FriendApplyReq;
 import com.bili.diushoujuaner.model.apihelper.request.FriendAgreeReq;
 import com.bili.diushoujuaner.model.apihelper.request.FriendDeleteReq;
+import com.bili.diushoujuaner.model.apihelper.request.MemberExitReq;
 import com.bili.diushoujuaner.model.apihelper.request.MemberNameUpdateReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyAddReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyApplyAgreeReq;
@@ -71,11 +72,12 @@ public interface Api {
     String getFriendApply = ConstantUtil.HOST_ADDRESS + "1.0/friend/apply";
     String getFriendAgree = ConstantUtil.HOST_ADDRESS + "1.0/friend/agree";
     String getFriendDelete = ConstantUtil.HOST_ADDRESS + "1.0/friend/delete";
-    String getfriendRemarkUpdate = ConstantUtil.HOST_ADDRESS + "1.0/friend/remark/modify";
+    String getFriendRemarkUpdate = ConstantUtil.HOST_ADDRESS + "1.0/friend/remark/modify";
     String getPartyAdd = ConstantUtil.HOST_ADDRESS + "1.0/party/add";
     String getPartyApply = ConstantUtil.HOST_ADDRESS + "1.0/party/apply";
     String getContactParty = ConstantUtil.HOST_ADDRESS + "1.0/contact/party?";
     String getPartyApplyAgree = ConstantUtil.HOST_ADDRESS + "1.0/party/apply/agree";
+    String getMemberExit = ConstantUtil.HOST_ADDRESS + "1.0/party/exit";
 
     /**
      * 用户登录
@@ -337,4 +339,11 @@ public interface Api {
      * @param apiStringCallbackListener
      */
     void getPartyApplyAgree(PartyApplyAgreeReq partyApplyAgreeReq, ApiStringCallbackListener apiStringCallbackListener);
+
+    /**
+     * 退出群聊
+     * @param memberExitReq
+     * @param apiStringCallbackListener
+     */
+    void getMemberExit(MemberExitReq memberExitReq, ApiStringCallbackListener apiStringCallbackListener);
 }

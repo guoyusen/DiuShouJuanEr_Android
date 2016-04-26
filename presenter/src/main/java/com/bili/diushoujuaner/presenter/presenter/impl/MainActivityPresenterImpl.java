@@ -29,7 +29,7 @@ public class MainActivityPresenterImpl extends BasePresenter<IMainView> implemen
         RecallTemper.getInstance().clear();
         GoodTemper.getInstance().clear();
         ContactTemper.getInstance().clear();
-        ChattingTemper.getInstance().clear();
+        ChattingTemper.getInstance().clear(true);
     }
 
     @Override

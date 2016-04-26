@@ -108,9 +108,6 @@ public class ContactTemper {
         }else{
             for(MemberVo memberVo : memberVoHashTable.get(partyNo).values()){
                 memberVoList.add(memberVo);
-                if(memberVoList.size() >=  4){
-                    break;
-                }
             }
             return memberVoList;
         }

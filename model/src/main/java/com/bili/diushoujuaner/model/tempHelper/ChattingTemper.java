@@ -48,11 +48,13 @@ public class ChattingTemper {
         void onUpdateMessage(MessageVo messageVo);
     }
 
-    public void clear(){
+    public void clear(boolean clearCurrentBo){
         hashtable.clear();
         chattingVoList.clear();
-        messageListenerList.clear();
-        resetCurrentChatBo();
+        if(clearCurrentBo){
+            messageListenerList.clear();
+            resetCurrentChatBo();
+        }
     }
 
     public void setCurrentChatBo(long userNo, int msgType){

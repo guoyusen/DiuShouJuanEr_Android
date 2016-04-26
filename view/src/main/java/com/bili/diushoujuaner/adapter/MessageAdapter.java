@@ -64,6 +64,11 @@ public class MessageAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
+    public void clear(){
+        this.messageVoList.clear();
+        notifyDataSetChanged();
+    }
+
     public void refresh(List<MessageVo> messageVoList){
         if(messageVoList == null){
             return;

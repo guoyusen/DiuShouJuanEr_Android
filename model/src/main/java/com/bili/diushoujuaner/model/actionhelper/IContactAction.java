@@ -4,6 +4,7 @@ import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
 import com.bili.diushoujuaner.model.apihelper.request.ContactAddInfoReq;
 import com.bili.diushoujuaner.model.apihelper.request.ContactsSearchReq;
 import com.bili.diushoujuaner.model.apihelper.request.FriendDeleteReq;
+import com.bili.diushoujuaner.model.apihelper.request.MemberExitReq;
 import com.bili.diushoujuaner.model.apihelper.request.MemberNameUpdateReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyAddReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyIntroduceUpdateReq;
@@ -59,4 +60,6 @@ public interface IContactAction {
      * @param memberNo
      */
     void getSingleMemberInfo(long partyNo, long memberNo, String time);
+
+    void getMemberExit(MemberExitReq memberExitReq, ActionStringCallbackListener<ActionRespon<Void>> actionStringCallbackListener);
 }

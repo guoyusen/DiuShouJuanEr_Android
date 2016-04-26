@@ -89,6 +89,12 @@ public class MinaClientHanler extends IoHandlerAdapter {
                 session.write(EntityUtil.getEmptyMessage(messageVo.getSerialNo(), -1, ConstantUtil.CHAT_STATUS));
                 MessageServiceHandler.getInstance().sendMessageToClient(ConstantUtil.HANDLER_PARTY_APPLY_AGREE, messageVo);
                 break;
+            case ConstantUtil.CHAT_PARTY_MEMBER_EXIT:
+                session.write(EntityUtil.getEmptyMessage(messageVo.getSerialNo(), -1, ConstantUtil.CHAT_STATUS));
+                DBManager.getInstance().deleteMember(messageVo.getToNo(), messageVo.getFromNo());
+                DBManager.getInstance().deleteChat(messageVo.getToNo(), messageVo.getFromNo());
+                MessageServiceHandler.getInstance().sendMessageToClient(ConstantUtil.HANDLER_PARTY_MEMBER_EXIT, messageVo);
+                break;
         }
     }
 

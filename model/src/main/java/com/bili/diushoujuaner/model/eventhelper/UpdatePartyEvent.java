@@ -6,6 +6,7 @@ package com.bili.diushoujuaner.model.eventhelper;
 public class UpdatePartyEvent {
 
     private long partyNo;
+    private long memberNo;
     private String content;
     private int type;
 
@@ -13,6 +14,22 @@ public class UpdatePartyEvent {
         this.partyNo = partyNo;
         this.content = content;
         this.type = type;
+        this.memberNo = -1;
+    }
+
+    public UpdatePartyEvent(long partyNo, long memberNo, String content, int type) {
+        this.partyNo = partyNo;
+        this.memberNo = memberNo;
+        this.content = content;
+        this.type = type;
+    }
+
+    public long getMemberNo() {
+        return memberNo;
+    }
+
+    public void setMemberNo(long memberNo) {
+        this.memberNo = memberNo;
     }
 
     public String getContent() {

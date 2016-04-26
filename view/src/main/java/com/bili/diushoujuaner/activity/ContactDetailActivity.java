@@ -199,7 +199,7 @@ public class ContactDetailActivity extends BaseActivity<ContactDetailActivityPre
     }
 
     private void showDeleteWarning(){
-        DialogTool.createDeleteFriendDialog(context, new OnDialogPositiveClickListener() {
+        DialogTool.createDeleteContactDialog(context,"确定解除童友关系？", new OnDialogPositiveClickListener() {
             @Override
             public void onPositiveClicked() {
                 getBindPresenter().getFriendDelete(userNo);

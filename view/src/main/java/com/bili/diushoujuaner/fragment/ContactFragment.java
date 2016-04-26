@@ -18,7 +18,7 @@ import com.bili.diushoujuaner.base.BaseFragment;
 import com.bili.diushoujuaner.model.eventhelper.RequestContactEvent;
 import com.bili.diushoujuaner.model.eventhelper.DeleteContactEvent;
 import com.bili.diushoujuaner.model.eventhelper.ShowMainMenuEvent;
-import com.bili.diushoujuaner.model.eventhelper.AddContactEvent;
+import com.bili.diushoujuaner.model.eventhelper.UpdateContactEvent;
 import com.bili.diushoujuaner.model.eventhelper.UpdateReadCountEvent;
 import com.bili.diushoujuaner.model.eventhelper.UpdateRemarkEvent;
 import com.bili.diushoujuaner.presenter.presenter.ContactFragmentPresenter;
@@ -147,7 +147,7 @@ public class ContactFragment extends BaseFragment<ContactFragmentPresenter> impl
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onAddContactEvent(AddContactEvent addContactEvent){
+    public void onUpdateContactEvent(UpdateContactEvent updateContactEvent){
         //添加联系人
         getBindPresenter().getContactList();
     }

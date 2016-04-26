@@ -25,4 +25,8 @@ public interface PartyDetailActivityPresenter {
 
     boolean isPartied(long partyNo);
 
+    void getMemberExit();
+
+    void getMemberExit(long partyNo);
+
 }

@@ -14,6 +14,7 @@ import com.bili.diushoujuaner.model.apihelper.request.FeedBackReq;
 import com.bili.diushoujuaner.model.apihelper.request.FriendApplyReq;
 import com.bili.diushoujuaner.model.apihelper.request.FriendAgreeReq;
 import com.bili.diushoujuaner.model.apihelper.request.FriendDeleteReq;
+import com.bili.diushoujuaner.model.apihelper.request.MemberExitReq;
 import com.bili.diushoujuaner.model.apihelper.request.MemberNameUpdateReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyAddReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyApplyAgreeReq;
@@ -227,7 +228,7 @@ public class ApiAction implements Api {
 
     @Override
     public void getfriendRemarkUpdate(RemarkUpdateReq remarkUpdateReq, ApiStringCallbackListener apiStringCallbackListener) {
-        dataLoader.processStringRequest(Request.Method.POST, Api.getfriendRemarkUpdate, CommonUtil.ConvertObjToMap(remarkUpdateReq), apiStringCallbackListener);
+        dataLoader.processStringRequest(Request.Method.POST, Api.getFriendRemarkUpdate, CommonUtil.ConvertObjToMap(remarkUpdateReq), apiStringCallbackListener);
     }
 
     @Override
@@ -253,5 +254,10 @@ public class ApiAction implements Api {
     @Override
     public void getPartyApplyAgree(PartyApplyAgreeReq partyApplyAgreeReq, ApiStringCallbackListener apiStringCallbackListener) {
         dataLoader.processStringRequest(Request.Method.POST, Api.getPartyApplyAgree, CommonUtil.ConvertObjToMap(partyApplyAgreeReq), apiStringCallbackListener);
+    }
+
+    @Override
+    public void getMemberExit(MemberExitReq memberExitReq, ApiStringCallbackListener apiStringCallbackListener) {
+        dataLoader.processStringRequest(Request.Method.POST, Api.getMemberExit, CommonUtil.ConvertObjToMap(memberExitReq), apiStringCallbackListener);
     }
 }

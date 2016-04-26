@@ -55,6 +55,7 @@ public class ChattingFragmentPresenterImpl extends BasePresenter<IChattingView> 
 
     @Override
     public void getChattingList() {
+        ChattingTemper.getInstance().clear(false);
         ChattingAction.getInstance(context).getChattingList(new ActionStringCallbackListener<ActionRespon<Void>>() {
             @Override
             public void onSuccess(ActionRespon<Void> result) {

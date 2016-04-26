@@ -225,6 +225,9 @@ public class ChattingFragment extends BaseFragment<ChattingFragmentPresenter> im
                     chattingAdapter.notifyDataSetInvalidated();
                 }
                 break;
+            case ConstantUtil.CHAT_PARTY_MEMBER_EXIT:
+                getBindPresenter().getChattingList();
+                break;
         }
     }
 

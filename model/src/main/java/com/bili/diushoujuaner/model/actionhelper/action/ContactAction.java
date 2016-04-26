@@ -12,6 +12,7 @@ import com.bili.diushoujuaner.model.apihelper.callback.ApiStringCallbackListener
 import com.bili.diushoujuaner.model.apihelper.request.ContactAddInfoReq;
 import com.bili.diushoujuaner.model.apihelper.request.ContactsSearchReq;
 import com.bili.diushoujuaner.model.apihelper.request.FriendDeleteReq;
+import com.bili.diushoujuaner.model.apihelper.request.MemberExitReq;
 import com.bili.diushoujuaner.model.apihelper.request.MemberNameUpdateReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyAddReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyContactReq;
@@ -21,7 +22,8 @@ import com.bili.diushoujuaner.model.apihelper.request.RemarkUpdateReq;
 import com.bili.diushoujuaner.model.callback.ActionFileCallbackListener;
 import com.bili.diushoujuaner.model.eventhelper.NoticeAddMemberEvent;
 import com.bili.diushoujuaner.model.eventhelper.RequestContactEvent;
-import com.bili.diushoujuaner.model.eventhelper.AddContactEvent;
+import com.bili.diushoujuaner.model.eventhelper.UpdateContactEvent;
+import com.bili.diushoujuaner.model.eventhelper.UpdatePartyEvent;
 import com.bili.diushoujuaner.model.eventhelper.UpdateRemarkEvent;
 import com.bili.diushoujuaner.model.tempHelper.ChattingTemper;
 import com.bili.diushoujuaner.utils.ConstantUtil;
@@ -78,6 +80,42 @@ public class ContactAction implements IContactAction{
     }
 
     @Override
+    public void getMemberExit(final MemberExitReq memberExitReq, final ActionStringCallbackListener<ActionRespon<Void>> actionStringCallbackListener) {
+        ApiAction.getInstance().getMemberExit(memberExitReq, new ApiStringCallbackListener() {
+            @Override
+            public void onSuccess(final String data) {
+                Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<Void>>() {
+                    @Override
+                    public ActionRespon<Void> doInBackground() throws Exception {
+                        ApiRespon<Void> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<Void>>(){}.getType());
+                        if(result.isLegal()){
+                            DBManager.getInstance().deleteParty(memberExitReq.getPartyNo());
+                            EventBus.getDefault().post(new UpdateContactEvent());
+                            EventBus.getDefault().post(new UpdatePartyEvent(memberExitReq.getPartyNo(),CustomSessionPreference.getInstance().getCustomSession().getUserNo(),"", ConstantUtil.CHAT_PARTY_MEMBER_EXIT));
+                        }
+                        return ActionRespon.getActionResponFromApiRespon(result);
+                    }
+                }, new Completion<ActionRespon<Void>>() {
+                    @Override
+                    public void onSuccess(Context context, ActionRespon<Void> result) {
+                        actionStringCallbackListener.onSuccess(result);
+                    }
+
+                    @Override
+                    public void onError(Context context, Exception e) {
+                        actionStringCallbackListener.onSuccess(ActionRespon.<Void>getActionResponError());
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(int errorCode) {
+                actionStringCallbackListener.onFailure(errorCode);
+            }
+        });
+    }
+
+    @Override
     public void getWholePartyInfo(final long partyNo, final long memberNo, final String time) {
         // 全量获取群组信息，更新本地数据库和界面
         ApiAction.getInstance().getContactParty(new PartyContactReq(partyNo), new ApiStringCallbackListener() {
@@ -88,7 +126,7 @@ public class ContactAction implements IContactAction{
                 if(result.isLegal() && result.getData().getType() == ConstantUtil.CONTACT_PARTY){
                     DBManager.getInstance().saveParty(EntityUtil.getPartyFromContactDto(result.getData()));
                     DBManager.getInstance().saveMemberList(getMemberListFromContactDto(result.getData()));
-                    EventBus.getDefault().post(new AddContactEvent());
+                    EventBus.getDefault().post(new UpdateContactEvent());
                     noticeNewMember(partyNo, memberNo, time);
                 }
             }
@@ -128,7 +166,7 @@ public class ContactAction implements IContactAction{
                     member.setUserNo(result.getData().getUserNo());
                     DBManager.getInstance().saveMember(member);
 
-                    EventBus.getDefault().post(new AddContactEvent());
+                    EventBus.getDefault().post(new UpdateContactEvent());
                     noticeNewMember(partyNo, memberNo, time);
                 }
             }
@@ -152,7 +190,7 @@ public class ContactAction implements IContactAction{
                         if(result.isLegal() && result.getData().getType() == ConstantUtil.CONTACT_PARTY){
                             DBManager.getInstance().saveParty(EntityUtil.getPartyFromContactDto(result.getData()));
                             DBManager.getInstance().saveMemberList(getMemberListFromContactDto(result.getData()));
-                            EventBus.getDefault().post(new AddContactEvent());
+                            EventBus.getDefault().post(new UpdateContactEvent());
                         }
                         return ActionRespon.getActionRespon(null);
                     }
@@ -284,7 +322,7 @@ public class ContactAction implements IContactAction{
                                 EventBus.getDefault().post(new RequestContactEvent());
                             }else if(type == ConstantUtil.CONTACT_INFO_ADD_AFTER) {
                                 //从本地更新联系人信息
-                                EventBus.getDefault().post(new AddContactEvent());
+                                EventBus.getDefault().post(new UpdateContactEvent());
                             }
                         }
 
@@ -310,7 +348,7 @@ public class ContactAction implements IContactAction{
                 friend.setOwnerNo(CustomSessionPreference.getInstance().getCustomSession().getUserNo());
                 friend.setRecent(true);
                 DBManager.getInstance().saveFriend(friend);
-                EventBus.getDefault().post(new AddContactEvent());
+                EventBus.getDefault().post(new UpdateContactEvent());
             }
         }
     }

@@ -14,7 +14,7 @@ import com.bili.diushoujuaner.model.apihelper.request.PartyApplyReq;
 import com.bili.diushoujuaner.model.cachehelper.ACache;
 import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
 import com.bili.diushoujuaner.model.databasehelper.DBManager;
-import com.bili.diushoujuaner.model.eventhelper.AddContactEvent;
+import com.bili.diushoujuaner.model.eventhelper.UpdateContactEvent;
 import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
 import com.bili.diushoujuaner.utils.ConstantUtil;
 import com.bili.diushoujuaner.utils.GsonUtil;
@@ -109,7 +109,7 @@ public class ApplyAction implements IApplyAction {
                     @Override
                     public void onSuccess(Context context, ActionRespon<Void> result) {
                         ACache.getInstance().put(ConstantUtil.ACACHE_LAST_TIME_CONTACT, "");
-                        EventBus.getDefault().post(new AddContactEvent());
+                        EventBus.getDefault().post(new UpdateContactEvent());
                         actionStringCallbackListener.onSuccess(result);
                     }
 

@@ -18,6 +18,7 @@ import com.bili.diushoujuaner.model.eventhelper.DeleteContactEvent;
 import com.bili.diushoujuaner.model.eventhelper.NoticeAddMemberEvent;
 import com.bili.diushoujuaner.model.eventhelper.UpdateMessageEvent;
 import com.bili.diushoujuaner.model.eventhelper.UpdatePartyEvent;
+import com.bili.diushoujuaner.model.tempHelper.ChattingTemper;
 import com.bili.diushoujuaner.presenter.presenter.MessageActivityPresenter;
 import com.bili.diushoujuaner.presenter.presenter.impl.MessageActivityPresenterImpl;
 import com.bili.diushoujuaner.presenter.view.IMessageView;
@@ -43,7 +44,7 @@ import butterknife.Bind;
 /**
  * Created by BiLi on 2016/3/9.
  */
-public class MessageActivity extends BaseActivity<MessageActivityPresenter> implements IMessageView, View.OnClickListener, OnReSendListener, View.OnTouchListener, MessageListView.OnLoadMoreListener {
+public class MessageActivity extends BaseActivity<MessageActivityPresenter> implements IMessageView, View.OnClickListener, OnReSendListener, View.OnTouchListener, MessageListView.OnLoadMoreListener, ChattingTemper.OnUpdateMessageListener {
 
     public static final String TAG = "MessageActivity";
     @Bind(R.id.listView)
@@ -133,6 +134,11 @@ public class MessageActivity extends BaseActivity<MessageActivityPresenter> impl
     }
 
     @Override
+    public void onUpdateMessage(MessageVo messageVo) {
+
+    }
+
+    @Override
     public void showContactInfo(FriendVo friendVo) {
         if(friendVo == null){
             return;
@@ -197,6 +203,11 @@ public class MessageActivity extends BaseActivity<MessageActivityPresenter> impl
 
     @Override
     public void showMessageList(List<MessageVo> messageVoList) {
+        messageVoHashMap.clear();
+        if(CommonUtil.isEmpty(messageVoList)){
+            messageAdapter.clear();
+            return;
+        }
         for (MessageVo messageVo : messageVoList) {
             if (messageVo.getStatus() == ConstantUtil.MESSAGE_STATUS_SENDING) {
                 messageVoHashMap.put(messageVo.getSerialNo(), messageVo);
@@ -226,6 +237,14 @@ public class MessageActivity extends BaseActivity<MessageActivityPresenter> impl
                 case ConstantUtil.CHAT_PARTY_MEMBER_NAME:
                     if (messageAdapter != null) {
                         messageAdapter.notifyDataSetInvalidated();
+                    }
+                    break;
+                case ConstantUtil.CHAT_PARTY_MEMBER_EXIT:
+                    if(updatePartyEvent.getMemberNo() == basePresenter.getCurrentUserNo()){
+                        finish();
+                    }else{
+                        getBindPresenter().resetMessageSearchParam(-1, 1);
+                        getBindPresenter().getMessageList();
                     }
                     break;
             }

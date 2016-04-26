@@ -2,10 +2,13 @@ package com.bili.diushoujuaner.presenter.presenter.impl;
 
 import android.content.Context;
 
+import com.bili.diushoujuaner.model.actionhelper.action.ContactAction;
 import com.bili.diushoujuaner.model.actionhelper.action.FileAction;
 import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
+import com.bili.diushoujuaner.model.apihelper.request.MemberExitReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyHeadUpdateReq;
 import com.bili.diushoujuaner.model.callback.ActionFileCallbackListener;
+import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
 import com.bili.diushoujuaner.model.eventhelper.UpdatePartyEvent;
 import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
 import com.bili.diushoujuaner.model.tempHelper.ChattingTemper;
@@ -27,6 +30,30 @@ public class PartyDetailActivityPresenterImpl extends BasePresenter<IPartyDetail
 
     public PartyDetailActivityPresenterImpl(IPartyDetailView baseView, Context context) {
         super(baseView, context);
+    }
+
+    @Override
+    public void getMemberExit() {
+        getMemberExit(ChattingTemper.getInstance().getToNo());
+    }
+
+    @Override
+    public void getMemberExit(long partyNo) {
+        showLoading(ConstantUtil.LOADING_CENTER, "正在退出...");
+        ContactAction.getInstance(context).getMemberExit(new MemberExitReq(partyNo), new ActionStringCallbackListener<ActionRespon<Void>>() {
+            @Override
+            public void onSuccess(ActionRespon<Void> result) {
+                ChattingTemper.getInstance().resetCurrentChatBo();
+                hideLoading(ConstantUtil.LOADING_CENTER);
+                showMessage(result.getRetCode(), result.getMessage());
+            }
+
+            @Override
+            public void onFailure(int errorCode) {
+                hideLoading(ConstantUtil.LOADING_CENTER);
+                showError(errorCode);
+            }
+        });
     }
 
     @Override

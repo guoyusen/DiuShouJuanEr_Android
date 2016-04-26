@@ -13,6 +13,7 @@ import com.bili.diushoujuaner.presenter.base.BasePresenter;
 import com.bili.diushoujuaner.presenter.messager.LocalClient;
 import com.bili.diushoujuaner.presenter.presenter.MessageActivityPresenter;
 import com.bili.diushoujuaner.presenter.view.IMessageView;
+import com.bili.diushoujuaner.utils.CommonUtil;
 import com.bili.diushoujuaner.utils.ConstantUtil;
 import com.bili.diushoujuaner.utils.StringUtil;
 import com.bili.diushoujuaner.utils.TimeUtil;
@@ -189,17 +190,17 @@ public class MessageActivityPresenterImpl extends BasePresenter<IMessageView> im
                             getBindView().loadFinish();
                             getBindView().showMoreMessageList(result.getData());
                         }else{
-                            if(!result.getData().isEmpty()){
+                            if(!CommonUtil.isEmpty(result.getData())){
                                 messageSearchParam.setLastId(result.getData().get(result.getData().size() - 1).getId());
                             }
                             getBindView().showMessageList(result.getData());
                         }
                     }
-                    if(result.getData().size() == messageSearchParam.getPageSize()){
+                    if(CommonUtil.isEmpty(result.getData()) || result.getData().size() < messageSearchParam.getPageSize()){
+                        messageSearchParam.setLoadComplete(true);
+                    }else{
                         messageSearchParam.setPageIndex(messageSearchParam.getPageIndex() + 1);
                         messageSearchParam.setLoadComplete(false);
-                    }else if(result.getData().size() < messageSearchParam.getPageSize()){
-                        messageSearchParam.setLoadComplete(true);
                     }
                 }
             }

@@ -109,7 +109,7 @@ public interface ConstantUtil {
     int CHAT_STATUS = 7;//消息更新状态
     int CHAT_PARTY_NAME = 8;//群广播-群名称
     int CHAT_PARTY_HEAD = 9;//群广播-头像
-    int CHAT_PARTY_MEMBER_UPDATE = 10;//群成员增删
+    int CHAT_PARTY_MEMBER_EXIT = 10;//群成员退出
     int CHAT_PARTY_UNGROUP = 11;//群解散
     int CHAT_PARTY_INTRODUCE = 12;//修改群介绍
     int CHAT_PARTY_MEMBER_NAME = 13;//群成员修改自己的群名片
@@ -146,7 +146,7 @@ public interface ConstantUtil {
     int HANDLER_LOGOUT = 10;
     int HANDLER_PARTY_NAME = 11;//群广播-群名称
     int HANDLER_PARTY_HEAD = 12;//群广播-头像
-    int HANDLER_PARTY_MEMBER_UPDATE = 13;//群成员增删
+    int HANDLER_PARTY_MEMBER_EXIT = 13;//群成员增删
     int HANDLER_PARTY_UNGROUP = 14;//群解散
     int HANDLER_PARTY_MEMBER_NAME = 15;//修改群名片
     int HANDLER_FRIEND_APPLY = 16;//添加童友

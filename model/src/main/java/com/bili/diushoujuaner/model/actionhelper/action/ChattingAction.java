@@ -11,6 +11,7 @@ import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
 import com.bili.diushoujuaner.model.databasehelper.DBManager;
 import com.bili.diushoujuaner.model.eventhelper.RequestContactEvent;
 import com.bili.diushoujuaner.model.eventhelper.DeleteContactEvent;
+import com.bili.diushoujuaner.model.eventhelper.UpdateContactEvent;
 import com.bili.diushoujuaner.model.eventhelper.UpdatePartyEvent;
 import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
 import com.bili.diushoujuaner.model.tempHelper.ChattingTemper;
@@ -204,6 +205,12 @@ public class ChattingAction implements IChattingAction {
                         // 不是自己，那么已经是该群的成员，只需要添加单个人的信息到数据库，通知更新界面
                         ContactAction.getInstance(context).getSingleMemberInfo(item.getToNo(), item.getFromNo(), item.getTime());
                     }
+                    break;
+                case ConstantUtil.CHAT_PARTY_MEMBER_EXIT:
+                    DBManager.getInstance().deleteMember(item.getToNo(), item.getFromNo());
+                    DBManager.getInstance().deleteChat(item.getToNo(), item.getFromNo());
+                    EventBus.getDefault().post(new UpdateContactEvent());
+                    EventBus.getDefault().post(new UpdatePartyEvent(item.getToNo(),item.getFromNo(), "", ConstantUtil.CHAT_PARTY_MEMBER_EXIT));
                     break;
             }
         }

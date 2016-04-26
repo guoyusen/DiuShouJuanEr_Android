@@ -32,6 +32,7 @@ import com.bili.diushoujuaner.utils.entity.vo.PartyVo;
 import com.bili.diushoujuaner.widget.CustomGridView;
 import com.bili.diushoujuaner.widget.TintedBitmapDrawable;
 import com.bili.diushoujuaner.widget.dialog.DialogTool;
+import com.bili.diushoujuaner.widget.dialog.OnDialogPositiveClickListener;
 import com.bili.diushoujuaner.widget.dialog.OnPartyDetailClickListener;
 import com.bili.diushoujuaner.widget.imagepicker.ImagePicker;
 import com.bili.diushoujuaner.widget.imagepicker.loader.GlideImageLoader;
@@ -52,7 +53,6 @@ import butterknife.Bind;
  * Created by BiLi on 2016/4/3.
  */
 public class PartyDetailActivity extends BaseActivity<PartyDetailActivityPresenter> implements IPartyDetailView, OnChangeHeadStatusListener, View.OnClickListener {
-
 
     @Bind(R.id.ivWallPaper)
     SimpleDraweeView ivWallPaper;
@@ -221,7 +221,7 @@ public class PartyDetailActivity extends BaseActivity<PartyDetailActivityPresent
                 DialogTool.createPartyDetailDialog(context, this.partyVo.getOwnerNo() == getBindPresenter().getUserNo(), new OnPartyDetailClickListener() {
                     @Override
                     public void onPartyExit() {
-
+                        showExitWarning();
                     }
 
                     @Override
@@ -250,6 +250,19 @@ public class PartyDetailActivity extends BaseActivity<PartyDetailActivityPresent
         }
     }
 
+    private void showExitWarning(){
+        DialogTool.createDeleteContactDialog(context,"确定退出群聊？", new OnDialogPositiveClickListener() {
+            @Override
+            public void onPositiveClicked() {
+                if(type == TYPE_CONTACT){
+                    getBindPresenter().getMemberExit();
+                }else if(type == TYPE_SEARCH && isPartied){
+                    getBindPresenter().getMemberExit(contactDto.getContNo());
+                }
+            }
+        });
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -263,7 +276,7 @@ public class PartyDetailActivity extends BaseActivity<PartyDetailActivityPresent
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void onUpdatePartyHeadEvent(UpdatePartyEvent updatePartyEvent) {
+    public void onUpdatePartyEvent(UpdatePartyEvent updatePartyEvent) {
         if (updatePartyEvent.getPartyNo() == this.partyVo.getPartyNo()) {
             switch (updatePartyEvent.getType()) {
                 case ConstantUtil.CHAT_PARTY_HEAD:
@@ -273,9 +286,6 @@ public class PartyDetailActivity extends BaseActivity<PartyDetailActivityPresent
                     txtPartyName.setText(updatePartyEvent.getContent());
                     txtNavTitle.setText(updatePartyEvent.getContent());
                     break;
-                case ConstantUtil.CHAT_PARTY_MEMBER_UPDATE:
-
-                    break;
                 case ConstantUtil.CHAT_PARTY_UNGROUP:
 
                     break;
@@ -284,6 +294,13 @@ public class PartyDetailActivity extends BaseActivity<PartyDetailActivityPresent
                     break;
                 case ConstantUtil.CHAT_PARTY_INTRODUCE:
                     txtIntroduce.setText(StringUtil.isEmpty(updatePartyEvent.getContent()) ? "暂无介绍" : updatePartyEvent.getContent());
+                    break;
+                case ConstantUtil.CHAT_PARTY_MEMBER_EXIT:
+                    if(updatePartyEvent.getMemberNo() == basePresenter.getCurrentUserNo()){
+                        finish();
+                    }else{
+                        getBindPresenter().getContactInfo(updatePartyEvent.getPartyNo());
+                    }
                     break;
             }
         }
@@ -327,6 +344,7 @@ public class PartyDetailActivity extends BaseActivity<PartyDetailActivityPresent
     }
 
     private void showMemberList() {
+        memberPicVoList.clear();
         if (type == TYPE_CONTACT || (type == TYPE_SEARCH && isPartied)) {
             List<MemberVo> memberVoList;
             if(type == TYPE_CONTACT){

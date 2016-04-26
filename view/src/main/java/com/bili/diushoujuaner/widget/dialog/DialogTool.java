@@ -136,13 +136,15 @@ public class DialogTool {
         });
     }
 
-    public static void createDeleteFriendDialog(final Context context, final OnDialogPositiveClickListener onDialogPositiveClickListener){
+    public static void createDeleteContactDialog(final Context context, String content, final OnDialogPositiveClickListener onDialogPositiveClickListener){
         final AlertDialog dialog = new AlertDialog.Builder(context).create();
         dialog.show();
         Window window = dialog.getWindow();
-        window.setContentView(R.layout.layout_dialog_delete_friend);
+        window.setContentView(R.layout.layout_dialog_delete_contact);
         Button btnCancle = (Button) window.findViewById(R.id.btnCancle);
         Button btnSure = (Button) window.findViewById(R.id.btnSure);
+        TextView txtWarning = (TextView) window.findViewById(R.id.txtWarning);
+        txtWarning.setText(content);
         btnCancle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

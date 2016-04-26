@@ -13,6 +13,7 @@ import com.bili.diushoujuaner.model.eventhelper.ForceOutEvent;
 import com.bili.diushoujuaner.model.eventhelper.LoginEvent;
 import com.bili.diushoujuaner.model.eventhelper.LoginngEvent;
 import com.bili.diushoujuaner.model.eventhelper.LogoutEvent;
+import com.bili.diushoujuaner.model.eventhelper.UpdateContactEvent;
 import com.bili.diushoujuaner.model.eventhelper.UpdateMessageEvent;
 import com.bili.diushoujuaner.model.eventhelper.UpdatePartyEvent;
 import com.bili.diushoujuaner.model.eventhelper.UpdateReadCountEvent;
@@ -124,6 +125,14 @@ public class LocalClientHandler extends Handler {
                 }
                 ChattingTemper.getInstance().deleteChattingVo(messageVo.getFromNo(), ConstantUtil.CHAT_FRI);
                 EventBus.getDefault().post(new DeleteContactEvent(ConstantUtil.DELETE_CONTACT_FRIEND, messageVo.getFromNo()));
+                break;
+            case ConstantUtil.HANDLER_PARTY_MEMBER_EXIT:
+                messageVo = bundle.getParcelable("MessageVo");
+                if(messageVo == null){
+                    return;
+                }
+                EventBus.getDefault().post(new UpdateContactEvent());
+                EventBus.getDefault().post(new UpdatePartyEvent(messageVo.getToNo(),messageVo.getFromNo(), "", ConstantUtil.CHAT_PARTY_MEMBER_EXIT));
                 break;
         }
     }

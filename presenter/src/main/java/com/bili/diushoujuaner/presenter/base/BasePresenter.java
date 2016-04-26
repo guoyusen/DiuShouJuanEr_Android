@@ -13,6 +13,7 @@ import com.bili.diushoujuaner.model.tempHelper.GoodTemper;
 import com.bili.diushoujuaner.model.tempHelper.RecallTemper;
 import com.bili.diushoujuaner.presenter.messager.LocalClient;
 import com.bili.diushoujuaner.utils.ConstantUtil;
+import com.bili.diushoujuaner.utils.entity.po.User;
 
 /**
  * Created by BiLi on 2016/3/10.
@@ -105,6 +106,14 @@ public class BasePresenter<T extends IBaseView> {
         baseView.showWarning(message);
     }
 
+    public User getCurrentUserInfo(){
+        return UserInfoAction.getInstance(context).getUserFromLocal();
+    }
+
+    public long getCurrentUserNo(){
+        return CustomSessionPreference.getInstance().getCustomSession().getUserNo();
+    }
+
     public void getLogout(){
         showLoading(ConstantUtil.LOADING_TOP,"正在退出账号");
         UserInfoAction.getInstance(context).getLogout(new ActionStringCallbackListener<ActionRespon<Void>>() {
@@ -120,7 +129,7 @@ public class BasePresenter<T extends IBaseView> {
                     RecallTemper.getInstance().clear();
                     GoodTemper.getInstance().clear();
                     ContactTemper.getInstance().clear();
-                    ChattingTemper.getInstance().clear();
+                    ChattingTemper.getInstance().clear(true);
                     if(isBindViewValid()){
                         getBindView().exitActivity();
                     }
