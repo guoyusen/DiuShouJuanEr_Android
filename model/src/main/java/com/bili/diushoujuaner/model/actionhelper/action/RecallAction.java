@@ -131,7 +131,7 @@ public class RecallAction implements IRecallAction {
                 public void onSuccess(String data) {
                     ApiRespon<RecallDto> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<RecallDto>>() {
                     }.getType());
-                    if(result.getIsLegal()){
+                    if(result.isLegal()){
                         ACache.getInstance().put(ConstantUtil.ACACHE_RECENT_RECALL_PREFIX + recentRecallReq.getUserNo(), GsonUtil.getInstance().toJson(result.getData()), ConstantUtil.ACACHE_TIME_RECENT_RECALL);
                     }
                     actionStringCallbackListener.onSuccess(ActionRespon.getActionRespon(result.getMessage(),result.getRetCode(),result.getData()));

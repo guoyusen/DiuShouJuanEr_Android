@@ -7,6 +7,8 @@ public interface ContactAddActivityPresenter {
 
     void getApplyVoList();
 
-    void getFriendAgree(long friendNo);
+    void getFriendApplyAgree(long friendNo);
+
+    void getPartyApplyAgree(long partyNo, long memberNo);
 
 }

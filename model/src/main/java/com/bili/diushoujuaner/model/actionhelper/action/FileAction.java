@@ -7,15 +7,12 @@ import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
 import com.bili.diushoujuaner.model.apihelper.ApiRespon;
 import com.bili.diushoujuaner.model.apihelper.api.ApiAction;
 import com.bili.diushoujuaner.model.apihelper.callback.ApiFileCallbackListener;
-import com.bili.diushoujuaner.model.apihelper.request.PartyAddReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyHeadUpdateReq;
 import com.bili.diushoujuaner.model.apihelper.request.RecallSerialReq;
 import com.bili.diushoujuaner.model.callback.ActionFileCallbackListener;
 import com.bili.diushoujuaner.model.databasehelper.DBManager;
 import com.bili.diushoujuaner.model.tempHelper.ContactTemper;
-import com.bili.diushoujuaner.utils.ConstantUtil;
 import com.bili.diushoujuaner.utils.GsonUtil;
-import com.bili.diushoujuaner.utils.entity.dto.ContactDto;
 import com.google.gson.reflect.TypeToken;
 import com.nanotasks.BackgroundWork;
 import com.nanotasks.Completion;
@@ -50,7 +47,7 @@ public class FileAction implements IFileAction {
                     public ActionRespon<String> doInBackground() throws Exception {
                         ApiRespon<String> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<String>>() {
                         }.getType());
-                        if(result.getIsLegal()){
+                        if(result.isLegal()){
                             ContactTemper.getInstance().updatePartyHeadPic(partyHeadUpdateReq.getPartyNo(), result.getData());
                             DBManager.getInstance().updatePartyHeadPic(partyHeadUpdateReq.getPartyNo(), result.getData());
                         }
@@ -128,7 +125,7 @@ public class FileAction implements IFileAction {
                     public ActionRespon<String> doInBackground() throws Exception {
                         ApiRespon<String> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<String>>() {
                         }.getType());
-                        if(result.getIsLegal()){
+                        if(result.isLegal()){
                             DBManager.getInstance().updateWallpaper(result.getData());
                             //clear user
                             UserInfoAction.getInstance(context).clearUser();
@@ -170,7 +167,7 @@ public class FileAction implements IFileAction {
                     public ActionRespon<String> doInBackground() throws Exception {
                         ApiRespon<String> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<String>>() {
                         }.getType());
-                        if(result.getIsLegal()){
+                        if(result.isLegal()){
                             DBManager.getInstance().updateHeadPic(result.getData());
                             //clear user
                             UserInfoAction.getInstance(context).clearUser();

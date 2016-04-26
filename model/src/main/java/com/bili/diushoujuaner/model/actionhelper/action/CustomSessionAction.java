@@ -52,7 +52,7 @@ public class CustomSessionAction implements ICustomSessionAction {
                 public ActionRespon<Void> doInBackground() throws Exception {
                     ApiRespon<CustomSession> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<CustomSession>>() {
                     }.getType());
-                    if(result.getIsLegal()){
+                    if(result.isLegal()){
                         CustomSessionPreference.getInstance().saveCustomSession(result.getData());
                     }
                     return ActionRespon.getActionRespon(result.getMessage(), result.getRetCode(), (Void)null);

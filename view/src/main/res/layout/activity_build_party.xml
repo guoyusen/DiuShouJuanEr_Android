@@ -43,6 +43,8 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/TC_WHITE"
                     android:layout_centerInParent="true"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true"
                     style="@style/TextMiddle"
                     android:text="点击上传群头像"/>
 

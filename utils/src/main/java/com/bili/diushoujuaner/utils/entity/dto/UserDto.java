@@ -6,7 +6,6 @@ package com.bili.diushoujuaner.utils.entity.dto;
 public class UserDto {
 
     private Long userNo;
-    private String realName;
     private String nickName;
     private String mobile;
     private String email;
@@ -50,14 +49,6 @@ public class UserDto {
 
     public void setUserNo(Long userNo) {
         this.userNo = userNo;
-    }
-
-    public String getRealName() {
-        return realName;
-    }
-
-    public void setRealName(String realName) {
-        this.realName = realName == null ? null : realName.trim();
     }
 
     public String getNickName() {

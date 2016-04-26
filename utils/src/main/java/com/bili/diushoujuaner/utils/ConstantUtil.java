@@ -59,8 +59,8 @@ public interface ConstantUtil {
     int EDIT_CONTENT_MEMBER_NAME = 3;
     int EDIT_CONTENT_PARTY_NAME = 4;
     int EDIT_CONTENT_PARTY_INTRODUCE = 5;
-    int EDIT_CONTENT_FRIEND_ADD = 6;
-    int EDIT_CONTENT_PARTY_ADD = 7;
+    int EDIT_CONTENT_FRIEND_APPLY = 6;
+    int EDIT_CONTENT_PARTY_APPLY = 7;
     int EDIT_CONTENT_FRIEND_REMARK = 8;
     // 文本编辑器对应文本的长度
     int EDIT_CONTENT_LENGTH_MEMBER_NAME = 50;
@@ -68,8 +68,8 @@ public interface ConstantUtil {
     int EDIT_CONTENT_LENGTH_PARTY_NAME = 10;
     int EDIT_CONTENT_LENGTH_FEEDBACK = 200;
     int EDIT_CONTENT_LENGTH_PARTY_INTRODUCE = 100;
-    int EDIT_CONTENT_LENGTH_FRIEND_ADD = 50;
-    int EDIT_CONTENT_LENGTH_PARTY_ADD = 50;
+    int EDIT_CONTENT_LENGTH_FRIEND_APPLY = 50;
+    int EDIT_CONTENT_LENGTH_PARTY_APPLY = 50;
     int EDIT_CONTENT_LENGTH_FRIEND_REMARK = 50;
     // 最近一条发布的缓存时间
     int ACACHE_TIME_RECENT_RECALL = 600000;
@@ -98,31 +98,33 @@ public interface ConstantUtil {
     int RECALL_ADD_PIC_PATH = 1;
     int RECALL_ADD_PIC_RES = 2;
     // 聊天的消息类型
-    int CHAT_INIT = -1;
-    int CHAT_PING = 0;
-    int CHAT_PONG = 1;
-    int CHAT_FRI = 2;
-    int CHAT_TIME = 3;
-    int CHAT_CLOSE = 4;
-    int CHAT_PAR = 5;
-    int CHAT_GOOD = 6;
-    int CHAT_STATUS = 7;
+    int CHAT_INIT = -1;//初始化，携带账号信息在服务端进行注册
+    int CHAT_PING = 0;//心跳请求包
+    int CHAT_PONG = 1;//心跳响应包
+    int CHAT_FRI = 2;//好友消息
+    int CHAT_TIME = 3;//同步时间
+    int CHAT_CLOSE = 4;//关闭
+    int CHAT_PAR = 5;//群消息
+    int CHAT_GOOD = 6;//赞消息
+    int CHAT_STATUS = 7;//消息更新状态
     int CHAT_PARTY_NAME = 8;//群广播-群名称
     int CHAT_PARTY_HEAD = 9;//群广播-头像
     int CHAT_PARTY_MEMBER_UPDATE = 10;//群成员增删
     int CHAT_PARTY_UNGROUP = 11;//群解散
     int CHAT_PARTY_INTRODUCE = 12;//修改群介绍
     int CHAT_PARTY_MEMBER_NAME = 13;//群成员修改自己的群名片
-    int CHAT_FRIEND_ADD = 14;//添加童友
-    int CHAT_PARTY_ADD = 15;//申请加群
+    int CHAT_FRIEND_APPLY = 14;//添加童友
+    int CHAT_PARTY_APPLY = 15;//申请加群
     int CHAT_FRIEND_RECOMMEND = 16;//好友推荐
     int CHAT_FRIEND_DELETE = 17;//删除童友
+    int CHAT_FRIEND_APPLY_AGREE = 18;//同意添加好友
+    int CHAT_PARTY_APPLY_AGREE = 19;//同意加入群
     // 聊天消息中content的类型
     int CHAT_CONTENT_EMPTY = 0;
     int CHAT_CONTENT_TEXT = 1;
     int CHAT_CONTENT_IMG = 2;
     int CHAT_CONTENT_VOICE = 3;
-    int CHAT_CONTENT_FRIEND_AGREE = 4;
+    int CONTENT_PARTY_ADD = 4;
     // 如果20S内没有收到来自服务端的心跳请求，则触发离线
     int IDEL_TIMEOUT_FOR_INTERVAL = 20;
     // 5S连接超时
@@ -147,10 +149,11 @@ public interface ConstantUtil {
     int HANDLER_PARTY_MEMBER_UPDATE = 13;//群成员增删
     int HANDLER_PARTY_UNGROUP = 14;//群解散
     int HANDLER_PARTY_MEMBER_NAME = 15;//修改群名片
-    int HANDLER_FRIEND_ADD = 16;//添加童友
-    int HANDLER_PARTY_ADD = 17;//申请加群
-    int HANDLER_CONTACT_ADDED = 18;//添加成功，更新对应的联系人
-    int HANDLER_FRIEND_DELETE = 19;//删除童友
+    int HANDLER_FRIEND_APPLY = 16;//添加童友
+    int HANDLER_PARTY_APPLY = 17;//申请加群
+    int HANDLER_FRIEND_APPLY_AGREE = 18;//添加好友成功，更新对应的联系人
+    int HANDLER_PARTY_APPLY_AGREE = 19;//添加群成功，更新对应联系人
+    int HANDLER_FRIEND_DELETE = 20;//删除童友
     // 群成员头像来源 服务端头像 本地加号
     int MEMBER_HEAD_SERVER = 1;
     int MEMBER_HEAD_LOCAL = 2;
@@ -168,4 +171,7 @@ public interface ConstantUtil {
     // 删除联系人类型
     int DELETE_CONTACT_FRIEND = 1;
     int DELETE_CONTACT_PARTY = 2;
+    // 群成员类型
+    int MEMBER_OWNER = 1;//管理员
+    int MEMBER_MEMBER = 2;//成员
 }

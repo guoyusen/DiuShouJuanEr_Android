@@ -15,6 +15,7 @@ import com.bili.diushoujuaner.adapter.MessageAdapter;
 import com.bili.diushoujuaner.base.BaseActivity;
 import com.bili.diushoujuaner.callback.OnReSendListener;
 import com.bili.diushoujuaner.model.eventhelper.DeleteContactEvent;
+import com.bili.diushoujuaner.model.eventhelper.NoticeAddMemberEvent;
 import com.bili.diushoujuaner.model.eventhelper.UpdateMessageEvent;
 import com.bili.diushoujuaner.model.eventhelper.UpdatePartyEvent;
 import com.bili.diushoujuaner.presenter.presenter.MessageActivityPresenter;
@@ -146,6 +147,13 @@ public class MessageActivity extends BaseActivity<MessageActivityPresenter> impl
         showPageHead(partyVo.getDisplayName(), R.mipmap.icon_friend, null);
         this.partyVo = partyVo;
         this.isPartyChatting = true;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onNoticeAddMemberEvent(NoticeAddMemberEvent noticeAddMemberEvent){
+        if(isPartyChatting && partyVo.getPartyNo() == noticeAddMemberEvent.getMessageVo().getToNo() && messageAdapter != null){
+            messageAdapter.addLast(noticeAddMemberEvent.getMessageVo());
+        }
     }
 
     @Override

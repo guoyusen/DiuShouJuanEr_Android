@@ -192,40 +192,10 @@
                     android:visibility="gone" />
 
                 <RelativeLayout
-                    android:id="@+id/layoutRecord"
-                    style="@style/MatchWrap"
-                    android:layout_height="@dimen/y112"
-                    android:layout_marginTop="@dimen/y32"
-                    android:background="@color/COLOR_WHITE"
-                    android:paddingBottom="@dimen/y32"
-                    android:paddingLeft="@dimen/x24"
-                    android:paddingRight="@dimen/x24"
-                    android:paddingTop="@dimen/y32">
-
-                    <TextView
-                        style="@style/TextMiddle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:text="聊天记录"
-                        android:textColor="@color/TC_040404" />
-
-                    <ImageView
-                        android:id="@+id/ivRecord"
-                        android:layout_width="@dimen/x50"
-                        android:layout_height="@dimen/y50"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true" />
-
-                </RelativeLayout>
-
-                <View style="@style/line" />
-
-                <RelativeLayout
                     android:id="@+id/layoutFile"
                     style="@style/MatchWrap"
                     android:layout_height="@dimen/y112"
+                    android:layout_marginTop="@dimen/y32"
                     android:background="@color/COLOR_WHITE"
                     android:paddingBottom="@dimen/y32"
                     android:paddingLeft="@dimen/x24"
@@ -242,6 +212,36 @@
 
                     <ImageView
                         android:id="@+id/ivFile"
+                        android:layout_width="@dimen/x50"
+                        android:layout_height="@dimen/y50"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true" />
+
+                </RelativeLayout>
+
+                <View style="@style/line" />
+
+                <RelativeLayout
+                    android:id="@+id/layoutRecord"
+                    style="@style/MatchWrap"
+                    android:layout_height="@dimen/y112"
+                    android:background="@color/COLOR_WHITE"
+                    android:paddingBottom="@dimen/y32"
+                    android:paddingLeft="@dimen/x24"
+                    android:paddingRight="@dimen/x24"
+                    android:paddingTop="@dimen/y32">
+
+                    <TextView
+                        style="@style/TextMiddle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:text="聊天记录"
+                        android:textColor="@color/TC_040404" />
+
+                    <ImageView
+                        android:id="@+id/ivRecord"
                         android:layout_width="@dimen/x50"
                         android:layout_height="@dimen/y50"
                         android:layout_alignParentEnd="true"

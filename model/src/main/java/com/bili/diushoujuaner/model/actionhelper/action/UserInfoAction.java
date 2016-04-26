@@ -114,7 +114,7 @@ public class UserInfoAction implements IUserInfoAction {
             public ActionRespon<Void> doInBackground() throws Exception {
                 ApiRespon<CustomSession> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<CustomSession>>() {
                 }.getType());
-                if(result.getIsLegal()){
+                if(result.isLegal()){
                     CustomSessionPreference.getInstance().saveCustomSession(result.getData());
                 }
                 return ActionRespon.getActionRespon(result.getMessage(), result.getRetCode(), (Void)null);
@@ -179,7 +179,7 @@ public class UserInfoAction implements IUserInfoAction {
                     public ActionRespon<User> doInBackground() throws Exception {
                         ApiRespon<UserDto> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<UserDto>>() {
                         }.getType());
-                        if(result.getIsLegal()) {
+                        if(result.isLegal()) {
                             DBManager.getInstance().saveUser(result.getData());
                             user = DBManager.getInstance().getUser(CustomSessionPreference.getInstance().getCustomSession().getUserNo());
                         }
@@ -264,7 +264,7 @@ public class UserInfoAction implements IUserInfoAction {
                         public ActionRespon<User> doInBackground() throws Exception {
                             ApiRespon<UserDto> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<UserDto>>() {
                             }.getType());
-                            if(result.getIsLegal()) {
+                            if(result.isLegal()) {
                                 DBManager.getInstance().saveUser(result.getData());
                                 user = DBManager.getInstance().getUser(CustomSessionPreference.getInstance().getCustomSession().getUserNo());
                             }

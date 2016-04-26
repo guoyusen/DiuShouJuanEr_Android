@@ -278,7 +278,7 @@ public class SpaceActivity extends BaseFragmentActivity<SpaceActivityPresenter> 
                     @Override
                     public void onPositiveClicked() {
                         startActivity(new Intent(context, ContentEditActivity.class)
-                                .putExtra(ContentEditActivity.TAG_TYPE, ConstantUtil.EDIT_CONTENT_FRIEND_ADD)
+                                .putExtra(ContentEditActivity.TAG_TYPE, ConstantUtil.EDIT_CONTENT_FRIEND_APPLY)
                                 .putExtra(ContentEditActivity.TAG_CONTENT, "")
                                 .putExtra(ContentEditActivity.TAG_CONTNO, userNo));
                     }

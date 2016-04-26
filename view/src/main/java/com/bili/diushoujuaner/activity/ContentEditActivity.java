@@ -58,11 +58,11 @@ public class ContentEditActivity extends BaseActivity<ContentEditActivityPresent
                 case ConstantUtil.EDIT_CONTENT_PARTY_INTRODUCE:
                     textLeftCount.setText((ConstantUtil.EDIT_CONTENT_LENGTH_PARTY_INTRODUCE - s.toString().length()) + "");
                     break;
-                case ConstantUtil.EDIT_CONTENT_FRIEND_ADD:
-                    textLeftCount.setText((ConstantUtil.EDIT_CONTENT_LENGTH_FRIEND_ADD - s.toString().length()) + "");
+                case ConstantUtil.EDIT_CONTENT_FRIEND_APPLY:
+                    textLeftCount.setText((ConstantUtil.EDIT_CONTENT_LENGTH_FRIEND_APPLY - s.toString().length()) + "");
                     break;
-                case ConstantUtil.EDIT_CONTENT_PARTY_ADD:
-                    textLeftCount.setText((ConstantUtil.EDIT_CONTENT_LENGTH_PARTY_ADD - s.toString().length()) + "");
+                case ConstantUtil.EDIT_CONTENT_PARTY_APPLY:
+                    textLeftCount.setText((ConstantUtil.EDIT_CONTENT_LENGTH_PARTY_APPLY - s.toString().length()) + "");
                     break;
                 case ConstantUtil.EDIT_CONTENT_FRIEND_REMARK:
                     textLeftCount.setText((ConstantUtil.EDIT_CONTENT_LENGTH_FRIEND_REMARK - s.toString().length()) + "");
@@ -85,8 +85,8 @@ public class ContentEditActivity extends BaseActivity<ContentEditActivityPresent
     public void initIntentParam(Intent intent) {
         type = intent.getIntExtra(TAG_TYPE, ConstantUtil.EDIT_CONTENT_NONE);
         content = intent.getStringExtra(TAG_CONTENT);
-        if (type == ConstantUtil.EDIT_CONTENT_FRIEND_ADD
-                || type == ConstantUtil.EDIT_CONTENT_PARTY_ADD
+        if (type == ConstantUtil.EDIT_CONTENT_FRIEND_APPLY
+                || type == ConstantUtil.EDIT_CONTENT_PARTY_APPLY
                 || type == ConstantUtil.EDIT_CONTENT_FRIEND_REMARK) {
             contactNo = intent.getLongExtra(TAG_CONTNO, -1);
         }
@@ -142,17 +142,17 @@ public class ContentEditActivity extends BaseActivity<ContentEditActivityPresent
                 edtEditor.setHint("更改您的群介绍...");
                 edtEditor.setMaxLength(ConstantUtil.EDIT_CONTENT_LENGTH_PARTY_INTRODUCE);
                 break;
-            case ConstantUtil.EDIT_CONTENT_FRIEND_ADD:
+            case ConstantUtil.EDIT_CONTENT_FRIEND_APPLY:
                 showPageHead("身份验证", null, "发送");
-                textLeftCount.setText(ConstantUtil.EDIT_CONTENT_LENGTH_FRIEND_ADD + "");
+                textLeftCount.setText(ConstantUtil.EDIT_CONTENT_LENGTH_FRIEND_APPLY + "");
                 edtEditor.setHint("请输入验证信息");
-                edtEditor.setMaxLength(ConstantUtil.EDIT_CONTENT_LENGTH_FRIEND_ADD);
+                edtEditor.setMaxLength(ConstantUtil.EDIT_CONTENT_LENGTH_FRIEND_APPLY);
                 break;
-            case ConstantUtil.EDIT_CONTENT_PARTY_ADD:
+            case ConstantUtil.EDIT_CONTENT_PARTY_APPLY:
                 showPageHead("身份验证", null, "发送");
-                textLeftCount.setText(ConstantUtil.EDIT_CONTENT_LENGTH_PARTY_ADD + "");
+                textLeftCount.setText(ConstantUtil.EDIT_CONTENT_LENGTH_PARTY_APPLY + "");
                 edtEditor.setHint("请输入验证信息");
-                edtEditor.setMaxLength(ConstantUtil.EDIT_CONTENT_LENGTH_PARTY_ADD);
+                edtEditor.setMaxLength(ConstantUtil.EDIT_CONTENT_LENGTH_PARTY_APPLY);
                 break;
             case ConstantUtil.EDIT_CONTENT_FRIEND_REMARK:
                 showPageHead("修改备注名", null, "发送");
@@ -194,11 +194,11 @@ public class ContentEditActivity extends BaseActivity<ContentEditActivityPresent
             case ConstantUtil.EDIT_CONTENT_PARTY_INTRODUCE:
                 getBindPresenter().publishNewPartyIntroduce(edtEditor.getText().toString());
                 break;
-            case ConstantUtil.EDIT_CONTENT_FRIEND_ADD:
-                getBindPresenter().getFriendAdd(contactNo, edtEditor.getText().toString());
+            case ConstantUtil.EDIT_CONTENT_FRIEND_APPLY:
+                getBindPresenter().getFriendApply(contactNo, edtEditor.getText().toString());
                 break;
-            case ConstantUtil.EDIT_CONTENT_PARTY_ADD:
-                getBindPresenter().getPartyAdd(contactNo, edtEditor.getText().toString());
+            case ConstantUtil.EDIT_CONTENT_PARTY_APPLY:
+                getBindPresenter().getPartyApply(contactNo, edtEditor.getText().toString());
                 break;
             case ConstantUtil.EDIT_CONTENT_FRIEND_REMARK:
                 getBindPresenter().getFriendRemarkUpdate(contactNo, edtEditor.getText().toString());

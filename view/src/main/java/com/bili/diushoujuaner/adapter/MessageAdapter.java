@@ -181,7 +181,9 @@ public class MessageAdapter extends BaseAdapter {
     private void setMessageContent(ViewHolder holder, MessageVo messageVo){
         //设置消息内容
         switch (messageVo.getConType()){
-            case ConstantUtil.CHAT_CONTENT_FRIEND_AGREE:
+            case ConstantUtil.CONTENT_PARTY_ADD:
+                ((TextView)holder.getView(R.id.txtContent)).setText(messageVo.getContent());
+                break;
             case ConstantUtil.CHAT_CONTENT_TEXT:
                 ((TextView)holder.getView(R.id.txtContent)).setText(messageVo.getContent());
                 break;

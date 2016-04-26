@@ -243,7 +243,7 @@ public class PartyDetailActivity extends BaseActivity<PartyDetailActivityPresent
                 break;
             case R.id.btnAddParty:
                 startActivity(new Intent(PartyDetailActivity.this, ContentEditActivity.class)
-                        .putExtra(ContentEditActivity.TAG_TYPE, ConstantUtil.EDIT_CONTENT_PARTY_ADD)
+                        .putExtra(ContentEditActivity.TAG_TYPE, ConstantUtil.EDIT_CONTENT_PARTY_APPLY)
                         .putExtra(ContentEditActivity.TAG_CONTENT, "")
                         .putExtra(ContentEditActivity.TAG_CONTNO, contactDto.getContNo()));
                 break;

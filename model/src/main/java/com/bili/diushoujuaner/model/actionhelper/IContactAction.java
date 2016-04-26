@@ -1,7 +1,7 @@
 package com.bili.diushoujuaner.model.actionhelper;
 
 import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
-import com.bili.diushoujuaner.model.apihelper.request.ContactInfoReq;
+import com.bili.diushoujuaner.model.apihelper.request.ContactAddInfoReq;
 import com.bili.diushoujuaner.model.apihelper.request.ContactsSearchReq;
 import com.bili.diushoujuaner.model.apihelper.request.FriendDeleteReq;
 import com.bili.diushoujuaner.model.apihelper.request.MemberNameUpdateReq;
@@ -28,7 +28,7 @@ public interface IContactAction {
 
     void getContactFromLocal(long userNo, ActionStringCallbackListener<ActionRespon<FriendVo>> actionStringCallbackListener);
 
-    void getContactFromApi(ContactInfoReq contactInfoReq, ActionStringCallbackListener<ActionRespon<FriendVo>> actionStringCallbackListener);
+    void getContactFromApi(ContactAddInfoReq contactAddInfoReq, ActionStringCallbackListener<ActionRespon<FriendVo>> actionStringCallbackListener);
 
     void getMemberNameUpdate(MemberNameUpdateReq memberNameUpdateReq, ActionStringCallbackListener<ActionRespon<String>> actionStringCallbackListener);
 
@@ -45,4 +45,18 @@ public interface IContactAction {
     void getFriendRemarkUpdate(RemarkUpdateReq remarkUpdateReq, ActionStringCallbackListener<ActionRespon<Void>> actionStringCallbackListener);
 
     void getPartyAdd(PartyAddReq partyAddReq, String path, ActionFileCallbackListener<ActionRespon<Void>> actionFileCallbackListener);
+
+    /**
+     * 添加群成功，对于自己而言，需要获取整个群的信息，含成员
+     * 获取信息后通知更新界面
+     */
+    void getWholePartyInfo(long partyNo, long memberNo, String time);
+
+    /**
+     * 被通知有人加入了群，这时候自己 已经加入了群，只需要增量更新一个新成员的信息
+     * 获取信息后通知更新界面
+     * @param partyNo
+     * @param memberNo
+     */
+    void getSingleMemberInfo(long partyNo, long memberNo, String time);
 }

@@ -18,6 +18,7 @@ import com.bili.diushoujuaner.model.eventhelper.DeleteContactEvent;
 import com.bili.diushoujuaner.model.eventhelper.LoginEvent;
 import com.bili.diushoujuaner.model.eventhelper.LoginngEvent;
 import com.bili.diushoujuaner.model.eventhelper.LogoutEvent;
+import com.bili.diushoujuaner.model.eventhelper.NoticeAddMemberEvent;
 import com.bili.diushoujuaner.model.eventhelper.ShowMainMenuEvent;
 import com.bili.diushoujuaner.model.eventhelper.UpdateMessageEvent;
 import com.bili.diushoujuaner.model.eventhelper.UpdatePartyEvent;
@@ -206,10 +207,6 @@ public class ChattingFragment extends BaseFragment<ChattingFragmentPresenter> im
         showPageHead("消息-连接中", null, null);
     }
 
-    public void onUpdatePartyHeadEvent(UpdatePartyEvent updatePartyEvent){
-
-    }
-
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onUpdatePartyEvent(UpdatePartyEvent updatePartyEvent){
         switch (updatePartyEvent.getType()){
@@ -229,6 +226,11 @@ public class ChattingFragment extends BaseFragment<ChattingFragmentPresenter> im
                 }
                 break;
         }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onNoticeAddMemberEvent(NoticeAddMemberEvent noticeAddMemberEvent){
+        getBindPresenter().getChattingVoListFromTemper();
     }
 
     @Override

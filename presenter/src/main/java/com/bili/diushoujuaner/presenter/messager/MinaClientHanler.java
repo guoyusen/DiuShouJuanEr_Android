@@ -35,9 +35,6 @@ public class MinaClientHanler extends IoHandlerAdapter {
         switch (messageVo.getMsgType()){
             case ConstantUtil.CHAT_FRI:
                 processMessage(messageVo, session);
-                if(messageVo.getConType() == ConstantUtil.CHAT_CONTENT_FRIEND_AGREE && !DBManager.getInstance().isFriended(messageVo.getFromNo())){
-                    MessageServiceHandler.getInstance().sendMessageToClient(ConstantUtil.HANDLER_CONTACT_ADDED, messageVo);
-                }
                 break;
             case ConstantUtil.CHAT_PAR:
                 processMessage(messageVo, session);
@@ -65,21 +62,32 @@ public class MinaClientHanler extends IoHandlerAdapter {
                 DBManager.getInstance().updateMemberName(messageVo.getToNo(), messageVo.getFromNo(), messageVo.getContent());
                 MessageServiceHandler.getInstance().sendMessageToClient(ConstantUtil.HANDLER_PARTY_MEMBER_NAME, messageVo);
                 break;
-            case ConstantUtil.CHAT_FRIEND_ADD:
+            case ConstantUtil.CHAT_FRIEND_APPLY:
                 NoticeUtil.getInstance().playNotice();
                 session.write(EntityUtil.getEmptyMessage(messageVo.getSerialNo(), -1, ConstantUtil.CHAT_STATUS));
-                DBManager.getInstance().saveApply(messageVo.getFromNo(), messageVo.getToNo(),messageVo.getContent(), messageVo.getTime(), ConstantUtil.CHAT_FRIEND_ADD);
-                MessageServiceHandler.getInstance().sendMessageToClient(ConstantUtil.HANDLER_FRIEND_ADD, messageVo);
+                DBManager.getInstance().saveApply(messageVo.getFromNo(), messageVo.getToNo(),messageVo.getContent(), messageVo.getTime(), ConstantUtil.CHAT_FRIEND_APPLY);
+                MessageServiceHandler.getInstance().sendMessageToClient(ConstantUtil.HANDLER_FRIEND_APPLY, messageVo);
                 break;
-            case ConstantUtil.CHAT_PARTY_ADD:
+            case ConstantUtil.CHAT_PARTY_APPLY:
                 session.write(EntityUtil.getEmptyMessage(messageVo.getSerialNo(), -1, ConstantUtil.CHAT_STATUS));
-                DBManager.getInstance().saveApply(messageVo.getFromNo(), Long.valueOf(messageVo.getTime()),messageVo.getContent(), TimeUtil.getCurrentTimeYYMMDD_HHMMSS(), ConstantUtil.CHAT_PARTY_ADD);
-                MessageServiceHandler.getInstance().sendMessageToClient(ConstantUtil.HANDLER_PARTY_ADD, null);
+                DBManager.getInstance().saveApply(messageVo.getFromNo(), Long.valueOf(messageVo.getTime()),messageVo.getContent(), TimeUtil.getCurrentTimeYYMMDD_HHMMSS(), ConstantUtil.CHAT_PARTY_APPLY);
+                MessageServiceHandler.getInstance().sendMessageToClient(ConstantUtil.HANDLER_PARTY_APPLY, null);
                 break;
             case ConstantUtil.CHAT_FRIEND_DELETE:
                 session.write(EntityUtil.getEmptyMessage(messageVo.getSerialNo(), -1, ConstantUtil.CHAT_STATUS));
                 DBManager.getInstance().deleteFriend(messageVo.getFromNo());
                 MessageServiceHandler.getInstance().sendMessageToClient(ConstantUtil.HANDLER_FRIEND_DELETE, messageVo);
+                break;
+            case ConstantUtil.CHAT_FRIEND_APPLY_AGREE:
+                if(!DBManager.getInstance().isFriended(messageVo.getFromNo())){
+                    MessageServiceHandler.getInstance().sendMessageToClient(ConstantUtil.HANDLER_FRIEND_APPLY_AGREE, messageVo);
+                }
+                messageVo.setMsgType(ConstantUtil.CHAT_FRI);
+                processMessage(messageVo, session);
+                break;
+            case ConstantUtil.CHAT_PARTY_APPLY_AGREE:
+                session.write(EntityUtil.getEmptyMessage(messageVo.getSerialNo(), -1, ConstantUtil.CHAT_STATUS));
+                MessageServiceHandler.getInstance().sendMessageToClient(ConstantUtil.HANDLER_PARTY_APPLY_AGREE, messageVo);
                 break;
         }
     }

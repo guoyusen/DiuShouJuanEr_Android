@@ -721,6 +721,16 @@ public class DBManager {
     }
 
     public void saveApply(long fromNo, long toNo, String content, String time, int type){
+        List<Apply> applyList = daoSession.getApplyDao().queryBuilder()
+                .where(ApplyDao.Properties.FromNo.eq(fromNo),
+                        ApplyDao.Properties.ToNo.eq(toNo),
+                        ApplyDao.Properties.Accept.eq(0),
+                        ApplyDao.Properties.Type.eq(type),
+                        ApplyDao.Properties.OwnerNo.eq(CustomSessionPreference.getInstance().getCustomSession().getUserNo()))
+                .build().list();
+        if(!applyList.isEmpty()){
+            return;
+        }
         Apply apply = new Apply();
         apply.setOwnerNo(CustomSessionPreference.getInstance().getCustomSession().getUserNo());
         apply.setFromNo(fromNo);
@@ -793,7 +803,19 @@ public class DBManager {
         daoSession.getDatabase().update("APPLY",contentValues,
                 "OWNER_NO = " + CustomSessionPreference.getInstance().getCustomSession().getUserNo()
                         + " and FROM_NO = " + friendNo
-                        + " and TO_NO = " + CustomSessionPreference.getInstance().getCustomSession().getUserNo(),
+                        + " and TO_NO = " + CustomSessionPreference.getInstance().getCustomSession().getUserNo()
+                        + " and TYPE = " + ConstantUtil.CHAT_FRIEND_APPLY,
+                null);
+    }
+
+    public void updateApplyPartyAccept(long partyNo, long memberNo){
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("ACCEPT", 1);
+        daoSession.getDatabase().update("APPLY",contentValues,
+                "OWNER_NO = " + CustomSessionPreference.getInstance().getCustomSession().getUserNo()
+                        + " and FROM_NO = " + memberNo
+                        + " and TO_NO = " + partyNo
+                        + " and TYPE = " + ConstantUtil.CHAT_PARTY_APPLY,
                 null);
     }
 

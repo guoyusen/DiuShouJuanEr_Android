@@ -20,8 +20,8 @@
                 android:id="@+id/customListViewRefresh"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:dividerHeight="@dimen/y2"
-                android:divider="@color/LC_F6F6F6"/>
+                android:dividerHeight="0dp"
+                android:divider="@color/COLOR_WHITE"/>
 
             <TextView
                 android:id="@+id/txtPartyCount"

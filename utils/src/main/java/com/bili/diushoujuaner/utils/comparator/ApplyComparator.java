@@ -18,24 +18,33 @@ public class ApplyComparator implements Comparator<ApplyVo> {
         // 3 -> 1,2  r 1
         // 3 -> 4  r -1
         // 4 -> 1,2,3  r 1
-        if(((!arg0.getAccept() && arg0.getType() == ConstantUtil.CHAT_FRIEND_ADD) && (!arg1.getAccept() && arg1.getType() == ConstantUtil.CHAT_PARTY_ADD))
-                || ((!arg0.getAccept() && arg0.getType() == ConstantUtil.CHAT_FRIEND_ADD) && arg1.getAccept())
-                || ((!arg0.getAccept() && arg0.getType() == ConstantUtil.CHAT_FRIEND_ADD) && (arg1.getType() == ConstantUtil.CHAT_FRIEND_RECOMMEND))){
+        if(((!arg0.getAccept() && arg0.getType() == ConstantUtil.CHAT_FRIEND_APPLY) && (!arg1.getAccept() && arg1.getType() == ConstantUtil.CHAT_PARTY_APPLY))
+                || ((!arg0.getAccept() && arg0.getType() == ConstantUtil.CHAT_FRIEND_APPLY) && arg1.getAccept())
+                || ((!arg0.getAccept() && arg0.getType() == ConstantUtil.CHAT_FRIEND_APPLY) && (arg1.getType() == ConstantUtil.CHAT_FRIEND_RECOMMEND))){
             return -1;
-        }else if((!arg0.getAccept() && arg0.getType() == ConstantUtil.CHAT_PARTY_ADD) && (!arg1.getAccept() && arg1.getType() == ConstantUtil.CHAT_FRIEND_ADD)){
+        }else if((!arg0.getAccept() && arg0.getType() == ConstantUtil.CHAT_PARTY_APPLY) && (!arg1.getAccept() && arg1.getType() == ConstantUtil.CHAT_FRIEND_APPLY)){
             return 1;
-        }else if(((!arg0.getAccept() && arg0.getType() == ConstantUtil.CHAT_PARTY_ADD) && arg1.getAccept())
-                || ((!arg0.getAccept() && arg0.getType() == ConstantUtil.CHAT_PARTY_ADD) && (arg1.getType() == ConstantUtil.CHAT_FRIEND_RECOMMEND))){
+        }else if(((!arg0.getAccept() && arg0.getType() == ConstantUtil.CHAT_PARTY_APPLY) && arg1.getAccept())
+                || ((!arg0.getAccept() && arg0.getType() == ConstantUtil.CHAT_PARTY_APPLY) && (arg1.getType() == ConstantUtil.CHAT_FRIEND_RECOMMEND))){
             return -1;
-        }else if((arg0.getAccept() && (!arg1.getAccept() && arg1.getType() == ConstantUtil.CHAT_FRIEND_ADD))
-                || (arg0.getAccept() && (!arg1.getAccept() && arg1.getType() == ConstantUtil.CHAT_PARTY_ADD))){
+        }else if((arg0.getAccept() && (!arg1.getAccept() && arg1.getType() == ConstantUtil.CHAT_FRIEND_APPLY))
+                || (arg0.getAccept() && (!arg1.getAccept() && arg1.getType() == ConstantUtil.CHAT_PARTY_APPLY))){
             return 1;
         }else if(arg0.getAccept() && arg1.getType() == ConstantUtil.CHAT_FRIEND_RECOMMEND){
             return -1;
-        }else if((arg0.getType() == ConstantUtil.CHAT_FRIEND_RECOMMEND && (!arg1.getAccept() && arg1.getType() == ConstantUtil.CHAT_FRIEND_ADD))
-                || (arg0.getType() == ConstantUtil.CHAT_FRIEND_RECOMMEND && (!arg1.getAccept() && arg1.getType() == ConstantUtil.CHAT_PARTY_ADD))
+        }else if((arg0.getType() == ConstantUtil.CHAT_FRIEND_RECOMMEND && (!arg1.getAccept() && arg1.getType() == ConstantUtil.CHAT_FRIEND_APPLY))
+                || (arg0.getType() == ConstantUtil.CHAT_FRIEND_RECOMMEND && (!arg1.getAccept() && arg1.getType() == ConstantUtil.CHAT_PARTY_APPLY))
                 || (arg0.getType() == ConstantUtil.CHAT_FRIEND_RECOMMEND && arg1.getAccept())){
             return 1;
+        }else if(arg0.getAccept() && arg1.getAccept()){
+            // 对于已添加的情况，需要分好友和群
+            if(arg0.getType() == ConstantUtil.CHAT_PARTY_APPLY && arg1.getType() == ConstantUtil.CHAT_FRIEND_APPLY){
+                return -1;
+            }else if(arg0.getType() == ConstantUtil.CHAT_FRIEND_APPLY && arg1.getType() == ConstantUtil.CHAT_PARTY_APPLY){
+                return 1;
+            }else{
+                return 0;
+            }
         }else{
             return 0;
         }

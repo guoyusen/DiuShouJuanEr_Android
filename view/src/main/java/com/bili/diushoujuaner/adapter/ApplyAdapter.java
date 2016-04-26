@@ -64,7 +64,12 @@ public class ApplyAdapter extends CommonAdapter<ApplyVo> {
                 ((TextView)holder.getView(R.id.btnAgree)).setTextColor(ContextCompat.getColor(context, R.color.TC_12B7F5));
             }else if (type == ConstantUtil.CONTACT_ADDED){
                 ((TextView)holder.getView(R.id.txtBar)).setText("已添加");
-                holder.getView(R.id.txtTip).setVisibility(View.GONE);
+                if(applyVo.getType() == ConstantUtil.CHAT_PARTY_APPLY){
+                    holder.getView(R.id.txtTip).setVisibility(View.VISIBLE);
+                    ((TextView)holder.getView(R.id.txtTip)).setText("申请加入 " + ContactTemper.getInstance().getPartyName(applyVo.getToNo()));
+                }else{
+                    holder.getView(R.id.txtTip).setVisibility(View.GONE);
+                }
                 (holder.getView(R.id.btnAgree)).setEnabled(false);
                 ((TextView)holder.getView(R.id.btnAgree)).setText("已添加");
                 ((TextView)holder.getView(R.id.btnAgree)).setTextColor(ContextCompat.getColor(context, R.color.TC_ADADBB));
@@ -92,9 +97,9 @@ public class ApplyAdapter extends CommonAdapter<ApplyVo> {
     private int getTypeForPosition(int position){
         if(list.get(position).getAccept()){
             return ConstantUtil.CONTACT_ADDED;
-        }else if (!list.get(position).getAccept() && list.get(position).getType() == ConstantUtil.CHAT_FRIEND_ADD){
+        }else if (!list.get(position).getAccept() && list.get(position).getType() == ConstantUtil.CHAT_FRIEND_APPLY){
             return ConstantUtil.CONTACT_ADD_FRIEND;
-        }else if(!list.get(position).getAccept() && list.get(position).getType() == ConstantUtil.CHAT_PARTY_ADD){
+        }else if(!list.get(position).getAccept() && list.get(position).getType() == ConstantUtil.CHAT_PARTY_APPLY){
             return ConstantUtil.CONTACT_ADD_PARTY;
         }else if (list.get(position).getType() == ConstantUtil.CHAT_FRIEND_RECOMMEND){
             return ConstantUtil.CONTACT_MAY_KNOW;

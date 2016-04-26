@@ -7,8 +7,10 @@ import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
 import com.bili.diushoujuaner.model.apihelper.ApiRespon;
 import com.bili.diushoujuaner.model.apihelper.api.ApiAction;
 import com.bili.diushoujuaner.model.apihelper.callback.ApiStringCallbackListener;
-import com.bili.diushoujuaner.model.apihelper.request.FriendAddReq;
+import com.bili.diushoujuaner.model.apihelper.request.FriendApplyReq;
 import com.bili.diushoujuaner.model.apihelper.request.FriendAgreeReq;
+import com.bili.diushoujuaner.model.apihelper.request.PartyApplyAgreeReq;
+import com.bili.diushoujuaner.model.apihelper.request.PartyApplyReq;
 import com.bili.diushoujuaner.model.cachehelper.ACache;
 import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
 import com.bili.diushoujuaner.model.databasehelper.DBManager;
@@ -48,7 +50,42 @@ public class ApplyAction implements IApplyAction {
     }
 
     @Override
-    public void getFriendAgree(final FriendAgreeReq friendAgreeReq, final ActionStringCallbackListener<ActionRespon<Void>> actionStringCallbackListener) {
+    public void getPartyApplyAgree(final PartyApplyAgreeReq partyApplyAgreeReq, final ActionStringCallbackListener<ActionRespon<Void>> actionStringCallbackListener) {
+        ApiAction.getInstance().getPartyApplyAgree(partyApplyAgreeReq, new ApiStringCallbackListener() {
+            @Override
+            public void onSuccess(final String data) {
+                Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<Void>>() {
+                    @Override
+                    public ActionRespon<Void> doInBackground() throws Exception {
+                        ApiRespon<Void> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<Void>>() {
+                        }.getType());
+                        if(result.isLegal()){
+                            DBManager.getInstance().updateApplyPartyAccept(partyApplyAgreeReq.getPartyNo(), partyApplyAgreeReq.getMemberNo());
+                        }
+                        return ActionRespon.getActionResponFromApiRespon(result);
+                    }
+                }, new Completion<ActionRespon<Void>>() {
+                    @Override
+                    public void onSuccess(Context context, ActionRespon<Void> result) {
+                        actionStringCallbackListener.onSuccess(result);
+                    }
+
+                    @Override
+                    public void onError(Context context, Exception e) {
+                        actionStringCallbackListener.onSuccess(ActionRespon.<Void>getActionResponError());
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(int errorCode) {
+                actionStringCallbackListener.onFailure(errorCode);
+            }
+        });
+    }
+
+    @Override
+    public void getFriendApplyAgree(final FriendAgreeReq friendAgreeReq, final ActionStringCallbackListener<ActionRespon<Void>> actionStringCallbackListener) {
         ApiAction.getInstance().getFriendAgree(friendAgreeReq, new ApiStringCallbackListener() {
             @Override
             public void onSuccess(final String data) {
@@ -57,7 +94,7 @@ public class ApplyAction implements IApplyAction {
                     public ActionRespon<Void> doInBackground() throws Exception {
                         ApiRespon<ContactDto> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<ContactDto>>() {
                         }.getType());
-                        if(result.getIsLegal()){
+                        if(result.isLegal()){
                             Friend friend = new Friend();
                             friend.setRecent(false);
                             friend.setOwnerNo(CustomSessionPreference.getInstance().getCustomSession().getUserNo());
@@ -132,8 +169,39 @@ public class ApplyAction implements IApplyAction {
     }
 
     @Override
-    public void getFriendAdd(FriendAddReq friendAddReq, final ActionStringCallbackListener<ActionRespon<Void>> actionStringCallbackListener) {
-        ApiAction.getInstance().getFriendAdd(friendAddReq, new ApiStringCallbackListener() {
+    public void getPartyApply(PartyApplyReq partyApplyReq, final ActionStringCallbackListener<ActionRespon<Void>> actionStringCallbackListener) {
+        ApiAction.getInstance().getPartyApply(partyApplyReq, new ApiStringCallbackListener() {
+            @Override
+            public void onSuccess(final String data) {
+                Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<Void>>() {
+                    @Override
+                    public ActionRespon<Void> doInBackground() throws Exception {
+                        ApiRespon<Void> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<Void>>(){}.getType());
+                        return ActionRespon.getActionResponFromApiRespon(result);
+                    }
+                }, new Completion<ActionRespon<Void>>() {
+                    @Override
+                    public void onSuccess(Context context, ActionRespon<Void> result) {
+                        actionStringCallbackListener.onSuccess(result);
+                    }
+
+                    @Override
+                    public void onError(Context context, Exception e) {
+                        actionStringCallbackListener.onSuccess(ActionRespon.<Void>getActionResponError());
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(int errorCode) {
+                actionStringCallbackListener.onFailure(errorCode);
+            }
+        });
+    }
+
+    @Override
+    public void getFriendApply(FriendApplyReq friendApplyReq, final ActionStringCallbackListener<ActionRespon<Void>> actionStringCallbackListener) {
+        ApiAction.getInstance().getFriendApply(friendApplyReq, new ApiStringCallbackListener() {
             @Override
             public void onSuccess(final String data) {
                 Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<Void>>() {

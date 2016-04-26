@@ -15,9 +15,9 @@ public interface ContentEditActivityPresenter {
 
     void publishNewPartyIntroduce(String introduce);
 
-    void getFriendAdd(long friendNo, String content);
+    void getFriendApply(long friendNo, String content);
 
-    void getPartyAdd(long partyNo, String content);
+    void getPartyApply(long partyNo, String content);
 
     void getFriendRemarkUpdate(long friendNo, String remark);
 

@@ -1,6 +1,7 @@
 package com.bili.diushoujuaner.model.actionhelper.action;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.bili.diushoujuaner.model.actionhelper.IContactAction;
 import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
@@ -8,21 +9,24 @@ import com.bili.diushoujuaner.model.apihelper.ApiRespon;
 import com.bili.diushoujuaner.model.apihelper.api.ApiAction;
 import com.bili.diushoujuaner.model.apihelper.callback.ApiFileCallbackListener;
 import com.bili.diushoujuaner.model.apihelper.callback.ApiStringCallbackListener;
-import com.bili.diushoujuaner.model.apihelper.request.ContactInfoReq;
+import com.bili.diushoujuaner.model.apihelper.request.ContactAddInfoReq;
 import com.bili.diushoujuaner.model.apihelper.request.ContactsSearchReq;
 import com.bili.diushoujuaner.model.apihelper.request.FriendDeleteReq;
 import com.bili.diushoujuaner.model.apihelper.request.MemberNameUpdateReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyAddReq;
+import com.bili.diushoujuaner.model.apihelper.request.PartyContactReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyIntroduceUpdateReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyNameUpdateReq;
 import com.bili.diushoujuaner.model.apihelper.request.RemarkUpdateReq;
 import com.bili.diushoujuaner.model.callback.ActionFileCallbackListener;
+import com.bili.diushoujuaner.model.eventhelper.NoticeAddMemberEvent;
 import com.bili.diushoujuaner.model.eventhelper.RequestContactEvent;
 import com.bili.diushoujuaner.model.eventhelper.AddContactEvent;
 import com.bili.diushoujuaner.model.eventhelper.UpdateRemarkEvent;
 import com.bili.diushoujuaner.model.tempHelper.ChattingTemper;
 import com.bili.diushoujuaner.utils.ConstantUtil;
 import com.bili.diushoujuaner.utils.EntityUtil;
+import com.bili.diushoujuaner.utils.NoticeUtil;
 import com.bili.diushoujuaner.utils.StringUtil;
 import com.bili.diushoujuaner.utils.TimeUtil;
 import com.bili.diushoujuaner.utils.entity.dto.UserDto;
@@ -37,6 +41,7 @@ import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
 import com.bili.diushoujuaner.model.tempHelper.ContactTemper;
 import com.bili.diushoujuaner.utils.GsonUtil;
 import com.bili.diushoujuaner.utils.entity.vo.FriendVo;
+import com.bili.diushoujuaner.utils.entity.vo.MessageVo;
 import com.bili.diushoujuaner.utils.entity.vo.PartyVo;
 import com.bili.diushoujuaner.utils.comparator.ContactComparator;
 import com.bili.diushoujuaner.utils.PinyinUtil;
@@ -73,6 +78,69 @@ public class ContactAction implements IContactAction{
     }
 
     @Override
+    public void getWholePartyInfo(final long partyNo, final long memberNo, final String time) {
+        // 全量获取群组信息，更新本地数据库和界面
+        ApiAction.getInstance().getContactParty(new PartyContactReq(partyNo), new ApiStringCallbackListener() {
+            @Override
+            public void onSuccess(String data) {
+                Log.d("guoyusenn", Thread.currentThread().getName());
+                ApiRespon<ContactDto> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<ContactDto>>(){}.getType());
+                if(result.isLegal() && result.getData().getType() == ConstantUtil.CONTACT_PARTY){
+                    DBManager.getInstance().saveParty(EntityUtil.getPartyFromContactDto(result.getData()));
+                    DBManager.getInstance().saveMemberList(getMemberListFromContactDto(result.getData()));
+                    EventBus.getDefault().post(new AddContactEvent());
+                    noticeNewMember(partyNo, memberNo, time);
+                }
+            }
+
+            @Override
+            public void onFailure(int errorCode) {
+            }
+        });
+    }
+
+    private void noticeNewMember(long partyNo, long memberNo, String time){
+        MessageVo messageVo = EntityUtil.getMessageVoForNoticeNewMember(partyNo, memberNo, time);
+        ChattingTemper.getInstance().addChattingVoFromServer(messageVo);
+        DBManager.getInstance().updateMemberRecent(messageVo.getToNo(), true);
+        messageVo = DBManager.getInstance().saveMessage(messageVo);
+        NoticeUtil.getInstance().playNotice();
+        EventBus.getDefault().post(new NoticeAddMemberEvent(messageVo));
+    }
+
+    @Override
+    public void getSingleMemberInfo(final long partyNo, final long memberNo, final String time) {
+        // 判断是否获取单个用户的信息，如果本地有，那么只需要添加对应的成员信息，没有则获取，再更新数据库信息，界面
+        ApiAction.getInstance().getContactInfo(new ContactAddInfoReq(memberNo), new ApiStringCallbackListener() {
+            @Override
+            public void onSuccess(String data) {
+                ApiRespon<UserDto> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<UserDto>>() {
+                }.getType());
+                if(result.isLegal()){
+                    DBManager.getInstance().saveUser(result.getData());
+
+                    Member member = new Member();
+                    member.setRecent(false);
+                    member.setAddTime("");
+                    member.setMemberName(result.getData().getNickName());
+                    member.setPartyNo(partyNo);
+                    member.setType(ConstantUtil.MEMBER_MEMBER);
+                    member.setUserNo(result.getData().getUserNo());
+                    DBManager.getInstance().saveMember(member);
+
+                    EventBus.getDefault().post(new AddContactEvent());
+                    noticeNewMember(partyNo, memberNo, time);
+                }
+            }
+
+            @Override
+            public void onFailure(int errorCode) {
+
+            }
+        });
+    }
+
+    @Override
     public void getPartyAdd(PartyAddReq partyAddReq, String path, final ActionFileCallbackListener<ActionRespon<Void>> actionFileCallbackListener) {
         ApiAction.getInstance().getPartyAdd(partyAddReq, path, new ApiFileCallbackListener() {
             @Override
@@ -81,7 +149,7 @@ public class ContactAction implements IContactAction{
                     @Override
                     public ActionRespon<Void> doInBackground() throws Exception {
                         ApiRespon<ContactDto> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<ContactDto>>(){}.getType());
-                        if(result.getIsLegal() && result.getData().getType() == ConstantUtil.CONTACT_PARTY){
+                        if(result.isLegal() && result.getData().getType() == ConstantUtil.CONTACT_PARTY){
                             DBManager.getInstance().saveParty(EntityUtil.getPartyFromContactDto(result.getData()));
                             DBManager.getInstance().saveMemberList(getMemberListFromContactDto(result.getData()));
                             EventBus.getDefault().post(new AddContactEvent());
@@ -122,7 +190,7 @@ public class ContactAction implements IContactAction{
                     @Override
                     public ActionRespon<Void> doInBackground() throws Exception {
                         ApiRespon<Void> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<Void>>(){}.getType());
-                        if(result.getIsLegal()){
+                        if(result.isLegal()){
                             DBManager.getInstance().deleteFriend(friendDeleteReq.getFriendNo());
                             ChattingTemper.getInstance().deleteChattingVo(friendDeleteReq.getFriendNo(), ConstantUtil.CHAT_FRI);
                         }
@@ -157,7 +225,7 @@ public class ContactAction implements IContactAction{
                     @Override
                     public ActionRespon<Void> doInBackground() throws Exception {
                         ApiRespon<String> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<String>>(){}.getType());
-                        if(result.getIsLegal()){
+                        if(result.isLegal()){
                             ContactTemper.getInstance().updateFriendRemark(remarkUpdateReq.getFriendNo(), result.getData());
                             DBManager.getInstance().updateFriendRemark(remarkUpdateReq.getFriendNo(), result.getData());
                             EventBus.getDefault().post(new UpdateRemarkEvent(remarkUpdateReq.getFriendNo(), result.getData()));
@@ -188,9 +256,9 @@ public class ContactAction implements IContactAction{
     public void getAddContact(final long userNo, final int type) {
         User user = DBManager.getInstance().getUser(userNo);
         if(user == null){
-            ContactInfoReq contactInfoReq = new ContactInfoReq();
-            contactInfoReq.setUserNo(userNo);
-            ApiAction.getInstance().getContactInfo(contactInfoReq, new ApiStringCallbackListener() {
+            ContactAddInfoReq contactAddInfoReq = new ContactAddInfoReq();
+            contactAddInfoReq.setUserNo(userNo);
+            ApiAction.getInstance().getContactInfo(contactAddInfoReq, new ApiStringCallbackListener() {
                 @Override
                 public void onSuccess(final String data) {
                     Tasks.executeInBackground(context, new BackgroundWork<Void>() {
@@ -198,7 +266,7 @@ public class ContactAction implements IContactAction{
                         public Void doInBackground() throws Exception {
                             ApiRespon<UserDto> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<UserDto>>() {
                             }.getType());
-                            if(result.getIsLegal()) {
+                            if(result.isLegal()) {
                                 Friend friend = new Friend();
                                 friend.setRemark(result.getData().getNickName());
                                 friend.setFriendNo(result.getData().getUserNo());
@@ -287,7 +355,7 @@ public class ContactAction implements IContactAction{
                     @Override
                     public ActionRespon<String> doInBackground() throws Exception {
                         ApiRespon<String> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<String>>(){}.getType());
-                        if(result.getIsLegal()){
+                        if(result.isLegal()){
                             ContactTemper.getInstance().updatePartyName(partyNameUpdateReq.getPartyNo(), result.getData());
                             DBManager.getInstance().updatePartyName(partyNameUpdateReq.getPartyNo(), result.getData());
                         }
@@ -322,7 +390,7 @@ public class ContactAction implements IContactAction{
                     @Override
                     public ActionRespon<String> doInBackground() throws Exception {
                         ApiRespon<String> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<String>>(){}.getType());
-                        if(result.getIsLegal()){
+                        if(result.isLegal()){
                             ContactTemper.getInstance().updatePartyIntroduce(partyIntroduceUpdateReq.getPartyNo(), result.getData());
                             DBManager.getInstance().updatePartyIntroduce(partyIntroduceUpdateReq.getPartyNo(), result.getData());
                         }
@@ -357,7 +425,7 @@ public class ContactAction implements IContactAction{
                     @Override
                     public ActionRespon<String> doInBackground() throws Exception {
                         ApiRespon<String> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<String>>(){}.getType());
-                        if(result.getIsLegal()){
+                        if(result.isLegal()){
                             ContactTemper.getInstance().updateMemberName(memberNameUpdateReq.getPartyNo(), CustomSessionPreference.getInstance().getCustomSession().getUserNo(), result.getData());
                             DBManager.getInstance().updateMemberName(memberNameUpdateReq.getPartyNo(),CustomSessionPreference.getInstance().getCustomSession().getUserNo(), result.getData());
                         }
@@ -384,8 +452,8 @@ public class ContactAction implements IContactAction{
     }
 
     @Override
-    public void getContactFromApi(final ContactInfoReq contactInfoReq, final ActionStringCallbackListener<ActionRespon<FriendVo>> actionStringCallbackListener) {
-        ApiAction.getInstance().getContactInfo(contactInfoReq, new ApiStringCallbackListener() {
+    public void getContactFromApi(final ContactAddInfoReq contactAddInfoReq, final ActionStringCallbackListener<ActionRespon<FriendVo>> actionStringCallbackListener) {
+        ApiAction.getInstance().getContactInfo(contactAddInfoReq, new ApiStringCallbackListener() {
             @Override
             public void onSuccess(final String data) {
                 Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<FriendVo>>() {
@@ -393,9 +461,9 @@ public class ContactAction implements IContactAction{
                     public ActionRespon<FriendVo> doInBackground() throws Exception {
                         ApiRespon<UserDto> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<UserDto>>() {
                         }.getType());
-                        if(result.getIsLegal()){
+                        if(result.isLegal()){
                             DBManager.getInstance().saveUser(result.getData());
-                            return ActionRespon.getActionRespon(result.getMessage(), result.getRetCode(), DBManager.getInstance().getFriendVo(contactInfoReq.getUserNo()));
+                            return ActionRespon.getActionRespon(result.getMessage(), result.getRetCode(), DBManager.getInstance().getFriendVo(contactAddInfoReq.getUserNo()));
                         }
                         return ActionRespon.getActionRespon(result.getMessage(), result.getRetCode(), (FriendVo)null);
                     }
@@ -491,7 +559,7 @@ public class ContactAction implements IContactAction{
                     public ActionRespon<List<FriendVo>> doInBackground() throws Exception {
                         ApiRespon<List<ContactDto>> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<List<ContactDto>>>() {
                         }.getType());
-                        if(result.getIsLegal()){
+                        if(result.isLegal()){
                             saveContactsFromList(result.getData());
                             return ActionRespon.getActionRespon(result.getMessage(), result.getRetCode(), getFriendVoListFromDB());
                         }else{

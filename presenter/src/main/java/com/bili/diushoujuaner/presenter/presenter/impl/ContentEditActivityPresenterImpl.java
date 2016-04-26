@@ -9,8 +9,9 @@ import com.bili.diushoujuaner.model.actionhelper.action.UserInfoAction;
 import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
 import com.bili.diushoujuaner.model.apihelper.request.AutographModifyReq;
 import com.bili.diushoujuaner.model.apihelper.request.FeedBackReq;
-import com.bili.diushoujuaner.model.apihelper.request.FriendAddReq;
+import com.bili.diushoujuaner.model.apihelper.request.FriendApplyReq;
 import com.bili.diushoujuaner.model.apihelper.request.MemberNameUpdateReq;
+import com.bili.diushoujuaner.model.apihelper.request.PartyApplyReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyIntroduceUpdateReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyNameUpdateReq;
 import com.bili.diushoujuaner.model.apihelper.request.RemarkUpdateReq;
@@ -64,14 +65,14 @@ public class ContentEditActivityPresenterImpl extends BasePresenter<IBaseView> i
     }
 
     @Override
-    public void getFriendAdd(long friendNo, String content) {
+    public void getFriendApply(long friendNo, String content) {
         if(StringUtil.isEmpty(content)){
             showWarning("验证信息不能为空");
             return;
         }
         showLoading(ConstantUtil.LOADING_CENTER, "正在发送");
-        FriendAddReq friendAddReq = new FriendAddReq(friendNo, content);
-        ApplyAction.getInstance(context).getFriendAdd(friendAddReq, new ActionStringCallbackListener<ActionRespon<Void>>() {
+        FriendApplyReq friendApplyReq = new FriendApplyReq(friendNo, content);
+        ApplyAction.getInstance(context).getFriendApply(friendApplyReq, new ActionStringCallbackListener<ActionRespon<Void>>() {
             @Override
             public void onSuccess(ActionRespon<Void> result) {
                 hideLoading(ConstantUtil.LOADING_CENTER);
@@ -92,11 +93,30 @@ public class ContentEditActivityPresenterImpl extends BasePresenter<IBaseView> i
     }
 
     @Override
-    public void getPartyAdd(long partyNo, String content) {
+    public void getPartyApply(long partyNo, String content) {
         if(StringUtil.isEmpty(content)){
             showWarning("验证信息不能为空");
             return;
         }
+        showLoading(ConstantUtil.LOADING_CENTER, "正在发送");
+        ApplyAction.getInstance(context).getPartyApply(new PartyApplyReq(partyNo, content), new ActionStringCallbackListener<ActionRespon<Void>>() {
+            @Override
+            public void onSuccess(ActionRespon<Void> result) {
+                hideLoading(ConstantUtil.LOADING_CENTER);
+                if(showMessage(result.getRetCode(), result.getMessage())){
+                    showWarning("请求成功，等待验证");
+                    if(isBindViewValid()){
+                        getBindView().finishView();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(int errorCode) {
+                hideLoading(ConstantUtil.LOADING_CENTER);
+                showError(errorCode);
+            }
+        });
     }
 
     @Override

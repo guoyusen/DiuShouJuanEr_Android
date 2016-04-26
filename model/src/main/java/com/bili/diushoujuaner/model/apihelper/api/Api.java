@@ -6,14 +6,17 @@ import com.bili.diushoujuaner.model.apihelper.request.AcountUpdateReq;
 import com.bili.diushoujuaner.model.apihelper.request.AutographModifyReq;
 import com.bili.diushoujuaner.model.apihelper.request.CommentAddReq;
 import com.bili.diushoujuaner.model.apihelper.request.CommentRemoveReq;
-import com.bili.diushoujuaner.model.apihelper.request.ContactInfoReq;
+import com.bili.diushoujuaner.model.apihelper.request.ContactAddInfoReq;
 import com.bili.diushoujuaner.model.apihelper.request.ContactsSearchReq;
 import com.bili.diushoujuaner.model.apihelper.request.FeedBackReq;
-import com.bili.diushoujuaner.model.apihelper.request.FriendAddReq;
+import com.bili.diushoujuaner.model.apihelper.request.FriendApplyReq;
 import com.bili.diushoujuaner.model.apihelper.request.FriendAgreeReq;
 import com.bili.diushoujuaner.model.apihelper.request.FriendDeleteReq;
 import com.bili.diushoujuaner.model.apihelper.request.MemberNameUpdateReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyAddReq;
+import com.bili.diushoujuaner.model.apihelper.request.PartyApplyAgreeReq;
+import com.bili.diushoujuaner.model.apihelper.request.PartyApplyReq;
+import com.bili.diushoujuaner.model.apihelper.request.PartyContactReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyHeadUpdateReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyIntroduceUpdateReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyNameUpdateReq;
@@ -65,11 +68,14 @@ public interface Api {
     String getPartyNameUpdate = ConstantUtil.HOST_ADDRESS + "1.0/party/modify/name";
     String getPartyIntroduceUpdate = ConstantUtil.HOST_ADDRESS + "1.0/party/modify/introduce";
     String getContactsSearch = ConstantUtil.HOST_ADDRESS + "1.0/contacts/search?";
-    String getFriendAdd = ConstantUtil.HOST_ADDRESS + "1.0/friend/add";
+    String getFriendApply = ConstantUtil.HOST_ADDRESS + "1.0/friend/apply";
     String getFriendAgree = ConstantUtil.HOST_ADDRESS + "1.0/friend/agree";
     String getFriendDelete = ConstantUtil.HOST_ADDRESS + "1.0/friend/delete";
     String getfriendRemarkUpdate = ConstantUtil.HOST_ADDRESS + "1.0/friend/remark/modify";
     String getPartyAdd = ConstantUtil.HOST_ADDRESS + "1.0/party/add";
+    String getPartyApply = ConstantUtil.HOST_ADDRESS + "1.0/party/apply";
+    String getContactParty = ConstantUtil.HOST_ADDRESS + "1.0/contact/party?";
+    String getPartyApplyAgree = ConstantUtil.HOST_ADDRESS + "1.0/party/apply/agree";
 
     /**
      * 用户登录
@@ -139,10 +145,10 @@ public interface Api {
 
     /**
      * 获取用户的个人信息
-     * @param contactInfoReq
+     * @param contactAddInfoReq
      * @param apiStringCallbackListener
      */
-    void getContactInfo(ContactInfoReq contactInfoReq, ApiStringCallbackListener apiStringCallbackListener);
+    void getContactInfo(ContactAddInfoReq contactAddInfoReq, ApiStringCallbackListener apiStringCallbackListener);
 
     /**
      * 获取用户最新的Recall
@@ -277,10 +283,10 @@ public interface Api {
 
     /**
      * 添加好友
-     * @param friendAddReq
+     * @param friendApplyReq
      * @param apiStringCallbackListener
      */
-    void getFriendAdd(FriendAddReq friendAddReq, ApiStringCallbackListener apiStringCallbackListener);
+    void getFriendApply(FriendApplyReq friendApplyReq, ApiStringCallbackListener apiStringCallbackListener);
 
     /**
      * 同意好友添加请求
@@ -310,4 +316,25 @@ public interface Api {
      * @param apiFileCallbackListener
      */
     void getPartyAdd(PartyAddReq partyAddReq, String path, ApiFileCallbackListener apiFileCallbackListener);
+
+    /**
+     * 申请加群
+     * @param partyApplyReq
+     * @param apiStringCallbackListener
+     */
+    void getPartyApply(PartyApplyReq partyApplyReq, ApiStringCallbackListener apiStringCallbackListener);
+
+    /**
+     * 获取群的所有信息
+     * @param partyContactReq
+     * @param apiStringCallbackListener
+     */
+    void getContactParty(PartyContactReq partyContactReq, ApiStringCallbackListener apiStringCallbackListener);
+
+    /**
+     * 同意加入群
+     * @param partyApplyAgreeReq
+     * @param apiStringCallbackListener
+     */
+    void getPartyApplyAgree(PartyApplyAgreeReq partyApplyAgreeReq, ApiStringCallbackListener apiStringCallbackListener);
 }

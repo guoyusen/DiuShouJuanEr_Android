@@ -5,6 +5,7 @@ import android.content.Context;
 import com.bili.diushoujuaner.model.actionhelper.action.ApplyAction;
 import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
 import com.bili.diushoujuaner.model.apihelper.request.FriendAgreeReq;
+import com.bili.diushoujuaner.model.apihelper.request.PartyApplyAgreeReq;
 import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
 import com.bili.diushoujuaner.presenter.base.BasePresenter;
 import com.bili.diushoujuaner.presenter.presenter.ContactAddActivityPresenter;
@@ -24,9 +25,9 @@ public class ContactAddActivityPresenterImpl extends BasePresenter<IContactAddVi
     }
 
     @Override
-    public void getFriendAgree(long friendNo) {
+    public void getPartyApplyAgree(long partyNo, long memberNo) {
         showLoading(ConstantUtil.LOADING_CENTER, "正在发送请求");
-        ApplyAction.getInstance(context).getFriendAgree(new FriendAgreeReq(friendNo), new ActionStringCallbackListener<ActionRespon<Void>>() {
+        ApplyAction.getInstance(context).getPartyApplyAgree(new PartyApplyAgreeReq(partyNo, memberNo), new ActionStringCallbackListener<ActionRespon<Void>>() {
             @Override
             public void onSuccess(ActionRespon<Void> result) {
                 hideLoading(ConstantUtil.LOADING_CENTER);
@@ -37,6 +38,27 @@ public class ContactAddActivityPresenterImpl extends BasePresenter<IContactAddVi
 
             @Override
             public void onFailure(int errorCode) {
+                hideLoading(ConstantUtil.LOADING_CENTER);
+                showError(errorCode);
+            }
+        });
+    }
+
+    @Override
+    public void getFriendApplyAgree(long friendNo) {
+        showLoading(ConstantUtil.LOADING_CENTER, "正在发送请求");
+        ApplyAction.getInstance(context).getFriendApplyAgree(new FriendAgreeReq(friendNo), new ActionStringCallbackListener<ActionRespon<Void>>() {
+            @Override
+            public void onSuccess(ActionRespon<Void> result) {
+                hideLoading(ConstantUtil.LOADING_CENTER);
+                if(showMessage(result.getRetCode(), result.getMessage())){
+                    getApplyVoList();
+                }
+            }
+
+            @Override
+            public void onFailure(int errorCode) {
+                hideLoading(ConstantUtil.LOADING_CENTER);
                 showError(errorCode);
             }
         });

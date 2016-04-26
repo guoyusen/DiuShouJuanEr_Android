@@ -16,6 +16,7 @@ import com.bili.diushoujuaner.model.eventhelper.LogoutEvent;
 import com.bili.diushoujuaner.model.eventhelper.UpdateMessageEvent;
 import com.bili.diushoujuaner.model.eventhelper.UpdatePartyEvent;
 import com.bili.diushoujuaner.model.eventhelper.UpdateReadCountEvent;
+import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
 import com.bili.diushoujuaner.model.tempHelper.ChattingTemper;
 import com.bili.diushoujuaner.model.tempHelper.ContactTemper;
 import com.bili.diushoujuaner.utils.ConstantUtil;
@@ -68,7 +69,7 @@ public class LocalClientHandler extends Handler {
                     return;
                 }
                 ContactTemper.getInstance().updatePartyHeadPic(messageVo.getToNo(), messageVo.getContent());
-                EventBus.getDefault().post(new UpdatePartyEvent(messageVo.getToNo(), messageVo.getContent(), ConstantUtil.CHAT_PARTY_INTRODUCE));
+                EventBus.getDefault().post(new UpdatePartyEvent(messageVo.getToNo(), messageVo.getContent(), ConstantUtil.CHAT_PARTY_HEAD));
                 break;
             case ConstantUtil.HANDLER_PARTY_NAME:
                 messageVo = bundle.getParcelable("MessageVo");
@@ -86,22 +87,35 @@ public class LocalClientHandler extends Handler {
                 ContactTemper.getInstance().updateMemberName(messageVo.getToNo(), messageVo.getFromNo(), messageVo.getContent());
                 EventBus.getDefault().post(new UpdatePartyEvent(messageVo.getToNo(), messageVo.getContent(), ConstantUtil.CHAT_PARTY_MEMBER_NAME));
                 break;
-            case ConstantUtil.HANDLER_FRIEND_ADD:
+            case ConstantUtil.HANDLER_FRIEND_APPLY:
                 messageVo = bundle.getParcelable("MessageVo");
                 if(messageVo == null){
                     return;
                 }
                 ContactAction.getInstance(context).getAddContact(messageVo.getFromNo(), ConstantUtil.CONTACT_INFO_ADD_BEFORE);
                 break;
-            case ConstantUtil.HANDLER_PARTY_ADD:
+            case ConstantUtil.HANDLER_PARTY_APPLY:
                 EventBus.getDefault().post(new RequestContactEvent());
                 break;
-            case ConstantUtil.HANDLER_CONTACT_ADDED:
+            case ConstantUtil.HANDLER_FRIEND_APPLY_AGREE:
+                 messageVo = bundle.getParcelable("MessageVo");
+                    if(messageVo == null){
+                        return;
+                }
+                ContactAction.getInstance(context).getAddContact(messageVo.getFromNo(), ConstantUtil.CONTACT_INFO_ADD_AFTER);
+                break;
+            case ConstantUtil.HANDLER_PARTY_APPLY_AGREE:
                 messageVo = bundle.getParcelable("MessageVo");
                 if(messageVo == null){
                     return;
                 }
-                ContactAction.getInstance(context).getAddContact(messageVo.getFromNo(), ConstantUtil.CONTACT_INFO_ADD_AFTER);
+                if(messageVo.getFromNo() == CustomSessionPreference.getInstance().getCustomSession().getUserNo()){
+                    // 是自己，全量获取该群的所有信息，存入本地，通知更新界面
+                    ContactAction.getInstance(context).getWholePartyInfo(messageVo.getToNo(), messageVo.getFromNo(), messageVo.getTime());
+                }else{
+                    // 不是自己，那么已经是该群的成员，只需要添加单个人的信息到数据库，通知更新界面
+                    ContactAction.getInstance(context).getSingleMemberInfo(messageVo.getToNo(), messageVo.getFromNo(), messageVo.getTime());
+                }
                 break;
             case ConstantUtil.HANDLER_FRIEND_DELETE:
                 messageVo = bundle.getParcelable("MessageVo");
@@ -126,7 +140,6 @@ public class LocalClientHandler extends Handler {
             @Override
             public void onSuccess(Context context, MessageVo result) {
                 EventBus.getDefault().post(new UpdateMessageEvent(result, UpdateMessageEvent.MESSAGE_RECEIVE));
-                EventBus.getDefault().post(new UpdateReadCountEvent(ConstantUtil.UNREAD_COUNT_MESSAGE, ChattingTemper.getUnReadCount()));
             }
 
             @Override

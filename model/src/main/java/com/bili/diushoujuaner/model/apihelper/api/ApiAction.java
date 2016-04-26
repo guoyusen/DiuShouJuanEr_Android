@@ -8,14 +8,17 @@ import com.bili.diushoujuaner.model.apihelper.request.AcountUpdateReq;
 import com.bili.diushoujuaner.model.apihelper.request.AutographModifyReq;
 import com.bili.diushoujuaner.model.apihelper.request.CommentAddReq;
 import com.bili.diushoujuaner.model.apihelper.request.CommentRemoveReq;
-import com.bili.diushoujuaner.model.apihelper.request.ContactInfoReq;
+import com.bili.diushoujuaner.model.apihelper.request.ContactAddInfoReq;
 import com.bili.diushoujuaner.model.apihelper.request.ContactsSearchReq;
 import com.bili.diushoujuaner.model.apihelper.request.FeedBackReq;
-import com.bili.diushoujuaner.model.apihelper.request.FriendAddReq;
+import com.bili.diushoujuaner.model.apihelper.request.FriendApplyReq;
 import com.bili.diushoujuaner.model.apihelper.request.FriendAgreeReq;
 import com.bili.diushoujuaner.model.apihelper.request.FriendDeleteReq;
 import com.bili.diushoujuaner.model.apihelper.request.MemberNameUpdateReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyAddReq;
+import com.bili.diushoujuaner.model.apihelper.request.PartyApplyAgreeReq;
+import com.bili.diushoujuaner.model.apihelper.request.PartyApplyReq;
+import com.bili.diushoujuaner.model.apihelper.request.PartyContactReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyHeadUpdateReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyIntroduceUpdateReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyNameUpdateReq;
@@ -113,8 +116,8 @@ public class ApiAction implements Api {
     }
 
     @Override
-    public void getContactInfo(ContactInfoReq contactInfoReq, ApiStringCallbackListener apiStringCallbackListener) {
-        dataLoader.processStringRequest(Request.Method.GET, StringUtil.getCompleteUrl(Api.getContactInfo, contactInfoReq), null, apiStringCallbackListener);
+    public void getContactInfo(ContactAddInfoReq contactAddInfoReq, ApiStringCallbackListener apiStringCallbackListener) {
+        dataLoader.processStringRequest(Request.Method.GET, StringUtil.getCompleteUrl(Api.getContactInfo, contactAddInfoReq), null, apiStringCallbackListener);
     }
 
     @Override
@@ -213,8 +216,8 @@ public class ApiAction implements Api {
     }
 
     @Override
-    public void getFriendAdd(FriendAddReq friendAddReq, ApiStringCallbackListener apiStringCallbackListener) {
-        dataLoader.processStringRequest(Request.Method.POST, Api.getFriendAdd, CommonUtil.ConvertObjToMap(friendAddReq), apiStringCallbackListener);
+    public void getFriendApply(FriendApplyReq friendApplyReq, ApiStringCallbackListener apiStringCallbackListener) {
+        dataLoader.processStringRequest(Request.Method.POST, Api.getFriendApply, CommonUtil.ConvertObjToMap(friendApplyReq), apiStringCallbackListener);
     }
 
     @Override
@@ -235,5 +238,20 @@ public class ApiAction implements Api {
     @Override
     public void getPartyAdd(PartyAddReq partyAddReq, String path, ApiFileCallbackListener apiFileCallbackListener) {
         dataLoader.processFileUpload(Api.getPartyAdd, CommonUtil.ConvertObjToMap(partyAddReq), "file", path, apiFileCallbackListener);
+    }
+
+    @Override
+    public void getPartyApply(PartyApplyReq partyApplyReq, ApiStringCallbackListener apiStringCallbackListener) {
+        dataLoader.processStringRequest(Request.Method.POST, Api.getPartyApply, CommonUtil.ConvertObjToMap(partyApplyReq), apiStringCallbackListener);
+    }
+
+    @Override
+    public void getContactParty(PartyContactReq partyContactReq, ApiStringCallbackListener apiStringCallbackListener) {
+        dataLoader.processStringRequest(Request.Method.GET, StringUtil.getCompleteUrl(Api.getContactParty, partyContactReq), null, apiStringCallbackListener);
+    }
+
+    @Override
+    public void getPartyApplyAgree(PartyApplyAgreeReq partyApplyAgreeReq, ApiStringCallbackListener apiStringCallbackListener) {
+        dataLoader.processStringRequest(Request.Method.POST, Api.getPartyApplyAgree, CommonUtil.ConvertObjToMap(partyApplyAgreeReq), apiStringCallbackListener);
     }
 }

@@ -37,7 +37,7 @@ public class ApiRespon<T>  implements Serializable {
         this.data = data;
     }
 
-    public boolean getIsLegal(){
+    public boolean isLegal(){
         return this.getRetCode().equals(ConstantUtil.RETCODE_SUCCESS);
     }
 

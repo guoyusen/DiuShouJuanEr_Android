@@ -8,7 +8,7 @@ import com.bili.diushoujuaner.model.actionhelper.action.GoodAction;
 import com.bili.diushoujuaner.model.actionhelper.action.RecallAction;
 import com.bili.diushoujuaner.model.actionhelper.action.UserInfoAction;
 import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
-import com.bili.diushoujuaner.model.apihelper.request.ContactInfoReq;
+import com.bili.diushoujuaner.model.apihelper.request.ContactAddInfoReq;
 import com.bili.diushoujuaner.model.apihelper.request.RecallListReq;
 import com.bili.diushoujuaner.model.apihelper.request.RecallRemoveReq;
 import com.bili.diushoujuaner.model.tempHelper.ContactTemper;
@@ -226,10 +226,10 @@ public class SpaceActivityPresenterImpl extends BasePresenter<ISpaceView> implem
     }
 
     private void getFriendVoFromApi(long userNo){
-        ContactInfoReq contactInfoReq = new ContactInfoReq();
-        contactInfoReq.setUserNo(userNo);
+        ContactAddInfoReq contactAddInfoReq = new ContactAddInfoReq();
+        contactAddInfoReq.setUserNo(userNo);
 
-        ContactAction.getInstance(context).getContactFromApi(contactInfoReq, new ActionStringCallbackListener<ActionRespon<FriendVo>>() {
+        ContactAction.getInstance(context).getContactFromApi(contactAddInfoReq, new ActionStringCallbackListener<ActionRespon<FriendVo>>() {
             @Override
             public void onSuccess(ActionRespon<FriendVo> result) {
                 if(showMessage(result.getRetCode(), result.getMessage())){

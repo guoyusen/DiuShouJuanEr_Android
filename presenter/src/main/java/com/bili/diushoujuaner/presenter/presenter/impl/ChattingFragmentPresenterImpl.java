@@ -44,6 +44,7 @@ public class ChattingFragmentPresenterImpl extends BasePresenter<IChattingView> 
     public void getChattingVoListFromTemper() {
         if(isBindViewValid()){
             getBindView().showChatting(ChattingTemper.getInstance().getChattingVoList());
+            EventBus.getDefault().post(new UpdateReadCountEvent(ConstantUtil.UNREAD_COUNT_MESSAGE, ChattingTemper.getUnReadCount()));
         }
     }
 

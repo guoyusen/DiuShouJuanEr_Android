@@ -11,6 +11,7 @@ import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.adapter.ApplyAdapter;
 import com.bili.diushoujuaner.base.BaseActivity;
 import com.bili.diushoujuaner.callback.OnContactAddListener;
+import com.bili.diushoujuaner.model.eventhelper.ContactUpdatedEvent;
 import com.bili.diushoujuaner.presenter.presenter.ContactAddActivityPresenter;
 import com.bili.diushoujuaner.presenter.presenter.impl.ContactAddActivityPresenterImpl;
 import com.bili.diushoujuaner.presenter.view.IContactAddView;
@@ -20,6 +21,9 @@ import com.bili.diushoujuaner.utils.entity.vo.ApplyVo;
 import com.bili.diushoujuaner.widget.CustomListView;
 import com.bili.diushoujuaner.widget.TintedBitmapDrawable;
 import com.bili.diushoujuaner.widget.scrollview.ReboundScrollView;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,12 +79,23 @@ public class ContactAddActivity extends BaseActivity<ContactAddActivityPresenter
         getBindPresenter().getApplyVoList();
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onContactUpdatedEvent(ContactUpdatedEvent contactUpdatedEvent) {
+        if (applyAdapter == null) {
+            return;
+        }
+        applyAdapter.notifyDataSetInvalidated();
+    }
+
     @Override
     public void onContactAdd(int position) {
         ApplyVo applyVo = applyAdapter.getItem(position);
-        if(!applyVo.getAccept() && applyVo.getType() == ConstantUtil.CHAT_FRIEND_ADD){
+        if(!applyVo.getAccept() && applyVo.getType() == ConstantUtil.CHAT_FRIEND_APPLY){
             //好友申请
-            getBindPresenter().getFriendAgree(applyVo.getFromNo());
+            getBindPresenter().getFriendApplyAgree(applyVo.getFromNo());
+        }else if(!applyVo.getAccept() && applyVo.getType() == ConstantUtil.CHAT_PARTY_APPLY){
+            //群添加申请
+            getBindPresenter().getPartyApplyAgree(applyVo.getToNo(), applyVo.getFromNo());
         }
     }
 

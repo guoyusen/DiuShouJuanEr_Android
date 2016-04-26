@@ -174,7 +174,7 @@ public class ContactDetailActivity extends BaseActivity<ContactDetailActivityPre
                     finish();
                 } else {
                     startActivity(new Intent(ContactDetailActivity.this, ContentEditActivity.class)
-                            .putExtra(ContentEditActivity.TAG_TYPE, ConstantUtil.EDIT_CONTENT_FRIEND_ADD)
+                            .putExtra(ContentEditActivity.TAG_TYPE, ConstantUtil.EDIT_CONTENT_FRIEND_APPLY)
                             .putExtra(ContentEditActivity.TAG_CONTENT, "")
                             .putExtra(ContentEditActivity.TAG_CONTNO, userNo));
                 }

@@ -5,7 +5,7 @@ import android.content.Context;
 import com.bili.diushoujuaner.model.actionhelper.action.ContactAction;
 import com.bili.diushoujuaner.model.actionhelper.action.RecallAction;
 import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
-import com.bili.diushoujuaner.model.apihelper.request.ContactInfoReq;
+import com.bili.diushoujuaner.model.apihelper.request.ContactAddInfoReq;
 import com.bili.diushoujuaner.model.apihelper.request.FriendDeleteReq;
 import com.bili.diushoujuaner.model.apihelper.request.RecentRecallReq;
 import com.bili.diushoujuaner.model.eventhelper.DeleteContactEvent;
@@ -124,10 +124,10 @@ public class ContactDetailActivityPresenterImpl extends BasePresenter<IContactDe
     }
 
     private void getFriendVoFromApi(long userNo){
-        ContactInfoReq contactInfoReq = new ContactInfoReq();
-        contactInfoReq.setUserNo(userNo);
+        ContactAddInfoReq contactAddInfoReq = new ContactAddInfoReq();
+        contactAddInfoReq.setUserNo(userNo);
 
-        ContactAction.getInstance(context).getContactFromApi(contactInfoReq, new ActionStringCallbackListener<ActionRespon<FriendVo>>() {
+        ContactAction.getInstance(context).getContactFromApi(contactAddInfoReq, new ActionStringCallbackListener<ActionRespon<FriendVo>>() {
             @Override
             public void onSuccess(ActionRespon<FriendVo> result) {
                 if(showMessage(result.getRetCode(), result.getMessage())){

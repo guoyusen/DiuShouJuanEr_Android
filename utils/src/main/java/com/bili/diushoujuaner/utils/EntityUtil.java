@@ -30,6 +30,18 @@ public class EntityUtil {
         return messageVo;
     }
 
+    public static MessageVo getMessageVoForNoticeNewMember(long partyNo, long memberNo, String time){
+        MessageVo messageVo = new MessageVo();
+        messageVo.setContent("我加入了群聊");
+        messageVo.setTime(time);
+        messageVo.setConType(ConstantUtil.CONTENT_PARTY_ADD);
+        messageVo.setMsgType(ConstantUtil.CHAT_PAR);
+        messageVo.setStatus(ConstantUtil.MESSAGE_STATUS_SUCCESS);
+        messageVo.setFromNo(memberNo);
+        messageVo.setToNo(partyNo);
+        return messageVo;
+    }
+
     public static MessageVo getMessageVoFromReceive(String jsonString){
         MessageDto messageDto = getMessageDtoFromJSONString(jsonString);
         MessageVo messageVo = null;
