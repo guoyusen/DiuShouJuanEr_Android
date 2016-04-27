@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.bili.diushoujuaner.model.actionhelper.action.FileAction;
 import com.bili.diushoujuaner.model.actionhelper.action.UserInfoAction;
-import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
+import com.bili.diushoujuaner.model.actionhelper.respon.ActionResponse;
 import com.bili.diushoujuaner.model.apihelper.request.UserInfoReq;
 import com.bili.diushoujuaner.model.callback.ActionFileCallbackListener;
 import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
@@ -29,16 +29,13 @@ public class UserActivityPresenterImpl extends BasePresenter<IUserView> implemen
 
     @Override
     public void updateHeadPic(String path) {
-        showLoading(ConstantUtil.LOADING_TOP,"正在上传头像");
-        FileAction.getInstance(context).uploadHeadPic(path, new ActionFileCallbackListener<ActionRespon<String>>() {
+        showLoading(ConstantUtil.LOADING_TOP,"正在上传头像...");
+        FileAction.getInstance(context).uploadHeadPic(path, new ActionFileCallbackListener<ActionResponse<String>>() {
             @Override
-            public void onSuccess(ActionRespon<String> result) {
+            public void onSuccess(ActionResponse<String> result) {
                 hideLoading(ConstantUtil.LOADING_TOP);
-                if(showMessage(result.getRetCode(), result.getMessage())){
-                    if(isBindViewValid()){
-                        EventBus.getDefault().post(new ShowHeadEvent(result.getData()));
-                        getBindView().updateHeadPic(result.getData());
-                    }
+                if(showMessage(result.getRetCode(), result.getMessage()) && isBindViewValid()){
+                    getBindView().updateHeadPic(result.getData());
                 }
             }
 
@@ -57,33 +54,30 @@ public class UserActivityPresenterImpl extends BasePresenter<IUserView> implemen
 
     @Override
     public void updateUserInfo(UserInfoReq userInfoReq) {
-        showLoading(ConstantUtil.LOADING_TOP, "正在保存资料");
-        UserInfoAction.getInstance(context).getUserInfoUpdate(userInfoReq, new ActionStringCallbackListener<ActionRespon<User>>() {
+        showLoading(ConstantUtil.LOADING_TOP, "正在保存资料...");
+        UserInfoAction.getInstance(context).getUserInfoUpdate(userInfoReq, new ActionStringCallbackListener<ActionResponse<User>>() {
             @Override
-            public void onSuccess(ActionRespon<User> result) {
-                if(showMessage(result.getRetCode(), result.getMessage())){
-                    EventBus.getDefault().post(new UpdateUserInfoEvent());
-                }
-                showWarning("资料保存成功");
+            public void onSuccess(ActionResponse<User> result) {
                 hideLoading(ConstantUtil.LOADING_TOP);
-                if(isBindViewValid()){
+                if(showMessage(result.getRetCode(), result.getMessage()) && isBindViewValid()){
+                    showWarning("资料保存成功");
                     getBindView().finishView();
                 }
             }
 
             @Override
             public void onFailure(int errorCode) {
-                showError(errorCode);
                 hideLoading(ConstantUtil.LOADING_TOP);
+                showError(errorCode);
             }
         });
     }
 
     @Override
     public void getUserInfo() {
-        UserInfoAction.getInstance(context).getUserInfo(new ActionStringCallbackListener<ActionRespon<User>>() {
+        UserInfoAction.getInstance(context).getUserInfo(new ActionStringCallbackListener<ActionResponse<User>>() {
             @Override
-            public void onSuccess(ActionRespon<User> result) {
+            public void onSuccess(ActionResponse<User> result) {
                 if(showMessage(result.getRetCode(), result.getMessage())){
                     if(result.getData()!= null && isBindViewValid()){
                         getBindView().showUserInfo(result.getData());

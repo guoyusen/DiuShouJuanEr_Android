@@ -3,7 +3,7 @@ package com.bili.diushoujuaner.presenter.presenter.impl;
 import android.content.Context;
 
 import com.bili.diushoujuaner.model.actionhelper.action.UserInfoAction;
-import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
+import com.bili.diushoujuaner.model.actionhelper.respon.ActionResponse;
 import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
 import com.bili.diushoujuaner.model.tempHelper.ChattingTemper;
 import com.bili.diushoujuaner.model.tempHelper.ContactTemper;
@@ -34,13 +34,11 @@ public class MainActivityPresenterImpl extends BasePresenter<IMainView> implemen
 
     @Override
     public void getUserInfo(){
-        UserInfoAction.getInstance(context).getUserInfo(new ActionStringCallbackListener<ActionRespon<User>>() {
+        UserInfoAction.getInstance(context).getUserInfo(new ActionStringCallbackListener<ActionResponse<User>>() {
             @Override
-            public void onSuccess(ActionRespon<User> result) {
-                if(showMessage(result.getRetCode(), result.getMessage())){
-                    if(result.getData()!= null && isBindViewValid()){
-                        getBindView().showUserInfo(result.getData());
-                    }
+            public void onSuccess(ActionResponse<User> result) {
+                if(showMessage(result.getRetCode(), result.getMessage()) && isBindViewValid()){
+                    getBindView().showUserInfo(result.getData());
                 }
             }
 

@@ -7,7 +7,7 @@ import java.io.Serializable;
 /**
  * Created by BiLi on 2016/3/11.
  */
-public class ApiRespon<T>  implements Serializable {
+public class ApiResponse<T>  implements Serializable {
 
     private String message;
     private String retCode;

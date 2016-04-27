@@ -220,7 +220,7 @@ public class DBManager {
         return friendVoList.isEmpty() ? null : friendVoList.get(0);
     }
 
-    public List<FriendVo> getFriendVoList(){
+    public List<FriendVo> getFriendVoList(boolean addToContactTemper){
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("select user_No, nick_Name, remark, mobile, autograph, gender, birthday,home_Town, location, pic_Path, small_Nick, regist_Time, update_Time, wall_Paper ");
         stringBuilder.append("from User, Friend ");
@@ -251,7 +251,9 @@ public class DBManager {
                 friendVo.setWallPaper(cursor.getString(cursor.getColumnIndex("WALL_PAPER")));
 
                 friendVoList.add(friendVo);
-                ContactTemper.getInstance().addFriendVo(friendVo);
+                if(addToContactTemper){
+                    ContactTemper.getInstance().addFriendVo(friendVo);
+                }
             } while (cursor.moveToNext());
         }
 
@@ -348,7 +350,8 @@ public class DBManager {
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append("select PARTY_NO, MEMBER.USER_NO, MEMBER_NAME, ADD_TIME, TYPE, PIC_PATH ");
         stringBuilder.append("from USER, MEMBER ");
-        stringBuilder.append("where USER.USER_NO = MEMBER.USER_NO");
+        stringBuilder.append("where USER.USER_NO = MEMBER.USER_NO ");
+        stringBuilder.append("and PARTY_NO = " + partyNo);
 
         Cursor cursor = daoSession.getDatabase().rawQuery(stringBuilder.toString(), null);
         cursor.moveToFirst();
@@ -835,14 +838,20 @@ public class DBManager {
     public synchronized void deleteParty(long partyNo){
         daoSession.getDatabase().delete("MEMBER", "PARTY_NO = ?", new String[]{String.valueOf(partyNo)});
         daoSession.getDatabase().delete("PARTY", "PARTY_NO = ?", new String[]{String.valueOf(partyNo)});
-        deleteChat(partyNo, CustomSessionPreference.getInstance().getCustomSession().getUserNo());
+        deletePartyChat(partyNo);
     }
 
     public synchronized void deleteMember(long partyNo, long memberNo){
         daoSession.getDatabase().delete("MEMBER", "PARTY_NO = ? and USER_NO = ?", new String[]{String.valueOf(partyNo),  String.valueOf(memberNo)});
     }
 
-    public synchronized void deleteChat(long partyNo, long memberNo){
+    public synchronized void deletePartyChat(long partyNo){
+        daoSession.getDatabase().delete("CHAT", "OWNER_NO = ? and TO_NO = ?",
+                new String[]{String.valueOf(CustomSessionPreference.getInstance().getCustomSession().getUserNo()),
+                        String.valueOf(partyNo)});
+    }
+
+    public synchronized void deletePartyChat(long partyNo, long memberNo){
         daoSession.getDatabase().delete("CHAT", "OWNER_NO = ? and FROM_NO = ? and TO_NO = ?",
                 new String[]{String.valueOf(CustomSessionPreference.getInstance().getCustomSession().getUserNo()),
                         String.valueOf(memberNo),

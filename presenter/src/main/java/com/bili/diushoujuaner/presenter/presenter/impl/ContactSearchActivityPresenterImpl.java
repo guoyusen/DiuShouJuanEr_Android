@@ -3,7 +3,7 @@ package com.bili.diushoujuaner.presenter.presenter.impl;
 import android.content.Context;
 
 import com.bili.diushoujuaner.model.actionhelper.action.ContactAction;
-import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
+import com.bili.diushoujuaner.model.actionhelper.respon.ActionResponse;
 import com.bili.diushoujuaner.model.apihelper.request.ContactsSearchReq;
 import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
 import com.bili.diushoujuaner.presenter.base.BasePresenter;
@@ -26,15 +26,12 @@ public class ContactSearchActivityPresenterImpl extends BasePresenter<IContactSe
     @Override
     public void getContactsSearch(String paramNo) {
         showLoading(ConstantUtil.LOADING_CENTER, "正在搜索...");
-        ContactsSearchReq contactsSearchReq = new ContactsSearchReq(paramNo);
-        ContactAction.getInstance(context).getContactsSearch(contactsSearchReq, new ActionStringCallbackListener<ActionRespon<List<ContactDto>>>() {
+        ContactAction.getInstance(context).getContactsSearch(new ContactsSearchReq(paramNo), new ActionStringCallbackListener<ActionResponse<List<ContactDto>>>() {
             @Override
-            public void onSuccess(ActionRespon<List<ContactDto>> result) {
+            public void onSuccess(ActionResponse<List<ContactDto>> result) {
                 hideLoading(ConstantUtil.LOADING_CENTER);
-                if(showMessage(result.getRetCode(), result.getMessage())){
-                    if(isBindViewValid() && result.getData() != null){
-                        getBindView().showSearchContactsResult(result.getData());
-                    }
+                if(showMessage(result.getRetCode(), result.getMessage()) && isBindViewValid()){
+                    getBindView().showSearchContactsResult(result.getData());
                 }
             }
 

@@ -8,6 +8,11 @@ public class VerifyReq {
     private String mobile;
     private int type;
 
+    public VerifyReq(String mobile, int type) {
+        this.mobile = mobile;
+        this.type = type;
+    }
+
     public String getMobile() {
         return mobile;
     }

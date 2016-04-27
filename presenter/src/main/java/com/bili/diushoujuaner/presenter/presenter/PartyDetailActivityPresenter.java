@@ -2,6 +2,7 @@ package com.bili.diushoujuaner.presenter.presenter;
 
 import com.bili.diushoujuaner.utils.entity.vo.MemberVo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,13 +14,11 @@ public interface PartyDetailActivityPresenter {
 
     void getContactInfo(long partyNo);
 
-    List<MemberVo> getMemberVoList();
+    ArrayList<MemberVo> getMemberVoList();
 
-    List<MemberVo> getMemberVoList(long partyNo);
+    ArrayList<MemberVo> getMemberVoList(long partyNo);
 
-    String getMemberName();
-
-    long getUserNo();
+    String getMemberName(long partyNo);
 
     void updatePartyHeadPic(long partyNo, String path);
 

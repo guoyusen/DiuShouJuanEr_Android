@@ -15,6 +15,7 @@ import com.bili.diushoujuaner.base.BaseActivity;
 import com.bili.diushoujuaner.presenter.presenter.ContactSearchActivityPresenter;
 import com.bili.diushoujuaner.presenter.presenter.impl.ContactSearchActivityPresenterImpl;
 import com.bili.diushoujuaner.presenter.view.IContactSearchView;
+import com.bili.diushoujuaner.utils.CommonUtil;
 import com.bili.diushoujuaner.utils.ConstantUtil;
 import com.bili.diushoujuaner.utils.entity.dto.ContactDto;
 import com.bili.diushoujuaner.widget.CustomEditText;
@@ -95,7 +96,7 @@ public class ContactSearchActivity extends BaseActivity<ContactSearchActivityPre
 
     @Override
     public void showSearchContactsResult(List<ContactDto> contactDtoList) {
-        if(contactDtoList.isEmpty()){
+        if(CommonUtil.isEmpty(contactDtoList)){
             listViewResult.setVisibility(View.GONE);
             layoutTip.setVisibility(View.VISIBLE);
         }else{

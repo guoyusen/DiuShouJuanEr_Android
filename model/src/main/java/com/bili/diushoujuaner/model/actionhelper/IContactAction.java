@@ -1,10 +1,11 @@
 package com.bili.diushoujuaner.model.actionhelper;
 
-import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
+import com.bili.diushoujuaner.model.actionhelper.respon.ActionResponse;
 import com.bili.diushoujuaner.model.apihelper.request.ContactAddInfoReq;
 import com.bili.diushoujuaner.model.apihelper.request.ContactsSearchReq;
 import com.bili.diushoujuaner.model.apihelper.request.FriendDeleteReq;
 import com.bili.diushoujuaner.model.apihelper.request.MemberExitReq;
+import com.bili.diushoujuaner.model.apihelper.request.MemberForceExitReq;
 import com.bili.diushoujuaner.model.apihelper.request.MemberNameUpdateReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyAddReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyIntroduceUpdateReq;
@@ -14,6 +15,7 @@ import com.bili.diushoujuaner.model.callback.ActionFileCallbackListener;
 import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
 import com.bili.diushoujuaner.utils.entity.dto.ContactDto;
 import com.bili.diushoujuaner.utils.entity.vo.FriendVo;
+import com.bili.diushoujuaner.utils.entity.vo.MemberVo;
 import com.bili.diushoujuaner.utils.entity.vo.PartyVo;
 
 import java.util.List;
@@ -25,27 +27,29 @@ public interface IContactAction {
 
     List<PartyVo> getPartyVoList();
 
-    void getContactList(ActionStringCallbackListener<ActionRespon<List<FriendVo>>> actionStringCallbackListener);
+    void getContactList(boolean addToContactTemper, ActionStringCallbackListener<ActionResponse<List<FriendVo>>> actionStringCallbackListener);
 
-    void getContactFromLocal(long userNo, ActionStringCallbackListener<ActionRespon<FriendVo>> actionStringCallbackListener);
+    void getContactFromLocal(long userNo, ActionStringCallbackListener<ActionResponse<FriendVo>> actionStringCallbackListener);
 
-    void getContactFromApi(ContactAddInfoReq contactAddInfoReq, ActionStringCallbackListener<ActionRespon<FriendVo>> actionStringCallbackListener);
+    void getContactFromApi(ContactAddInfoReq contactAddInfoReq, ActionStringCallbackListener<ActionResponse<FriendVo>> actionStringCallbackListener);
 
-    void getMemberNameUpdate(MemberNameUpdateReq memberNameUpdateReq, ActionStringCallbackListener<ActionRespon<String>> actionStringCallbackListener);
+    void getMemberNameUpdate(MemberNameUpdateReq memberNameUpdateReq, ActionStringCallbackListener<ActionResponse<String>> actionStringCallbackListener);
 
-    void getPartyNameUpdate(PartyNameUpdateReq partyNameUpdateReq, ActionStringCallbackListener<ActionRespon<String>> actionStringCallbackListener);
+    void getPartyNameUpdate(PartyNameUpdateReq partyNameUpdateReq, ActionStringCallbackListener<ActionResponse<String>> actionStringCallbackListener);
 
-    void getPartyIntroduceUpdate(PartyIntroduceUpdateReq partyIntroduceUpdateReq, ActionStringCallbackListener<ActionRespon<String>> actionStringCallbackListener);
+    void getPartyIntroduceUpdate(PartyIntroduceUpdateReq partyIntroduceUpdateReq, ActionStringCallbackListener<ActionResponse<String>> actionStringCallbackListener);
 
-    void getContactsSearch(ContactsSearchReq contactsSearchReq, ActionStringCallbackListener<ActionRespon<List<ContactDto>>> actionStringCallbackListener);
+    void getContactsSearch(ContactsSearchReq contactsSearchReq, ActionStringCallbackListener<ActionResponse<List<ContactDto>>> actionStringCallbackListener);
 
     void getAddContact(long userNo, int type);
 
-    void getFriendDelete(FriendDeleteReq friendDeleteReq, ActionStringCallbackListener<ActionRespon<Void>> actionStringCallbackListener);
+    void getFriendDelete(FriendDeleteReq friendDeleteReq, ActionStringCallbackListener<ActionResponse<Void>> actionStringCallbackListener);
 
-    void getFriendRemarkUpdate(RemarkUpdateReq remarkUpdateReq, ActionStringCallbackListener<ActionRespon<Void>> actionStringCallbackListener);
+    void getFriendRemarkUpdate(RemarkUpdateReq remarkUpdateReq, ActionStringCallbackListener<ActionResponse<Void>> actionStringCallbackListener);
 
-    void getPartyAdd(PartyAddReq partyAddReq, String path, ActionFileCallbackListener<ActionRespon<Void>> actionFileCallbackListener);
+    void getPartyAdd(PartyAddReq partyAddReq, String path, ActionFileCallbackListener<ActionResponse<Void>> actionFileCallbackListener);
+
+    void getMemberVoListFromLocal(long partyNo, ActionStringCallbackListener<ActionResponse<List<MemberVo>>> actionStringCallbackListener);
 
     /**
      * 添加群成功，对于自己而言，需要获取整个群的信息，含成员
@@ -61,5 +65,7 @@ public interface IContactAction {
      */
     void getSingleMemberInfo(long partyNo, long memberNo, String time);
 
-    void getMemberExit(MemberExitReq memberExitReq, ActionStringCallbackListener<ActionRespon<Void>> actionStringCallbackListener);
+    void getMemberExit(MemberExitReq memberExitReq, ActionStringCallbackListener<ActionResponse<Void>> actionStringCallbackListener);
+
+    void getMemberForceExit(MemberForceExitReq memberForceExitReq, ActionStringCallbackListener<ActionResponse<Void>> actionStringCallbackListener);
 }

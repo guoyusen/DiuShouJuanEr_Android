@@ -18,7 +18,8 @@ import com.bili.diushoujuaner.model.eventhelper.DeleteContactEvent;
 import com.bili.diushoujuaner.model.eventhelper.NoticeAddMemberEvent;
 import com.bili.diushoujuaner.model.eventhelper.UpdateMessageEvent;
 import com.bili.diushoujuaner.model.eventhelper.UpdatePartyEvent;
-import com.bili.diushoujuaner.model.tempHelper.ChattingTemper;
+import com.bili.diushoujuaner.presenter.messager.MessageWatcher;
+import com.bili.diushoujuaner.presenter.messager.OnUpdateMessageListener;
 import com.bili.diushoujuaner.presenter.presenter.MessageActivityPresenter;
 import com.bili.diushoujuaner.presenter.presenter.impl.MessageActivityPresenterImpl;
 import com.bili.diushoujuaner.presenter.view.IMessageView;
@@ -44,7 +45,7 @@ import butterknife.Bind;
 /**
  * Created by BiLi on 2016/3/9.
  */
-public class MessageActivity extends BaseActivity<MessageActivityPresenter> implements IMessageView, View.OnClickListener, OnReSendListener, View.OnTouchListener, MessageListView.OnLoadMoreListener, ChattingTemper.OnUpdateMessageListener {
+public class MessageActivity extends BaseActivity<MessageActivityPresenter> implements IMessageView, View.OnClickListener, OnReSendListener, View.OnTouchListener, MessageListView.OnLoadMoreListener, OnUpdateMessageListener {
 
     public static final String TAG = "MessageActivity";
     @Bind(R.id.listView)
@@ -103,11 +104,13 @@ public class MessageActivity extends BaseActivity<MessageActivityPresenter> impl
         btnRight.setOnClickListener(this);
 
         txtEditor.addTextChangedListener(new CommentTextWatcher());
-        messageAdapter = new MessageAdapter(context, messageVoList, getBindPresenter().getOwnerNo());
+        messageAdapter = new MessageAdapter(context, messageVoList, basePresenter.getCurrentUserNo());
         messageAdapter.setReSendListener(this);
         listView.setAdapter(messageAdapter);
         listView.setOnTouchListener(this);
         listView.setOnLoadMoreListener(this);
+
+        MessageWatcher.getInstance().register(this);
         getBindPresenter().getContactInfo();
         getBindPresenter().getMessageList();
     }
@@ -135,7 +138,10 @@ public class MessageActivity extends BaseActivity<MessageActivityPresenter> impl
 
     @Override
     public void onUpdateMessage(MessageVo messageVo) {
-
+        if(messageAdapter == null){
+            return;
+        }
+        messageAdapter.addLast(messageVo);
     }
 
     @Override
@@ -287,6 +293,7 @@ public class MessageActivity extends BaseActivity<MessageActivityPresenter> impl
 
     @Override
     public void onPageDestroy() {
+        MessageWatcher.getInstance().unRegister(this);
         getBindPresenter().clearCurrentChat();
         super.onPageDestroy();
     }

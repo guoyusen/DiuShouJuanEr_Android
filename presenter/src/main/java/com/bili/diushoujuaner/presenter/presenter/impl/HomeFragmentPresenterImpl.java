@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.bili.diushoujuaner.model.actionhelper.action.GoodAction;
 import com.bili.diushoujuaner.model.actionhelper.action.UserInfoAction;
-import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
+import com.bili.diushoujuaner.model.actionhelper.respon.ActionResponse;
 import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
 import com.bili.diushoujuaner.model.tempHelper.GoodTemper;
 import com.bili.diushoujuaner.model.tempHelper.RecallTemper;
@@ -25,10 +25,11 @@ import java.util.List;
  */
 public class HomeFragmentPresenterImpl extends BasePresenter<IHomeView> implements HomeFragmentPresenter {
 
-    private RecallListReq recallListReq = new RecallListReq();
+    private RecallListReq recallListReq;
 
     public HomeFragmentPresenterImpl(IHomeView baseView, Context context) {
         super(baseView, context);
+        recallListReq = new RecallListReq();
     }
 
     @Override
@@ -53,9 +54,9 @@ public class HomeFragmentPresenterImpl extends BasePresenter<IHomeView> implemen
 
     @Override
     public void getGoodAdd(long recallNo){
-        GoodAction.getInstance(context).getGoodAdd(recallNo, new ActionStringCallbackListener<ActionRespon<String>>() {
+        GoodAction.getInstance(context).getGoodAdd(recallNo, new ActionStringCallbackListener<ActionResponse<String>>() {
             @Override
-            public void onSuccess(ActionRespon<String> result) {
+            public void onSuccess(ActionResponse<String> result) {
                 showMessage(result.getRetCode(), result.getMessage());
             }
 
@@ -68,9 +69,9 @@ public class HomeFragmentPresenterImpl extends BasePresenter<IHomeView> implemen
 
     @Override
     public void getGoodRemove(long recallNo){
-        GoodAction.getInstance(context).getGoodRemove(recallNo, new ActionStringCallbackListener<ActionRespon<String>>() {
+        GoodAction.getInstance(context).getGoodRemove(recallNo, new ActionStringCallbackListener<ActionResponse<String>>() {
             @Override
-            public void onSuccess(ActionRespon<String> result) {
+            public void onSuccess(ActionResponse<String> result) {
                 showMessage(result.getRetCode(), result.getMessage());
             }
 
@@ -86,14 +87,13 @@ public class HomeFragmentPresenterImpl extends BasePresenter<IHomeView> implemen
         showLoadingByRefreshType(refreshType);
         initRecallListReq();
 
-        RecallAction.getInstance(context).getRecallList(recallListReq, new ActionStringCallbackListener<ActionRespon<List<RecallDto>>>() {
+        RecallAction.getInstance(context).getRecallList(recallListReq, new ActionStringCallbackListener<ActionResponse<List<RecallDto>>>() {
             @Override
-            public void onSuccess(ActionRespon<List<RecallDto>> result) {
+            public void onSuccess(ActionResponse<List<RecallDto>> result) {
                 if (showMessage(result.getRetCode(), result.getMessage()) && isBindViewValid()) {
                     if(result.getData() != null){
                         getBindView().showRecallList(result.getData());
                     }
-
                     updateRequestParam(result.getData());
                     RecallTemper.getInstance().clear();
                     GoodTemper.getInstance().clear();
@@ -113,9 +113,9 @@ public class HomeFragmentPresenterImpl extends BasePresenter<IHomeView> implemen
 
     @Override
     public void showRecallFromCache(){
-        RecallAction.getInstance(context).getRecallListFromACache(new ActionStringCallbackListener<ActionRespon<List<RecallDto>>>() {
+        RecallAction.getInstance(context).getRecallListFromACache(new ActionStringCallbackListener<ActionResponse<List<RecallDto>>>() {
             @Override
-            public void onSuccess(ActionRespon<List<RecallDto>> result) {
+            public void onSuccess(ActionResponse<List<RecallDto>> result) {
                 if (showMessage(result.getRetCode(), result.getMessage()) && isBindViewValid()) {
                     RecallTemper.getInstance().clear();
                     RecallTemper.getInstance().addRecallDtoList(result.getData());
@@ -132,17 +132,18 @@ public class HomeFragmentPresenterImpl extends BasePresenter<IHomeView> implemen
 
     @Override
     public void getMoreRecallList(){
-        RecallAction.getInstance(context).getRecallList(recallListReq, new ActionStringCallbackListener<ActionRespon<List<RecallDto>>>() {
+        RecallAction.getInstance(context).getRecallList(recallListReq, new ActionStringCallbackListener<ActionResponse<List<RecallDto>>>() {
             @Override
-            public void onSuccess(ActionRespon<List<RecallDto>> result) {
-                if (showMessage(result.getRetCode(), result.getMessage()) && isBindViewValid()) {
+            public void onSuccess(ActionResponse<List<RecallDto>> result) {
+                if(!isBindViewValid()){
+                    return;
+                }
+                if (showMessage(result.getRetCode(), result.getMessage())) {
                     updateRequestParam(result.getData());
                     getBindView().showMoreRecallList(result.getData());
                     RecallTemper.getInstance().addRecallDtoList(result.getData());
                 }else{
-                    if(isBindViewValid()){
-                        getBindView().setLoadMoreEnd();
-                    }
+                    getBindView().setLoadMoreEnd();
                 }
             }
 
@@ -157,9 +158,9 @@ public class HomeFragmentPresenterImpl extends BasePresenter<IHomeView> implemen
     }
 
     @Override
-    public boolean executeGoodChange(boolean goodstatus, long recallNo){
-        if(goodstatus == GoodTemper.getInstance().getGoodStatus(recallNo)){
-            return goodstatus;
+    public boolean executeGoodChange(boolean goodStatus, long recallNo){
+        if(goodStatus == GoodTemper.getInstance().getGoodStatus(recallNo)){
+            return goodStatus;
         }
         if(GoodTemper.getInstance().getGoodStatus(recallNo)){
             getGoodAdd(recallNo);

@@ -7,7 +7,7 @@ import com.bili.diushoujuaner.model.actionhelper.action.FileAction;
 import com.bili.diushoujuaner.model.actionhelper.action.GoodAction;
 import com.bili.diushoujuaner.model.actionhelper.action.RecallAction;
 import com.bili.diushoujuaner.model.actionhelper.action.UserInfoAction;
-import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
+import com.bili.diushoujuaner.model.actionhelper.respon.ActionResponse;
 import com.bili.diushoujuaner.model.apihelper.request.ContactAddInfoReq;
 import com.bili.diushoujuaner.model.apihelper.request.RecallListReq;
 import com.bili.diushoujuaner.model.apihelper.request.RecallRemoveReq;
@@ -37,15 +37,11 @@ import java.util.List;
  */
 public class SpaceActivityPresenterImpl extends BasePresenter<ISpaceView> implements SpaceActivityPresenter {
 
-    private RecallListReq recallListReq = new RecallListReq();
+    private RecallListReq recallListReq;
 
     public SpaceActivityPresenterImpl(ISpaceView baseView, Context context) {
         super(baseView, context);
-    }
-
-    @Override
-    public boolean isOwner(long userNo) {
-        return CustomSessionPreference.getInstance().getCustomSession().getUserNo() == userNo;
+        recallListReq = new RecallListReq();
     }
 
     @Override
@@ -55,16 +51,13 @@ public class SpaceActivityPresenterImpl extends BasePresenter<ISpaceView> implem
 
     @Override
     public void updateWallpaper(String path) {
-        showLoading(ConstantUtil.LOADING_TOP,"正在上传壁纸");
-        FileAction.getInstance(context).uploadWallpaper(path, new ActionFileCallbackListener<ActionRespon<String>>() {
+        showLoading(ConstantUtil.LOADING_TOP,"正在上传壁纸...");
+        FileAction.getInstance(context).uploadWallpaper(path, new ActionFileCallbackListener<ActionResponse<String>>() {
             @Override
-            public void onSuccess(ActionRespon<String> result) {
+            public void onSuccess(ActionResponse<String> result) {
                 hideLoading(ConstantUtil.LOADING_TOP);
-                if(showMessage(result.getRetCode(), result.getMessage())){
-                    if(isBindViewValid()){
-                        getBindView().updateWallPaper(result.getData());
-                    }
-                    EventBus.getDefault().post(new UpdateWallPaperEvent(result.getData()));
+                if(showMessage(result.getRetCode(), result.getMessage()) && isBindViewValid()){
+                    getBindView().updateWallPaper(result.getData());
                 }
             }
 
@@ -84,9 +77,9 @@ public class SpaceActivityPresenterImpl extends BasePresenter<ISpaceView> implem
     @Override
     public void getRecallRemove(final long recallNo, final int position) {
         showLoading(ConstantUtil.LOADING_CENTER, "正在删除...");
-        RecallAction.getInstance(context).getRecallRemove(new RecallRemoveReq(recallNo), new ActionStringCallbackListener<ActionRespon<Long>>() {
+        RecallAction.getInstance(context).getRecallRemove(new RecallRemoveReq(recallNo), new ActionStringCallbackListener<ActionResponse<Long>>() {
             @Override
-            public void onSuccess(ActionRespon<Long> result) {
+            public void onSuccess(ActionResponse<Long> result) {
                 hideLoading(ConstantUtil.LOADING_CENTER);
                 if(showMessage(result.getRetCode(), result.getMessage())){
                     getBindView().removeRecallByPosition(position);
@@ -96,8 +89,8 @@ public class SpaceActivityPresenterImpl extends BasePresenter<ISpaceView> implem
 
             @Override
             public void onFailure(int errorCode) {
-                showError(errorCode);
                 hideLoading(ConstantUtil.LOADING_CENTER);
+                showError(errorCode);
             }
         });
     }
@@ -132,9 +125,9 @@ public class SpaceActivityPresenterImpl extends BasePresenter<ISpaceView> implem
     }
 
     @Override
-    public boolean executeGoodChange(boolean goodstatus, long recallNo) {
-        if(goodstatus == GoodTemper.getInstance().getGoodStatus(recallNo)){
-            return goodstatus;
+    public boolean executeGoodChange(boolean goodStatus, long recallNo) {
+        if(goodStatus == GoodTemper.getInstance().getGoodStatus(recallNo)){
+            return goodStatus;
         }
         if(GoodTemper.getInstance().getGoodStatus(recallNo)){
             getGoodAdd(recallNo);
@@ -147,9 +140,9 @@ public class SpaceActivityPresenterImpl extends BasePresenter<ISpaceView> implem
 
     @Override
     public void getGoodAdd(long recallNo){
-        GoodAction.getInstance(context).getGoodAdd(recallNo, new ActionStringCallbackListener<ActionRespon<String>>() {
+        GoodAction.getInstance(context).getGoodAdd(recallNo, new ActionStringCallbackListener<ActionResponse<String>>() {
             @Override
-            public void onSuccess(ActionRespon<String> result) {
+            public void onSuccess(ActionResponse<String> result) {
                 showMessage(result.getRetCode(), result.getMessage());
             }
 
@@ -162,9 +155,9 @@ public class SpaceActivityPresenterImpl extends BasePresenter<ISpaceView> implem
 
     @Override
     public void getGoodRemove(long recallNo){
-        GoodAction.getInstance(context).getGoodRemove(recallNo, new ActionStringCallbackListener<ActionRespon<String>>() {
+        GoodAction.getInstance(context).getGoodRemove(recallNo, new ActionStringCallbackListener<ActionResponse<String>>() {
             @Override
-            public void onSuccess(ActionRespon<String> result) {
+            public void onSuccess(ActionResponse<String> result) {
                 showMessage(result.getRetCode(), result.getMessage());
             }
 
@@ -197,13 +190,15 @@ public class SpaceActivityPresenterImpl extends BasePresenter<ISpaceView> implem
 
     @Override
     public void getContactInfo(final long userNo) {
-        ContactAction.getInstance(context).getContactFromLocal(userNo, new ActionStringCallbackListener<ActionRespon<FriendVo>>() {
+        ContactAction.getInstance(context).getContactFromLocal(userNo, new ActionStringCallbackListener<ActionResponse<FriendVo>>() {
             @Override
-            public void onSuccess(ActionRespon<FriendVo> result) {
-                //数据不合法，不去做界面处理，走api
+            public void onSuccess(ActionResponse<FriendVo> result) {
+                if(!isBindViewValid()){
+                    return;
+                }
                 if (showMessage(result.getRetCode(), result.getMessage())) {
                     //TODO 更新获取联系人全量信息的时间间隔
-                    if (result.getData() == null || StringUtil.isEmpty(result.getData().getUpdateTime()) || TimeUtil.getHourDifferenceBetweenTime(result.getData().getUpdateTime(), TimeUtil.getCurrentTimeYYMMDD_HHMMSS()) > 1) {
+                    if (result.getData() == null || StringUtil.isEmpty(result.getData().getUpdateTime()) || TimeUtil.getHourDifferenceBetweenTime(result.getData().getUpdateTime(), TimeUtil.getCurrentTimeYYMMDD_HHMMSS()) >= 1) {
                         //数据已经无效，则在不为空的情况下，先进行显示，在进行更新获取
                         if (result.getData() != null && isBindViewValid()) {
                             getBindView().showContactInfo(result.getData());
@@ -211,10 +206,8 @@ public class SpaceActivityPresenterImpl extends BasePresenter<ISpaceView> implem
                         getFriendVoFromApi(userNo);
                     }else{
                         //数据仍在有效期内，直接显示，无需更新
-                        if(isBindViewValid()){
-                            getBindView().showContactInfo(result.getData());
-                        }
                         hideLoading(ConstantUtil.LOADING_DEFAULT);
+                        getBindView().showContactInfo(result.getData());
                     }
                 }
             }
@@ -226,33 +219,30 @@ public class SpaceActivityPresenterImpl extends BasePresenter<ISpaceView> implem
     }
 
     private void getFriendVoFromApi(long userNo){
-        ContactAddInfoReq contactAddInfoReq = new ContactAddInfoReq();
-        contactAddInfoReq.setUserNo(userNo);
-
-        ContactAction.getInstance(context).getContactFromApi(contactAddInfoReq, new ActionStringCallbackListener<ActionRespon<FriendVo>>() {
+        ContactAction.getInstance(context).getContactFromApi(new ContactAddInfoReq(userNo), new ActionStringCallbackListener<ActionResponse<FriendVo>>() {
             @Override
-            public void onSuccess(ActionRespon<FriendVo> result) {
+            public void onSuccess(ActionResponse<FriendVo> result) {
+                hideLoading(ConstantUtil.LOADING_DEFAULT);
                 if(showMessage(result.getRetCode(), result.getMessage())){
                     if(isBindViewValid()){
                         getBindView().showContactInfo(result.getData());
                     }
                 }
-                hideLoading(ConstantUtil.LOADING_DEFAULT);
             }
 
             @Override
             public void onFailure(int errorCode) {
-                showError(errorCode);
                 hideLoading(ConstantUtil.LOADING_DEFAULT);
+                showError(errorCode);
             }
         });
     }
 
     @Override
     public void getMoreRecallList(long userNo) {
-        RecallAction.getInstance(context).getRecallList(recallListReq, new ActionStringCallbackListener<ActionRespon<List<RecallDto>>>() {
+        RecallAction.getInstance(context).getRecallList(recallListReq, new ActionStringCallbackListener<ActionResponse<List<RecallDto>>>() {
             @Override
-            public void onSuccess(ActionRespon<List<RecallDto>> result) {
+            public void onSuccess(ActionResponse<List<RecallDto>> result) {
                 if (showMessage(result.getRetCode(), result.getMessage()) && isBindViewValid()) {
                     updateRequestParam(result.getData());
                     getBindView().showMoreRecallList(result.getData());
@@ -279,9 +269,9 @@ public class SpaceActivityPresenterImpl extends BasePresenter<ISpaceView> implem
         initRecallListReq(userNo);
         showLoading(ConstantUtil.LOADING_DEFAULT,"");
 
-        RecallAction.getInstance(context).getRecallList(recallListReq, new ActionStringCallbackListener<ActionRespon<List<RecallDto>>>() {
+        RecallAction.getInstance(context).getRecallList(recallListReq, new ActionStringCallbackListener<ActionResponse<List<RecallDto>>>() {
             @Override
-            public void onSuccess(ActionRespon<List<RecallDto>> result) {
+            public void onSuccess(ActionResponse<List<RecallDto>> result) {
                 if (showMessage(result.getRetCode(), result.getMessage()) && isBindViewValid()) {
                     if(result.getData() != null){
                         getBindView().showRecallList(result.getData());
@@ -301,9 +291,9 @@ public class SpaceActivityPresenterImpl extends BasePresenter<ISpaceView> implem
 
     @Override
     public void showRecallFromCache(long userNo) {
-        RecallAction.getInstance(context).getUserRecallListFromACache(userNo, new ActionStringCallbackListener<ActionRespon<List<RecallDto>>>() {
+        RecallAction.getInstance(context).getUserRecallListFromACache(userNo, new ActionStringCallbackListener<ActionResponse<List<RecallDto>>>() {
             @Override
-            public void onSuccess(ActionRespon<List<RecallDto>> result) {
+            public void onSuccess(ActionResponse<List<RecallDto>> result) {
                 if (showMessage(result.getRetCode(), result.getMessage()) && isBindViewValid()) {
                     getBindView().showRecallList(result.getData());
                 }

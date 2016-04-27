@@ -11,8 +11,6 @@ public interface MessageActivityPresenter {
 
     void getMessageList();
 
-    long getOwnerNo();
-
     void saveMessageVo(String content, int conType);
 
     boolean validateUpdateEvent(UpdateMessageEvent updateMessageEvent);

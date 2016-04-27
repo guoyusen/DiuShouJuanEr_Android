@@ -152,7 +152,7 @@ public class SpaceActivity extends BaseFragmentActivity<SpaceActivityPresenter> 
     @Override
     public void setViewStatus() {
         isFriended = getBindPresenter().isFriend(userNo);
-        isOwner = getBindPresenter().isOwner(userNo);
+        isOwner = basePresenter.getCurrentUserNo() == userNo;
         if(!(isFriended || isOwner)){
             showPageHead("最近发表", R.mipmap.icon_menu, null);
         }else {

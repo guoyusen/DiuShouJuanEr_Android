@@ -3,7 +3,7 @@ package com.bili.diushoujuaner.presenter.presenter.impl;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
+import com.bili.diushoujuaner.model.actionhelper.respon.ActionResponse;
 import com.bili.diushoujuaner.presenter.presenter.LoginActivityPresenter;
 import com.bili.diushoujuaner.utils.ConstantUtil;
 import com.bili.diushoujuaner.model.apihelper.request.UserAccountReq;
@@ -23,24 +23,18 @@ public class LoginActivityPresenterImpl extends BasePresenter<ILoginView> implem
     }
 
     @Override
-    public void getUserLogin(String mobile, String psd){
-        if(!validate(mobile, psd)){
+    public void getUserLogin(String mobile, String password){
+        if(!validate(mobile, password)){
             return;
         }
         showLoading(ConstantUtil.LOADING_TOP,"登录中...");
-
-        UserAccountReq userAccountReq = new UserAccountReq();
-        userAccountReq.setMobile(mobile);
-        userAccountReq.setPassword(psd);
-        CustomSessionAction.getInstance(context).getUserLogin(userAccountReq, new ActionStringCallbackListener<ActionRespon<Void>>() {
+        CustomSessionAction.getInstance(context).getUserLogin(new UserAccountReq(mobile, password), new ActionStringCallbackListener<ActionResponse<Void>>() {
             @Override
-            public void onSuccess(ActionRespon<Void> result) {
-                if(showMessage(result.getRetCode(), result.getMessage())){
-                    if(isBindViewValid()){
-                        getBindView().loginSuccess();
-                    }
-                }
+            public void onSuccess(ActionResponse<Void> result) {
                 hideLoading(ConstantUtil.LOADING_TOP);
+                if(showMessage(result.getRetCode(), result.getMessage()) && isBindViewValid()){
+                    getBindView().loginSuccess();
+                }
             }
 
             @Override

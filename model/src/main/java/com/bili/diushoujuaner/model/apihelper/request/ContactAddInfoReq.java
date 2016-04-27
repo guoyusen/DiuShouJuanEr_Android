@@ -7,9 +7,6 @@ public class ContactAddInfoReq {
 
     private long userNo;
 
-    public ContactAddInfoReq() {
-    }
-
     public ContactAddInfoReq(long userNo) {
         this.userNo = userNo;
     }

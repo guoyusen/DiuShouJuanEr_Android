@@ -1,5 +1,6 @@
 package com.bili.diushoujuaner.utils;
 
+import com.bili.diushoujuaner.utils.comparator.MemberVoComparator;
 import com.bili.diushoujuaner.utils.entity.dto.ContactDto;
 import com.bili.diushoujuaner.utils.entity.dto.MemberDto;
 import com.bili.diushoujuaner.utils.entity.dto.MessageDto;
@@ -9,8 +10,14 @@ import com.bili.diushoujuaner.utils.entity.po.Friend;
 import com.bili.diushoujuaner.utils.entity.po.Member;
 import com.bili.diushoujuaner.utils.entity.po.Party;
 import com.bili.diushoujuaner.utils.entity.po.User;
+import com.bili.diushoujuaner.utils.entity.vo.MemberVo;
 import com.bili.diushoujuaner.utils.entity.vo.MessageVo;
+import com.bili.diushoujuaner.utils.entity.vo.PartyVo;
 import com.google.gson.reflect.TypeToken;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by BiLi on 2016/4/25.
@@ -167,6 +174,17 @@ public class EntityUtil {
         return party;
     }
 
+    public static PartyVo getPartyVoFromContactDto(ContactDto contactDto){
+        PartyVo partyVo = new PartyVo();
+        partyVo.setInformation(contactDto.getInformation());
+        partyVo.setOwnerNo(contactDto.getOwnerNo());
+        partyVo.setPartyNo(contactDto.getContNo());
+        partyVo.setPicPath(contactDto.getPicPath());
+        partyVo.setRegisterTime(contactDto.getStartTime());
+
+        return partyVo;
+    }
+
     public static Friend getFriendFromContactDto(ContactDto contactDto, long ownerNo){
         Friend friend = new Friend();
         friend.setFriendNo(contactDto.getContNo());
@@ -243,4 +261,21 @@ public class EntityUtil {
 
         return older;
     }
+
+    public static ArrayList<MemberVo> getMemberVoListFromMemberDtoList(List<MemberDto> memberDtoList){
+        ArrayList<MemberVo> memberVoList = new ArrayList<>();
+        for(MemberDto memberDto : memberDtoList){
+            MemberVo memberVo = new MemberVo();
+            memberVo.setUserNo(memberDto.getUserNo());
+            memberVo.setMemberName(memberDto.getMemberName());
+            memberVo.setPicPath(memberDto.getPicPath());
+            memberVo.setType(memberDto.getType());
+            memberVo.setAddTime(memberDto.getAddTime());
+            memberVo.setPartyNo(memberDto.getPartyNo());
+
+            memberVoList.add(memberVo);
+        }
+        return memberVoList;
+    }
+
 }

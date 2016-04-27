@@ -42,7 +42,6 @@
                     android:layout_marginLeft="@dimen/x24"
                     android:layout_marginStart="@dimen/x24"
                     android:gravity="center"
-                    android:text="创建于2016年01月20日"
                     android:textColor="@color/TC_WHITE"
                     android:textSize="@dimen/x30" />
 
@@ -78,11 +77,14 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="@dimen/x176"
-                        android:layout_marginRight="@dimen/x72"
+                        android:layout_marginStart="@dimen/x176"
+                        android:layout_toLeftOf="@+id/ivPartyName"
+                        android:layout_toStartOf="@+id/ivPartyName"
+                        android:layout_marginRight="@dimen/x16"
+                        android:layout_marginEnd="@dimen/x16"
                         android:ellipsize="marquee"
                         android:gravity="center|right"
                         android:maxLines="1"
-                        android:text="一群都比"
                         android:textColor="@color/TC_8A8A8A" />
 
                     <ImageView
@@ -120,11 +122,14 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="@dimen/x176"
-                        android:layout_marginRight="@dimen/x72"
+                        android:layout_marginStart="@dimen/x176"
+                        android:layout_toLeftOf="@+id/ivMemberName"
+                        android:layout_toStartOf="@+id/ivMemberName"
+                        android:layout_marginRight="@dimen/x16"
+                        android:layout_marginEnd="@dimen/x16"
                         android:ellipsize="marquee"
                         android:gravity="center|right"
                         android:maxLines="1"
-                        android:text="小郭子"
                         android:textColor="@color/TC_8A8A8A" />
 
                     <ImageView
@@ -161,14 +166,15 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginEnd="@dimen/x72"
                         android:layout_marginLeft="@dimen/x176"
-                        android:layout_marginRight="@dimen/x72"
                         android:layout_marginStart="@dimen/x176"
+                        android:layout_toLeftOf="@+id/ivMemberCount"
+                        android:layout_toStartOf="@+id/ivMemberCount"
+                        android:layout_marginRight="@dimen/x16"
+                        android:layout_marginEnd="@dimen/x16"
                         android:ellipsize="marquee"
                         android:gravity="center|right"
                         android:maxLines="1"
-                        android:text="30人"
                         android:textColor="@color/TC_8A8A8A" />
 
                     <ImageView
@@ -288,12 +294,11 @@
                     <TextView
                         android:id="@+id/txtIntroduce"
                         style="@style/TextSmall"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingBottom="@dimen/y132"
                         android:layout_below="@+id/layoutIntroduceHead"
                         android:layout_marginTop="@dimen/y16"
-                        android:text="发的是煎熬开发等哈说尽快发"
                         android:textColor="@color/TC_8A8A8A" />
 
                 </RelativeLayout>

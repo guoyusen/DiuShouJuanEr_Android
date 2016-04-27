@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/y128"
+    android:background="@color/COLOR_WHITE">
+
+    <View
+        android:id="@+id/line"
+        style="@style/line"
+        android:layout_marginLeft="@dimen/x120"
+        android:layout_marginRight="@dimen/x24" />
+
+    <TextView
+        android:id="@+id/txtItemMark"
+        android:layout_width="@dimen/x60"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/x24"
+        android:gravity="center"
+        android:text="A"
+        android:textColor="@color/TC_FF4081"
+        android:textSize="@dimen/x50" />
+
+
+    <LinearLayout
+        android:id="@+id/layoutRight"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginEnd="@dimen/x24"
+        android:layout_marginRight="@dimen/x24"
+        android:orientation="horizontal">
+
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/ivItemHead"
+            android:layout_width="@dimen/x96"
+            android:layout_height="@dimen/x96"
+            android:layout_gravity="center_vertical"
+            app:actualImageScaleType="focusCrop"
+            app:roundAsCircle="true" />
+
+        <RelativeLayout
+            android:id="@+id/layoutDelete"
+            android:layout_width="@dimen/x100"
+            android:layout_height="@dimen/x100"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="@dimen/x24"
+            android:layout_marginStart="@dimen/x24">
+
+            <com.bili.diushoujuaner.widget.smoothcheckbox.SmoothCheckBox
+                android:id="@+id/checkbox"
+                android:layout_width="@dimen/x48"
+                android:layout_height="@dimen/x48"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentEnd="true"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/txtContactName"
+        style="@style/TextMiddle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/x144"
+        android:text="三木同学"
+        android:textColor="@color/TC_040404" />
+
+</RelativeLayout>

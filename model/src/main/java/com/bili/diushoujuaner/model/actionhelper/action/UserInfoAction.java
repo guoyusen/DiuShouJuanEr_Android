@@ -3,14 +3,18 @@ package com.bili.diushoujuaner.model.actionhelper.action;
 import android.content.Context;
 
 import com.bili.diushoujuaner.model.actionhelper.IUserInfoAction;
-import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
-import com.bili.diushoujuaner.model.apihelper.ApiRespon;
+import com.bili.diushoujuaner.model.actionhelper.respon.ActionResponse;
+import com.bili.diushoujuaner.model.apihelper.ApiResponse;
 import com.bili.diushoujuaner.model.apihelper.api.ApiAction;
 import com.bili.diushoujuaner.model.apihelper.callback.ApiStringCallbackListener;
-import com.bili.diushoujuaner.model.apihelper.request.AcountUpdateReq;
+import com.bili.diushoujuaner.model.apihelper.request.AccountUpdateReq;
 import com.bili.diushoujuaner.model.apihelper.request.AutographModifyReq;
 import com.bili.diushoujuaner.model.apihelper.request.UserInfoReq;
 import com.bili.diushoujuaner.model.apihelper.request.VerifyReq;
+import com.bili.diushoujuaner.model.eventhelper.NextPageEvent;
+import com.bili.diushoujuaner.model.eventhelper.StartTimerEvent;
+import com.bili.diushoujuaner.model.eventhelper.UpdateAutographEvent;
+import com.bili.diushoujuaner.model.eventhelper.UpdateUserInfoEvent;
 import com.bili.diushoujuaner.utils.StringUtil;
 import com.bili.diushoujuaner.utils.TimeUtil;
 import com.bili.diushoujuaner.utils.entity.dto.CustomSession;
@@ -24,6 +28,8 @@ import com.google.gson.reflect.TypeToken;
 import com.nanotasks.BackgroundWork;
 import com.nanotasks.Completion;
 import com.nanotasks.Tasks;
+
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by BiLi on 2016/3/13.
@@ -46,26 +52,26 @@ public class UserInfoAction implements IUserInfoAction {
     }
 
     @Override
-    public void getLogout(final ActionStringCallbackListener<ActionRespon<Void>> actionStringCallbackListener) {
+    public void getLogout(final ActionStringCallbackListener<ActionResponse<Void>> actionStringCallbackListener) {
         ApiAction.getInstance().getLogout(new ApiStringCallbackListener() {
             @Override
             public void onSuccess(final String data) {
-                Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<Void>>() {
+                Tasks.executeInBackground(context, new BackgroundWork<ActionResponse<Void>>() {
                     @Override
-                    public ActionRespon<Void> doInBackground() throws Exception {
-                        ApiRespon<Void> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<Void>>() {
+                    public ActionResponse<Void> doInBackground() throws Exception {
+                        ApiResponse<Void> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiResponse<Void>>() {
                         }.getType());
-                        return ActionRespon.getActionResponFromApiRespon(result);
+                        return ActionResponse.getActionResponFromApiRespon(result);
                     }
-                }, new Completion<ActionRespon<Void>>() {
+                }, new Completion<ActionResponse<Void>>() {
                     @Override
-                    public void onSuccess(Context context, ActionRespon<Void> result) {
+                    public void onSuccess(Context context, ActionResponse<Void> result) {
                         actionStringCallbackListener.onSuccess(result);
                     }
 
                     @Override
                     public void onError(Context context, Exception e) {
-                        actionStringCallbackListener.onSuccess(ActionRespon.<Void>getActionResponError());
+                        actionStringCallbackListener.onSuccess(ActionResponse.<Void>getActionResponError());
                     }
                 });
             }
@@ -78,8 +84,8 @@ public class UserInfoAction implements IUserInfoAction {
     }
 
     @Override
-    public void getAcountReset(AcountUpdateReq acountUpdateReq, final ActionStringCallbackListener<ActionRespon<Void>> actionStringCallbackListener) {
-        ApiAction.getInstance().getAcountReset(acountUpdateReq, new ApiStringCallbackListener() {
+    public void getAcountReset(AccountUpdateReq accountUpdateReq, final ActionStringCallbackListener<ActionResponse<Void>> actionStringCallbackListener) {
+        ApiAction.getInstance().getAcountReset(accountUpdateReq, new ApiStringCallbackListener() {
             @Override
             public void onSuccess(String data) {
                 processCustomSessionData(data, actionStringCallbackListener);
@@ -94,8 +100,8 @@ public class UserInfoAction implements IUserInfoAction {
 
 
     @Override
-    public void getAcountRegist(AcountUpdateReq acountUpdateReq, final ActionStringCallbackListener<ActionRespon<Void>> actionStringCallbackListener) {
-        ApiAction.getInstance().getAcountRegist(acountUpdateReq, new ApiStringCallbackListener() {
+    public void getAcountRegist(AccountUpdateReq accountUpdateReq, final ActionStringCallbackListener<ActionResponse<Void>> actionStringCallbackListener) {
+        ApiAction.getInstance().getAcountRegist(accountUpdateReq, new ApiStringCallbackListener() {
             @Override
             public void onSuccess(String data) {
                 processCustomSessionData(data, actionStringCallbackListener);
@@ -108,51 +114,56 @@ public class UserInfoAction implements IUserInfoAction {
         });
     }
 
-    private void processCustomSessionData(final String data, final ActionStringCallbackListener<ActionRespon<Void>> actionStringCallbackListener){
-        Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<Void>>() {
+    private void processCustomSessionData(final String data, final ActionStringCallbackListener<ActionResponse<Void>> actionStringCallbackListener){
+        Tasks.executeInBackground(context, new BackgroundWork<ActionResponse<Void>>() {
             @Override
-            public ActionRespon<Void> doInBackground() throws Exception {
-                ApiRespon<CustomSession> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<CustomSession>>() {
+            public ActionResponse<Void> doInBackground() throws Exception {
+                ApiResponse<CustomSession> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiResponse<CustomSession>>() {
                 }.getType());
                 if(result.isLegal()){
+                    EventBus.getDefault().post(new NextPageEvent(2));
                     CustomSessionPreference.getInstance().saveCustomSession(result.getData());
                 }
-                return ActionRespon.getActionRespon(result.getMessage(), result.getRetCode(), (Void)null);
+                return ActionResponse.getActionRespon(result.getMessage(), result.getRetCode(), (Void)null);
             }
-        }, new Completion<ActionRespon<Void>>() {
+        }, new Completion<ActionResponse<Void>>() {
             @Override
-            public void onSuccess(Context context, ActionRespon<Void> result) {
+            public void onSuccess(Context context, ActionResponse<Void> result) {
                 actionStringCallbackListener.onSuccess(result);
             }
 
             @Override
             public void onError(Context context, Exception e) {
-                actionStringCallbackListener.onSuccess(ActionRespon.<Void>getActionResponError());
+                actionStringCallbackListener.onSuccess(ActionResponse.<Void>getActionResponError());
             }
         });
     }
 
     @Override
-    public void getVerifyCode(VerifyReq verifyReq, final ActionStringCallbackListener<ActionRespon<Void>> actionStringCallbackListener) {
+    public void getVerifyCode(final VerifyReq verifyReq, final ActionStringCallbackListener<ActionResponse<Void>> actionStringCallbackListener) {
         ApiAction.getInstance().getVerifyCode(verifyReq, new ApiStringCallbackListener() {
             @Override
             public void onSuccess(final String data) {
-                Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<Void>>() {
+                Tasks.executeInBackground(context, new BackgroundWork<ActionResponse<Void>>() {
                     @Override
-                    public ActionRespon<Void> doInBackground() throws Exception {
-                        ApiRespon<Void> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<Void>>() {
+                    public ActionResponse<Void> doInBackground() throws Exception {
+                        ApiResponse<Void> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiResponse<Void>>() {
                         }.getType());
-                        return ActionRespon.getActionResponFromApiRespon(result);
+                        if(result.isLegal()){
+                            EventBus.getDefault().post((new NextPageEvent(1)).setMobile(verifyReq.getMobile()));
+                            EventBus.getDefault().post((new StartTimerEvent()));
+                        }
+                        return ActionResponse.getActionResponFromApiRespon(result);
                     }
-                }, new Completion<ActionRespon<Void>>() {
+                }, new Completion<ActionResponse<Void>>() {
                     @Override
-                    public void onSuccess(Context context, ActionRespon<Void> result) {
+                    public void onSuccess(Context context, ActionResponse<Void> result) {
                         actionStringCallbackListener.onSuccess(result);
                     }
 
                     @Override
                     public void onError(Context context, Exception e) {
-                        actionStringCallbackListener.onSuccess(ActionRespon.<Void>getActionResponError());
+                        actionStringCallbackListener.onSuccess(ActionResponse.<Void>getActionResponError());
                     }
                 });
             }
@@ -170,30 +181,31 @@ public class UserInfoAction implements IUserInfoAction {
     }
 
     @Override
-    public void getUserInfoUpdate(UserInfoReq userInfoReq, final ActionStringCallbackListener<ActionRespon<User>> actionStringCallbackListener) {
+    public void getUserInfoUpdate(UserInfoReq userInfoReq, final ActionStringCallbackListener<ActionResponse<User>> actionStringCallbackListener) {
         ApiAction.getInstance().getUserInfoUpdate(userInfoReq, new ApiStringCallbackListener() {
             @Override
             public void onSuccess(final String data) {
-                Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<User>>() {
+                Tasks.executeInBackground(context, new BackgroundWork<ActionResponse<User>>() {
                     @Override
-                    public ActionRespon<User> doInBackground() throws Exception {
-                        ApiRespon<UserDto> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<UserDto>>() {
+                    public ActionResponse<User> doInBackground() throws Exception {
+                        ApiResponse<UserDto> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiResponse<UserDto>>() {
                         }.getType());
                         if(result.isLegal()) {
                             DBManager.getInstance().saveUser(result.getData());
                             user = DBManager.getInstance().getUser(CustomSessionPreference.getInstance().getCustomSession().getUserNo());
+                            EventBus.getDefault().post(new UpdateUserInfoEvent());
                         }
-                        return ActionRespon.getActionRespon(result.getMessage(), result.getRetCode(), getUserFromLocal());
+                        return ActionResponse.getActionRespon(result.getMessage(), result.getRetCode(), getUserFromLocal());
                     }
-                }, new Completion<ActionRespon<User>>() {
+                }, new Completion<ActionResponse<User>>() {
                     @Override
-                    public void onSuccess(Context context, ActionRespon<User> result) {
+                    public void onSuccess(Context context, ActionResponse<User> result) {
                         actionStringCallbackListener.onSuccess(result);
                     }
 
                     @Override
                     public void onError(Context context, Exception e) {
-                        actionStringCallbackListener.onSuccess(ActionRespon.<User>getActionResponError());
+                        actionStringCallbackListener.onSuccess(ActionResponse.<User>getActionResponError());
                     }
                 });
             }
@@ -206,28 +218,31 @@ public class UserInfoAction implements IUserInfoAction {
     }
 
     @Override
-    public void getAutographModify(AutographModifyReq autographModifyReq, final ActionStringCallbackListener<ActionRespon<String>> actionStringCallbackListener) {
+    public void getAutographModify(AutographModifyReq autographModifyReq, final ActionStringCallbackListener<ActionResponse<String>> actionStringCallbackListener) {
         ApiAction.getInstance().getAutographModify(autographModifyReq, new ApiStringCallbackListener() {
             @Override
             public void onSuccess(final String data) {
-                Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<String>>() {
+                Tasks.executeInBackground(context, new BackgroundWork<ActionResponse<String>>() {
                     @Override
-                    public ActionRespon<String> doInBackground() throws Exception {
-                        ApiRespon<String> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<String>>() {
+                    public ActionResponse<String> doInBackground() throws Exception {
+                        ApiResponse<String> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiResponse<String>>() {
                         }.getType());
-                        return ActionRespon.getActionResponFromApiRespon(result);
+                        if(result.isLegal()){
+                            user.setAutograph(result.getData());
+                            DBManager.getInstance().updateAutograph(result.getData());
+                            EventBus.getDefault().post(new UpdateAutographEvent(result.getData()));
+                        }
+                        return ActionResponse.getActionResponFromApiRespon(result);
                     }
-                }, new Completion<ActionRespon<String>>() {
+                }, new Completion<ActionResponse<String>>() {
                     @Override
-                    public void onSuccess(Context context, ActionRespon<String> result) {
-                        user.setAutograph(result.getData());
-                        DBManager.getInstance().updateAutograph(result.getData());
+                    public void onSuccess(Context context, ActionResponse<String> result) {
                         actionStringCallbackListener.onSuccess(result);
                     }
 
                     @Override
                     public void onError(Context context, Exception e) {
-                        actionStringCallbackListener.onSuccess(ActionRespon.<String>getActionResponError());
+                        actionStringCallbackListener.onSuccess(ActionResponse.<String>getActionResponError());
                     }
                 });
             }
@@ -249,36 +264,36 @@ public class UserInfoAction implements IUserInfoAction {
     }
 
     @Override
-    public void getUserInfo(final ActionStringCallbackListener<ActionRespon<User>> actionStringCallbackListener){
+    public void getUserInfo(final ActionStringCallbackListener<ActionResponse<User>> actionStringCallbackListener){
         User tmpUser = getUserFromLocal();
         if(tmpUser != null){
-            actionStringCallbackListener.onSuccess(ActionRespon.getActionRespon(getUserFromLocal()));
+            actionStringCallbackListener.onSuccess(ActionResponse.getActionRespon(getUserFromLocal()));
         }
         //TODO 更改重新全量获取用户数据的时间间隔
         if(tmpUser == null || StringUtil.isEmpty(tmpUser.getUpdateTime()) || TimeUtil.getHourDifferenceBetweenTime(tmpUser.getUpdateTime(), TimeUtil.getCurrentTimeYYMMDD_HHMMSS()) > 1){
             ApiAction.getInstance().getUserInfo(new ApiStringCallbackListener() {
                 @Override
                 public void onSuccess(final String data) {
-                    Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<User>>() {
+                    Tasks.executeInBackground(context, new BackgroundWork<ActionResponse<User>>() {
                         @Override
-                        public ActionRespon<User> doInBackground() throws Exception {
-                            ApiRespon<UserDto> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<UserDto>>() {
+                        public ActionResponse<User> doInBackground() throws Exception {
+                            ApiResponse<UserDto> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiResponse<UserDto>>() {
                             }.getType());
                             if(result.isLegal()) {
                                 DBManager.getInstance().saveUser(result.getData());
                                 user = DBManager.getInstance().getUser(CustomSessionPreference.getInstance().getCustomSession().getUserNo());
                             }
-                            return ActionRespon.getActionRespon(result.getMessage(), result.getRetCode(), getUserFromLocal());
+                            return ActionResponse.getActionRespon(result.getMessage(), result.getRetCode(), getUserFromLocal());
                         }
-                    }, new Completion<ActionRespon<User>>() {
+                    }, new Completion<ActionResponse<User>>() {
                         @Override
-                        public void onSuccess(Context context, ActionRespon<User> result) {
+                        public void onSuccess(Context context, ActionResponse<User> result) {
                             actionStringCallbackListener.onSuccess(result);
                         }
 
                         @Override
                         public void onError(Context context, Exception e) {
-                            actionStringCallbackListener.onSuccess(ActionRespon.<User>getActionResponError());
+                            actionStringCallbackListener.onSuccess(ActionResponse.<User>getActionResponError());
                         }
                     });
                 }

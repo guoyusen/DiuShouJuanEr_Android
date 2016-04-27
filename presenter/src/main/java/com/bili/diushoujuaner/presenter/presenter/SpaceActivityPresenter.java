@@ -25,8 +25,6 @@ public interface SpaceActivityPresenter {
 
     boolean isFriend(long userNo);
 
-    boolean isOwner(long userNo);
-
     void setGoodStatusByRecallNo(long recallNo, boolean status);
 
     void removeGoodFromLocal(RecallDto recallDto);

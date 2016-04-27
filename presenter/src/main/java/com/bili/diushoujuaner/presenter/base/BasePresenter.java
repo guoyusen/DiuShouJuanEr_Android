@@ -3,7 +3,7 @@ package com.bili.diushoujuaner.presenter.base;
 import android.content.Context;
 
 import com.bili.diushoujuaner.model.actionhelper.action.UserInfoAction;
-import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
+import com.bili.diushoujuaner.model.actionhelper.respon.ActionResponse;
 import com.bili.diushoujuaner.model.cachehelper.ACache;
 import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
 import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
@@ -116,9 +116,9 @@ public class BasePresenter<T extends IBaseView> {
 
     public void getLogout(){
         showLoading(ConstantUtil.LOADING_TOP,"正在退出账号");
-        UserInfoAction.getInstance(context).getLogout(new ActionStringCallbackListener<ActionRespon<Void>>() {
+        UserInfoAction.getInstance(context).getLogout(new ActionStringCallbackListener<ActionResponse<Void>>() {
             @Override
-            public void onSuccess(ActionRespon<Void> result) {
+            public void onSuccess(ActionResponse<Void> result) {
                 hideLoading(ConstantUtil.LOADING_TOP);
                 if(showMessage(result.getRetCode(), result.getMessage())){
                     LocalClient.getInstance(context).sendMessageToService(ConstantUtil.HANDLER_LOGOUT, null);

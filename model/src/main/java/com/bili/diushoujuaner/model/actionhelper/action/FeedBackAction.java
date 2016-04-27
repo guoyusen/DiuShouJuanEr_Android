@@ -3,8 +3,8 @@ package com.bili.diushoujuaner.model.actionhelper.action;
 import android.content.Context;
 
 import com.bili.diushoujuaner.model.actionhelper.IFeedBackAction;
-import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
-import com.bili.diushoujuaner.model.apihelper.ApiRespon;
+import com.bili.diushoujuaner.model.actionhelper.respon.ActionResponse;
+import com.bili.diushoujuaner.model.apihelper.ApiResponse;
 import com.bili.diushoujuaner.model.apihelper.api.ApiAction;
 import com.bili.diushoujuaner.model.apihelper.callback.ApiStringCallbackListener;
 import com.bili.diushoujuaner.model.apihelper.request.FeedBackReq;
@@ -33,26 +33,26 @@ public class FeedBackAction implements IFeedBackAction {
         return feedBackAction;
     }
     @Override
-    public void getFeedBackAdd(FeedBackReq feedBackReq, final ActionStringCallbackListener<ActionRespon<Void>> actionStringCallbackListener) {
+    public void getFeedBackAdd(FeedBackReq feedBackReq, final ActionStringCallbackListener<ActionResponse<Void>> actionStringCallbackListener) {
         ApiAction.getInstance().getFeedBackAdd(feedBackReq, new ApiStringCallbackListener() {
             @Override
             public void onSuccess(final String data) {
-                Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<Void>>() {
+                Tasks.executeInBackground(context, new BackgroundWork<ActionResponse<Void>>() {
                     @Override
-                    public ActionRespon<Void> doInBackground() throws Exception {
-                        ApiRespon<Void> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<Void>>() {
+                    public ActionResponse<Void> doInBackground() throws Exception {
+                        ApiResponse<Void> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiResponse<Void>>() {
                         }.getType());
-                        return ActionRespon.getActionResponFromApiRespon(result);
+                        return ActionResponse.getActionResponFromApiRespon(result);
                     }
-                }, new Completion<ActionRespon<Void>>() {
+                }, new Completion<ActionResponse<Void>>() {
                     @Override
-                    public void onSuccess(Context context, ActionRespon<Void> result) {
+                    public void onSuccess(Context context, ActionResponse<Void> result) {
                         actionStringCallbackListener.onSuccess(result);
                     }
 
                     @Override
                     public void onError(Context context, Exception e) {
-                        actionStringCallbackListener.onSuccess(ActionRespon.<Void>getActionResponError());
+                        actionStringCallbackListener.onSuccess(ActionResponse.<Void>getActionResponError());
                     }
                 });
             }

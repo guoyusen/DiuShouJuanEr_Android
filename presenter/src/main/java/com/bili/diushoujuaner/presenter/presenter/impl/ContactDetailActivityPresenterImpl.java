@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.bili.diushoujuaner.model.actionhelper.action.ContactAction;
 import com.bili.diushoujuaner.model.actionhelper.action.RecallAction;
-import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
+import com.bili.diushoujuaner.model.actionhelper.respon.ActionResponse;
 import com.bili.diushoujuaner.model.apihelper.request.ContactAddInfoReq;
 import com.bili.diushoujuaner.model.apihelper.request.FriendDeleteReq;
 import com.bili.diushoujuaner.model.apihelper.request.RecentRecallReq;
@@ -35,16 +35,13 @@ public class ContactDetailActivityPresenterImpl extends BasePresenter<IContactDe
 
     @Override
     public void getFriendDelete(final long friendNo) {
-        showLoading(ConstantUtil.LOADING_CENTER, "正在删除");
-        ContactAction.getInstance(context).getFriendDelete(new FriendDeleteReq(friendNo), new ActionStringCallbackListener<ActionRespon<Void>>() {
+        showLoading(ConstantUtil.LOADING_CENTER, "正在删除...");
+        ContactAction.getInstance(context).getFriendDelete(new FriendDeleteReq(friendNo), new ActionStringCallbackListener<ActionResponse<Void>>() {
             @Override
-            public void onSuccess(ActionRespon<Void> result) {
+            public void onSuccess(ActionResponse<Void> result) {
                 hideLoading(ConstantUtil.LOADING_CENTER);
-                if(showMessage(result.getRetCode(), result.getMessage())){
-                    EventBus.getDefault().post(new DeleteContactEvent(ConstantUtil.DELETE_CONTACT_FRIEND, friendNo));
-                    if(isBindViewValid()){
-                        getBindView().finishView();
-                    }
+                if(showMessage(result.getRetCode(), result.getMessage()) && isBindViewValid()){
+                    getBindView().finishView();
                 }
             }
 
@@ -75,9 +72,9 @@ public class ContactDetailActivityPresenterImpl extends BasePresenter<IContactDe
     public void getRecentRecall(long userNo) {
         RecentRecallReq recentRecallReq = new RecentRecallReq();
         recentRecallReq.setUserNo(userNo);
-        RecallAction.getInstance(context).getRecentRecall(recentRecallReq, new ActionStringCallbackListener<ActionRespon<RecallDto>>() {
+        RecallAction.getInstance(context).getRecentRecall(recentRecallReq, new ActionStringCallbackListener<ActionResponse<RecallDto>>() {
             @Override
-            public void onSuccess(ActionRespon<RecallDto> result) {
+            public void onSuccess(ActionResponse<RecallDto> result) {
                 if (showMessage(result.getRetCode(), result.getMessage())) {
                     if (isBindViewValid()) {
                         getBindView().showRecent(result.getData());
@@ -95,53 +92,49 @@ public class ContactDetailActivityPresenterImpl extends BasePresenter<IContactDe
     @Override
     public void getFriendVo(final long userNo) {
         showLoading(ConstantUtil.LOADING_DEFAULT, "");
-        ContactAction.getInstance(context).getContactFromLocal(userNo, new ActionStringCallbackListener<ActionRespon<FriendVo>>() {
+        ContactAction.getInstance(context).getContactFromLocal(userNo, new ActionStringCallbackListener<ActionResponse<FriendVo>>() {
             @Override
-            public void onSuccess(ActionRespon<FriendVo> result) {
+            public void onSuccess(ActionResponse<FriendVo> result) {
                 //数据不合法，不去做界面处理，走api
                 if (showMessage(result.getRetCode(), result.getMessage())) {
-                    //TODO 更新获取联系人全量信息的时间间隔
-                    if (result.getData() == null || StringUtil.isEmpty(result.getData().getUpdateTime()) || TimeUtil.getHourDifferenceBetweenTime(result.getData().getUpdateTime(), TimeUtil.getCurrentTimeYYMMDD_HHMMSS()) > 1) {
-                        //数据已经无效，则在不为空的情况下，先进行显示，在进行更新获取
+                    if (result.getData() == null || StringUtil.isEmpty(result.getData().getUpdateTime()) || TimeUtil.getHourDifferenceBetweenTime(result.getData().getUpdateTime(), TimeUtil.getCurrentTimeYYMMDD_HHMMSS()) >= 1) {
+                        //超过了一小时，重新获取
                         if (result.getData() != null && isBindViewValid()) {
                             getBindView().showContactInfo(result.getData());
                         }
                         getFriendVoFromApi(userNo);
                     }else{
                         //数据仍在有效期内，直接显示，无需更新
+                        hideLoading(ConstantUtil.LOADING_DEFAULT);
                         if(isBindViewValid()){
                             getBindView().showContactInfo(result.getData());
                         }
-                        hideLoading(ConstantUtil.LOADING_DEFAULT);
                     }
                 }
             }
 
             @Override
             public void onFailure(int errorCode) {
+                hideLoading(ConstantUtil.LOADING_DEFAULT);
+                showError(errorCode);
             }
         });
     }
 
     private void getFriendVoFromApi(long userNo){
-        ContactAddInfoReq contactAddInfoReq = new ContactAddInfoReq();
-        contactAddInfoReq.setUserNo(userNo);
-
-        ContactAction.getInstance(context).getContactFromApi(contactAddInfoReq, new ActionStringCallbackListener<ActionRespon<FriendVo>>() {
+        ContactAction.getInstance(context).getContactFromApi(new ContactAddInfoReq(userNo), new ActionStringCallbackListener<ActionResponse<FriendVo>>() {
             @Override
-            public void onSuccess(ActionRespon<FriendVo> result) {
-                if(showMessage(result.getRetCode(), result.getMessage())){
-                    if(isBindViewValid()){
-                        getBindView().showContactInfo(result.getData());
-                    }
-                }
+            public void onSuccess(ActionResponse<FriendVo> result) {
                 hideLoading(ConstantUtil.LOADING_DEFAULT);
+                if(showMessage(result.getRetCode(), result.getMessage()) && isBindViewValid()){
+                    getBindView().showContactInfo(result.getData());
+                }
             }
 
             @Override
             public void onFailure(int errorCode) {
-                showError(errorCode);
                 hideLoading(ConstantUtil.LOADING_DEFAULT);
+                showError(errorCode);
             }
         });
     }

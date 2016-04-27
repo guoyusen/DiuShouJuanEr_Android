@@ -2,9 +2,11 @@ package com.bili.diushoujuaner.activity;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.TypedValue;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -21,6 +23,7 @@ import com.bili.diushoujuaner.presenter.presenter.impl.PartyDetailActivityPresen
 import com.bili.diushoujuaner.presenter.view.IPartyDetailView;
 import com.bili.diushoujuaner.utils.CommonUtil;
 import com.bili.diushoujuaner.utils.ConstantUtil;
+import com.bili.diushoujuaner.utils.EntityUtil;
 import com.bili.diushoujuaner.utils.StringUtil;
 import com.bili.diushoujuaner.utils.TimeUtil;
 import com.bili.diushoujuaner.utils.entity.dto.ContactDto;
@@ -100,16 +103,16 @@ public class PartyDetailActivity extends BaseActivity<PartyDetailActivityPresent
     ImageView ivIntroduce;
     @Bind(R.id.layoutIntroduce)
     RelativeLayout layoutIntroduce;
-
-    public static final String TAG_TYPE = "PartyDetailActivity_Type";
-    public static final String TAG_DTO = "PartyDetailActivity_Dto";
-
-    public static final int TYPE_CONTACT = 1;
-    public static final int TYPE_SEARCH = 2;
     @Bind(R.id.btnAddParty)
     Button btnAddParty;
     @Bind(R.id.layoutBottom)
     RelativeLayout layoutBottom;
+
+    public static final String TAG_TYPE = "PartyDetailActivity_Type";
+
+    public static final String TAG_DTO = "PartyDetailActivity_Dto";
+    public static final int TYPE_CONTACT = 1;
+    public static final int TYPE_SEARCH = 2;
 
     private TintedBitmapDrawable arrowRightDrawable;
     private List<MemberPicVo> memberPicVoList;
@@ -120,6 +123,7 @@ public class PartyDetailActivity extends BaseActivity<PartyDetailActivityPresent
     private int type;
     private ContactDto contactDto;
     private boolean isPartied;
+    private ArrayList<MemberVo> memberVoList;
 
     @Override
     public void initIntentParam(Intent intent) {
@@ -160,13 +164,25 @@ public class PartyDetailActivity extends BaseActivity<PartyDetailActivityPresent
         layoutHead.setBackground(ContextCompat.getDrawable(context, R.drawable.transparent_black_down_bg));
         partyDetailMemberAdapter = new PartyDetailMemberAdapter(context, memberPicVoList);
         gridViewMember.setAdapter(partyDetailMemberAdapter);
+        gridViewMember.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if(partyDetailMemberAdapter.getItem(position).getType() == ConstantUtil.MEMBER_HEAD_SERVER){
+                    showMemberActivity();
+                }else if(partyDetailMemberAdapter.getItem(position).getType() == ConstantUtil.MEMBER_HEAD_LOCAL){
+                    Intent intent = new Intent(PartyDetailActivity.this, MemberAddActivity.class);
+                    intent.putParcelableArrayListExtra(MemberAddActivity.TAG, memberVoList);
+                    startActivity(intent);
+                }
+            }
+        });
+        ivFile.setImageDrawable(arrowRightDrawable);
+        ivMemberCount.setImageDrawable(arrowRightDrawable);
+        layoutMember.setOnClickListener(this);
         if (type == TYPE_CONTACT || (type == TYPE_SEARCH && isPartied)) {
             showPageHead("", R.mipmap.icon_menu, null);
-            ivFile.setImageDrawable(arrowRightDrawable);
-            ivMemberCount.setImageDrawable(arrowRightDrawable);
             ivMemberName.setImageDrawable(arrowRightDrawable);
             ivRecord.setImageDrawable(arrowRightDrawable);
-            ivPartyName.setImageDrawable(arrowRightDrawable);
             ivIntroduce.setImageDrawable(arrowRightDrawable);
 
             layoutMemberName.setVisibility(View.VISIBLE);
@@ -200,6 +216,8 @@ public class PartyDetailActivity extends BaseActivity<PartyDetailActivityPresent
             txtNavTitle.setText(contactDto.getDisplayName());
             txtTime.setText("创建于" + TimeUtil.getYYMMDDFromTime(contactDto.getStartTime()));
             txtIntroduce.setText(StringUtil.isEmpty(contactDto.getInformation()) ? "暂无介绍" : contactDto.getInformation());
+            layoutPartyName.setVisibility(View.VISIBLE);
+            txtPartyName.setText(contactDto.getDisplayName());
             showMemberList();
         }
 
@@ -218,7 +236,7 @@ public class PartyDetailActivity extends BaseActivity<PartyDetailActivityPresent
                         .putExtra(ContentEditActivity.TAG_CONTENT, txtMemberName.getText().toString()));
                 break;
             case R.id.btnRight:
-                DialogTool.createPartyDetailDialog(context, this.partyVo.getOwnerNo() == getBindPresenter().getUserNo(), new OnPartyDetailClickListener() {
+                DialogTool.createPartyDetailDialog(context, this.partyVo.getOwnerNo() == basePresenter.getCurrentUserNo(), new OnPartyDetailClickListener() {
                     @Override
                     public void onPartyExit() {
                         showExitWarning();
@@ -247,7 +265,23 @@ public class PartyDetailActivity extends BaseActivity<PartyDetailActivityPresent
                         .putExtra(ContentEditActivity.TAG_CONTENT, "")
                         .putExtra(ContentEditActivity.TAG_CONTNO, contactDto.getContNo()));
                 break;
+            case R.id.layoutMember:
+                showMemberActivity();
+                break;
         }
+    }
+
+    private void showMemberActivity(){
+        Intent intent = new Intent(PartyDetailActivity.this, MemberActivity.class);
+        if(type == TYPE_CONTACT || (type == TYPE_SEARCH && isPartied)){
+            intent.putExtra(MemberActivity.TAG_VO, partyVo);
+            intent.putExtra(MemberActivity.TAG_TYPE, MemberActivity.TYPE_LOCAL);
+        }else{
+            intent.putExtra(MemberActivity.TAG_TYPE, MemberActivity.TYPE_SERVER);
+            intent.putExtra(MemberActivity.TAG_VO, EntityUtil.getPartyVoFromContactDto(contactDto));
+            intent.putParcelableArrayListExtra(MemberActivity.TAG_MEMBERLIST, EntityUtil.getMemberVoListFromMemberDtoList(contactDto.getMemberList()));
+        }
+        startActivity(intent);
     }
 
     private void showExitWarning(){
@@ -329,24 +363,23 @@ public class PartyDetailActivity extends BaseActivity<PartyDetailActivityPresent
         txtNavTitle.setText(partyVo.getDisplayName());
         txtTime.setText("创建于" + TimeUtil.getYYMMDDFromTime(partyVo.getRegisterTime()));
         txtIntroduce.setText(StringUtil.isEmpty(partyVo.getInformation()) ? "暂无介绍" : partyVo.getInformation());
-        if (partyVo.getOwnerNo() == getBindPresenter().getUserNo()) {
-            layoutPartyName.setVisibility(View.VISIBLE);
+        layoutPartyName.setVisibility(View.VISIBLE);
+        txtPartyName.setText(partyVo.getDisplayName());
+        if (partyVo.getOwnerNo() == basePresenter.getCurrentUserNo()) {
             layoutPartyName.setOnClickListener(this);
-            txtPartyName.setText(partyVo.getDisplayName());
-            ivIntroduce.setVisibility(View.VISIBLE);
             layoutIntroduce.setOnClickListener(this);
+            ivPartyName.setImageDrawable(arrowRightDrawable);
+            ivIntroduce.setVisibility(View.VISIBLE);
         } else {
-            layoutPartyName.setVisibility(View.GONE);
             ivIntroduce.setVisibility(View.GONE);
         }
-        txtMemberName.setText(getBindPresenter().getMemberName());
+        txtMemberName.setText(getBindPresenter().getMemberName(this.partyVo.getPartyNo()));
         showMemberList();
     }
 
     private void showMemberList() {
         memberPicVoList.clear();
         if (type == TYPE_CONTACT || (type == TYPE_SEARCH && isPartied)) {
-            List<MemberVo> memberVoList;
             if(type == TYPE_CONTACT){
                 memberVoList = getBindPresenter().getMemberVoList();
             }else{

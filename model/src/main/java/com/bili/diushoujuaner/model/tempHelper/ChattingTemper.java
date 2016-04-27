@@ -18,14 +18,13 @@ public class ChattingTemper {
     private Hashtable<String,ChattingVo> hashtable;
     private List<ChattingVo> chattingVoList;
     private CurrentChatBo currentChat;
-    private List<OnUpdateMessageListener> messageListenerList;
+
     private static ChattingTemper chattingTemper;
 
     public ChattingTemper(){
         hashtable = new Hashtable<>();
         chattingVoList = new ArrayList<>();
         currentChat = new CurrentChatBo();
-        messageListenerList = new ArrayList<>();
     }
 
     public static synchronized ChattingTemper getInstance(){
@@ -43,16 +42,10 @@ public class ChattingTemper {
         return unReadCount;
     }
 
-
-    public interface OnUpdateMessageListener{
-        void onUpdateMessage(MessageVo messageVo);
-    }
-
     public void clear(boolean clearCurrentBo){
         hashtable.clear();
         chattingVoList.clear();
         if(clearCurrentBo){
-            messageListenerList.clear();
             resetCurrentChatBo();
         }
     }
@@ -85,38 +78,12 @@ public class ChattingTemper {
         return currentChat.getToNo();
     }
 
-    public void registerMessageListener(OnUpdateMessageListener messageListener){
-        messageListenerList.add(messageListener);
-    }
-
-    public void unRegisterMessageListener(OnUpdateMessageListener messageListener){
-        messageListenerList.remove(messageListener);
-    }
-
     public void moveToFirst(int position){
         if(position > chattingVoList.size() - 1){
             return;
         }
         ChattingVo chattingVo = chattingVoList.remove(position);
         chattingVoList.add(0, chattingVo);
-    }
-
-    /**
-     * 将消息通知给监听者
-     * @param messageVo
-     */
-    public void publishToListener(MessageVo messageVo){
-        //通知所有的监听者
-        //正在聊天界面
-        //聊天类型相同
-        //群聊或者单聊
-        if(isChatting() && getMsgType() == messageVo.getMsgType() &&
-                ((getMsgType() == ConstantUtil.CHAT_PAR && getToNo() == messageVo.getToNo()) ||
-                        getMsgType() == ConstantUtil.CHAT_FRI && getToNo() == messageVo.getFromNo())){
-            for(OnUpdateMessageListener messageListener : messageListenerList){
-                messageListener.onUpdateMessage(messageVo);
-            }
-        }
     }
 
     /**

@@ -3,7 +3,7 @@ package com.bili.diushoujuaner.presenter.presenter.impl;
 import android.content.Context;
 
 import com.bili.diushoujuaner.model.actionhelper.action.MessageAction;
-import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
+import com.bili.diushoujuaner.model.actionhelper.respon.ActionResponse;
 import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
 import com.bili.diushoujuaner.model.eventhelper.UpdateMessageEvent;
 import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
@@ -15,6 +15,7 @@ import com.bili.diushoujuaner.presenter.presenter.MessageActivityPresenter;
 import com.bili.diushoujuaner.presenter.view.IMessageView;
 import com.bili.diushoujuaner.utils.CommonUtil;
 import com.bili.diushoujuaner.utils.ConstantUtil;
+import com.bili.diushoujuaner.utils.EntityUtil;
 import com.bili.diushoujuaner.utils.StringUtil;
 import com.bili.diushoujuaner.utils.TimeUtil;
 import com.bili.diushoujuaner.utils.entity.vo.MessageVo;
@@ -119,13 +120,13 @@ public class MessageActivityPresenterImpl extends BasePresenter<IMessageView> im
     @Override
     public void saveMessageVo(String content, int conType) {
         final MessageVo messageVo = getSendingMessageVo(content, conType);
-        MessageAction.getInstance(context).saveMessageVo(messageVo, new ActionStringCallbackListener<ActionRespon<MessageVo>>() {
+        MessageAction.getInstance(context).saveMessageVo(messageVo, new ActionStringCallbackListener<ActionResponse<MessageVo>>() {
             @Override
-            public void onSuccess(ActionRespon<MessageVo> result) {
+            public void onSuccess(ActionResponse<MessageVo> result) {
                 if(showMessage(result.getRetCode(), result.getMessage())){
                     ChattingTemper.getInstance().addChattingVoFromLocal(result.getData());
                     EventBus.getDefault().post(new UpdateMessageEvent(result.getData(), UpdateMessageEvent.MESSAGE_SEND));
-                    //发送到service
+                    //调用service发送消息
                     LocalClient.getInstance(context).sendMessageToService(ConstantUtil.HANDLER_CHAT, result.getData());
                 }
             }
@@ -154,11 +155,6 @@ public class MessageActivityPresenterImpl extends BasePresenter<IMessageView> im
     }
 
     @Override
-    public long getOwnerNo() {
-        return CustomSessionPreference.getInstance().getCustomSession().getUserNo();
-    }
-
-    @Override
     public void resetMessageSearchParam(long rowId, int pageIndex) {
         messageSearchParam.setLastId(rowId);
         messageSearchParam.setPageIndex(pageIndex);
@@ -181,9 +177,9 @@ public class MessageActivityPresenterImpl extends BasePresenter<IMessageView> im
             getBindView().loadComplete();
             return;
         }
-        MessageAction.getInstance(context).getMessageList(messageSearchParam.getLastId(), messageSearchParam.getPageIndex(), messageSearchParam.getPageSize(), new ActionStringCallbackListener<ActionRespon<List<MessageVo>>>() {
+        MessageAction.getInstance(context).getMessageList(messageSearchParam.getLastId(), messageSearchParam.getPageIndex(), messageSearchParam.getPageSize(), new ActionStringCallbackListener<ActionResponse<List<MessageVo>>>() {
             @Override
-            public void onSuccess(ActionRespon<List<MessageVo>> result) {
+            public void onSuccess(ActionResponse<List<MessageVo>> result) {
                 if(showMessage(result.getRetCode(), result.getMessage())){
                     if(isBindViewValid()){
                         if(messageSearchParam.isLoadMore()){

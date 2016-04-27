@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/MatchMatch.FitWindow"
+    android:background="@color/COLOR_WHITE"
+    android:orientation="vertical">
+
+    <include android:id="@+id/layoutHead"
+        layout="@layout/include_head_custom"/>
+
+    <com.bili.diushoujuaner.widget.scrollview.ReboundScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="never">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.bili.diushoujuaner.widget.CustomListView
+                android:id="@+id/listView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:overScrollMode="never"/>
+
+            <RelativeLayout
+                android:id="@+id/layoutTip"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="@dimen/y400"
+                android:background="@color/COLOR_WHITE"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/ivTip"
+                    android:layout_width="@dimen/x108"
+                    android:layout_height="@dimen/y108"
+                    android:layout_centerInParent="true" />
+
+                <TextView
+                    style="@style/TextMiddle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/ivTip"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/y64"
+                    android:text="本地没有未添加成员了"
+                    android:textColor="@color/TC_BFBFBF" />
+
+            </RelativeLayout>
+        </FrameLayout>
+
+    </com.bili.diushoujuaner.widget.scrollview.ReboundScrollView>
+
+
+</LinearLayout>

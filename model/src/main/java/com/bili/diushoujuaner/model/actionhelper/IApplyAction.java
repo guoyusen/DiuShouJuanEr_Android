@@ -1,6 +1,6 @@
 package com.bili.diushoujuaner.model.actionhelper;
 
-import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
+import com.bili.diushoujuaner.model.actionhelper.respon.ActionResponse;
 import com.bili.diushoujuaner.model.apihelper.request.FriendApplyReq;
 import com.bili.diushoujuaner.model.apihelper.request.FriendAgreeReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyApplyAgreeReq;
@@ -15,17 +15,17 @@ import java.util.List;
  */
 public interface IApplyAction {
 
-    void getAddUnReadCount(ActionStringCallbackListener<ActionRespon<Integer>> actionStringCallbackListener);
+    void getAddUnReadCount(ActionStringCallbackListener<ActionResponse<Integer>> actionStringCallbackListener);
 
-    void getFriendApply(FriendApplyReq friendApplyReq, ActionStringCallbackListener<ActionRespon<Void>> actionStringCallbackListener);
+    void getFriendApply(FriendApplyReq friendApplyReq, ActionStringCallbackListener<ActionResponse<Void>> actionStringCallbackListener);
 
-    void getPartyApply(PartyApplyReq partyApplyReq, ActionStringCallbackListener<ActionRespon<Void>> actionStringCallbackListener);
+    void getPartyApply(PartyApplyReq partyApplyReq, ActionStringCallbackListener<ActionResponse<Void>> actionStringCallbackListener);
 
-    void getApplyVoList(ActionStringCallbackListener<ActionRespon<List<ApplyVo>>> actionStringCallbackListener);
+    void getApplyVoList(ActionStringCallbackListener<ActionResponse<List<ApplyVo>>> actionStringCallbackListener);
 
-    void updateApplyRead(ActionStringCallbackListener<ActionRespon<Void>> actionStringCallbackListener);
+    void updateApplyRead(ActionStringCallbackListener<ActionResponse<Void>> actionStringCallbackListener);
 
-    void getFriendApplyAgree(FriendAgreeReq friendAgreeReq, ActionStringCallbackListener<ActionRespon<Void>> actionStringCallbackListener);
+    void getFriendApplyAgree(FriendAgreeReq friendAgreeReq, ActionStringCallbackListener<ActionResponse<Void>> actionStringCallbackListener);
 
-    void getPartyApplyAgree(PartyApplyAgreeReq partyApplyAgreeReq, ActionStringCallbackListener<ActionRespon<Void>> actionStringCallbackListener);
+    void getPartyApplyAgree(PartyApplyAgreeReq partyApplyAgreeReq, ActionStringCallbackListener<ActionResponse<Void>> actionStringCallbackListener);
 }

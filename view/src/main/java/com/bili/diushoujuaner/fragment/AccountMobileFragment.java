@@ -10,8 +10,8 @@ import android.widget.Button;
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.base.BaseFragment;
 import com.bili.diushoujuaner.presenter.base.IBaseView;
-import com.bili.diushoujuaner.presenter.presenter.AcountMobileFragmentPresenter;
-import com.bili.diushoujuaner.presenter.presenter.impl.AcountMobileFragmentPresenterImpl;
+import com.bili.diushoujuaner.presenter.presenter.AccountMobileFragmentPresenter;
+import com.bili.diushoujuaner.presenter.presenter.impl.AccountMobileFragmentPresenterImpl;
 import com.bili.diushoujuaner.utils.StringUtil;
 import com.bili.diushoujuaner.widget.CustomEditText;
 
@@ -20,7 +20,7 @@ import butterknife.Bind;
 /**
  * Created by BiLi on 2016/3/2.
  */
-public class AcountMobileFragment extends BaseFragment<AcountMobileFragmentPresenter> implements IBaseView {
+public class AccountMobileFragment extends BaseFragment<AccountMobileFragmentPresenter> implements IBaseView {
 
     @Bind(R.id.edtMobile)
     CustomEditText edtMobile;
@@ -55,8 +55,8 @@ public class AcountMobileFragment extends BaseFragment<AcountMobileFragmentPrese
         }
     }
 
-    public static AcountMobileFragment instantiation(int type) {
-        AcountMobileFragment fragment = new AcountMobileFragment();
+    public static AccountMobileFragment instantiation(int type) {
+        AccountMobileFragment fragment = new AccountMobileFragment();
         fragment.setType(type);
         Bundle args = new Bundle();
         args.putInt("position", type);
@@ -71,7 +71,7 @@ public class AcountMobileFragment extends BaseFragment<AcountMobileFragmentPrese
 
     @Override
     public void beforeInitView() {
-        basePresenter = new AcountMobileFragmentPresenterImpl(this,context);
+        basePresenter = new AccountMobileFragmentPresenterImpl(this,context);
     }
 
     @Override

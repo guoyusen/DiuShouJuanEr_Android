@@ -7,6 +7,10 @@ public class FeedBackReq {
 
     private String content;
 
+    public FeedBackReq(String content) {
+        this.content = content;
+    }
+
     public String getContent() {
         return content;
     }

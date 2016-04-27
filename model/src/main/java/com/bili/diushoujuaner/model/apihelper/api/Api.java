@@ -2,7 +2,7 @@ package com.bili.diushoujuaner.model.apihelper.api;
 
 import com.bili.diushoujuaner.model.apihelper.callback.ApiFileCallbackListener;
 import com.bili.diushoujuaner.model.apihelper.callback.ApiStringCallbackListener;
-import com.bili.diushoujuaner.model.apihelper.request.AcountUpdateReq;
+import com.bili.diushoujuaner.model.apihelper.request.AccountUpdateReq;
 import com.bili.diushoujuaner.model.apihelper.request.AutographModifyReq;
 import com.bili.diushoujuaner.model.apihelper.request.CommentAddReq;
 import com.bili.diushoujuaner.model.apihelper.request.CommentRemoveReq;
@@ -13,6 +13,7 @@ import com.bili.diushoujuaner.model.apihelper.request.FriendApplyReq;
 import com.bili.diushoujuaner.model.apihelper.request.FriendAgreeReq;
 import com.bili.diushoujuaner.model.apihelper.request.FriendDeleteReq;
 import com.bili.diushoujuaner.model.apihelper.request.MemberExitReq;
+import com.bili.diushoujuaner.model.apihelper.request.MemberForceExitReq;
 import com.bili.diushoujuaner.model.apihelper.request.MemberNameUpdateReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyAddReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyApplyAgreeReq;
@@ -78,6 +79,7 @@ public interface Api {
     String getContactParty = ConstantUtil.HOST_ADDRESS + "1.0/contact/party?";
     String getPartyApplyAgree = ConstantUtil.HOST_ADDRESS + "1.0/party/apply/agree";
     String getMemberExit = ConstantUtil.HOST_ADDRESS + "1.0/party/exit";
+    String getMemberForceExit = ConstantUtil.HOST_ADDRESS + "1.0/party/exit/force";
 
     /**
      * 用户登录
@@ -189,17 +191,17 @@ public interface Api {
 
     /**
      * 账户注册
-     * @param acountUpdateReq
+     * @param accountUpdateReq
      * @param apiStringCallbackListener
      */
-    void getAcountRegist(AcountUpdateReq acountUpdateReq, ApiStringCallbackListener apiStringCallbackListener);
+    void getAcountRegist(AccountUpdateReq accountUpdateReq, ApiStringCallbackListener apiStringCallbackListener);
 
     /**
      * 账户重置
-     * @param acountUpdateReq
+     * @param accountUpdateReq
      * @param apiStringCallbackListener
      */
-    void getAcountReset(AcountUpdateReq acountUpdateReq, ApiStringCallbackListener apiStringCallbackListener);
+    void getAcountReset(AccountUpdateReq accountUpdateReq, ApiStringCallbackListener apiStringCallbackListener);
 
     /**
      * 账户退出
@@ -346,4 +348,11 @@ public interface Api {
      * @param apiStringCallbackListener
      */
     void getMemberExit(MemberExitReq memberExitReq, ApiStringCallbackListener apiStringCallbackListener);
+
+    /**
+     * 强制剔除群成员
+     * @param memberForceExitReq
+     * @param apiStringCallbackListener
+     */
+    void getMemberForceExit(MemberForceExitReq memberForceExitReq, ApiStringCallbackListener apiStringCallbackListener);
 }

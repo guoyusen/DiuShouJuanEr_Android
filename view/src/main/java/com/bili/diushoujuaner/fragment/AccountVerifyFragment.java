@@ -12,8 +12,8 @@ import android.widget.TextView;
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.base.BaseFragment;
 import com.bili.diushoujuaner.presenter.base.IBaseView;
-import com.bili.diushoujuaner.presenter.presenter.AcountVerifyFragmentPresenter;
-import com.bili.diushoujuaner.presenter.presenter.impl.AcountVerifyFragmentPresenterImpl;
+import com.bili.diushoujuaner.presenter.presenter.AccountVerifyFragmentPresenter;
+import com.bili.diushoujuaner.presenter.presenter.impl.AccountVerifyFragmentPresenterImpl;
 import com.bili.diushoujuaner.utils.ConstantUtil;
 import com.bili.diushoujuaner.model.eventhelper.NextPageEvent;
 import com.bili.diushoujuaner.model.eventhelper.StartTimerEvent;
@@ -27,7 +27,7 @@ import butterknife.Bind;
 /**
  * Created by BiLi on 2016/3/2.
  */
-public class AcountVerifyFragment extends BaseFragment<AcountVerifyFragmentPresenter> implements IBaseView {
+public class AccountVerifyFragment extends BaseFragment<AccountVerifyFragmentPresenter> implements IBaseView {
 
     @Bind(R.id.edtVerify)
     CustomEditText edtVerify;
@@ -77,8 +77,8 @@ public class AcountVerifyFragment extends BaseFragment<AcountVerifyFragmentPrese
         }
     }
 
-    public static AcountVerifyFragment instantiation(int type) {
-        AcountVerifyFragment fragment = new AcountVerifyFragment();
+    public static AccountVerifyFragment instantiation(int type) {
+        AccountVerifyFragment fragment = new AccountVerifyFragment();
         fragment.setType(type);
         Bundle args = new Bundle();
         args.putInt("position", type);
@@ -93,7 +93,7 @@ public class AcountVerifyFragment extends BaseFragment<AcountVerifyFragmentPrese
 
     @Override
     public void beforeInitView() {
-        basePresenter = new AcountVerifyFragmentPresenterImpl(this, context);
+        basePresenter = new AccountVerifyFragmentPresenterImpl(this, context);
         handler = new Handler();
         customRunnable = new CustomRunnable();
     }
@@ -115,10 +115,10 @@ public class AcountVerifyFragment extends BaseFragment<AcountVerifyFragmentPrese
             public void onClick(View v) {
                 switch (type){
                     case ConstantUtil.ACOUNT_UPDATE_REGIST:
-                        getBindPresenter().getAcountRegister(mobile, edtPsd.getText().toString(), edtVerify.getText().toString().trim());
+                        getBindPresenter().getAccountRegister(mobile, edtPsd.getText().toString(), edtVerify.getText().toString().trim());
                         break;
                     case ConstantUtil.ACOUNT_UPDATE_RESET:
-                        getBindPresenter().getAcountReset(mobile, edtPsd.getText().toString(), edtVerify.getText().toString().trim());
+                        getBindPresenter().getAccountReset(mobile, edtPsd.getText().toString(), edtVerify.getText().toString().trim());
                         break;
                 }
             }

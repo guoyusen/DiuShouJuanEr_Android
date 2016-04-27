@@ -3,8 +3,8 @@ package com.bili.diushoujuaner.model.actionhelper.action;
 import android.content.Context;
 
 import com.bili.diushoujuaner.model.actionhelper.IGoodAction;
-import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
-import com.bili.diushoujuaner.model.apihelper.ApiRespon;
+import com.bili.diushoujuaner.model.actionhelper.respon.ActionResponse;
+import com.bili.diushoujuaner.model.apihelper.ApiResponse;
 import com.bili.diushoujuaner.model.apihelper.api.ApiAction;
 import com.bili.diushoujuaner.model.apihelper.callback.ApiStringCallbackListener;
 import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
@@ -34,26 +34,26 @@ public class GoodAction implements IGoodAction {
     }
 
     @Override
-    public void getGoodAdd(final long recallNo, final ActionStringCallbackListener<ActionRespon<String>> actionStringCallbackListener){
+    public void getGoodAdd(final long recallNo, final ActionStringCallbackListener<ActionResponse<String>> actionStringCallbackListener){
         ApiAction.getInstance().getGoodAdd(recallNo, new ApiStringCallbackListener() {
             @Override
             public void onSuccess(final String data) {
-                Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<String>>() {
+                Tasks.executeInBackground(context, new BackgroundWork<ActionResponse<String>>() {
                     @Override
-                    public ActionRespon<String> doInBackground() throws Exception {
-                        ApiRespon<String> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<String>>() {
+                    public ActionResponse<String> doInBackground() throws Exception {
+                        ApiResponse<String> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiResponse<String>>() {
                         }.getType());
-                        return ActionRespon.getActionResponFromApiRespon(result);
+                        return ActionResponse.getActionResponFromApiRespon(result);
                     }
-                }, new Completion<ActionRespon<String>>() {
+                }, new Completion<ActionResponse<String>>() {
                     @Override
-                    public void onSuccess(Context context, ActionRespon<String> result) {
+                    public void onSuccess(Context context, ActionResponse<String> result) {
                         actionStringCallbackListener.onSuccess(result);
                     }
 
                     @Override
                     public void onError(Context context, Exception e) {
-                        actionStringCallbackListener.onSuccess(ActionRespon.<String>getActionResponError());
+                        actionStringCallbackListener.onSuccess(ActionResponse.<String>getActionResponError());
                     }
                 });
             }
@@ -66,26 +66,26 @@ public class GoodAction implements IGoodAction {
     }
 
     @Override
-    public void getGoodRemove(long recallNo, final ActionStringCallbackListener<ActionRespon<String>> actionStringCallbackListener){
+    public void getGoodRemove(long recallNo, final ActionStringCallbackListener<ActionResponse<String>> actionStringCallbackListener){
         ApiAction.getInstance().getGoodRemove(recallNo, new ApiStringCallbackListener() {
             @Override
             public void onSuccess(final String data) {
-                Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<String>>() {
+                Tasks.executeInBackground(context, new BackgroundWork<ActionResponse<String>>() {
                     @Override
-                    public ActionRespon<String> doInBackground() throws Exception {
-                        ApiRespon<String> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<String>>() {
+                    public ActionResponse<String> doInBackground() throws Exception {
+                        ApiResponse<String> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiResponse<String>>() {
                         }.getType());
-                        return ActionRespon.getActionResponFromApiRespon(result);
+                        return ActionResponse.getActionResponFromApiRespon(result);
                     }
-                }, new Completion<ActionRespon<String>>() {
+                }, new Completion<ActionResponse<String>>() {
                     @Override
-                    public void onSuccess(Context context, ActionRespon<String> result) {
+                    public void onSuccess(Context context, ActionResponse<String> result) {
                         actionStringCallbackListener.onSuccess(result);
                     }
 
                     @Override
                     public void onError(Context context, Exception e) {
-                        actionStringCallbackListener.onSuccess(ActionRespon.<String>getActionResponError());
+                        actionStringCallbackListener.onSuccess(ActionResponse.<String>getActionResponError());
                     }
                 });
             }

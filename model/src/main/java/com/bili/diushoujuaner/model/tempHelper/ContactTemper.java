@@ -101,8 +101,8 @@ public class ContactTemper {
         partyVoHashtable.get(partyNo).setPicPath(path);
     }
 
-    public List<MemberVo> getMemberVoList(long partyNo){
-        List<MemberVo> memberVoList = new ArrayList<>();
+    public ArrayList<MemberVo> getMemberVoList(long partyNo){
+        ArrayList<MemberVo> memberVoList = new ArrayList<>();
         if(memberVoHashTable.get(partyNo) == null){
             return memberVoList;
         }else{

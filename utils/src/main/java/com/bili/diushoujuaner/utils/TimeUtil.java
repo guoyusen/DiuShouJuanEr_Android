@@ -55,8 +55,9 @@ public class TimeUtil {
         try{
             c1.setTime(sdf_YYMMDD_HHMMSS.parse(start));
             c2.setTime(sdf_YYMMDD_HHMMSS.parse(end));
-            return (int)Math.abs(((c1.getTimeInMillis() - c2.getTimeInMillis())/3600000));
+            return (int)Math.abs(c1.getTimeInMillis() - c2.getTimeInMillis()) / 3600000;
         }catch(ParseException pe){
+            pe.printStackTrace();
             return 0;
         }
     }
@@ -67,7 +68,8 @@ public class TimeUtil {
         try{
             c1.setTime(sdf_YYMMDD_HHMMSS.parse(start));
             c2.setTime(sdf_YYMMDD_HHMMSS.parse(end));
-            return (int)Math.abs(((c1.getTimeInMillis() - c2.getTimeInMillis())/60000));
+
+            return (int)Math.abs(c1.getTimeInMillis() - c2.getTimeInMillis()) / 60000;
         }catch(ParseException pe){
             return 0;
         }

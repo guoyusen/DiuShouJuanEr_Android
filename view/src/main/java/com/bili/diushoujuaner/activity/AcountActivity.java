@@ -7,8 +7,8 @@ import android.support.v4.content.ContextCompat;
 
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.base.BaseFragmentActivity;
-import com.bili.diushoujuaner.fragment.AcountMobileFragment;
-import com.bili.diushoujuaner.fragment.AcountVerifyFragment;
+import com.bili.diushoujuaner.fragment.AccountMobileFragment;
+import com.bili.diushoujuaner.fragment.AccountVerifyFragment;
 import com.bili.diushoujuaner.utils.ConstantUtil;
 import com.bili.diushoujuaner.model.eventhelper.NextPageEvent;
 import com.bili.diushoujuaner.model.eventhelper.StartTimerEvent;
@@ -60,8 +60,8 @@ public class AcountActivity extends BaseFragmentActivity {
     public void setViewStatus() {
         showPageHead(type == ConstantUtil.ACOUNT_UPDATE_REGIST  ? "注册账号" : "忘记密码",null,null);
 
-        fragmentList.add(AcountMobileFragment.instantiation(type));
-        fragmentList.add(AcountVerifyFragment.instantiation(type));
+        fragmentList.add(AccountMobileFragment.instantiation(type));
+        fragmentList.add(AccountVerifyFragment.instantiation(type));
 
         stepsView.setCompletedPosition(0)
                 .setLabels(type == ConstantUtil.ACOUNT_UPDATE_REGIST ? stepsRegist : stepsReset)

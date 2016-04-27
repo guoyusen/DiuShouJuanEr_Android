@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.bili.diushoujuaner.model.actionhelper.action.ContactAction;
 import com.bili.diushoujuaner.model.actionhelper.action.FileAction;
-import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
+import com.bili.diushoujuaner.model.actionhelper.respon.ActionResponse;
 import com.bili.diushoujuaner.model.apihelper.request.MemberExitReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyHeadUpdateReq;
 import com.bili.diushoujuaner.model.callback.ActionFileCallbackListener;
@@ -21,7 +21,7 @@ import com.bili.diushoujuaner.utils.entity.vo.MemberVo;
 
 import org.greenrobot.eventbus.EventBus;
 
-import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Created by BiLi on 2016/4/22.
@@ -40,11 +40,11 @@ public class PartyDetailActivityPresenterImpl extends BasePresenter<IPartyDetail
     @Override
     public void getMemberExit(long partyNo) {
         showLoading(ConstantUtil.LOADING_CENTER, "正在退出...");
-        ContactAction.getInstance(context).getMemberExit(new MemberExitReq(partyNo), new ActionStringCallbackListener<ActionRespon<Void>>() {
+        ContactAction.getInstance(context).getMemberExit(new MemberExitReq(partyNo), new ActionStringCallbackListener<ActionResponse<Void>>() {
             @Override
-            public void onSuccess(ActionRespon<Void> result) {
-                ChattingTemper.getInstance().resetCurrentChatBo();
+            public void onSuccess(ActionResponse<Void> result) {
                 hideLoading(ConstantUtil.LOADING_CENTER);
+                ChattingTemper.getInstance().resetCurrentChatBo();
                 showMessage(result.getRetCode(), result.getMessage());
             }
 
@@ -63,16 +63,12 @@ public class PartyDetailActivityPresenterImpl extends BasePresenter<IPartyDetail
 
     @Override
     public void updatePartyHeadPic(final long partyNo, String path) {
-        showLoading(ConstantUtil.LOADING_TOP,"正在上传头像");
-        FileAction.getInstance(context).upoadPartyHeadPic(new PartyHeadUpdateReq(partyNo), path, new ActionFileCallbackListener<ActionRespon<String>>() {
+        showLoading(ConstantUtil.LOADING_TOP,"正在上传头像...");
+        FileAction.getInstance(context).upoadPartyHeadPic(new PartyHeadUpdateReq(partyNo), path, new ActionFileCallbackListener<ActionResponse<String>>() {
             @Override
-            public void onSuccess(ActionRespon<String> result) {
+            public void onSuccess(ActionResponse<String> result) {
                 hideLoading(ConstantUtil.LOADING_TOP);
-                if(showMessage(result.getRetCode(), result.getMessage())){
-                    if(isBindViewValid()){
-                        EventBus.getDefault().post(new UpdatePartyEvent(partyNo, result.getData(), ConstantUtil.CHAT_PARTY_HEAD));
-                    }
-                }
+                showMessage(result.getRetCode(), result.getMessage());
             }
 
             @Override
@@ -89,17 +85,12 @@ public class PartyDetailActivityPresenterImpl extends BasePresenter<IPartyDetail
     }
 
     @Override
-    public long getUserNo() {
-        return CustomSessionPreference.getInstance().getCustomSession().getUserNo();
-    }
-
-    @Override
-    public List<MemberVo> getMemberVoList(long partyNo) {
+    public ArrayList<MemberVo> getMemberVoList(long partyNo) {
         return ContactTemper.getInstance().getMemberVoList(partyNo);
     }
 
     @Override
-    public List<MemberVo> getMemberVoList() {
+    public ArrayList<MemberVo> getMemberVoList() {
         long partyNo = 0;
         if(ChattingTemper.getInstance().getMsgType() == ConstantUtil.CHAT_PAR && isBindViewValid()){
             partyNo = ChattingTemper.getInstance().getToNo();
@@ -108,11 +99,7 @@ public class PartyDetailActivityPresenterImpl extends BasePresenter<IPartyDetail
     }
 
     @Override
-    public String getMemberName() {
-        long partyNo = 0;
-        if(ChattingTemper.getInstance().getMsgType() == ConstantUtil.CHAT_PAR && isBindViewValid()){
-            partyNo = ChattingTemper.getInstance().getToNo();
-        }
+    public String getMemberName(long partyNo) {
         MemberVo memberVo = ContactTemper.getInstance().getMemberVo(partyNo, CustomSessionPreference.getInstance().getCustomSession().getUserNo());
         return memberVo != null ? memberVo.getMemberName() : "";
     }

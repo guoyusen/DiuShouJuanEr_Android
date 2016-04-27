@@ -3,8 +3,8 @@ package com.bili.diushoujuaner.model.actionhelper.action;
 import android.content.Context;
 
 import com.bili.diushoujuaner.model.actionhelper.IChattingAction;
-import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
-import com.bili.diushoujuaner.model.apihelper.ApiRespon;
+import com.bili.diushoujuaner.model.actionhelper.respon.ActionResponse;
+import com.bili.diushoujuaner.model.apihelper.ApiResponse;
 import com.bili.diushoujuaner.model.apihelper.api.ApiAction;
 import com.bili.diushoujuaner.model.apihelper.callback.ApiStringCallbackListener;
 import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
@@ -13,6 +13,7 @@ import com.bili.diushoujuaner.model.eventhelper.RequestContactEvent;
 import com.bili.diushoujuaner.model.eventhelper.DeleteContactEvent;
 import com.bili.diushoujuaner.model.eventhelper.UpdateContactEvent;
 import com.bili.diushoujuaner.model.eventhelper.UpdatePartyEvent;
+import com.bili.diushoujuaner.model.eventhelper.UpdateReadCountEvent;
 import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
 import com.bili.diushoujuaner.model.tempHelper.ChattingTemper;
 import com.bili.diushoujuaner.model.tempHelper.ContactTemper;
@@ -90,51 +91,53 @@ public class ChattingAction implements IChattingAction {
     }
 
     @Override
-    public void getChattingList(final ActionStringCallbackListener<ActionRespon<Void>> actionStringCallbackListener) {
-        Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<Void>>() {
+    public void getChattingList(final ActionStringCallbackListener<ActionResponse<Void>> actionStringCallbackListener) {
+        Tasks.executeInBackground(context, new BackgroundWork<ActionResponse<Void>>() {
             @Override
-            public ActionRespon<Void> doInBackground() throws Exception {
+            public ActionResponse<Void> doInBackground() throws Exception {
                 DBManager.getInstance().getRecentMessage();
-                return ActionRespon.getActionRespon(null);
+                return ActionResponse.getActionRespon(null);
             }
-        }, new Completion<ActionRespon<Void>>() {
+        }, new Completion<ActionResponse<Void>>() {
             @Override
-            public void onSuccess(Context context, ActionRespon<Void> result) {
+            public void onSuccess(Context context, ActionResponse<Void> result) {
+                EventBus.getDefault().post(new UpdateReadCountEvent(ConstantUtil.UNREAD_COUNT_MESSAGE, ChattingTemper.getUnReadCount()));
                 actionStringCallbackListener.onSuccess(result);
             }
 
             @Override
             public void onError(Context context, Exception e) {
-                actionStringCallbackListener.onSuccess(ActionRespon.<Void>getActionResponError());
+                actionStringCallbackListener.onSuccess(ActionResponse.<Void>getActionResponError());
             }
         });
     }
 
     @Override
-    public void getOffMessage(final ActionStringCallbackListener<ActionRespon<List<MessageVo>>> actionStringCallbackListener) {
+    public void getOffMessage(final ActionStringCallbackListener<ActionResponse<List<MessageVo>>> actionStringCallbackListener) {
         ApiAction.getInstance().getOffMsg(new ApiStringCallbackListener() {
             @Override
             public void onSuccess(final String data) {
-                Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<List<MessageVo>>>() {
+                Tasks.executeInBackground(context, new BackgroundWork<ActionResponse<List<MessageVo>>>() {
                     @Override
-                    public ActionRespon<List<MessageVo>> doInBackground() throws Exception {
-                        ApiRespon<List<OffMsgDto>> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<List<OffMsgDto>>>(){}.getType());
+                    public ActionResponse<List<MessageVo>> doInBackground() throws Exception {
+                        ApiResponse<List<OffMsgDto>> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiResponse<List<OffMsgDto>>>(){}.getType());
                         if(result.isLegal()){
                             return processOffMessage(result.getData());
                         }else{
-                            return ActionRespon.getActionRespon(result.getMessage(), result.getRetCode(),null);
+                            return ActionResponse.getActionRespon(result.getMessage(), result.getRetCode(),null);
                         }
 
                     }
-                }, new Completion<ActionRespon<List<MessageVo>>>() {
+                }, new Completion<ActionResponse<List<MessageVo>>>() {
                     @Override
-                    public void onSuccess(Context context, ActionRespon<List<MessageVo>> result) {
+                    public void onSuccess(Context context, ActionResponse<List<MessageVo>> result) {
+                        EventBus.getDefault().post(new UpdateReadCountEvent(ConstantUtil.UNREAD_COUNT_MESSAGE, ChattingTemper.getUnReadCount()));
                         actionStringCallbackListener.onSuccess(result);
                     }
 
                     @Override
                     public void onError(Context context, Exception e) {
-                        actionStringCallbackListener.onSuccess(ActionRespon.<List<MessageVo>>getActionResponError());
+                        actionStringCallbackListener.onSuccess(ActionResponse.<List<MessageVo>>getActionResponError());
                     }
                 });
             }
@@ -146,7 +149,7 @@ public class ChattingAction implements IChattingAction {
         });
     }
 
-    private ActionRespon<List<MessageVo>> processOffMessage(List<OffMsgDto> messageList){
+    private ActionResponse<List<MessageVo>> processOffMessage(List<OffMsgDto> messageList){
         List<MessageVo> msgDtoList = new ArrayList<>();
         for(OffMsgDto item : messageList){
             switch(item.getMsgType()){
@@ -208,13 +211,13 @@ public class ChattingAction implements IChattingAction {
                     break;
                 case ConstantUtil.CHAT_PARTY_MEMBER_EXIT:
                     DBManager.getInstance().deleteMember(item.getToNo(), item.getFromNo());
-                    DBManager.getInstance().deleteChat(item.getToNo(), item.getFromNo());
+                    DBManager.getInstance().deletePartyChat(item.getToNo(), item.getFromNo());
                     EventBus.getDefault().post(new UpdateContactEvent());
                     EventBus.getDefault().post(new UpdatePartyEvent(item.getToNo(),item.getFromNo(), "", ConstantUtil.CHAT_PARTY_MEMBER_EXIT));
                     break;
             }
         }
-        return ActionRespon.getActionRespon(msgDtoList);
+        return ActionResponse.getActionRespon(msgDtoList);
     }
 
     private MessageVo processOffMessage(OffMsgDto item){

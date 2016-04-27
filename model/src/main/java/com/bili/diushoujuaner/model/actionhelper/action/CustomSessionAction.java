@@ -4,8 +4,8 @@ package com.bili.diushoujuaner.model.actionhelper.action;
 import android.content.Context;
 
 import com.bili.diushoujuaner.model.actionhelper.ICustomSessionAction;
-import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
-import com.bili.diushoujuaner.model.apihelper.ApiRespon;
+import com.bili.diushoujuaner.model.actionhelper.respon.ActionResponse;
+import com.bili.diushoujuaner.model.apihelper.ApiResponse;
 import com.bili.diushoujuaner.model.apihelper.api.ApiAction;
 import com.bili.diushoujuaner.model.apihelper.callback.ApiStringCallbackListener;
 import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
@@ -43,29 +43,29 @@ public class CustomSessionAction implements ICustomSessionAction {
     }
 
     @Override
-    public void getUserLogin(UserAccountReq userAccountReq, final ActionStringCallbackListener<ActionRespon<Void>> actionStringCallbackListener){
+    public void getUserLogin(UserAccountReq userAccountReq, final ActionStringCallbackListener<ActionResponse<Void>> actionStringCallbackListener){
         ApiAction.getInstance().getUserLogin(userAccountReq, new ApiStringCallbackListener() {
             @Override
             public void onSuccess(final String data) {
-                Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<Void>>() {
+                Tasks.executeInBackground(context, new BackgroundWork<ActionResponse<Void>>() {
                 @Override
-                public ActionRespon<Void> doInBackground() throws Exception {
-                    ApiRespon<CustomSession> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<CustomSession>>() {
+                public ActionResponse<Void> doInBackground() throws Exception {
+                    ApiResponse<CustomSession> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiResponse<CustomSession>>() {
                     }.getType());
                     if(result.isLegal()){
                         CustomSessionPreference.getInstance().saveCustomSession(result.getData());
                     }
-                    return ActionRespon.getActionRespon(result.getMessage(), result.getRetCode(), (Void)null);
+                    return ActionResponse.getActionRespon(result.getMessage(), result.getRetCode(), (Void)null);
                 }
-            }, new Completion<ActionRespon<Void>>() {
+            }, new Completion<ActionResponse<Void>>() {
                 @Override
-                public void onSuccess(Context context, ActionRespon<Void> result) {
+                public void onSuccess(Context context, ActionResponse<Void> result) {
                     actionStringCallbackListener.onSuccess(result);
                 }
 
                 @Override
                 public void onError(Context context, Exception e) {
-                    actionStringCallbackListener.onSuccess(ActionRespon.<Void>getActionResponError());
+                    actionStringCallbackListener.onSuccess(ActionResponse.<Void>getActionResponError());
                 }
             });
         }

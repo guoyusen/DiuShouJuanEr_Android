@@ -5,7 +5,7 @@ import android.util.Log;
 
 import com.bili.diushoujuaner.model.actionhelper.action.FileAction;
 import com.bili.diushoujuaner.model.actionhelper.action.RecallAction;
-import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
+import com.bili.diushoujuaner.model.actionhelper.respon.ActionResponse;
 import com.bili.diushoujuaner.model.apihelper.request.RecallPublishReq;
 import com.bili.diushoujuaner.model.apihelper.request.RecallSerialReq;
 import com.bili.diushoujuaner.utils.StringUtil;
@@ -127,9 +127,9 @@ public class RecallPublisher {
             if(isErrorOccured){
                 return;
             }
-            FileAction.getInstance(context).uploadRecallPic(new RecallSerialReq(this.serial),item.path, new ActionFileCallbackListener<ActionRespon<String>>() {
+            FileAction.getInstance(context).uploadRecallPic(new RecallSerialReq(this.serial),item.path, new ActionFileCallbackListener<ActionResponse<String>>() {
                 @Override
-                public void onSuccess(ActionRespon<String> result) {
+                public void onSuccess(ActionResponse<String> result) {
                     //重新通知，保证数据正确
                     for(OnPublishListener publishListener : publishListeners){
                         publishListener.onProgress(currentPosition, 1.0f);
@@ -164,9 +164,9 @@ public class RecallPublisher {
     }
 
     private void publishContent(){
-        RecallAction.getInstance(context).getRecallPublish(new RecallPublishReq(content, imageItemVoList.size(),this.serial), new ActionStringCallbackListener<ActionRespon<RecallDto>>() {
+        RecallAction.getInstance(context).getRecallPublish(new RecallPublishReq(content, imageItemVoList.size(),this.serial), new ActionStringCallbackListener<ActionResponse<RecallDto>>() {
             @Override
-            public void onSuccess(ActionRespon<RecallDto> result) {
+            public void onSuccess(ActionResponse<RecallDto> result) {
                 if(result.getRetCode().equals(ConstantUtil.RETCODE_SUCCESS)){
                     for(OnPublishListener publishListener : publishListeners){
                         publishListener.onFinishPublish();

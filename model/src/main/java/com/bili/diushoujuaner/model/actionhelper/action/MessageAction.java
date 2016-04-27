@@ -3,7 +3,7 @@ package com.bili.diushoujuaner.model.actionhelper.action;
 import android.content.Context;
 
 import com.bili.diushoujuaner.model.actionhelper.IMessageAction;
-import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
+import com.bili.diushoujuaner.model.actionhelper.respon.ActionResponse;
 import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
 import com.bili.diushoujuaner.model.databasehelper.DBManager;
 import com.bili.diushoujuaner.utils.entity.vo.MessageVo;
@@ -33,42 +33,42 @@ public class MessageAction implements IMessageAction {
     }
 
     @Override
-    public void getMessageList(final long lastId, final int pageIndex, final int pageSize, final ActionStringCallbackListener<ActionRespon<List<MessageVo>>> actionStringCallbackListener) {
-        Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<List<MessageVo>>>() {
+    public void getMessageList(final long lastId, final int pageIndex, final int pageSize, final ActionStringCallbackListener<ActionResponse<List<MessageVo>>> actionStringCallbackListener) {
+        Tasks.executeInBackground(context, new BackgroundWork<ActionResponse<List<MessageVo>>>() {
             @Override
-            public ActionRespon<List<MessageVo>> doInBackground() throws Exception {
+            public ActionResponse<List<MessageVo>> doInBackground() throws Exception {
                 List<MessageVo> messageVoList = DBManager.getInstance().getMessageList(lastId, pageIndex, pageSize);
-                return ActionRespon.getActionRespon(messageVoList);
+                return ActionResponse.getActionRespon(messageVoList);
             }
-        }, new Completion<ActionRespon<List<MessageVo>>>() {
+        }, new Completion<ActionResponse<List<MessageVo>>>() {
             @Override
-            public void onSuccess(Context context, ActionRespon<List<MessageVo>> result) {
+            public void onSuccess(Context context, ActionResponse<List<MessageVo>> result) {
                 actionStringCallbackListener.onSuccess(result);
             }
 
             @Override
             public void onError(Context context, Exception e) {
-                actionStringCallbackListener.onSuccess(ActionRespon.<List<MessageVo>>getActionResponError());
+                actionStringCallbackListener.onSuccess(ActionResponse.<List<MessageVo>>getActionResponError());
             }
         });
     }
 
     @Override
-    public void saveMessageVo(final MessageVo messageVo, final ActionStringCallbackListener<ActionRespon<MessageVo>> actionStringCallbackListener) {
-        Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<MessageVo>>() {
+    public void saveMessageVo(final MessageVo messageVo, final ActionStringCallbackListener<ActionResponse<MessageVo>> actionStringCallbackListener) {
+        Tasks.executeInBackground(context, new BackgroundWork<ActionResponse<MessageVo>>() {
             @Override
-            public ActionRespon<MessageVo> doInBackground() throws Exception {
-                return ActionRespon.getActionRespon(DBManager.getInstance().saveMessage(messageVo));
+            public ActionResponse<MessageVo> doInBackground() throws Exception {
+                return ActionResponse.getActionRespon(DBManager.getInstance().saveMessage(messageVo));
             }
-        }, new Completion<ActionRespon<MessageVo>>() {
+        }, new Completion<ActionResponse<MessageVo>>() {
             @Override
-            public void onSuccess(Context context, ActionRespon<MessageVo> result) {
+            public void onSuccess(Context context, ActionResponse<MessageVo> result) {
                 actionStringCallbackListener.onSuccess(result);
             }
 
             @Override
             public void onError(Context context, Exception e) {
-                actionStringCallbackListener.onSuccess(ActionRespon.<MessageVo>getActionResponError());
+                actionStringCallbackListener.onSuccess(ActionResponse.<MessageVo>getActionResponError());
             }
         });
     }

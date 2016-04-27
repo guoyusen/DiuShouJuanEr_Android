@@ -1,6 +1,6 @@
 package com.bili.diushoujuaner.model.actionhelper;
 
-import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
+import com.bili.diushoujuaner.model.actionhelper.respon.ActionResponse;
 import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
 import com.bili.diushoujuaner.utils.entity.vo.MessageVo;
 
@@ -11,9 +11,9 @@ import java.util.List;
  */
 public interface IChattingAction {
 
-    void getOffMessage(ActionStringCallbackListener<ActionRespon<List<MessageVo>>> actionStringCallbackListener);
+    void getOffMessage(ActionStringCallbackListener<ActionResponse<List<MessageVo>>> actionStringCallbackListener);
 
-    void getChattingList(ActionStringCallbackListener<ActionRespon<Void>> actionStringCallbackListener);
+    void getChattingList(ActionStringCallbackListener<ActionResponse<Void>> actionStringCallbackListener);
 
     void updateMessageRead(long userNo, int msgType);
 

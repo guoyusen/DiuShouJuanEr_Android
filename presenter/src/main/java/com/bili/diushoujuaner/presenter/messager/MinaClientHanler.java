@@ -91,8 +91,13 @@ public class MinaClientHanler extends IoHandlerAdapter {
                 break;
             case ConstantUtil.CHAT_PARTY_MEMBER_EXIT:
                 session.write(EntityUtil.getEmptyMessage(messageVo.getSerialNo(), -1, ConstantUtil.CHAT_STATUS));
-                DBManager.getInstance().deleteMember(messageVo.getToNo(), messageVo.getFromNo());
-                DBManager.getInstance().deleteChat(messageVo.getToNo(), messageVo.getFromNo());
+                if(messageVo.getFromNo() == CustomSessionPreference.getInstance().getCustomSession().getUserNo()){
+                    //被群主踢除
+                    DBManager.getInstance().deleteParty(messageVo.getToNo());
+                }else{
+                    DBManager.getInstance().deleteMember(messageVo.getToNo(), messageVo.getFromNo());
+                    DBManager.getInstance().deletePartyChat(messageVo.getToNo(), messageVo.getFromNo());
+                }
                 MessageServiceHandler.getInstance().sendMessageToClient(ConstantUtil.HANDLER_PARTY_MEMBER_EXIT, messageVo);
                 break;
         }

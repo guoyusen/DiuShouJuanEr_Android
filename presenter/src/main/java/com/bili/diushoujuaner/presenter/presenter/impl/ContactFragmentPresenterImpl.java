@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.bili.diushoujuaner.model.actionhelper.action.ApplyAction;
 import com.bili.diushoujuaner.model.actionhelper.action.ContactAction;
-import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
+import com.bili.diushoujuaner.model.actionhelper.respon.ActionResponse;
 import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
 import com.bili.diushoujuaner.model.eventhelper.UpdateReadCountEvent;
 import com.bili.diushoujuaner.model.tempHelper.ContactTemper;
@@ -30,9 +30,9 @@ public class ContactFragmentPresenterImpl extends BasePresenter<IContactView> im
 
     @Override
     public void updateApplyRead() {
-        ApplyAction.getInstance(context).updateApplyRead(new ActionStringCallbackListener<ActionRespon<Void>>() {
+        ApplyAction.getInstance(context).updateApplyRead(new ActionStringCallbackListener<ActionResponse<Void>>() {
             @Override
-            public void onSuccess(ActionRespon<Void> result) {
+            public void onSuccess(ActionResponse<Void> result) {
                 if(showMessage(result.getRetCode(), result.getMessage())){
                     EventBus.getDefault().post(new UpdateReadCountEvent(ConstantUtil.UNREAD_COUNT_APPLY, 0));
                 }
@@ -47,9 +47,9 @@ public class ContactFragmentPresenterImpl extends BasePresenter<IContactView> im
 
     @Override
     public void getAddUnReadCount() {
-        ApplyAction.getInstance(context).getAddUnReadCount(new ActionStringCallbackListener<ActionRespon<Integer>>() {
+        ApplyAction.getInstance(context).getAddUnReadCount(new ActionStringCallbackListener<ActionResponse<Integer>>() {
             @Override
-            public void onSuccess(ActionRespon<Integer> result) {
+            public void onSuccess(ActionResponse<Integer> result) {
                 if(showMessage(result.getRetCode(), result.getMessage())){
                     EventBus.getDefault().post(new UpdateReadCountEvent(ConstantUtil.UNREAD_COUNT_APPLY, result.getData()));
                 }
@@ -64,22 +64,22 @@ public class ContactFragmentPresenterImpl extends BasePresenter<IContactView> im
     public void getContactList(){
         showLoading(ConstantUtil.LOADING_DEFAULT, "");
         ContactTemper.getInstance().clear();
-        ContactAction.getInstance(context).getContactList(new ActionStringCallbackListener<ActionRespon<List<FriendVo>>>() {
+        ContactAction.getInstance(context).getContactList(true, new ActionStringCallbackListener<ActionResponse<List<FriendVo>>>() {
             @Override
-            public void onSuccess(ActionRespon<List<FriendVo>> result) {
+            public void onSuccess(ActionResponse<List<FriendVo>> result) {
+                hideLoading(ConstantUtil.LOADING_DEFAULT);
                 if (showMessage(result.getRetCode(), result.getMessage())) {
                     if(isBindViewValid()){
                         getBindView().showContactList(result.getData());
                     }
                     EventBus.getDefault().post(new ContactUpdatedEvent());
                 }
-                hideLoading(ConstantUtil.LOADING_DEFAULT);
             }
 
             @Override
             public void onFailure(int errorCode) {
-                showError(errorCode);
                 hideLoading(ConstantUtil.LOADING_DEFAULT);
+                showError(errorCode);
             }
         });
     }

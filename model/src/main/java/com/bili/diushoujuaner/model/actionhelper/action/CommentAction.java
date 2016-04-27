@@ -3,8 +3,8 @@ package com.bili.diushoujuaner.model.actionhelper.action;
 import android.content.Context;
 
 import com.bili.diushoujuaner.model.actionhelper.ICommentAction;
-import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
-import com.bili.diushoujuaner.model.apihelper.ApiRespon;
+import com.bili.diushoujuaner.model.actionhelper.respon.ActionResponse;
+import com.bili.diushoujuaner.model.apihelper.ApiResponse;
 import com.bili.diushoujuaner.model.apihelper.api.ApiAction;
 import com.bili.diushoujuaner.model.apihelper.callback.ApiStringCallbackListener;
 import com.bili.diushoujuaner.model.apihelper.request.CommentAddReq;
@@ -37,26 +37,26 @@ public class CommentAction implements ICommentAction {
     }
 
     @Override
-    public void getCommentAdd(CommentAddReq commentAddReq, final ActionStringCallbackListener<ActionRespon<CommentDto>> actionStringCallbackListener) {
+    public void getCommentAdd(CommentAddReq commentAddReq, final ActionStringCallbackListener<ActionResponse<CommentDto>> actionStringCallbackListener) {
         ApiAction.getInstance().getCommentAdd(commentAddReq, new ApiStringCallbackListener() {
             @Override
             public void onSuccess(final String data) {
-                Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<CommentDto>>() {
+                Tasks.executeInBackground(context, new BackgroundWork<ActionResponse<CommentDto>>() {
                     @Override
-                    public ActionRespon<CommentDto> doInBackground() throws Exception {
-                        ApiRespon<CommentDto> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<CommentDto>>() {
+                    public ActionResponse<CommentDto> doInBackground() throws Exception {
+                        ApiResponse<CommentDto> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiResponse<CommentDto>>() {
                         }.getType());
-                        return ActionRespon.getActionResponFromApiRespon(result);
+                        return ActionResponse.getActionResponFromApiRespon(result);
                     }
-                }, new Completion<ActionRespon<CommentDto>>() {
+                }, new Completion<ActionResponse<CommentDto>>() {
                     @Override
-                    public void onSuccess(Context context, ActionRespon<CommentDto> result) {
+                    public void onSuccess(Context context, ActionResponse<CommentDto> result) {
                         actionStringCallbackListener.onSuccess(result);
                     }
 
                     @Override
                     public void onError(Context context, Exception e) {
-                        actionStringCallbackListener.onSuccess(ActionRespon.<CommentDto>getActionResponError());
+                        actionStringCallbackListener.onSuccess(ActionResponse.<CommentDto>getActionResponError());
                     }
                 });
             }
@@ -69,26 +69,26 @@ public class CommentAction implements ICommentAction {
     }
 
     @Override
-    public void getCommentRemove(CommentRemoveReq commentRemoveReq, final ActionStringCallbackListener<ActionRespon<Long>> actionStringCallbackListener) {
+    public void getCommentRemove(CommentRemoveReq commentRemoveReq, final ActionStringCallbackListener<ActionResponse<Long>> actionStringCallbackListener) {
         ApiAction.getInstance().getCommentRemove(commentRemoveReq, new ApiStringCallbackListener() {
             @Override
             public void onSuccess(final String data) {
-                Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<Long>>() {
+                Tasks.executeInBackground(context, new BackgroundWork<ActionResponse<Long>>() {
                     @Override
-                    public ActionRespon<Long> doInBackground() throws Exception {
-                        ApiRespon<Long> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<Long>>() {
+                    public ActionResponse<Long> doInBackground() throws Exception {
+                        ApiResponse<Long> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiResponse<Long>>() {
                         }.getType());
-                        return ActionRespon.getActionResponFromApiRespon(result);
+                        return ActionResponse.getActionResponFromApiRespon(result);
                     }
-                }, new Completion<ActionRespon<Long>>() {
+                }, new Completion<ActionResponse<Long>>() {
                     @Override
-                    public void onSuccess(Context context, ActionRespon<Long> result) {
+                    public void onSuccess(Context context, ActionResponse<Long> result) {
                         actionStringCallbackListener.onSuccess(result);
                     }
 
                     @Override
                     public void onError(Context context, Exception e) {
-                        actionStringCallbackListener.onSuccess(ActionRespon.<Long>getActionResponError());
+                        actionStringCallbackListener.onSuccess(ActionResponse.<Long>getActionResponError());
                     }
                 });
             }

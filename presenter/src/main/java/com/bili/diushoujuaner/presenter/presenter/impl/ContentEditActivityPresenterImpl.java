@@ -6,7 +6,7 @@ import com.bili.diushoujuaner.model.actionhelper.action.ApplyAction;
 import com.bili.diushoujuaner.model.actionhelper.action.ContactAction;
 import com.bili.diushoujuaner.model.actionhelper.action.FeedBackAction;
 import com.bili.diushoujuaner.model.actionhelper.action.UserInfoAction;
-import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
+import com.bili.diushoujuaner.model.actionhelper.respon.ActionResponse;
 import com.bili.diushoujuaner.model.apihelper.request.AutographModifyReq;
 import com.bili.diushoujuaner.model.apihelper.request.FeedBackReq;
 import com.bili.diushoujuaner.model.apihelper.request.FriendApplyReq;
@@ -42,11 +42,10 @@ public class ContentEditActivityPresenterImpl extends BasePresenter<IBaseView> i
             showWarning("备注名不能为空");
             return;
         }
-        showLoading(ConstantUtil.LOADING_CENTER, "正在发送");
-        RemarkUpdateReq remarkUpdateReq = new RemarkUpdateReq(remark, friendNo);
-        ContactAction.getInstance(context).getFriendRemarkUpdate(remarkUpdateReq, new ActionStringCallbackListener<ActionRespon<Void>>() {
+        showLoading(ConstantUtil.LOADING_CENTER, "正在发送...");
+        ContactAction.getInstance(context).getFriendRemarkUpdate(new RemarkUpdateReq(remark, friendNo), new ActionStringCallbackListener<ActionResponse<Void>>() {
             @Override
-            public void onSuccess(ActionRespon<Void> result) {
+            public void onSuccess(ActionResponse<Void> result) {
                 hideLoading(ConstantUtil.LOADING_CENTER);
                 if(showMessage(result.getRetCode(), result.getMessage())){
                     showWarning("备注名修改成功");
@@ -70,11 +69,10 @@ public class ContentEditActivityPresenterImpl extends BasePresenter<IBaseView> i
             showWarning("验证信息不能为空");
             return;
         }
-        showLoading(ConstantUtil.LOADING_CENTER, "正在发送");
-        FriendApplyReq friendApplyReq = new FriendApplyReq(friendNo, content);
-        ApplyAction.getInstance(context).getFriendApply(friendApplyReq, new ActionStringCallbackListener<ActionRespon<Void>>() {
+        showLoading(ConstantUtil.LOADING_CENTER, "正在发送...");
+        ApplyAction.getInstance(context).getFriendApply(new FriendApplyReq(friendNo, content), new ActionStringCallbackListener<ActionResponse<Void>>() {
             @Override
-            public void onSuccess(ActionRespon<Void> result) {
+            public void onSuccess(ActionResponse<Void> result) {
                 hideLoading(ConstantUtil.LOADING_CENTER);
                 if(showMessage(result.getRetCode(), result.getMessage())){
                     showWarning("请求成功，等待验证");
@@ -98,10 +96,10 @@ public class ContentEditActivityPresenterImpl extends BasePresenter<IBaseView> i
             showWarning("验证信息不能为空");
             return;
         }
-        showLoading(ConstantUtil.LOADING_CENTER, "正在发送");
-        ApplyAction.getInstance(context).getPartyApply(new PartyApplyReq(partyNo, content), new ActionStringCallbackListener<ActionRespon<Void>>() {
+        showLoading(ConstantUtil.LOADING_CENTER, "正在发送...");
+        ApplyAction.getInstance(context).getPartyApply(new PartyApplyReq(partyNo, content), new ActionStringCallbackListener<ActionResponse<Void>>() {
             @Override
-            public void onSuccess(ActionRespon<Void> result) {
+            public void onSuccess(ActionResponse<Void> result) {
                 hideLoading(ConstantUtil.LOADING_CENTER);
                 if(showMessage(result.getRetCode(), result.getMessage())){
                     showWarning("请求成功，等待验证");
@@ -129,18 +127,16 @@ public class ContentEditActivityPresenterImpl extends BasePresenter<IBaseView> i
         if(ChattingTemper.getInstance().getMsgType() == ConstantUtil.CHAT_PAR && isBindViewValid()){
             partyNo = ChattingTemper.getInstance().getToNo();
         }
-        final PartyNameUpdateReq partyNameUpdateReq = new PartyNameUpdateReq(partyNo, partyName);
-        showLoading(ConstantUtil.LOADING_CENTER, "正在发送");
-        ContactAction.getInstance(context).getPartyNameUpdate(partyNameUpdateReq, new ActionStringCallbackListener<ActionRespon<String>>() {
+        showLoading(ConstantUtil.LOADING_CENTER, "正在发送...");
+        ContactAction.getInstance(context).getPartyNameUpdate(new PartyNameUpdateReq(partyNo, partyName), new ActionStringCallbackListener<ActionResponse<String>>() {
             @Override
-            public void onSuccess(ActionRespon<String> result) {
+            public void onSuccess(ActionResponse<String> result) {
                 hideLoading(ConstantUtil.LOADING_CENTER);
                 if(showMessage(result.getRetCode(), result.getMessage())){
+                    showWarning("修改群名称成功");
                     if(isBindViewValid()){
                         getBindView().finishView();
                     }
-                    showWarning("修改群名称成功");
-                    EventBus.getDefault().post(new UpdatePartyEvent(partyNameUpdateReq.getPartyNo(), result.getData(), ConstantUtil.CHAT_PARTY_NAME));
                 }
             }
 
@@ -158,18 +154,16 @@ public class ContentEditActivityPresenterImpl extends BasePresenter<IBaseView> i
         if(ChattingTemper.getInstance().getMsgType() == ConstantUtil.CHAT_PAR && isBindViewValid()){
             partyNo = ChattingTemper.getInstance().getToNo();
         }
-        final PartyIntroduceUpdateReq partyIntroduceUpdateReq = new PartyIntroduceUpdateReq(partyNo, introduce);
-        showLoading(ConstantUtil.LOADING_CENTER, "正在发送");
-        ContactAction.getInstance(context).getPartyIntroduceUpdate(partyIntroduceUpdateReq, new ActionStringCallbackListener<ActionRespon<String>>() {
+        showLoading(ConstantUtil.LOADING_CENTER, "正在发送...");
+        ContactAction.getInstance(context).getPartyIntroduceUpdate(new PartyIntroduceUpdateReq(partyNo, introduce), new ActionStringCallbackListener<ActionResponse<String>>() {
             @Override
-            public void onSuccess(ActionRespon<String> result) {
+            public void onSuccess(ActionResponse<String> result) {
                 hideLoading(ConstantUtil.LOADING_CENTER);
                 if(showMessage(result.getRetCode(), result.getMessage())){
+                    showWarning("修改群介绍成功");
                     if(isBindViewValid()){
                         getBindView().finishView();
                     }
-                    showWarning("修改群介绍成功");
-                    EventBus.getDefault().post(new UpdatePartyEvent(partyIntroduceUpdateReq.getPartyNo(), result.getData(), ConstantUtil.CHAT_PARTY_INTRODUCE));
                 }
             }
 
@@ -191,18 +185,16 @@ public class ContentEditActivityPresenterImpl extends BasePresenter<IBaseView> i
         if(ChattingTemper.getInstance().getMsgType() == ConstantUtil.CHAT_PAR && isBindViewValid()){
             partyNo = ChattingTemper.getInstance().getToNo();
         }
-        final MemberNameUpdateReq memberNameUpdateReq = new MemberNameUpdateReq(memberName, partyNo);
-        showLoading(ConstantUtil.LOADING_CENTER, "正在发送");
-        ContactAction.getInstance(context).getMemberNameUpdate(memberNameUpdateReq, new ActionStringCallbackListener<ActionRespon<String>>() {
+        showLoading(ConstantUtil.LOADING_CENTER, "正在发送...");
+        ContactAction.getInstance(context).getMemberNameUpdate(new MemberNameUpdateReq(memberName, partyNo), new ActionStringCallbackListener<ActionResponse<String>>() {
             @Override
-            public void onSuccess(ActionRespon<String> result) {
+            public void onSuccess(ActionResponse<String> result) {
                 hideLoading(ConstantUtil.LOADING_CENTER);
                 if(showMessage(result.getRetCode(), result.getMessage())){
+                    showWarning("修改群名片成功");
                     if(isBindViewValid()){
                         getBindView().finishView();
                     }
-                    showWarning("修改群名片成功");
-                    EventBus.getDefault().post(new UpdatePartyEvent(memberNameUpdateReq.getPartyNo(),result.getData(), ConstantUtil.CHAT_PARTY_MEMBER_NAME));
                 }
             }
 
@@ -220,18 +212,16 @@ public class ContentEditActivityPresenterImpl extends BasePresenter<IBaseView> i
             showWarning("意见反馈不能为空");
             return;
         }
-        FeedBackReq feedBackReq = new FeedBackReq();
-        feedBackReq.setContent(feedBack);
-        showLoading(ConstantUtil.LOADING_CENTER, "正在发送");
-        FeedBackAction.getInstance(context).getFeedBackAdd(feedBackReq, new ActionStringCallbackListener<ActionRespon<Void>>() {
+        showLoading(ConstantUtil.LOADING_CENTER, "正在发送...");
+        FeedBackAction.getInstance(context).getFeedBackAdd(new FeedBackReq(feedBack), new ActionStringCallbackListener<ActionResponse<Void>>() {
             @Override
-            public void onSuccess(ActionRespon<Void> result) {
+            public void onSuccess(ActionResponse<Void> result) {
                 hideLoading(ConstantUtil.LOADING_CENTER);
                 if(showMessage(result.getRetCode(), result.getMessage())){
+                    showWarning("意见反馈成功");
                     if(isBindViewValid()){
                         getBindView().finishView();
                     }
-                    showWarning("意见反馈成功");
                 }
             }
 
@@ -245,23 +235,21 @@ public class ContentEditActivityPresenterImpl extends BasePresenter<IBaseView> i
 
     @Override
     public void publishNewAutograph(String autograph) {
-        AutographModifyReq autographModifyReq = new AutographModifyReq();
-        autographModifyReq.setAutograph(autograph);
-        showLoading(ConstantUtil.LOADING_CENTER, "正在发送");
-        UserInfoAction.getInstance(context).getAutographModify(autographModifyReq, new ActionStringCallbackListener<ActionRespon<String>>() {
+        showLoading(ConstantUtil.LOADING_CENTER, "正在发送...");
+        UserInfoAction.getInstance(context).getAutographModify(new AutographModifyReq(autograph), new ActionStringCallbackListener<ActionResponse<String>>() {
             @Override
-            public void onSuccess(ActionRespon<String> result) {
+            public void onSuccess(ActionResponse<String> result) {
                 if(showMessage(result.getRetCode(), result.getMessage())){
+                    showWarning("修改签名成功");
                     if(isBindViewValid()){
                         getBindView().finishView();
                     }
-                    showWarning("修改签名成功");
-                    EventBus.getDefault().post(new UpdateAutographEvent(result.getData()));
                 }
             }
 
             @Override
             public void onFailure(int errorCode) {
+                hideLoading(ConstantUtil.LOADING_CENTER);
                 showError(errorCode);
             }
         });

@@ -1,7 +1,7 @@
 package com.bili.diushoujuaner.model.actionhelper;
 
-import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
-import com.bili.diushoujuaner.model.apihelper.request.AcountUpdateReq;
+import com.bili.diushoujuaner.model.actionhelper.respon.ActionResponse;
+import com.bili.diushoujuaner.model.apihelper.request.AccountUpdateReq;
 import com.bili.diushoujuaner.model.apihelper.request.AutographModifyReq;
 import com.bili.diushoujuaner.model.apihelper.request.UserInfoReq;
 import com.bili.diushoujuaner.model.apihelper.request.VerifyReq;
@@ -15,19 +15,19 @@ public interface IUserInfoAction {
 
     User getUserFromLocal();
 
-    void getUserInfo(ActionStringCallbackListener<ActionRespon<User>> actionStringCallbackListener);
+    void getUserInfo(ActionStringCallbackListener<ActionResponse<User>> actionStringCallbackListener);
 
-    void getAutographModify(AutographModifyReq autographModifyReq, ActionStringCallbackListener<ActionRespon<String>> actionStringCallbackListener);
+    void getAutographModify(AutographModifyReq autographModifyReq, ActionStringCallbackListener<ActionResponse<String>> actionStringCallbackListener);
 
-    void getUserInfoUpdate(UserInfoReq userInfoReq, ActionStringCallbackListener<ActionRespon<User>> actionStringCallbackListener);
+    void getUserInfoUpdate(UserInfoReq userInfoReq, ActionStringCallbackListener<ActionResponse<User>> actionStringCallbackListener);
 
     void clearUser();
 
-    void getVerifyCode(VerifyReq verifyReq, ActionStringCallbackListener<ActionRespon<Void>> actionStringCallbackListener);
+    void getVerifyCode(VerifyReq verifyReq, ActionStringCallbackListener<ActionResponse<Void>> actionStringCallbackListener);
 
-    void getAcountRegist(AcountUpdateReq acountUpdateReq, ActionStringCallbackListener<ActionRespon<Void>> actionStringCallbackListener);
+    void getAcountRegist(AccountUpdateReq accountUpdateReq, ActionStringCallbackListener<ActionResponse<Void>> actionStringCallbackListener);
 
-    void getAcountReset(AcountUpdateReq acountUpdateReq, ActionStringCallbackListener<ActionRespon<Void>> actionStringCallbackListener);
+    void getAcountReset(AccountUpdateReq accountUpdateReq, ActionStringCallbackListener<ActionResponse<Void>> actionStringCallbackListener);
 
-    void getLogout(final ActionStringCallbackListener<ActionRespon<Void>> actionStringCallbackListener);
+    void getLogout(final ActionStringCallbackListener<ActionResponse<Void>> actionStringCallbackListener);
 }

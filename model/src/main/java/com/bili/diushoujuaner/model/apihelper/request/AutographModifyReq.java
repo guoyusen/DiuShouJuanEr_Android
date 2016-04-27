@@ -7,6 +7,10 @@ public class AutographModifyReq {
 
     private String autograph;
 
+    public AutographModifyReq(String autograph) {
+        this.autograph = autograph;
+    }
+
     public String getAutograph() {
         return autograph;
     }

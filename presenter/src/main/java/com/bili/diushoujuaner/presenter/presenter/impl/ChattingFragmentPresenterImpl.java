@@ -3,11 +3,12 @@ package com.bili.diushoujuaner.presenter.presenter.impl;
 import android.content.Context;
 
 import com.bili.diushoujuaner.model.actionhelper.action.ChattingAction;
-import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
+import com.bili.diushoujuaner.model.actionhelper.respon.ActionResponse;
 import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
 import com.bili.diushoujuaner.model.eventhelper.UpdateReadCountEvent;
 import com.bili.diushoujuaner.model.tempHelper.ChattingTemper;
 import com.bili.diushoujuaner.presenter.base.BasePresenter;
+import com.bili.diushoujuaner.presenter.messager.MessageWatcher;
 import com.bili.diushoujuaner.presenter.presenter.ChattingFragmentPresenter;
 import com.bili.diushoujuaner.presenter.view.IChattingView;
 import com.bili.diushoujuaner.utils.ConstantUtil;
@@ -56,14 +57,11 @@ public class ChattingFragmentPresenterImpl extends BasePresenter<IChattingView> 
     @Override
     public void getChattingList() {
         ChattingTemper.getInstance().clear(false);
-        ChattingAction.getInstance(context).getChattingList(new ActionStringCallbackListener<ActionRespon<Void>>() {
+        ChattingAction.getInstance(context).getChattingList(new ActionStringCallbackListener<ActionResponse<Void>>() {
             @Override
-            public void onSuccess(ActionRespon<Void> result) {
-                if(showMessage(result.getRetCode(), result.getMessage())){
-                    if(isBindViewValid()){
-                        getBindView().showChatting(ChattingTemper.getInstance().getChattingVoList());
-                    }
-                    EventBus.getDefault().post(new UpdateReadCountEvent(ConstantUtil.UNREAD_COUNT_MESSAGE, ChattingTemper.getUnReadCount()));
+            public void onSuccess(ActionResponse<Void> result) {
+                if(showMessage(result.getRetCode(), result.getMessage()) && isBindViewValid()){
+                    getBindView().showChatting(ChattingTemper.getInstance().getChattingVoList());
                 }
             }
 
@@ -78,15 +76,14 @@ public class ChattingFragmentPresenterImpl extends BasePresenter<IChattingView> 
     @Override
     public void getOffMessage() {
         showLoading(ConstantUtil.LOADING_DEFAULT,"");
-        ChattingAction.getInstance(context).getOffMessage(new ActionStringCallbackListener<ActionRespon<List<MessageVo>>>() {
+        ChattingAction.getInstance(context).getOffMessage(new ActionStringCallbackListener<ActionResponse<List<MessageVo>>>() {
             @Override
-            public void onSuccess(ActionRespon<List<MessageVo>> result) {
+            public void onSuccess(ActionResponse<List<MessageVo>> result) {
                 hideLoading(ConstantUtil.LOADING_DEFAULT);
                 if(showMessage(result.getRetCode(), result.getMessage())){
                     for(MessageVo messageVo : result.getData()){
-                        ChattingTemper.getInstance().publishToListener(messageVo);
+                        MessageWatcher.getInstance().publishToListener(messageVo);
                     }
-                    EventBus.getDefault().post(new UpdateReadCountEvent(ConstantUtil.UNREAD_COUNT_MESSAGE, ChattingTemper.getUnReadCount()));
                     if(isBindViewValid()){
                         getBindView().showChatting(ChattingTemper.getInstance().getChattingVoList());
                     }

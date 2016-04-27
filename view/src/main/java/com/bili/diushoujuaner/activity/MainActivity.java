@@ -336,6 +336,9 @@ public class MainActivity extends BaseFragmentActivity<MainActivityPresenter> im
 
     @Override
     public void showUserInfo(User user) {
+        if(user == null){
+            return;
+        }
         this.user = user;
         CommonUtil.displayDraweeView(user.getPicPath(), menuHead);
         CommonUtil.displayDraweeView(user.getWallPaper(), menuBg);

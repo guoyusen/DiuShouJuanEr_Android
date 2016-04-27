@@ -3,8 +3,8 @@ package com.bili.diushoujuaner.model.actionhelper.action;
 import android.content.Context;
 
 import com.bili.diushoujuaner.model.actionhelper.IApplyAction;
-import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
-import com.bili.diushoujuaner.model.apihelper.ApiRespon;
+import com.bili.diushoujuaner.model.actionhelper.respon.ActionResponse;
+import com.bili.diushoujuaner.model.apihelper.ApiResponse;
 import com.bili.diushoujuaner.model.apihelper.api.ApiAction;
 import com.bili.diushoujuaner.model.apihelper.callback.ApiStringCallbackListener;
 import com.bili.diushoujuaner.model.apihelper.request.FriendApplyReq;
@@ -50,29 +50,29 @@ public class ApplyAction implements IApplyAction {
     }
 
     @Override
-    public void getPartyApplyAgree(final PartyApplyAgreeReq partyApplyAgreeReq, final ActionStringCallbackListener<ActionRespon<Void>> actionStringCallbackListener) {
+    public void getPartyApplyAgree(final PartyApplyAgreeReq partyApplyAgreeReq, final ActionStringCallbackListener<ActionResponse<Void>> actionStringCallbackListener) {
         ApiAction.getInstance().getPartyApplyAgree(partyApplyAgreeReq, new ApiStringCallbackListener() {
             @Override
             public void onSuccess(final String data) {
-                Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<Void>>() {
+                Tasks.executeInBackground(context, new BackgroundWork<ActionResponse<Void>>() {
                     @Override
-                    public ActionRespon<Void> doInBackground() throws Exception {
-                        ApiRespon<Void> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<Void>>() {
+                    public ActionResponse<Void> doInBackground() throws Exception {
+                        ApiResponse<Void> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiResponse<Void>>() {
                         }.getType());
                         if(result.isLegal()){
                             DBManager.getInstance().updateApplyPartyAccept(partyApplyAgreeReq.getPartyNo(), partyApplyAgreeReq.getMemberNo());
                         }
-                        return ActionRespon.getActionResponFromApiRespon(result);
+                        return ActionResponse.getActionResponFromApiRespon(result);
                     }
-                }, new Completion<ActionRespon<Void>>() {
+                }, new Completion<ActionResponse<Void>>() {
                     @Override
-                    public void onSuccess(Context context, ActionRespon<Void> result) {
+                    public void onSuccess(Context context, ActionResponse<Void> result) {
                         actionStringCallbackListener.onSuccess(result);
                     }
 
                     @Override
                     public void onError(Context context, Exception e) {
-                        actionStringCallbackListener.onSuccess(ActionRespon.<Void>getActionResponError());
+                        actionStringCallbackListener.onSuccess(ActionResponse.<Void>getActionResponError());
                     }
                 });
             }
@@ -85,14 +85,14 @@ public class ApplyAction implements IApplyAction {
     }
 
     @Override
-    public void getFriendApplyAgree(final FriendAgreeReq friendAgreeReq, final ActionStringCallbackListener<ActionRespon<Void>> actionStringCallbackListener) {
+    public void getFriendApplyAgree(final FriendAgreeReq friendAgreeReq, final ActionStringCallbackListener<ActionResponse<Void>> actionStringCallbackListener) {
         ApiAction.getInstance().getFriendAgree(friendAgreeReq, new ApiStringCallbackListener() {
             @Override
             public void onSuccess(final String data) {
-                Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<Void>>() {
+                Tasks.executeInBackground(context, new BackgroundWork<ActionResponse<Void>>() {
                     @Override
-                    public ActionRespon<Void> doInBackground() throws Exception {
-                        ApiRespon<ContactDto> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<ContactDto>>() {
+                    public ActionResponse<Void> doInBackground() throws Exception {
+                        ApiResponse<ContactDto> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiResponse<ContactDto>>() {
                         }.getType());
                         if(result.isLegal()){
                             Friend friend = new Friend();
@@ -103,11 +103,11 @@ public class ApplyAction implements IApplyAction {
                             DBManager.getInstance().saveFriend(friend);
                             DBManager.getInstance().updateApplyFriendAccept(friendAgreeReq.getFriendNo());
                         }
-                        return ActionRespon.getActionRespon(result.getMessage(), result.getRetCode(), null);
+                        return ActionResponse.getActionRespon(result.getMessage(), result.getRetCode(), null);
                     }
-                }, new Completion<ActionRespon<Void>>() {
+                }, new Completion<ActionResponse<Void>>() {
                     @Override
-                    public void onSuccess(Context context, ActionRespon<Void> result) {
+                    public void onSuccess(Context context, ActionResponse<Void> result) {
                         ACache.getInstance().put(ConstantUtil.ACACHE_LAST_TIME_CONTACT, "");
                         EventBus.getDefault().post(new UpdateContactEvent());
                         actionStringCallbackListener.onSuccess(result);
@@ -115,7 +115,7 @@ public class ApplyAction implements IApplyAction {
 
                     @Override
                     public void onError(Context context, Exception e) {
-                        actionStringCallbackListener.onSuccess(ActionRespon.<Void>getActionResponError());
+                        actionStringCallbackListener.onSuccess(ActionResponse.<Void>getActionResponError());
                     }
                 });
             }
@@ -128,66 +128,66 @@ public class ApplyAction implements IApplyAction {
     }
 
     @Override
-    public void updateApplyRead(final ActionStringCallbackListener<ActionRespon<Void>> actionStringCallbackListener) {
-        Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<Void>>() {
+    public void updateApplyRead(final ActionStringCallbackListener<ActionResponse<Void>> actionStringCallbackListener) {
+        Tasks.executeInBackground(context, new BackgroundWork<ActionResponse<Void>>() {
             @Override
-            public ActionRespon<Void> doInBackground() throws Exception {
+            public ActionResponse<Void> doInBackground() throws Exception {
                 DBManager.getInstance().updateApplyRead();
-                return ActionRespon.getActionRespon(null);
+                return ActionResponse.getActionRespon(null);
             }
-        }, new Completion<ActionRespon<Void>>() {
+        }, new Completion<ActionResponse<Void>>() {
             @Override
-            public void onSuccess(Context context, ActionRespon<Void> result) {
+            public void onSuccess(Context context, ActionResponse<Void> result) {
                 actionStringCallbackListener.onSuccess(result);
             }
 
             @Override
             public void onError(Context context, Exception e) {
-                actionStringCallbackListener.onSuccess(ActionRespon.<Void>getActionResponError());
+                actionStringCallbackListener.onSuccess(ActionResponse.<Void>getActionResponError());
             }
         });
     }
 
     @Override
-    public void getApplyVoList(final ActionStringCallbackListener<ActionRespon<List<ApplyVo>>> actionStringCallbackListener) {
-        Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<List<ApplyVo>>>() {
+    public void getApplyVoList(final ActionStringCallbackListener<ActionResponse<List<ApplyVo>>> actionStringCallbackListener) {
+        Tasks.executeInBackground(context, new BackgroundWork<ActionResponse<List<ApplyVo>>>() {
             @Override
-            public ActionRespon<List<ApplyVo>> doInBackground() throws Exception {
-                return ActionRespon.getActionRespon(DBManager.getInstance().getApplyVoList());
+            public ActionResponse<List<ApplyVo>> doInBackground() throws Exception {
+                return ActionResponse.getActionRespon(DBManager.getInstance().getApplyVoList());
             }
-        }, new Completion<ActionRespon<List<ApplyVo>>>() {
+        }, new Completion<ActionResponse<List<ApplyVo>>>() {
             @Override
-            public void onSuccess(Context context, ActionRespon<List<ApplyVo>> result) {
+            public void onSuccess(Context context, ActionResponse<List<ApplyVo>> result) {
                 actionStringCallbackListener.onSuccess(result);
             }
 
             @Override
             public void onError(Context context, Exception e) {
-                actionStringCallbackListener.onSuccess(ActionRespon.<List<ApplyVo>>getActionResponError());
+                actionStringCallbackListener.onSuccess(ActionResponse.<List<ApplyVo>>getActionResponError());
             }
         });
     }
 
     @Override
-    public void getPartyApply(PartyApplyReq partyApplyReq, final ActionStringCallbackListener<ActionRespon<Void>> actionStringCallbackListener) {
+    public void getPartyApply(PartyApplyReq partyApplyReq, final ActionStringCallbackListener<ActionResponse<Void>> actionStringCallbackListener) {
         ApiAction.getInstance().getPartyApply(partyApplyReq, new ApiStringCallbackListener() {
             @Override
             public void onSuccess(final String data) {
-                Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<Void>>() {
+                Tasks.executeInBackground(context, new BackgroundWork<ActionResponse<Void>>() {
                     @Override
-                    public ActionRespon<Void> doInBackground() throws Exception {
-                        ApiRespon<Void> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<Void>>(){}.getType());
-                        return ActionRespon.getActionResponFromApiRespon(result);
+                    public ActionResponse<Void> doInBackground() throws Exception {
+                        ApiResponse<Void> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiResponse<Void>>(){}.getType());
+                        return ActionResponse.getActionResponFromApiRespon(result);
                     }
-                }, new Completion<ActionRespon<Void>>() {
+                }, new Completion<ActionResponse<Void>>() {
                     @Override
-                    public void onSuccess(Context context, ActionRespon<Void> result) {
+                    public void onSuccess(Context context, ActionResponse<Void> result) {
                         actionStringCallbackListener.onSuccess(result);
                     }
 
                     @Override
                     public void onError(Context context, Exception e) {
-                        actionStringCallbackListener.onSuccess(ActionRespon.<Void>getActionResponError());
+                        actionStringCallbackListener.onSuccess(ActionResponse.<Void>getActionResponError());
                     }
                 });
             }
@@ -200,25 +200,25 @@ public class ApplyAction implements IApplyAction {
     }
 
     @Override
-    public void getFriendApply(FriendApplyReq friendApplyReq, final ActionStringCallbackListener<ActionRespon<Void>> actionStringCallbackListener) {
+    public void getFriendApply(FriendApplyReq friendApplyReq, final ActionStringCallbackListener<ActionResponse<Void>> actionStringCallbackListener) {
         ApiAction.getInstance().getFriendApply(friendApplyReq, new ApiStringCallbackListener() {
             @Override
             public void onSuccess(final String data) {
-                Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<Void>>() {
+                Tasks.executeInBackground(context, new BackgroundWork<ActionResponse<Void>>() {
                     @Override
-                    public ActionRespon<Void> doInBackground() throws Exception {
-                        ApiRespon<Void> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiRespon<Void>>(){}.getType());
-                        return ActionRespon.getActionResponFromApiRespon(result);
+                    public ActionResponse<Void> doInBackground() throws Exception {
+                        ApiResponse<Void> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiResponse<Void>>(){}.getType());
+                        return ActionResponse.getActionResponFromApiRespon(result);
                     }
-                }, new Completion<ActionRespon<Void>>() {
+                }, new Completion<ActionResponse<Void>>() {
                     @Override
-                    public void onSuccess(Context context, ActionRespon<Void> result) {
+                    public void onSuccess(Context context, ActionResponse<Void> result) {
                         actionStringCallbackListener.onSuccess(result);
                     }
 
                     @Override
                     public void onError(Context context, Exception e) {
-                        actionStringCallbackListener.onSuccess(ActionRespon.<Void>getActionResponError());
+                        actionStringCallbackListener.onSuccess(ActionResponse.<Void>getActionResponError());
                     }
                 });
             }
@@ -231,21 +231,21 @@ public class ApplyAction implements IApplyAction {
     }
 
     @Override
-    public void getAddUnReadCount(final ActionStringCallbackListener<ActionRespon<Integer>> actionStringCallbackListener) {
-        Tasks.executeInBackground(context, new BackgroundWork<ActionRespon<Integer>>() {
+    public void getAddUnReadCount(final ActionStringCallbackListener<ActionResponse<Integer>> actionStringCallbackListener) {
+        Tasks.executeInBackground(context, new BackgroundWork<ActionResponse<Integer>>() {
             @Override
-            public ActionRespon<Integer> doInBackground() throws Exception {
-                return ActionRespon.getActionRespon(DBManager.getInstance().getAddUnReadCount());
+            public ActionResponse<Integer> doInBackground() throws Exception {
+                return ActionResponse.getActionRespon(DBManager.getInstance().getAddUnReadCount());
             }
-        }, new Completion<ActionRespon<Integer>>() {
+        }, new Completion<ActionResponse<Integer>>() {
             @Override
-            public void onSuccess(Context context, ActionRespon<Integer> result) {
+            public void onSuccess(Context context, ActionResponse<Integer> result) {
                 actionStringCallbackListener.onSuccess(result);
             }
 
             @Override
             public void onError(Context context, Exception e) {
-                actionStringCallbackListener.onSuccess(ActionRespon.<Integer>getActionResponError());
+                actionStringCallbackListener.onSuccess(ActionResponse.<Integer>getActionResponError());
             }
         });
     }

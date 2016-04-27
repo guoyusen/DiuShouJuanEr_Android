@@ -3,7 +3,7 @@ package com.bili.diushoujuaner.presenter.presenter.impl;
 import android.content.Context;
 
 import com.bili.diushoujuaner.model.actionhelper.action.ContactAction;
-import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
+import com.bili.diushoujuaner.model.actionhelper.respon.ActionResponse;
 import com.bili.diushoujuaner.model.apihelper.request.PartyAddReq;
 import com.bili.diushoujuaner.model.callback.ActionFileCallbackListener;
 import com.bili.diushoujuaner.presenter.base.BasePresenter;
@@ -25,14 +25,16 @@ public class BuildPartyActivityPresenterImpl extends BasePresenter<IBaseView> im
     public void getPartyAdd(String partyName, String path) {
         if(partyName.length() < 2){
             showWarning("群名称不能少于2字符");
+            return;
         }
         if(StringUtil.isEmpty(path)){
             showWarning("请选择头像");
+            return;
         }
         showLoading(ConstantUtil.LOADING_CENTER, "正在创建群...");
-        ContactAction.getInstance(context).getPartyAdd(new PartyAddReq(partyName), path, new ActionFileCallbackListener<ActionRespon<Void>>() {
+        ContactAction.getInstance(context).getPartyAdd(new PartyAddReq(partyName), path, new ActionFileCallbackListener<ActionResponse<Void>>() {
             @Override
-            public void onSuccess(ActionRespon<Void> result) {
+            public void onSuccess(ActionResponse<Void> result) {
                 hideLoading(ConstantUtil.LOADING_CENTER);
                 if(showMessage(result.getRetCode(), result.getMessage()) && isBindViewValid()){
                     getBindView().finishView();

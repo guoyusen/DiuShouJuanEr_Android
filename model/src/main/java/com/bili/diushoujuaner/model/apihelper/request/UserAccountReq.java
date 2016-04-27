@@ -8,6 +8,11 @@ public class UserAccountReq {
     private String mobile;
     private String password;
 
+    public UserAccountReq(String mobile, String password) {
+        this.mobile = mobile;
+        this.password = password;
+    }
+
     public String getMobile() {
         return mobile;
     }

@@ -3,7 +3,7 @@ package com.bili.diushoujuaner.presenter.presenter.impl;
 import android.content.Context;
 
 import com.bili.diushoujuaner.model.actionhelper.action.ApplyAction;
-import com.bili.diushoujuaner.model.actionhelper.respon.ActionRespon;
+import com.bili.diushoujuaner.model.actionhelper.respon.ActionResponse;
 import com.bili.diushoujuaner.model.apihelper.request.FriendAgreeReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyApplyAgreeReq;
 import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
@@ -26,10 +26,10 @@ public class ContactAddActivityPresenterImpl extends BasePresenter<IContactAddVi
 
     @Override
     public void getPartyApplyAgree(long partyNo, long memberNo) {
-        showLoading(ConstantUtil.LOADING_CENTER, "正在发送请求");
-        ApplyAction.getInstance(context).getPartyApplyAgree(new PartyApplyAgreeReq(partyNo, memberNo), new ActionStringCallbackListener<ActionRespon<Void>>() {
+        showLoading(ConstantUtil.LOADING_CENTER, "正在发送请求...");
+        ApplyAction.getInstance(context).getPartyApplyAgree(new PartyApplyAgreeReq(partyNo, memberNo), new ActionStringCallbackListener<ActionResponse<Void>>() {
             @Override
-            public void onSuccess(ActionRespon<Void> result) {
+            public void onSuccess(ActionResponse<Void> result) {
                 hideLoading(ConstantUtil.LOADING_CENTER);
                 if(showMessage(result.getRetCode(), result.getMessage())){
                     getApplyVoList();
@@ -46,10 +46,10 @@ public class ContactAddActivityPresenterImpl extends BasePresenter<IContactAddVi
 
     @Override
     public void getFriendApplyAgree(long friendNo) {
-        showLoading(ConstantUtil.LOADING_CENTER, "正在发送请求");
-        ApplyAction.getInstance(context).getFriendApplyAgree(new FriendAgreeReq(friendNo), new ActionStringCallbackListener<ActionRespon<Void>>() {
+        showLoading(ConstantUtil.LOADING_CENTER, "正在发送请求...");
+        ApplyAction.getInstance(context).getFriendApplyAgree(new FriendAgreeReq(friendNo), new ActionStringCallbackListener<ActionResponse<Void>>() {
             @Override
-            public void onSuccess(ActionRespon<Void> result) {
+            public void onSuccess(ActionResponse<Void> result) {
                 hideLoading(ConstantUtil.LOADING_CENTER);
                 if(showMessage(result.getRetCode(), result.getMessage())){
                     getApplyVoList();
@@ -66,13 +66,11 @@ public class ContactAddActivityPresenterImpl extends BasePresenter<IContactAddVi
 
     @Override
     public void getApplyVoList() {
-        ApplyAction.getInstance(context).getApplyVoList(new ActionStringCallbackListener<ActionRespon<List<ApplyVo>>>() {
+        ApplyAction.getInstance(context).getApplyVoList(new ActionStringCallbackListener<ActionResponse<List<ApplyVo>>>() {
             @Override
-            public void onSuccess(ActionRespon<List<ApplyVo>> result) {
-                if(showMessage(result.getRetCode(), result.getMessage())){
-                    if(isBindViewValid()){
-                        getBindView().showApplyVoList(result.getData());
-                    }
+            public void onSuccess(ActionResponse<List<ApplyVo>> result) {
+                if(showMessage(result.getRetCode(), result.getMessage()) && isBindViewValid()){
+                    getBindView().showApplyVoList(result.getData());
                 }
             }
 

@@ -4,7 +4,7 @@ import com.android.volley.Request;
 import com.bili.diushoujuaner.model.apihelper.DataLoader;
 import com.bili.diushoujuaner.model.apihelper.callback.ApiFileCallbackListener;
 import com.bili.diushoujuaner.model.apihelper.callback.ApiStringCallbackListener;
-import com.bili.diushoujuaner.model.apihelper.request.AcountUpdateReq;
+import com.bili.diushoujuaner.model.apihelper.request.AccountUpdateReq;
 import com.bili.diushoujuaner.model.apihelper.request.AutographModifyReq;
 import com.bili.diushoujuaner.model.apihelper.request.CommentAddReq;
 import com.bili.diushoujuaner.model.apihelper.request.CommentRemoveReq;
@@ -15,6 +15,7 @@ import com.bili.diushoujuaner.model.apihelper.request.FriendApplyReq;
 import com.bili.diushoujuaner.model.apihelper.request.FriendAgreeReq;
 import com.bili.diushoujuaner.model.apihelper.request.FriendDeleteReq;
 import com.bili.diushoujuaner.model.apihelper.request.MemberExitReq;
+import com.bili.diushoujuaner.model.apihelper.request.MemberForceExitReq;
 import com.bili.diushoujuaner.model.apihelper.request.MemberNameUpdateReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyAddReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyApplyAgreeReq;
@@ -147,13 +148,13 @@ public class ApiAction implements Api {
     }
 
     @Override
-    public void getAcountRegist(AcountUpdateReq acountUpdateReq, ApiStringCallbackListener apiStringCallbackListener) {
-        dataLoader.processStringRequest(Request.Method.POST, Api.getAcountRegist, CommonUtil.ConvertObjToMap(acountUpdateReq), apiStringCallbackListener);
+    public void getAcountRegist(AccountUpdateReq accountUpdateReq, ApiStringCallbackListener apiStringCallbackListener) {
+        dataLoader.processStringRequest(Request.Method.POST, Api.getAcountRegist, CommonUtil.ConvertObjToMap(accountUpdateReq), apiStringCallbackListener);
     }
 
     @Override
-    public void getAcountReset(AcountUpdateReq acountUpdateReq, ApiStringCallbackListener apiStringCallbackListener) {
-        dataLoader.processStringRequest(Request.Method.POST, Api.getAcountReset, CommonUtil.ConvertObjToMap(acountUpdateReq), apiStringCallbackListener);
+    public void getAcountReset(AccountUpdateReq accountUpdateReq, ApiStringCallbackListener apiStringCallbackListener) {
+        dataLoader.processStringRequest(Request.Method.POST, Api.getAcountReset, CommonUtil.ConvertObjToMap(accountUpdateReq), apiStringCallbackListener);
     }
 
     @Override
@@ -259,5 +260,10 @@ public class ApiAction implements Api {
     @Override
     public void getMemberExit(MemberExitReq memberExitReq, ApiStringCallbackListener apiStringCallbackListener) {
         dataLoader.processStringRequest(Request.Method.POST, Api.getMemberExit, CommonUtil.ConvertObjToMap(memberExitReq), apiStringCallbackListener);
+    }
+
+    @Override
+    public void getMemberForceExit(MemberForceExitReq memberForceExitReq, ApiStringCallbackListener apiStringCallbackListener) {
+        dataLoader.processStringRequest(Request.Method.POST, Api.getMemberForceExit, CommonUtil.ConvertObjToMap(memberForceExitReq), apiStringCallbackListener);
     }
 }
