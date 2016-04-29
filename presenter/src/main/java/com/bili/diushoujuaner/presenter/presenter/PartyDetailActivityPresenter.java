@@ -28,4 +28,6 @@ public interface PartyDetailActivityPresenter {
 
     void getMemberExit(long partyNo);
 
+    void getPartyUnGroup(long partyNo);
+
 }

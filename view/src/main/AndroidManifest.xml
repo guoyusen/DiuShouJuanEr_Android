@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
 
     <application
@@ -30,10 +31,8 @@
             android:name="com.bili.diushoujuaner.service.MessageService"
             android:enabled="true"
             android:icon="@mipmap/ic_launcher"
-            android:exported="false"/>
-
-        <!--android:process=":MessageService"-->
-
+            android:exported="false"
+            />
 
         <activity
             android:name=".activity.MainActivity"

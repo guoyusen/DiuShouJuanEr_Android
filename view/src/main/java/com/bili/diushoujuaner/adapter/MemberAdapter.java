@@ -51,9 +51,9 @@ public class MemberAdapter extends CommonAdapter<MemberVo> {
             }else{
                 holder.getView(R.id.txtItemMark).setVisibility(View.GONE);
             }
-            if(memberVo.getType() == ConstantUtil.CONTACT_FRIEND){
+            if(memberVo.getType() == ConstantUtil.MEMBER_MEMBER){
                 holder.getView(R.id.txtOwner).setVisibility(View.GONE);
-            }else if(memberVo.getType() == ConstantUtil.CONTACT_PARTY){
+            }else if(memberVo.getType() == ConstantUtil.MEMBER_OWNER){
                 holder.getView(R.id.txtOwner).setVisibility(View.VISIBLE);
             }
             if(isEditable && memberVo.getType() == ConstantUtil.CONTACT_FRIEND){
@@ -92,4 +92,9 @@ public class MemberAdapter extends CommonAdapter<MemberVo> {
         return -1;
     }
 
+    @Override
+    public void refresh(List<MemberVo> list) {
+        hashMap.clear();
+        super.refresh(list);
+    }
 }

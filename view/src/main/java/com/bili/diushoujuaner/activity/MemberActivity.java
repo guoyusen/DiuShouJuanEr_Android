@@ -10,6 +10,7 @@ import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.adapter.MemberAdapter;
 import com.bili.diushoujuaner.base.BaseActivity;
 import com.bili.diushoujuaner.callback.OnDeleteMemberListener;
+import com.bili.diushoujuaner.model.eventhelper.UnGroupPartyEvent;
 import com.bili.diushoujuaner.model.eventhelper.UpdatePartyEvent;
 import com.bili.diushoujuaner.presenter.presenter.MemberActivityPresenter;
 import com.bili.diushoujuaner.presenter.presenter.impl.MemberActivityPresenterImpl;
@@ -152,6 +153,13 @@ public class MemberActivity extends BaseActivity<MemberActivityPresenter> implem
                     }
                     break;
             }
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onUnGroupPartyEvent(UnGroupPartyEvent unGroupPartyEvent){
+        if(partyVo.getPartyNo() == unGroupPartyEvent.getPartyNo()){
+            finishView();
         }
     }
 

@@ -1,4 +1,4 @@
-package com.bili.diushoujuaner.presenter.messager;
+package com.bili.diushoujuaner.presenter.watcher;
 
 import com.bili.diushoujuaner.model.tempHelper.ChattingTemper;
 import com.bili.diushoujuaner.utils.ConstantUtil;

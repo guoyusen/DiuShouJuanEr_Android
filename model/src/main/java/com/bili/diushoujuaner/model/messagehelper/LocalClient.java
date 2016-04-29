@@ -1,4 +1,4 @@
-package com.bili.diushoujuaner.presenter.messager;
+package com.bili.diushoujuaner.model.messagehelper;
 
 import android.content.ComponentName;
 import android.content.Context;
@@ -19,34 +19,34 @@ import com.bili.diushoujuaner.utils.entity.vo.MessageVo;
 public class LocalClient {
 
     private static LocalClient localClient = null;
-    private Messenger serverMessager;
-    private Messenger localMessager;
+    private Messenger serverMessenger;
+    private Messenger localMessenger;
     private boolean isBind = false;
     private Context context;
     private ServiceConnection serviceConnection;
 
     public LocalClient(Context context) {
         this.context = context;
-        this.localMessager = new Messenger(new LocalClientHandler(context));
+        this.localMessenger = new Messenger(new LocalClientHandler());
         this.serviceConnection = new ServiceConnection() {
             @Override
             public void onServiceConnected(ComponentName name, IBinder service) {
-                serverMessager = new Messenger(service);
+                serverMessenger = new Messenger(service);
                 initLocalServer();
             }
 
             @Override
             public void onServiceDisconnected(ComponentName name) {
-                serverMessager = null;
+                serverMessenger = null;
             }
         };
     }
 
     private void initLocalServer(){
         Message msg = Message.obtain(null, ConstantUtil.HANDLER_INIT);
-        msg.replyTo = localMessager;
+        msg.replyTo = localMessenger;
         try {
-            serverMessager.send(msg);
+            serverMessenger.send(msg);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -58,7 +58,7 @@ public class LocalClient {
         bundle.putParcelable("MessageVo", messageVo);
         msg.setData(bundle);
         try{
-            serverMessager.send(msg);
+            serverMessenger.send(msg);
         }catch(RemoteException e){
             e.printStackTrace();
         }
@@ -85,8 +85,8 @@ public class LocalClient {
     public void dispose(){
         localClient = null;
         serviceConnection = null;
-        serverMessager = null;
-        localMessager = null;
+        serverMessenger = null;
+        localMessenger = null;
     }
 
 }

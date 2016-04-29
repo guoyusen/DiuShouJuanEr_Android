@@ -37,6 +37,10 @@ public class MemberAddAdapter extends CommonAdapter<FriendVo> {
         this.memberChoseListener = memberChoseListener;
     }
 
+    public List<Long> getChoseList() {
+        return choseList;
+    }
+
     @Override
     public void convert(ViewHolder holder, final FriendVo friendVo, int position) throws Exception {
         if(friendVo != null){

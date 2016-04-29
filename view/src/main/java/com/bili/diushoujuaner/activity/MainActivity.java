@@ -1,7 +1,10 @@
 package com.bili.diushoujuaner.activity;
 
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.content.ContextCompat;
@@ -19,6 +22,7 @@ import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.base.BaseFragmentActivity;
 import com.bili.diushoujuaner.model.eventhelper.StartChattingEvent;
 import com.bili.diushoujuaner.model.eventhelper.UpdateReadCountEvent;
+import com.bili.diushoujuaner.model.preferhelper.HomeStatePreference;
 import com.bili.diushoujuaner.presenter.presenter.MainActivityPresenter;
 import com.bili.diushoujuaner.model.eventhelper.UpdateAutographEvent;
 import com.bili.diushoujuaner.model.eventhelper.ShowHeadEvent;
@@ -26,7 +30,7 @@ import com.bili.diushoujuaner.model.eventhelper.ShowMainMenuEvent;
 import com.bili.diushoujuaner.fragment.ContactFragment;
 import com.bili.diushoujuaner.fragment.HomeFragment;
 import com.bili.diushoujuaner.fragment.ChattingFragment;
-import com.bili.diushoujuaner.presenter.messager.LocalClient;
+import com.bili.diushoujuaner.model.messagehelper.LocalClient;
 import com.bili.diushoujuaner.service.MessageService;
 import com.bili.diushoujuaner.utils.ConstantUtil;
 import com.bili.diushoujuaner.utils.entity.po.User;
@@ -112,6 +116,20 @@ public class MainActivity extends BaseFragmentActivity<MainActivityPresenter> im
 
     private User user;
 
+    private BroadcastReceiver homeKeyEventReceiver = new BroadcastReceiver() {
+        String SYSTEM_REASON = "reason";
+        String SYSTEM_HOME_KEY = "homekey";
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String action = intent.getAction();
+            if (action.equals(Intent.ACTION_CLOSE_SYSTEM_DIALOGS) && intent.getStringExtra(SYSTEM_REASON).equals(SYSTEM_HOME_KEY)) {
+                HomeStatePreference.getInstance().saveState(true);
+            }
+        }
+    };
+
+
     @Override
     public void beforeInitView() {
         fragmentList = new ArrayList<>();
@@ -131,8 +149,13 @@ public class MainActivity extends BaseFragmentActivity<MainActivityPresenter> im
         initFragment();
         initBottomButton();
         initMenuIv();
+        initReceiver();
         startMessager();
         getBindPresenter().getUserInfo();
+    }
+
+    private void initReceiver(){
+        registerReceiver(homeKeyEventReceiver, new IntentFilter(Intent.ACTION_CLOSE_SYSTEM_DIALOGS));
     }
 
     private void startMessager(){
@@ -307,6 +330,7 @@ public class MainActivity extends BaseFragmentActivity<MainActivityPresenter> im
             case KeyEvent.KEYCODE_BACK:
                 if (isWaitingExit) {
                     isWaitingExit = false;
+                    LocalClient.getInstance(context).sendMessageToService(ConstantUtil.HANDLER_BACKGROUND, null);
                     ActivityManager.getInstance().exit();
                 } else {
                     Toast.makeText(this, "再按一次退出!", Toast.LENGTH_SHORT).show();

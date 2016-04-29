@@ -24,10 +24,7 @@ public class HeartBeatFilter extends KeepAliveFilter {
     public void messageSent(NextFilter nextFilter, IoSession session, WriteRequest writeRequest) throws Exception {
         Log.d("guoyusenm",Thread.currentThread().getName());
         if(getPermitSent(writeRequest.getMessage().toString())){
-            Log.d("guoyusenm","是是是是上层需要的消息");
             super.messageSent(nextFilter, session, writeRequest);
-        }else{
-            Log.d("guoyusenm","不不不是上层需要的消息");
         }
     }
 

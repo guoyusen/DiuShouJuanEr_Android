@@ -17,6 +17,8 @@ import android.widget.TextView;
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.adapter.PartyDetailMemberAdapter;
 import com.bili.diushoujuaner.base.BaseActivity;
+import com.bili.diushoujuaner.model.eventhelper.ContactUpdatedEvent;
+import com.bili.diushoujuaner.model.eventhelper.UnGroupPartyEvent;
 import com.bili.diushoujuaner.model.eventhelper.UpdatePartyEvent;
 import com.bili.diushoujuaner.presenter.presenter.PartyDetailActivityPresenter;
 import com.bili.diushoujuaner.presenter.presenter.impl.PartyDetailActivityPresenterImpl;
@@ -171,7 +173,7 @@ public class PartyDetailActivity extends BaseActivity<PartyDetailActivityPresent
                     showMemberActivity();
                 }else if(partyDetailMemberAdapter.getItem(position).getType() == ConstantUtil.MEMBER_HEAD_LOCAL){
                     Intent intent = new Intent(PartyDetailActivity.this, MemberAddActivity.class);
-                    intent.putParcelableArrayListExtra(MemberAddActivity.TAG, memberVoList);
+                    intent.putExtra(MemberAddActivity.TAG, partyVo.getPartyNo());
                     startActivity(intent);
                 }
             }
@@ -239,7 +241,11 @@ public class PartyDetailActivity extends BaseActivity<PartyDetailActivityPresent
                 DialogTool.createPartyDetailDialog(context, this.partyVo.getOwnerNo() == basePresenter.getCurrentUserNo(), new OnPartyDetailClickListener() {
                     @Override
                     public void onPartyExit() {
-                        showExitWarning();
+                        if(partyVo.getOwnerNo() != basePresenter.getCurrentUserNo()){
+                            showExitWarning();
+                        }else{
+                            showUnGroupWarning();
+                        }
                     }
 
                     @Override
@@ -282,6 +288,15 @@ public class PartyDetailActivity extends BaseActivity<PartyDetailActivityPresent
             intent.putParcelableArrayListExtra(MemberActivity.TAG_MEMBERLIST, EntityUtil.getMemberVoListFromMemberDtoList(contactDto.getMemberList()));
         }
         startActivity(intent);
+    }
+
+    private void showUnGroupWarning(){
+        DialogTool.createDeleteContactDialog(context,"确定解散该群？", new OnDialogPositiveClickListener() {
+            @Override
+            public void onPositiveClicked() {
+                getBindPresenter().getPartyUnGroup(partyVo.getPartyNo());
+            }
+        });
     }
 
     private void showExitWarning(){
@@ -332,8 +347,6 @@ public class PartyDetailActivity extends BaseActivity<PartyDetailActivityPresent
                 case ConstantUtil.CHAT_PARTY_MEMBER_EXIT:
                     if(updatePartyEvent.getMemberNo() == basePresenter.getCurrentUserNo()){
                         finish();
-                    }else{
-                        getBindPresenter().getContactInfo(updatePartyEvent.getPartyNo());
                     }
                     break;
             }
@@ -377,8 +390,20 @@ public class PartyDetailActivity extends BaseActivity<PartyDetailActivityPresent
         showMemberList();
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onContactUpdatedEvent(ContactUpdatedEvent contactUpdatedEvent){
+        showMemberList();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onUnGroupPartyEvent(UnGroupPartyEvent unGroupPartyEvent){
+        if(partyVo.getPartyNo() == unGroupPartyEvent.getPartyNo()){
+            finishView();
+        }
+    }
+
     private void showMemberList() {
-        memberPicVoList.clear();
+        partyDetailMemberAdapter.clear();
         if (type == TYPE_CONTACT || (type == TYPE_SEARCH && isPartied)) {
             if(type == TYPE_CONTACT){
                 memberVoList = getBindPresenter().getMemberVoList();

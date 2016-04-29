@@ -1,12 +1,14 @@
-package com.bili.diushoujuaner.presenter.messager;
+package com.bili.diushoujuaner.model.messagehelper;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
 import android.os.RemoteException;
-import android.util.Log;
+import android.widget.Toast;
 
+import com.bili.diushoujuaner.model.preferhelper.ConnectionPreference;
 import com.bili.diushoujuaner.utils.ConstantUtil;
 import com.bili.diushoujuaner.utils.entity.vo.MessageVo;
 
@@ -15,12 +17,14 @@ import com.bili.diushoujuaner.utils.entity.vo.MessageVo;
  */
 public class MessageServiceHandler extends Handler {
 
-    private Messenger localMessager;
+    private Messenger localMessenger;
+    private Context ctx;
 
     private static MessageServiceHandler messageServiceHandler;
 
-    public MessageServiceHandler(){
+    public MessageServiceHandler(Context context){
         messageServiceHandler = this;
+        ctx = context;
     }
 
     public static MessageServiceHandler getInstance(){
@@ -34,9 +38,11 @@ public class MessageServiceHandler extends Handler {
     public void handleMessage(Message msg) {
         switch (msg.what){
             case ConstantUtil.HANDLER_INIT:
-                Log.d("guoyusenmm","初始化。。。");
-                localMessager = msg.replyTo;
-                MinaClienter.getInstance().connect();
+                localMessenger = msg.replyTo;
+                if(!ConnectionPreference.getInstance().isConnected() || ConnectionPreference.getInstance().isOverTime()){
+                    // 没有连接成功，或者超时，重新连接
+                    MinaClient.getInstance(ctx).connect();
+                }
                 break;
             case ConstantUtil.HANDLER_CHAT:
                 Bundle bundle = msg.getData();
@@ -44,11 +50,22 @@ public class MessageServiceHandler extends Handler {
                 Transceiver.getInstance().addSendTask((MessageVo)bundle.getParcelable("MessageVo"));
                 break;
             case ConstantUtil.HANDLER_LOGOUT:
-                localMessager = null;
-                MinaClienter.getInstance().disConnect();
+                localMessenger = null;
+                MinaClient.getInstance(ctx).disConnect();
                 break;
             case ConstantUtil.HANDLER_RELOGIN:
-                MinaClienter.getInstance().connect();
+                MinaClient.getInstance(ctx).connect();
+                break;
+            case ConstantUtil.HANDLER_NOTICE_CLEAR:
+                Notifier.clear();
+                break;
+            case ConstantUtil.HANDLER_BACKGROUND:
+                localMessenger = null;
+                break;
+            case ConstantUtil.HANDLER_RECONNECTION:
+                if(!ConnectionPreference.getInstance().isConnected() || ConnectionPreference.getInstance().isOverTime()){
+                    MinaClient.getInstance(ctx).activeConnect();
+                }
                 break;
         }
     }
@@ -59,8 +76,8 @@ public class MessageServiceHandler extends Handler {
         bundle.putParcelable("MessageVo", messageVo);
         msg.setData(bundle);
         try{
-            if(localMessager != null){
-                localMessager.send(msg);
+            if(localMessenger != null){
+                localMessenger.send(msg);
             }
         }catch(RemoteException e){
             e.printStackTrace();

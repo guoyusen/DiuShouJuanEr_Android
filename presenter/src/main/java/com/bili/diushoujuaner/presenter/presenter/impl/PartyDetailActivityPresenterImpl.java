@@ -7,6 +7,7 @@ import com.bili.diushoujuaner.model.actionhelper.action.FileAction;
 import com.bili.diushoujuaner.model.actionhelper.respon.ActionResponse;
 import com.bili.diushoujuaner.model.apihelper.request.MemberExitReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyHeadUpdateReq;
+import com.bili.diushoujuaner.model.apihelper.request.PartyUnGroupReq;
 import com.bili.diushoujuaner.model.callback.ActionFileCallbackListener;
 import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
 import com.bili.diushoujuaner.model.eventhelper.UpdatePartyEvent;
@@ -30,6 +31,24 @@ public class PartyDetailActivityPresenterImpl extends BasePresenter<IPartyDetail
 
     public PartyDetailActivityPresenterImpl(IPartyDetailView baseView, Context context) {
         super(baseView, context);
+    }
+
+    @Override
+    public void getPartyUnGroup(long partyNo) {
+        showLoading(ConstantUtil.LOADING_CENTER, "正在解散...");
+        ContactAction.getInstance(context).getPartyUnGroup(new PartyUnGroupReq(partyNo), new ActionStringCallbackListener<ActionResponse<Void>>() {
+            @Override
+            public void onSuccess(ActionResponse<Void> result) {
+                hideLoading(ConstantUtil.LOADING_CENTER);
+                showMessage(result.getRetCode(), result.getMessage());
+            }
+
+            @Override
+            public void onFailure(int errorCode) {
+                hideLoading(ConstantUtil.LOADING_CENTER);
+                showError(errorCode);
+            }
+        });
     }
 
     @Override

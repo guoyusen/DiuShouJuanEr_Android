@@ -9,6 +9,9 @@ import android.widget.TextView;
 
 import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.activity.LoginActivity;
+import com.bili.diushoujuaner.model.messagehelper.LocalClient;
+import com.bili.diushoujuaner.model.messagehelper.Notifier;
+import com.bili.diushoujuaner.model.preferhelper.HomeStatePreference;
 import com.bili.diushoujuaner.utils.ConstantUtil;
 import com.bili.diushoujuaner.widget.CustomProgress;
 import com.bili.diushoujuaner.widget.CustomToast;
@@ -22,6 +25,16 @@ public class BaseFragmentActivity<T> extends AbstractBaseFragmentActivity {
     private TextView txtRight;
     private View defaultCircle;
     private ImageButton btnRight;
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        if(HomeStatePreference.getInstance().isBackground()){
+            HomeStatePreference.getInstance().saveState(false);
+            LocalClient.getInstance(context).sendMessageToService(ConstantUtil.HANDLER_NOTICE_CLEAR, null);
+        }
+    }
+
 
     protected T getBindPresenter(){
         return (T)basePresenter;

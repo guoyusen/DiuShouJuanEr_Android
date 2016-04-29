@@ -101,8 +101,7 @@
                     android:paddingTop="@dimen/y40"
                     android:paddingBottom="@dimen/y40"
                     style="@style/TextMiddle"
-                    android:textColor="@color/TC_BFBFBF"
-                    android:text="9个群组"/>
+                    android:textColor="@color/TC_BFBFBF"/>
 
             </LinearLayout>
 

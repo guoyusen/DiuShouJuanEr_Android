@@ -100,6 +100,7 @@ public class AccountVerifyFragment extends BaseFragment<AccountVerifyFragmentPre
 
     @Override
     public void setViewStatus() {
+        btnSubmit.setEnabled(false);
         switch (this.type){
             case ConstantUtil.ACOUNT_UPDATE_REGIST:
                 btnSubmit.setText("注 册");

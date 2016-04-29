@@ -1,7 +1,7 @@
-package com.bili.diushoujuaner.presenter.messager;
+package com.bili.diushoujuaner.model.messagehelper;
 
+import android.content.Context;
 import android.os.Handler;
-import android.util.Log;
 
 import com.bili.diushoujuaner.model.filterhelper.HeartBeatFilter;
 import com.bili.diushoujuaner.utils.ConstantUtil;
@@ -22,16 +22,25 @@ import java.net.InetSocketAddress;
 /**
  * Created by BiLi on 2016/4/15.
  */
-public class MinaClienter extends Thread{
+public class MinaClient extends Thread{
 
-    private static MinaClienter minaClienter;
+    private static MinaClient minaClient;
     private NioSocketConnector connector;
     private ProtocolCodecFilter protocolCodecFilter;
     private HeartBeatFilter heartBeatFilter;
     private IoSession session;
     private Handler handler;
+    private static Context ctx;
+    private ReConnectionRunnable reConnectionRunnable;
+    class ReConnectionRunnable implements Runnable{
+        @Override
+        public void run() {
+            connect();
+        }
+    }
 
-    public MinaClienter(){
+    public MinaClient(Context context){
+        ctx = context;
         connector = new NioSocketConnector();
         connector.setConnectTimeoutMillis(ConstantUtil.CONNECTTIMEOUT);
         connector.getSessionConfig().setKeepAlive(true);
@@ -44,17 +53,18 @@ public class MinaClienter extends Thread{
         heartBeatFilter.setRequestInterval(ConstantUtil.IDEL_TIMEOUT_FOR_INTERVAL);
         connector.getFilterChain().addLast("HeartBeatFilter", heartBeatFilter);
         //设定消息处理器
-        connector.setHandler(new MinaClientHanler());
+        connector.setHandler(new MinaClientHandler(ctx));
 
         handler = new Handler();
-        minaClienter = this;
+        minaClient = this;
+        reConnectionRunnable = new ReConnectionRunnable();
     }
 
-    public static MinaClienter getInstance(){
-        if(minaClienter == null){
-            minaClienter = new MinaClienter();
+    public static MinaClient getInstance(Context context){
+        if(minaClient == null){
+            minaClient = new MinaClient(context);
         }
-        return minaClienter;
+        return minaClient;
     }
 
     public boolean isActive(){
@@ -75,24 +85,27 @@ public class MinaClienter extends Thread{
             }
         }catch(Exception e){
             e.printStackTrace();
-            Log.d("guoyusenm","连接服务器失败" + e.getMessage());
+            MessageServiceHandler.getInstance().sendMessageToClient(ConstantUtil.HANDLER_LOGOUT, null);
+            reConnect();
         }
         connector.dispose();
     }
 
     public void reConnect(){
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                connect();
-            }
-        },5000);
+        handler.removeCallbacks(reConnectionRunnable);
+        handler.postDelayed(reConnectionRunnable, 5000);
     }
 
     public void connect(){
         if(!isActive()){
-            new MinaClienter().start();
+            MessageServiceHandler.getInstance().sendMessageToClient(ConstantUtil.HANDLER_LOGINING, null);
+            new MinaClient(ctx).start();
         }
+    }
+
+    public void activeConnect(){
+        handler.removeCallbacks(reConnectionRunnable);
+        connect();
     }
 
     public void sendMessage(MessageDto messageDto){

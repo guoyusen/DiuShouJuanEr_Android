@@ -1,7 +1,6 @@
 package com.bili.diushoujuaner.model.actionhelper.action;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.bili.diushoujuaner.model.actionhelper.IContactAction;
 import com.bili.diushoujuaner.model.actionhelper.respon.ActionResponse;
@@ -9,6 +8,7 @@ import com.bili.diushoujuaner.model.apihelper.ApiResponse;
 import com.bili.diushoujuaner.model.apihelper.api.ApiAction;
 import com.bili.diushoujuaner.model.apihelper.callback.ApiFileCallbackListener;
 import com.bili.diushoujuaner.model.apihelper.callback.ApiStringCallbackListener;
+import com.bili.diushoujuaner.model.apihelper.request.BatchMemberAddReq;
 import com.bili.diushoujuaner.model.apihelper.request.ContactAddInfoReq;
 import com.bili.diushoujuaner.model.apihelper.request.ContactsSearchReq;
 import com.bili.diushoujuaner.model.apihelper.request.FriendDeleteReq;
@@ -19,40 +19,44 @@ import com.bili.diushoujuaner.model.apihelper.request.PartyAddReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyContactReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyIntroduceUpdateReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyNameUpdateReq;
+import com.bili.diushoujuaner.model.apihelper.request.PartyUnGroupReq;
 import com.bili.diushoujuaner.model.apihelper.request.RemarkUpdateReq;
+import com.bili.diushoujuaner.model.cachehelper.ACache;
 import com.bili.diushoujuaner.model.callback.ActionFileCallbackListener;
+import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
+import com.bili.diushoujuaner.model.databasehelper.DBManager;
 import com.bili.diushoujuaner.model.eventhelper.DeleteContactEvent;
 import com.bili.diushoujuaner.model.eventhelper.NoticeAddMemberEvent;
 import com.bili.diushoujuaner.model.eventhelper.RequestContactEvent;
+import com.bili.diushoujuaner.model.eventhelper.UnGroupPartyEvent;
 import com.bili.diushoujuaner.model.eventhelper.UpdateContactEvent;
 import com.bili.diushoujuaner.model.eventhelper.UpdatePartyEvent;
 import com.bili.diushoujuaner.model.eventhelper.UpdateRemarkEvent;
+import com.bili.diushoujuaner.model.messagehelper.MessageServiceHandler;
+import com.bili.diushoujuaner.model.messagehelper.Notifier;
+import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
 import com.bili.diushoujuaner.model.tempHelper.ChattingTemper;
+import com.bili.diushoujuaner.model.tempHelper.ContactTemper;
 import com.bili.diushoujuaner.utils.ConstantUtil;
 import com.bili.diushoujuaner.utils.EntityUtil;
+import com.bili.diushoujuaner.utils.GsonUtil;
 import com.bili.diushoujuaner.utils.NoticeUtil;
+import com.bili.diushoujuaner.utils.PinyinUtil;
 import com.bili.diushoujuaner.utils.StringUtil;
 import com.bili.diushoujuaner.utils.TimeUtil;
+import com.bili.diushoujuaner.utils.comparator.ContactComparator;
 import com.bili.diushoujuaner.utils.comparator.MemberVoComparator;
+import com.bili.diushoujuaner.utils.entity.dto.ContactDto;
+import com.bili.diushoujuaner.utils.entity.dto.MemberDto;
 import com.bili.diushoujuaner.utils.entity.dto.UserDto;
-import com.bili.diushoujuaner.model.cachehelper.ACache;
-import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
-import com.bili.diushoujuaner.model.databasehelper.DBManager;
 import com.bili.diushoujuaner.utils.entity.po.Friend;
 import com.bili.diushoujuaner.utils.entity.po.Member;
 import com.bili.diushoujuaner.utils.entity.po.Party;
 import com.bili.diushoujuaner.utils.entity.po.User;
-import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
-import com.bili.diushoujuaner.model.tempHelper.ContactTemper;
-import com.bili.diushoujuaner.utils.GsonUtil;
 import com.bili.diushoujuaner.utils.entity.vo.FriendVo;
 import com.bili.diushoujuaner.utils.entity.vo.MemberVo;
 import com.bili.diushoujuaner.utils.entity.vo.MessageVo;
 import com.bili.diushoujuaner.utils.entity.vo.PartyVo;
-import com.bili.diushoujuaner.utils.comparator.ContactComparator;
-import com.bili.diushoujuaner.utils.PinyinUtil;
-import com.bili.diushoujuaner.utils.entity.dto.ContactDto;
-import com.bili.diushoujuaner.utils.entity.dto.MemberDto;
 import com.google.gson.reflect.TypeToken;
 import com.nanotasks.BackgroundWork;
 import com.nanotasks.Completion;
@@ -84,8 +88,8 @@ public class ContactAction implements IContactAction{
     }
 
     @Override
-    public void getMemberForceExit(final MemberForceExitReq memberForceExitReq, final ActionStringCallbackListener<ActionResponse<Void>> actionStringCallbackListener) {
-        ApiAction.getInstance().getMemberForceExit(memberForceExitReq, new ApiStringCallbackListener() {
+    public void getPartyUnGroup(final PartyUnGroupReq partyUnGroupReq, final ActionStringCallbackListener<ActionResponse<Void>> actionStringCallbackListener) {
+        ApiAction.getInstance().getPartyUnGroup(partyUnGroupReq, new ApiStringCallbackListener() {
             @Override
             public void onSuccess(final String data) {
                 Tasks.executeInBackground(context, new BackgroundWork<ActionResponse<Void>>() {
@@ -93,10 +97,10 @@ public class ContactAction implements IContactAction{
                     public ActionResponse<Void> doInBackground() throws Exception {
                         ApiResponse<Void> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiResponse<Void>>(){}.getType());
                         if(result.isLegal()){
-                            DBManager.getInstance().deleteMember(memberForceExitReq.getPartyNo(), memberForceExitReq.getMemberNo());
-                            DBManager.getInstance().deletePartyChat(memberForceExitReq.getPartyNo(), memberForceExitReq.getMemberNo());
+                            DBManager.getInstance().deleteParty(partyUnGroupReq.getPartyNo());
+                            ChattingTemper.getInstance().deleteChattingVo(partyUnGroupReq.getPartyNo(), ConstantUtil.CHAT_PAR);
                             EventBus.getDefault().post(new UpdateContactEvent());
-                            EventBus.getDefault().post(new UpdatePartyEvent(memberForceExitReq.getPartyNo(), memberForceExitReq.getMemberNo(),"", ConstantUtil.CHAT_PARTY_MEMBER_EXIT));
+                            EventBus.getDefault().post(new UnGroupPartyEvent(partyUnGroupReq.getPartyNo()));
                         }
                         return ActionResponse.getActionResponFromApiRespon(result);
                     }
@@ -109,6 +113,138 @@ public class ContactAction implements IContactAction{
                     @Override
                     public void onError(Context context, Exception e) {
                         actionStringCallbackListener.onSuccess(ActionResponse.<Void>getActionResponError());
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(int errorCode) {
+                actionStringCallbackListener.onFailure(errorCode);
+            }
+        });
+    }
+
+    //userNo用户邀请memberNoList加入了partyNo
+    public void saveNewMembersInfo(final ContactDto contactDto,final long partyNo, final long userNo, final boolean isLocal){
+        if(DBManager.getInstance().getParty(partyNo) == null){
+            getWholeParty(partyNo, contactDto, userNo, isLocal);
+        }else{
+            DBManager.getInstance().saveMemberList(getMemberListFromContactDto(contactDto));
+            noticeNewMembers(contactDto, userNo, isLocal);
+        }
+    }
+
+    private void noticeNewMembers(ContactDto contactDto, long userNo, boolean isLocal){
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("我邀请 ");
+        List<MemberDto> memberList = contactDto.getMemberList();
+        for(int i = 0, len = memberList.size(); i < len; i++){
+            stringBuilder.append(memberList.get(i).getMemberName());
+            if(i < len - 1){
+                stringBuilder.append(",");
+            }
+        }
+        stringBuilder.append(" 加入了群聊");
+        MessageVo messageVo = EntityUtil.getMessageVoForNoticeNewMember(contactDto.getContNo(), userNo, stringBuilder.toString(), TimeUtil.getCurrentTimeYYMMDD_HHMMSS());
+        DBManager.getInstance().updateMemberRecent(messageVo.getToNo(), true);
+        messageVo = DBManager.getInstance().saveMessage(messageVo);
+        NoticeUtil.getInstance().playNotice();
+
+        if(isLocal){
+            ChattingTemper.getInstance().addChattingVoFromServer(messageVo);
+            EventBus.getDefault().post(new UpdateContactEvent());
+            EventBus.getDefault().post(new NoticeAddMemberEvent(messageVo));
+        }else{
+            // 邀请多人加入群，par
+            Notifier.showNotification(messageVo);
+            MessageServiceHandler.getInstance().sendMessageToClient(ConstantUtil.HANDLER_MEMBER_BATCH_ADD, messageVo);
+        }
+    }
+
+    private void getWholeParty(long partyNo, final ContactDto contactDto, final long userNo, final boolean isLocal){
+        ApiAction.getInstance().getContactParty(new PartyContactReq(partyNo), new ApiStringCallbackListener() {
+            @Override
+            public void onSuccess(String data) {
+                ApiResponse<ContactDto> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiResponse<ContactDto>>(){}.getType());
+                if(result.isLegal() && result.getData().getType() == ConstantUtil.CONTACT_PARTY){
+                    DBManager.getInstance().saveParty(EntityUtil.getPartyFromContactDto(result.getData()));
+                    DBManager.getInstance().saveMemberList(getMemberListFromContactDto(result.getData()));
+                    noticeNewMembers(contactDto, userNo, isLocal);
+                }
+            }
+
+            @Override
+            public void onFailure(int errorCode) {
+            }
+        });
+    }
+
+    @Override
+    public void getMembersAddToParty(final BatchMemberAddReq batchMemberAddReq, final ActionStringCallbackListener<ActionResponse<Void>> actionStringCallbackListener) {
+        ApiAction.getInstance().getMembersAddToParty(batchMemberAddReq, new ApiStringCallbackListener() {
+            @Override
+            public void onSuccess(final String data) {
+                Tasks.executeInBackground(context, new BackgroundWork<ActionResponse<Void>>() {
+                    @Override
+                    public ActionResponse<Void> doInBackground() throws Exception {
+                        ApiResponse<ContactDto> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiResponse<ContactDto>>(){}.getType());
+                        if(result.isLegal()){
+                            saveNewMembersInfo(result.getData(), batchMemberAddReq.getPartyNo(), CustomSessionPreference.getInstance().getCustomSession().getUserNo(), true);
+                        }
+                        return ActionResponse.getActionRespon(null);
+                    }
+                }, new Completion<ActionResponse<Void>>() {
+                    @Override
+                    public void onSuccess(Context context, ActionResponse<Void> result) {
+                        actionStringCallbackListener.onSuccess(result);
+                    }
+
+                    @Override
+                    public void onError(Context context, Exception e) {
+                        actionStringCallbackListener.onSuccess(ActionResponse.<Void>getActionResponError());
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(int errorCode) {
+                actionStringCallbackListener.onFailure(errorCode);
+            }
+        });
+    }
+
+    @Override
+    public void getMemberForceExit(final MemberForceExitReq memberForceExitReq, final ActionStringCallbackListener<ActionResponse<List<MemberVo>>> actionStringCallbackListener) {
+        ApiAction.getInstance().getMemberForceExit(memberForceExitReq, new ApiStringCallbackListener() {
+            @Override
+            public void onSuccess(final String data) {
+                Tasks.executeInBackground(context, new BackgroundWork<ActionResponse<List<MemberVo>>>() {
+                    @Override
+                    public ActionResponse<List<MemberVo>> doInBackground() throws Exception {
+                        ApiResponse<Void> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiResponse<Void>>(){}.getType());
+                        if(result.isLegal()){
+                            DBManager.getInstance().deleteMember(memberForceExitReq.getPartyNo(), memberForceExitReq.getMemberNo());
+                            DBManager.getInstance().deletePartyChat(memberForceExitReq.getPartyNo(), memberForceExitReq.getMemberNo());
+                            EventBus.getDefault().post(new UpdateContactEvent());
+                            EventBus.getDefault().post(new UpdatePartyEvent(memberForceExitReq.getPartyNo(), memberForceExitReq.getMemberNo(),"", ConstantUtil.CHAT_PARTY_MEMBER_EXIT));
+                        }
+                        List<MemberVo> memberVoList = DBManager.getInstance().getMemberVoList(memberForceExitReq.getPartyNo());
+                        if(memberVoList.size() == 1){
+                            memberVoList.get(0).setSortLetter("★");
+                        }else{
+                            Collections.sort(memberVoList, new MemberVoComparator());
+                        }
+                        return ActionResponse.getActionRespon(memberVoList);
+                    }
+                }, new Completion<ActionResponse<List<MemberVo>>>() {
+                    @Override
+                    public void onSuccess(Context context, ActionResponse<List<MemberVo>> result) {
+                        actionStringCallbackListener.onSuccess(result);
+                    }
+
+                    @Override
+                    public void onError(Context context, Exception e) {
+                        actionStringCallbackListener.onSuccess(ActionResponse.<List<MemberVo>>getActionResponError());
                     }
                 });
             }
@@ -183,18 +319,22 @@ public class ContactAction implements IContactAction{
     }
 
     @Override
-    public void getWholePartyInfo(final long partyNo, final long memberNo, final String time) {
+    public void getWholePartyInfo(final long partyNo, final long memberNo, final String time, final boolean isLocal) {
         // 全量获取群组信息，更新本地数据库和界面
         ApiAction.getInstance().getContactParty(new PartyContactReq(partyNo), new ApiStringCallbackListener() {
             @Override
             public void onSuccess(String data) {
-                Log.d("guoyusenn", Thread.currentThread().getName());
                 ApiResponse<ContactDto> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiResponse<ContactDto>>(){}.getType());
                 if(result.isLegal() && result.getData().getType() == ConstantUtil.CONTACT_PARTY){
                     DBManager.getInstance().saveParty(EntityUtil.getPartyFromContactDto(result.getData()));
                     DBManager.getInstance().saveMemberList(getMemberListFromContactDto(result.getData()));
-                    EventBus.getDefault().post(new UpdateContactEvent());
-                    noticeNewMember(partyNo, memberNo, time);
+                    if(isLocal){
+                        EventBus.getDefault().post(new UpdateContactEvent());
+                        noticeClientNewMember(partyNo, memberNo, time);
+                    }else{
+                        //不是从service发送过来执行，不需要发出通知
+                        noticeServiceNewMember(partyNo, memberNo, time);
+                    }
                 }
             }
 
@@ -204,8 +344,17 @@ public class ContactAction implements IContactAction{
         });
     }
 
-    private void noticeNewMember(long partyNo, long memberNo, String time){
-        MessageVo messageVo = EntityUtil.getMessageVoForNoticeNewMember(partyNo, memberNo, time);
+    private void noticeServiceNewMember(long partyNo, long memberNo, String time){
+        MessageVo messageVo = EntityUtil.getMessageVoForNoticeNewMember(partyNo, memberNo, "我加入了群聊", time);
+        DBManager.getInstance().updateMemberRecent(messageVo.getToNo(), true);
+        messageVo = DBManager.getInstance().saveMessage(messageVo);
+        NoticeUtil.getInstance().playNotice();
+        Notifier.showNotification(messageVo);
+        MessageServiceHandler.getInstance().sendMessageToClient(ConstantUtil.HANDLER_PARTY_APPLY_AGREE, messageVo);
+    }
+
+    private void noticeClientNewMember(long partyNo, long memberNo, String time){
+        MessageVo messageVo = EntityUtil.getMessageVoForNoticeNewMember(partyNo, memberNo, "我加入了群聊", time);
         ChattingTemper.getInstance().addChattingVoFromServer(messageVo);
         DBManager.getInstance().updateMemberRecent(messageVo.getToNo(), true);
         messageVo = DBManager.getInstance().saveMessage(messageVo);
@@ -214,8 +363,7 @@ public class ContactAction implements IContactAction{
     }
 
     @Override
-    public void getSingleMemberInfo(final long partyNo, final long memberNo, final String time) {
-        // 判断是否获取单个用户的信息，如果本地有，那么只需要添加对应的成员信息，没有则获取，再更新数据库信息，界面
+    public void getSingleMemberInfo(final long partyNo, final long memberNo, final String time, final boolean isLocal) {
         ApiAction.getInstance().getContactInfo(new ContactAddInfoReq(memberNo), new ApiStringCallbackListener() {
             @Override
             public void onSuccess(String data) {
@@ -223,18 +371,17 @@ public class ContactAction implements IContactAction{
                 }.getType());
                 if(result.isLegal()){
                     DBManager.getInstance().saveUser(result.getData());
-
-                    Member member = new Member();
-                    member.setRecent(false);
-                    member.setAddTime("");
-                    member.setMemberName(result.getData().getNickName());
-                    member.setPartyNo(partyNo);
-                    member.setType(ConstantUtil.MEMBER_MEMBER);
-                    member.setUserNo(result.getData().getUserNo());
-                    DBManager.getInstance().saveMember(member);
-
-                    EventBus.getDefault().post(new UpdateContactEvent());
-                    noticeNewMember(partyNo, memberNo, time);
+                    DBManager.getInstance().saveMember(EntityUtil.getNewMember(
+                            partyNo,
+                            result.getData().getUserNo(),
+                            ConstantUtil.MEMBER_MEMBER,
+                            result.getData().getNickName()));
+                    if(isLocal){
+                        EventBus.getDefault().post(new UpdateContactEvent());
+                        noticeClientNewMember(partyNo, memberNo, time);
+                    }else{
+                        noticeServiceNewMember(partyNo, memberNo, time);
+                    }
                 }
             }
 
@@ -359,64 +506,53 @@ public class ContactAction implements IContactAction{
     }
 
     @Override
-    public void getAddContact(final long userNo, final int type) {
-        User user = DBManager.getInstance().getUser(userNo);
-        if(user == null){
-            ApiAction.getInstance().getContactInfo(new ContactAddInfoReq(userNo), new ApiStringCallbackListener() {
-                @Override
-                public void onSuccess(final String data) {
-                    Tasks.executeInBackground(context, new BackgroundWork<Void>() {
-                        @Override
-                        public Void doInBackground() throws Exception {
-                            ApiResponse<UserDto> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiResponse<UserDto>>() {
-                            }.getType());
-                            if(result.isLegal()) {
-                                Friend friend = new Friend();
-                                friend.setRemark(result.getData().getNickName());
-                                friend.setFriendNo(result.getData().getUserNo());
-                                friend.setOwnerNo(CustomSessionPreference.getInstance().getCustomSession().getUserNo());
-                                friend.setRecent(true);
-                                DBManager.getInstance().saveFriend(friend);
-                                DBManager.getInstance().saveUser(result.getData());
-                            }
-                            return null;
+    public void getAddContact(final long userNo, final int type, final boolean isLocal) {
+        ApiAction.getInstance().getContactInfo(new ContactAddInfoReq(userNo), new ApiStringCallbackListener() {
+            @Override
+            public void onSuccess(final String data) {
+                Tasks.executeInBackground(context, new BackgroundWork<Void>() {
+                    @Override
+                    public Void doInBackground() throws Exception {
+                        ApiResponse<UserDto> result = GsonUtil.getInstance().fromJson(data, new TypeToken<ApiResponse<UserDto>>() {
+                        }.getType());
+                        if(result.isLegal() && type != ConstantUtil.CONTACT_PARTY_APPLY_INFO) {
+                            DBManager.getInstance().saveFriend(EntityUtil.getFriend(
+                                    CustomSessionPreference.getInstance().getCustomSession().getUserNo(),
+                                    result.getData().getUserNo(),
+                                    result.getData().getNickName(),
+                                    true
+                            ));
+                            DBManager.getInstance().saveUser(result.getData());
                         }
-                    }, new Completion<Void>() {
-                        @Override
-                        public void onSuccess(Context context, Void result) {
-                            if(type == ConstantUtil.CONTACT_INFO_ADD_BEFORE){
-                                EventBus.getDefault().post(new RequestContactEvent());
-                            }else if(type == ConstantUtil.CONTACT_INFO_ADD_AFTER) {
-                                //从本地更新联系人信息
-                                EventBus.getDefault().post(new UpdateContactEvent());
-                            }
+                        return null;
+                    }
+                }, new Completion<Void>() {
+                    @Override
+                    public void onSuccess(Context context, Void result) {
+                        if(isLocal && type == ConstantUtil.CONTACT_FRIEND_APPLY_INFO_BEFORE){
+                            EventBus.getDefault().post(new RequestContactEvent());
+                        }else if(isLocal && type == ConstantUtil.CONTACT_FRIEND_APPLY_INFO_AFTER){
+                            EventBus.getDefault().post(new UpdateContactEvent());
+                        }else if(!isLocal && type == ConstantUtil.CONTACT_FRIEND_APPLY_INFO_BEFORE){
+                            MessageServiceHandler.getInstance().sendMessageToClient(ConstantUtil.HANDLER_FRIEND_APPLY, null);
+                        }else if(!isLocal && type == ConstantUtil.CONTACT_FRIEND_APPLY_INFO_AFTER){
+                            MessageServiceHandler.getInstance().sendMessageToClient(ConstantUtil.HANDLER_FRIEND_APPLY_AGREE, null);
+                        }else if(!isLocal && type == ConstantUtil.CONTACT_PARTY_APPLY_INFO){
+                            MessageServiceHandler.getInstance().sendMessageToClient(ConstantUtil.HANDLER_PARTY_APPLY, null);
                         }
+                    }
 
-                        @Override
-                        public void onError(Context context, Exception e) {
+                    @Override
+                    public void onError(Context context, Exception e) {
 
-                        }
-                    });
-                }
-
-                @Override
-                public void onFailure(int errorCode) {
-                }
-            });
-        }else{
-            if(type == ConstantUtil.CONTACT_INFO_ADD_BEFORE){
-                EventBus.getDefault().post(new RequestContactEvent());
-            }else if(type == ConstantUtil.CONTACT_INFO_ADD_AFTER) {
-                //从本地更新联系人信息
-                Friend friend = new Friend();
-                friend.setRemark(user.getNickName());
-                friend.setFriendNo(user.getUserNo());
-                friend.setOwnerNo(CustomSessionPreference.getInstance().getCustomSession().getUserNo());
-                friend.setRecent(true);
-                DBManager.getInstance().saveFriend(friend);
-                EventBus.getDefault().post(new UpdateContactEvent());
+                    }
+                });
             }
-        }
+
+            @Override
+            public void onFailure(int errorCode) {
+            }
+        });
     }
 
     @Override

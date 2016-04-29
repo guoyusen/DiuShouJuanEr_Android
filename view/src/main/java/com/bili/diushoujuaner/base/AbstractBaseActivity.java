@@ -12,7 +12,7 @@ import com.bili.diushoujuaner.R;
 import com.bili.diushoujuaner.application.CustomApplication;
 import com.bili.diushoujuaner.model.eventhelper.ForceOutEvent;
 import com.bili.diushoujuaner.presenter.base.BasePresenter;
-import com.bili.diushoujuaner.presenter.messager.LocalClient;
+import com.bili.diushoujuaner.model.messagehelper.LocalClient;
 import com.bili.diushoujuaner.utils.ConstantUtil;
 import com.bili.diushoujuaner.utils.manager.ActivityManager;
 import com.bili.diushoujuaner.utils.manager.SystemBarTintManager;

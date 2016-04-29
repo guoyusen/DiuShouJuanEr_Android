@@ -126,7 +126,7 @@ public class DBManager {
         }
     }
 
-    public void saveUser(UserDto userDto) {
+    public synchronized void saveUser(UserDto userDto) {
         User user = EntityUtil.getUserFromUserDto(userDto);
         saveUser(user, true, false);
     }
@@ -311,6 +311,17 @@ public class DBManager {
                 daoSession.getPartyDao().insertOrReplace(party);
             }
         }
+    }
+
+    public Party getParty(long partyNo){
+        List<Party> partyList = daoSession.getPartyDao().queryBuilder()
+                .where(PartyDao.Properties.PartyNo.eq(partyNo))
+                .build()
+                .list();
+        if(CommonUtil.isEmpty(partyList)){
+            return null;
+        }
+        return partyList.get(0);
     }
 
     public List<PartyVo> getPartyVoList(){

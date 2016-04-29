@@ -37,9 +37,9 @@ public class EntityUtil {
         return messageVo;
     }
 
-    public static MessageVo getMessageVoForNoticeNewMember(long partyNo, long memberNo, String time){
+    public static MessageVo getMessageVoForNoticeNewMember(long partyNo, long memberNo, String content, String time){
         MessageVo messageVo = new MessageVo();
-        messageVo.setContent("我加入了群聊");
+        messageVo.setContent(content);
         messageVo.setTime(time);
         messageVo.setConType(ConstantUtil.CONTENT_PARTY_ADD);
         messageVo.setMsgType(ConstantUtil.CHAT_PAR);
@@ -62,30 +62,6 @@ public class EntityUtil {
             messageVo.setTime(messageDto.getMsgTime());
             messageVo.setConType(messageDto.getConType());
             messageVo.setContent(messageDto.getMsgContent());
-        }
-        return messageVo;
-    }
-
-    /**
-     * 发送成功之后，会回调messageSent方法，解析出对应的MessageVo，发送event来 通知更新状态
-     * @return
-     */
-    public static MessageVo getMessageVoFromMessageDto(MessageDto messageDto){
-        MessageVo messageVo = null;
-        try{
-            if(messageDto != null){
-                messageVo = new MessageVo();
-                messageVo.setSerialNo(messageDto.getSerialNo());
-                messageVo.setMsgType(messageDto.getMsgType());
-                messageVo.setStatus(ConstantUtil.MESSAGE_STATUS_SUCCESS);
-                messageVo.setToNo(messageDto.getReceiverNo());
-                messageVo.setFromNo(messageDto.getSenderNo());
-                messageVo.setTime(messageDto.getMsgTime());
-                messageVo.setConType(messageDto.getConType());
-                messageVo.setContent(messageDto.getMsgContent());
-            }
-        }catch(Exception e){
-            return null;
         }
         return messageVo;
     }
@@ -205,6 +181,16 @@ public class EntityUtil {
         return member;
     }
 
+    public static Friend getFriend(long ownerNo, long friendNo, String remark, boolean recent){
+        Friend friend = new Friend();
+        friend.setRemark(remark);
+        friend.setFriendNo(friendNo);
+        friend.setOwnerNo(ownerNo);
+        friend.setRecent(recent);
+
+        return friend;
+    }
+
     public static User getUserFromMemberDto(MemberDto memberDto){
         User user = new User();
         user.setUserNo(memberDto.getUserNo());
@@ -276,6 +262,18 @@ public class EntityUtil {
             memberVoList.add(memberVo);
         }
         return memberVoList;
+    }
+
+    public static Member getNewMember(long partyNo, long memberNo, int type, String memberName){
+        Member member = new Member();
+        member.setRecent(false);
+        member.setAddTime(TimeUtil.getCurrentTimeYYMMDD_HHMMSS());
+        member.setMemberName(memberName);
+        member.setPartyNo(partyNo);
+        member.setType(type);
+        member.setUserNo(memberNo);
+
+        return member;
     }
 
 }

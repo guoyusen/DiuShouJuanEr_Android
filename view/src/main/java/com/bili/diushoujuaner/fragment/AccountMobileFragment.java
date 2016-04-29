@@ -76,6 +76,7 @@ public class AccountMobileFragment extends BaseFragment<AccountMobileFragmentPre
 
     @Override
     public void setViewStatus() {
+        btnNext.setEnabled(false);
         edtMobile.addTextChangedListener(new CustomTextWatcher());
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override

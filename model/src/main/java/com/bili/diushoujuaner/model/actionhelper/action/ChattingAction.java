@@ -11,6 +11,7 @@ import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
 import com.bili.diushoujuaner.model.databasehelper.DBManager;
 import com.bili.diushoujuaner.model.eventhelper.RequestContactEvent;
 import com.bili.diushoujuaner.model.eventhelper.DeleteContactEvent;
+import com.bili.diushoujuaner.model.eventhelper.UnGroupPartyEvent;
 import com.bili.diushoujuaner.model.eventhelper.UpdateContactEvent;
 import com.bili.diushoujuaner.model.eventhelper.UpdatePartyEvent;
 import com.bili.diushoujuaner.model.eventhelper.UpdateReadCountEvent;
@@ -21,6 +22,7 @@ import com.bili.diushoujuaner.utils.ConstantUtil;
 import com.bili.diushoujuaner.utils.EntityUtil;
 import com.bili.diushoujuaner.utils.GsonUtil;
 import com.bili.diushoujuaner.utils.TimeUtil;
+import com.bili.diushoujuaner.utils.entity.dto.ContactDto;
 import com.bili.diushoujuaner.utils.entity.dto.OffMsgDto;
 import com.bili.diushoujuaner.utils.entity.vo.MessageVo;
 import com.google.gson.reflect.TypeToken;
@@ -181,7 +183,11 @@ public class ChattingAction implements IChattingAction {
                     break;
                 case ConstantUtil.CHAT_FRIEND_APPLY:
                     DBManager.getInstance().saveApply(item.getFromNo(), item.getToNo(),item.getContent(), item.getTime(), ConstantUtil.CHAT_FRIEND_APPLY);
-                    ContactAction.getInstance(context).getAddContact(item.getFromNo(), ConstantUtil.CONTACT_INFO_ADD_BEFORE);
+                    ContactAction.getInstance(context).getAddContact(item.getFromNo(), ConstantUtil.CONTACT_FRIEND_APPLY_INFO_BEFORE, true);
+                    break;
+                case ConstantUtil.CHAT_FRIEND_RECOMMEND:
+                    DBManager.getInstance().saveApply(item.getFromNo(), item.getToNo(),item.getContent(), item.getTime(), ConstantUtil.CHAT_FRIEND_RECOMMEND);
+                    ContactAction.getInstance(context).getAddContact(item.getFromNo(), ConstantUtil.CONTACT_FRIEND_APPLY_INFO_BEFORE, true);
                     break;
                 case ConstantUtil.CHAT_PARTY_APPLY:
                     DBManager.getInstance().saveApply(item.getFromNo(), Long.valueOf(item.getTime()),item.getContent(), TimeUtil.getCurrentTimeYYMMDD_HHMMSS(), ConstantUtil.CHAT_PARTY_APPLY);
@@ -195,7 +201,7 @@ public class ChattingAction implements IChattingAction {
                 case ConstantUtil.CHAT_FRIEND_APPLY_AGREE:
                     if(DBManager.getInstance().isFriended(item.getFromNo())){
                         //收到添加同意信息，获取或者更新本地联系人信息
-                        ContactAction.getInstance(context).getAddContact(item.getFromNo(), ConstantUtil.CONTACT_INFO_ADD_AFTER);
+                        ContactAction.getInstance(context).getAddContact(item.getFromNo(), ConstantUtil.CONTACT_FRIEND_APPLY_INFO_AFTER, true);
                     }
                     item.setMsgType(ConstantUtil.CHAT_FRI);
                     msgDtoList.add(processOffMessage(item));
@@ -203,10 +209,10 @@ public class ChattingAction implements IChattingAction {
                 case ConstantUtil.CHAT_PARTY_APPLY_AGREE:
                     if(item.getFromNo() == CustomSessionPreference.getInstance().getCustomSession().getUserNo()){
                         // 是自己，全量获取该群的所有信息，存入本地，通知更新界面
-                        ContactAction.getInstance(context).getWholePartyInfo(item.getToNo(), item.getFromNo(), item.getTime());
+                        ContactAction.getInstance(context).getWholePartyInfo(item.getToNo(), item.getFromNo(), item.getTime(), true);
                     }else{
                         // 不是自己，那么已经是该群的成员，只需要添加单个人的信息到数据库，通知更新界面
-                        ContactAction.getInstance(context).getSingleMemberInfo(item.getToNo(), item.getFromNo(), item.getTime());
+                        ContactAction.getInstance(context).getSingleMemberInfo(item.getToNo(), item.getFromNo(), item.getTime(), true);
                     }
                     break;
                 case ConstantUtil.CHAT_PARTY_MEMBER_EXIT:
@@ -214,6 +220,16 @@ public class ChattingAction implements IChattingAction {
                     DBManager.getInstance().deletePartyChat(item.getToNo(), item.getFromNo());
                     EventBus.getDefault().post(new UpdateContactEvent());
                     EventBus.getDefault().post(new UpdatePartyEvent(item.getToNo(),item.getFromNo(), "", ConstantUtil.CHAT_PARTY_MEMBER_EXIT));
+                    break;
+                case ConstantUtil.CHAT_MEMBER_BATCH_ADD:
+                    ContactDto contactDto = GsonUtil.getInstance().fromJson(item.getContent(), new TypeToken<ContactDto>(){}.getType());
+                    ContactAction.getInstance(context).saveNewMembersInfo(contactDto, item.getToNo(), item.getFromNo(), true);
+                    break;
+                case ConstantUtil.CHAT_PARTY_UNGROUP:
+                    DBManager.getInstance().deleteParty(Long.valueOf(item.getContent()));
+                    ChattingTemper.getInstance().deleteChattingVo(Long.valueOf(item.getContent()), ConstantUtil.CHAT_PAR);
+                    EventBus.getDefault().post(new UpdateContactEvent());
+                    EventBus.getDefault().post(new UnGroupPartyEvent(Long.valueOf(item.getContent())));
                     break;
             }
         }

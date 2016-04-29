@@ -17,4 +17,6 @@ public interface ChattingFragmentPresenter {
 
     void deleteChattingVo(long userNo, int msgType);
 
+    boolean isConnected();
+
 }

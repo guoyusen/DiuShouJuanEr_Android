@@ -1,5 +1,7 @@
 package com.bili.diushoujuaner.model.filterhelper;
 
+import com.bili.diushoujuaner.model.messagehelper.MessageServiceHandler;
+import com.bili.diushoujuaner.model.preferhelper.ConnectionPreference;
 import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
 import com.bili.diushoujuaner.utils.CommonUtil;
 import com.bili.diushoujuaner.utils.ConstantUtil;
@@ -30,6 +32,8 @@ public class KeepAliveMessageFactoryImpl implements KeepAliveMessageFactory {
 
     @Override
     public Object getResponse(IoSession ioSession, Object o) {
+        ConnectionPreference.getInstance().saveState(true);
+        MessageServiceHandler.getInstance().sendMessageToClient(ConstantUtil.HANDLER_HEARTBEAT, null);
         return EntityUtil.getEmptyMessage("",CustomSessionPreference.getInstance().getCustomSession().getUserNo(), ConstantUtil.CHAT_PONG);
     }
 }

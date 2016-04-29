@@ -1,30 +1,25 @@
-package com.bili.diushoujuaner.presenter.messager;
+package com.bili.diushoujuaner.model.messagehelper;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 
-import com.bili.diushoujuaner.model.actionhelper.action.ContactAction;
-import com.bili.diushoujuaner.model.databasehelper.DBManager;
-import com.bili.diushoujuaner.model.eventhelper.RequestContactEvent;
 import com.bili.diushoujuaner.model.eventhelper.DeleteContactEvent;
 import com.bili.diushoujuaner.model.eventhelper.ForceOutEvent;
+import com.bili.diushoujuaner.model.eventhelper.HeartBeatEvent;
 import com.bili.diushoujuaner.model.eventhelper.LoginEvent;
 import com.bili.diushoujuaner.model.eventhelper.LoginngEvent;
 import com.bili.diushoujuaner.model.eventhelper.LogoutEvent;
+import com.bili.diushoujuaner.model.eventhelper.NoticeAddMemberEvent;
+import com.bili.diushoujuaner.model.eventhelper.RequestContactEvent;
+import com.bili.diushoujuaner.model.eventhelper.UnGroupPartyEvent;
 import com.bili.diushoujuaner.model.eventhelper.UpdateContactEvent;
 import com.bili.diushoujuaner.model.eventhelper.UpdateMessageEvent;
 import com.bili.diushoujuaner.model.eventhelper.UpdatePartyEvent;
-import com.bili.diushoujuaner.model.eventhelper.UpdateReadCountEvent;
-import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
 import com.bili.diushoujuaner.model.tempHelper.ChattingTemper;
 import com.bili.diushoujuaner.model.tempHelper.ContactTemper;
 import com.bili.diushoujuaner.utils.ConstantUtil;
 import com.bili.diushoujuaner.utils.entity.vo.MessageVo;
-import com.nanotasks.BackgroundWork;
-import com.nanotasks.Completion;
-import com.nanotasks.Tasks;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -33,18 +28,15 @@ import org.greenrobot.eventbus.EventBus;
  */
 public class LocalClientHandler extends Handler {
 
-    private Context context;
-
-    public LocalClientHandler(Context context){
-        this.context = context;
-    }
-
     @Override
     public void handleMessage(Message msg) {
         Bundle bundle = msg.getData();
         bundle.setClassLoader(MessageVo.class.getClassLoader());
         MessageVo messageVo;
         switch(msg.what){
+            case ConstantUtil.HANDLER_HEARTBEAT:
+                EventBus.getDefault().post(new HeartBeatEvent());
+                break;
             case ConstantUtil.HANDLER_LOGIN:
                 EventBus.getDefault().post(new LoginEvent());
                 break;
@@ -55,7 +47,12 @@ public class LocalClientHandler extends Handler {
                 EventBus.getDefault().post(new LogoutEvent());
                 break;
             case ConstantUtil.HANDLER_CHAT:
-                processChatMessage((MessageVo)bundle.getParcelable("MessageVo"));
+                messageVo = bundle.getParcelable("MessageVo");
+                if(messageVo == null){
+                    return;
+                }
+                ChattingTemper.getInstance().addChattingVoFromServer(messageVo);
+                EventBus.getDefault().post(new UpdateMessageEvent(messageVo, UpdateMessageEvent.MESSAGE_RECEIVE));
                 break;
             case ConstantUtil.HANDLER_STATUS:
                 ChattingTemper.getInstance().updateChattingVo((MessageVo) bundle.getParcelable("MessageVo"));
@@ -89,34 +86,22 @@ public class LocalClientHandler extends Handler {
                 EventBus.getDefault().post(new UpdatePartyEvent(messageVo.getToNo(), messageVo.getContent(), ConstantUtil.CHAT_PARTY_MEMBER_NAME));
                 break;
             case ConstantUtil.HANDLER_FRIEND_APPLY:
-                messageVo = bundle.getParcelable("MessageVo");
-                if(messageVo == null){
-                    return;
-                }
-                ContactAction.getInstance(context).getAddContact(messageVo.getFromNo(), ConstantUtil.CONTACT_INFO_ADD_BEFORE);
+                EventBus.getDefault().post(new RequestContactEvent());
                 break;
             case ConstantUtil.HANDLER_PARTY_APPLY:
                 EventBus.getDefault().post(new RequestContactEvent());
                 break;
             case ConstantUtil.HANDLER_FRIEND_APPLY_AGREE:
-                 messageVo = bundle.getParcelable("MessageVo");
-                    if(messageVo == null){
-                        return;
-                }
-                ContactAction.getInstance(context).getAddContact(messageVo.getFromNo(), ConstantUtil.CONTACT_INFO_ADD_AFTER);
+                EventBus.getDefault().post(new UpdateContactEvent());
                 break;
             case ConstantUtil.HANDLER_PARTY_APPLY_AGREE:
                 messageVo = bundle.getParcelable("MessageVo");
                 if(messageVo == null){
                     return;
                 }
-                if(messageVo.getFromNo() == CustomSessionPreference.getInstance().getCustomSession().getUserNo()){
-                    // 是自己，全量获取该群的所有信息，存入本地，通知更新界面
-                    ContactAction.getInstance(context).getWholePartyInfo(messageVo.getToNo(), messageVo.getFromNo(), messageVo.getTime());
-                }else{
-                    // 不是自己，那么已经是该群的成员，只需要添加单个人的信息到数据库，通知更新界面
-                    ContactAction.getInstance(context).getSingleMemberInfo(messageVo.getToNo(), messageVo.getFromNo(), messageVo.getTime());
-                }
+                ChattingTemper.getInstance().addChattingVoFromServer(messageVo);
+                EventBus.getDefault().post(new UpdateContactEvent());
+                EventBus.getDefault().post(new NoticeAddMemberEvent(messageVo));
                 break;
             case ConstantUtil.HANDLER_FRIEND_DELETE:
                 messageVo = bundle.getParcelable("MessageVo");
@@ -134,27 +119,26 @@ public class LocalClientHandler extends Handler {
                 EventBus.getDefault().post(new UpdateContactEvent());
                 EventBus.getDefault().post(new UpdatePartyEvent(messageVo.getToNo(),messageVo.getFromNo(), "", ConstantUtil.CHAT_PARTY_MEMBER_EXIT));
                 break;
-        }
-    }
-
-    private void processChatMessage(final MessageVo messageVo){
-        Tasks.executeInBackground(context, new BackgroundWork<MessageVo>() {
-            @Override
-            public MessageVo doInBackground() throws Exception {
+            case ConstantUtil.HANDLER_MEMBER_BATCH_ADD:
+                messageVo = bundle.getParcelable("MessageVo");
+                if(messageVo == null){
+                    return;
+                }
                 ChattingTemper.getInstance().addChattingVoFromServer(messageVo);
-                DBManager.getInstance().saveMessage(messageVo);
-                return messageVo;
-            }
-        }, new Completion<MessageVo>() {
-            @Override
-            public void onSuccess(Context context, MessageVo result) {
-                EventBus.getDefault().post(new UpdateMessageEvent(result, UpdateMessageEvent.MESSAGE_RECEIVE));
-            }
+                EventBus.getDefault().post(new UpdateContactEvent());
+                EventBus.getDefault().post(new NoticeAddMemberEvent(messageVo));
+                break;
 
-            @Override
-            public void onError(Context context, Exception e) {
-            }
-        });
+            case ConstantUtil.HANDLER_PARTY_UNGROUP:
+                messageVo = bundle.getParcelable("MessageVo");
+                if(messageVo == null){
+                    return;
+                }
+                ChattingTemper.getInstance().deleteChattingVo(Long.valueOf(messageVo.getContent()), ConstantUtil.CHAT_PAR);
+                EventBus.getDefault().post(new UpdateContactEvent());
+                EventBus.getDefault().post(new UnGroupPartyEvent(Long.valueOf(messageVo.getContent())));
+                break;
+        }
     }
 
 }

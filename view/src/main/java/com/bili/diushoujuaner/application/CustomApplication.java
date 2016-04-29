@@ -7,7 +7,9 @@ import com.bili.diushoujuaner.model.apihelper.HttpEngine;
 import com.bili.diushoujuaner.model.apihelper.api.ApiAction;
 import com.bili.diushoujuaner.model.cachehelper.ACache;
 import com.bili.diushoujuaner.model.databasehelper.DBManager;
+import com.bili.diushoujuaner.model.preferhelper.ConnectionPreference;
 import com.bili.diushoujuaner.model.preferhelper.CustomSessionPreference;
+import com.bili.diushoujuaner.model.preferhelper.HomeStatePreference;
 import com.bili.diushoujuaner.model.preferhelper.SettingPreference;
 import com.bili.diushoujuaner.utils.CommonUtil;
 import com.bili.diushoujuaner.utils.NoticeUtil;
@@ -78,6 +80,8 @@ public class CustomApplication extends Application {
     private void initPrefs() {
         CustomSessionPreference.initialize(this);
         SettingPreference.initialize(this);
+        HomeStatePreference.initialize(this);
+        ConnectionPreference.initialize(this);
     }
 
     private void initDatabase(){

@@ -22,6 +22,8 @@
                 android:id="@+id/listViewMember"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:divider="@color/COLOR_WHITE"
+                android:dividerHeight="0dp"
                 android:overScrollMode="never" />
 
             <TextView

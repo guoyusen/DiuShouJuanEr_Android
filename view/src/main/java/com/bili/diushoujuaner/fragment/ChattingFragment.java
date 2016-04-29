@@ -3,8 +3,6 @@ package com.bili.diushoujuaner.fragment;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
@@ -15,25 +13,30 @@ import com.bili.diushoujuaner.adapter.ChattingAdapter;
 import com.bili.diushoujuaner.base.BaseFragment;
 import com.bili.diushoujuaner.callback.OnChatReadDismissListener;
 import com.bili.diushoujuaner.model.eventhelper.DeleteContactEvent;
+import com.bili.diushoujuaner.model.eventhelper.HeartBeatEvent;
 import com.bili.diushoujuaner.model.eventhelper.LoginEvent;
 import com.bili.diushoujuaner.model.eventhelper.LoginngEvent;
 import com.bili.diushoujuaner.model.eventhelper.LogoutEvent;
 import com.bili.diushoujuaner.model.eventhelper.NoticeAddMemberEvent;
 import com.bili.diushoujuaner.model.eventhelper.ShowMainMenuEvent;
+import com.bili.diushoujuaner.model.eventhelper.UnGroupPartyEvent;
 import com.bili.diushoujuaner.model.eventhelper.UpdateMessageEvent;
 import com.bili.diushoujuaner.model.eventhelper.UpdatePartyEvent;
 import com.bili.diushoujuaner.model.eventhelper.UpdateRemarkEvent;
 import com.bili.diushoujuaner.model.eventhelper.ContactUpdatedEvent;
+import com.bili.diushoujuaner.model.messagehelper.LocalClient;
+import com.bili.diushoujuaner.model.preferhelper.ConnectionPreference;
 import com.bili.diushoujuaner.presenter.presenter.ChattingFragmentPresenter;
 import com.bili.diushoujuaner.presenter.presenter.impl.ChattingFragmentPresenterImpl;
 import com.bili.diushoujuaner.presenter.view.IChattingView;
 import com.bili.diushoujuaner.utils.ConstantUtil;
 import com.bili.diushoujuaner.utils.entity.vo.ChattingVo;
+import com.bili.diushoujuaner.widget.scrollview.OnScrollRefreshListener;
+import com.bili.diushoujuaner.widget.scrollview.ReboundScrollView;
 import com.bili.diushoujuaner.widget.swipemenu.SwipeMenu;
 import com.bili.diushoujuaner.widget.swipemenu.SwipeMenuCreator;
 import com.bili.diushoujuaner.widget.swipemenu.SwipeMenuItem;
 import com.bili.diushoujuaner.widget.swipemenu.SwipeMenuListView;
-import com.bili.diushoujuaner.widget.waveswipe.WaveSwipeRefreshLayout;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -47,14 +50,14 @@ import butterknife.Bind;
 /**
  * Created by BiLi on 2016/3/2.
  */
-public class ChattingFragment extends BaseFragment<ChattingFragmentPresenter> implements IChattingView, WaveSwipeRefreshLayout.OnRefreshListener, View.OnClickListener, OnChatReadDismissListener {
+public class ChattingFragment extends BaseFragment<ChattingFragmentPresenter> implements IChattingView, View.OnClickListener, OnChatReadDismissListener, OnScrollRefreshListener {
 
     @Bind(R.id.listViewChatting)
     SwipeMenuListView listViewChatting;
-    @Bind(R.id.waveSwipeRefreshLayout)
-    WaveSwipeRefreshLayout waveSwipeRefreshLayout;
     @Bind(R.id.btnMenu)
     ImageButton btnMenu;
+    @Bind(R.id.reboundScrollView)
+    ReboundScrollView reboundScrollView;
 
     private List<ChattingVo> chattingVoList;
     private ChattingAdapter chattingAdapter;
@@ -107,9 +110,9 @@ public class ChattingFragment extends BaseFragment<ChattingFragmentPresenter> im
 
     @Override
     public void setViewStatus() {
-        showPageHead("消息-离线", null, null);
         btnMenu.setOnClickListener(this);
 
+        reboundScrollView.setScrollRefreshListener(this);
         chattingAdapter = new ChattingAdapter(getContext(), chattingVoList);
         chattingAdapter.setOnChatReadDismissListener(this);
         listViewChatting.setAdapter(chattingAdapter);
@@ -131,13 +134,19 @@ public class ChattingFragment extends BaseFragment<ChattingFragmentPresenter> im
                 getBindPresenter().deleteChattingVo(chattingVo.getUserNo(), chattingVo.getMsgType());
             }
         });
-
-        waveSwipeRefreshLayout.setColorSchemeColors(Color.WHITE, Color.WHITE);
-        waveSwipeRefreshLayout.setWaveColor(ContextCompat.getColor(context, R.color.COLOR_THEME_MAIN));
-        waveSwipeRefreshLayout.setOnRefreshListener(this);
+        if(getBindPresenter().isConnected()){
+            showPageHead("消息-在线", null, null);
+        }else{
+            showPageHead("消息-离线", null, null);
+        }
 
         getBindPresenter().getChattingList();
         getBindPresenter().getOffMessage();
+    }
+
+    @Override
+    public void onScrollRefresh() {
+        LocalClient.getInstance(context).sendMessageToService(ConstantUtil.HANDLER_RECONNECTION, null);
     }
 
     @Override
@@ -154,16 +163,6 @@ public class ChattingFragment extends BaseFragment<ChattingFragmentPresenter> im
         chattingAdapter.getItem(position).setUnReadCount(0);
         chattingAdapter.notifyDataSetChanged();
         getBindPresenter().updateMessageRead(chattingAdapter.getItem(position).getUserNo(), chattingAdapter.getItem(position).getMsgType());
-    }
-
-    @Override
-    public void onRefresh() {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                waveSwipeRefreshLayout.setRefreshing(false);
-            }
-        }, 3000);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -193,7 +192,18 @@ public class ChattingFragment extends BaseFragment<ChattingFragmentPresenter> im
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onUnGroupPartyEvent(UnGroupPartyEvent unGroupPartyEvent){
+        getBindPresenter().getChattingVoListFromTemper();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onLoginSuccessEvent(LoginEvent loginEvent){
+        showPageHead("消息-在线", null, null);
+        getBindPresenter().getOffMessage();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onHeartBeatEvent(HeartBeatEvent heartBeatEvent){
         showPageHead("消息-在线", null, null);
     }
 
@@ -204,7 +214,7 @@ public class ChattingFragment extends BaseFragment<ChattingFragmentPresenter> im
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onLoginngEvent(LoginngEvent loginngEvent){
-        showPageHead("消息-连接中", null, null);
+        showPageHead("消息-连接中...", null, null);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)

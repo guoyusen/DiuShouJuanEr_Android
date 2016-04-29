@@ -1,6 +1,7 @@
 package com.bili.diushoujuaner.model.actionhelper;
 
 import com.bili.diushoujuaner.model.actionhelper.respon.ActionResponse;
+import com.bili.diushoujuaner.model.apihelper.request.BatchMemberAddReq;
 import com.bili.diushoujuaner.model.apihelper.request.ContactAddInfoReq;
 import com.bili.diushoujuaner.model.apihelper.request.ContactsSearchReq;
 import com.bili.diushoujuaner.model.apihelper.request.FriendDeleteReq;
@@ -10,6 +11,7 @@ import com.bili.diushoujuaner.model.apihelper.request.MemberNameUpdateReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyAddReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyIntroduceUpdateReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyNameUpdateReq;
+import com.bili.diushoujuaner.model.apihelper.request.PartyUnGroupReq;
 import com.bili.diushoujuaner.model.apihelper.request.RemarkUpdateReq;
 import com.bili.diushoujuaner.model.callback.ActionFileCallbackListener;
 import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
@@ -41,7 +43,7 @@ public interface IContactAction {
 
     void getContactsSearch(ContactsSearchReq contactsSearchReq, ActionStringCallbackListener<ActionResponse<List<ContactDto>>> actionStringCallbackListener);
 
-    void getAddContact(long userNo, int type);
+    void getAddContact(long userNo, int type, boolean isLocal);
 
     void getFriendDelete(FriendDeleteReq friendDeleteReq, ActionStringCallbackListener<ActionResponse<Void>> actionStringCallbackListener);
 
@@ -55,7 +57,7 @@ public interface IContactAction {
      * 添加群成功，对于自己而言，需要获取整个群的信息，含成员
      * 获取信息后通知更新界面
      */
-    void getWholePartyInfo(long partyNo, long memberNo, String time);
+    void getWholePartyInfo(long partyNo, long memberNo, String time, boolean service);
 
     /**
      * 被通知有人加入了群，这时候自己 已经加入了群，只需要增量更新一个新成员的信息
@@ -63,9 +65,13 @@ public interface IContactAction {
      * @param partyNo
      * @param memberNo
      */
-    void getSingleMemberInfo(long partyNo, long memberNo, String time);
+    void getSingleMemberInfo(long partyNo, long memberNo, String time, boolean isLocal);
 
     void getMemberExit(MemberExitReq memberExitReq, ActionStringCallbackListener<ActionResponse<Void>> actionStringCallbackListener);
 
-    void getMemberForceExit(MemberForceExitReq memberForceExitReq, ActionStringCallbackListener<ActionResponse<Void>> actionStringCallbackListener);
+    void getMemberForceExit(MemberForceExitReq memberForceExitReq, ActionStringCallbackListener<ActionResponse<List<MemberVo>>> actionStringCallbackListener);
+
+    void getMembersAddToParty(BatchMemberAddReq batchMemberAddReq, ActionStringCallbackListener<ActionResponse<Void>> actionStringCallbackListener);
+
+    void getPartyUnGroup(PartyUnGroupReq partyUnGroupReq, ActionStringCallbackListener<ActionResponse<Void>> actionStringCallbackListener);
 }

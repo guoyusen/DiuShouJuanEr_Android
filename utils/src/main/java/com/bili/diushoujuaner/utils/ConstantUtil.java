@@ -119,6 +119,7 @@ public interface ConstantUtil {
     int CHAT_FRIEND_DELETE = 17;//删除童友
     int CHAT_FRIEND_APPLY_AGREE = 18;//同意添加好友
     int CHAT_PARTY_APPLY_AGREE = 19;//同意加入群
+    int CHAT_MEMBER_BATCH_ADD = 20;//批量添加群成员
     // 聊天消息中content的类型
     int CHAT_CONTENT_EMPTY = 0;
     int CHAT_CONTENT_TEXT = 1;
@@ -154,6 +155,11 @@ public interface ConstantUtil {
     int HANDLER_FRIEND_APPLY_AGREE = 18;//添加好友成功，更新对应的联系人
     int HANDLER_PARTY_APPLY_AGREE = 19;//添加群成功，更新对应联系人
     int HANDLER_FRIEND_DELETE = 20;//删除童友
+    int HANDLER_MEMBER_BATCH_ADD = 21;//批量邀请童友
+    int HANDLER_NOTICE_CLEAR = 22;//清空通知
+    int HANDLER_BACKGROUND = 23;//后台运行
+    int HANDLER_HEARTBEAT = 24;//心跳
+    int HANDLER_RECONNECTION = 25;//手动进行连接
     // 群成员头像来源 服务端头像 本地加号
     int MEMBER_HEAD_SERVER = 1;
     int MEMBER_HEAD_LOCAL = 2;
@@ -166,8 +172,9 @@ public interface ConstantUtil {
     int CONTACT_ADDED = 3;//已添加
     int CONTACT_MAY_KNOW = 4;//推荐
     // 获取单个用户的类型
-    int CONTACT_INFO_ADD_BEFORE = 1;//添加好友之前
-    int CONTACT_INFO_ADD_AFTER = 2;//添加好友之后
+    int CONTACT_FRIEND_APPLY_INFO_BEFORE = 1;//添加好友之前
+    int CONTACT_FRIEND_APPLY_INFO_AFTER = 2;//添加好友之后
+    int CONTACT_PARTY_APPLY_INFO = 3;//群添加申请
     // 删除联系人类型
     int DELETE_CONTACT_FRIEND = 1;
     int DELETE_CONTACT_PARTY = 2;

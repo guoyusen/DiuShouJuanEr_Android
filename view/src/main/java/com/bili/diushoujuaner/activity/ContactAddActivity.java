@@ -96,6 +96,9 @@ public class ContactAddActivity extends BaseActivity<ContactAddActivityPresenter
         }else if(!applyVo.getAccept() && applyVo.getType() == ConstantUtil.CHAT_PARTY_APPLY){
             //群添加申请
             getBindPresenter().getPartyApplyAgree(applyVo.getToNo(), applyVo.getFromNo());
+        }else if(!applyVo.getAccept() && applyVo.getType() == ConstantUtil.CHAT_FRIEND_RECOMMEND){
+            //好友推荐
+            getBindPresenter().getFriendApply(applyVo.getFromNo(), "我是" + basePresenter.getCurrentUserInfo().getNickName());
         }
     }
 

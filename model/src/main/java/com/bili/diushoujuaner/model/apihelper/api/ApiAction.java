@@ -6,6 +6,7 @@ import com.bili.diushoujuaner.model.apihelper.callback.ApiFileCallbackListener;
 import com.bili.diushoujuaner.model.apihelper.callback.ApiStringCallbackListener;
 import com.bili.diushoujuaner.model.apihelper.request.AccountUpdateReq;
 import com.bili.diushoujuaner.model.apihelper.request.AutographModifyReq;
+import com.bili.diushoujuaner.model.apihelper.request.BatchMemberAddReq;
 import com.bili.diushoujuaner.model.apihelper.request.CommentAddReq;
 import com.bili.diushoujuaner.model.apihelper.request.CommentRemoveReq;
 import com.bili.diushoujuaner.model.apihelper.request.ContactAddInfoReq;
@@ -24,6 +25,7 @@ import com.bili.diushoujuaner.model.apihelper.request.PartyContactReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyHeadUpdateReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyIntroduceUpdateReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyNameUpdateReq;
+import com.bili.diushoujuaner.model.apihelper.request.PartyUnGroupReq;
 import com.bili.diushoujuaner.model.apihelper.request.RecallListReq;
 import com.bili.diushoujuaner.model.apihelper.request.RecallPublishReq;
 import com.bili.diushoujuaner.model.apihelper.request.RecallRemoveReq;
@@ -265,5 +267,15 @@ public class ApiAction implements Api {
     @Override
     public void getMemberForceExit(MemberForceExitReq memberForceExitReq, ApiStringCallbackListener apiStringCallbackListener) {
         dataLoader.processStringRequest(Request.Method.POST, Api.getMemberForceExit, CommonUtil.ConvertObjToMap(memberForceExitReq), apiStringCallbackListener);
+    }
+
+    @Override
+    public void getMembersAddToParty(BatchMemberAddReq batchMemberAddReq, ApiStringCallbackListener apiStringCallbackListener) {
+        dataLoader.processStringRequest(Request.Method.POST, Api.getMembersAddToParty, CommonUtil.ConvertObjToMap(batchMemberAddReq), apiStringCallbackListener);
+    }
+
+    @Override
+    public void getPartyUnGroup(PartyUnGroupReq partyUnGroupReq, ApiStringCallbackListener apiStringCallbackListener) {
+        dataLoader.processStringRequest(Request.Method.POST, Api.getPartyUnGroup, CommonUtil.ConvertObjToMap(partyUnGroupReq), apiStringCallbackListener);
     }
 }

@@ -11,4 +11,6 @@ public interface ContactAddActivityPresenter {
 
     void getPartyApplyAgree(long partyNo, long memberNo);
 
+    void getFriendApply(long friendNo, String content);
+
 }

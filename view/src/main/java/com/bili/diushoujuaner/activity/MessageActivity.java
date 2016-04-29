@@ -16,10 +16,11 @@ import com.bili.diushoujuaner.base.BaseActivity;
 import com.bili.diushoujuaner.callback.OnReSendListener;
 import com.bili.diushoujuaner.model.eventhelper.DeleteContactEvent;
 import com.bili.diushoujuaner.model.eventhelper.NoticeAddMemberEvent;
+import com.bili.diushoujuaner.model.eventhelper.UnGroupPartyEvent;
 import com.bili.diushoujuaner.model.eventhelper.UpdateMessageEvent;
 import com.bili.diushoujuaner.model.eventhelper.UpdatePartyEvent;
-import com.bili.diushoujuaner.presenter.messager.MessageWatcher;
-import com.bili.diushoujuaner.presenter.messager.OnUpdateMessageListener;
+import com.bili.diushoujuaner.presenter.watcher.MessageWatcher;
+import com.bili.diushoujuaner.presenter.watcher.OnUpdateMessageListener;
 import com.bili.diushoujuaner.presenter.presenter.MessageActivityPresenter;
 import com.bili.diushoujuaner.presenter.presenter.impl.MessageActivityPresenterImpl;
 import com.bili.diushoujuaner.presenter.view.IMessageView;
@@ -165,6 +166,13 @@ public class MessageActivity extends BaseActivity<MessageActivityPresenter> impl
     public void onNoticeAddMemberEvent(NoticeAddMemberEvent noticeAddMemberEvent){
         if(isPartyChatting && partyVo.getPartyNo() == noticeAddMemberEvent.getMessageVo().getToNo() && messageAdapter != null){
             messageAdapter.addLast(noticeAddMemberEvent.getMessageVo());
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onUnGroupPartyEvent(UnGroupPartyEvent unGroupPartyEvent){
+        if(isPartyChatting && partyVo.getPartyNo() == unGroupPartyEvent.getPartyNo()){
+            finishView();
         }
     }
 

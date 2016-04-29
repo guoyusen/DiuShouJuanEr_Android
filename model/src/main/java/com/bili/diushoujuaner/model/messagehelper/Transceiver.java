@@ -1,5 +1,6 @@
-package com.bili.diushoujuaner.presenter.messager;
+package com.bili.diushoujuaner.model.messagehelper;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.bili.diushoujuaner.model.databasehelper.DBManager;
@@ -23,20 +24,22 @@ public class Transceiver extends Thread {
     private static final int MAX_SAND_TIMES = 3;//最大重发次数
     private static final int MAX_BETWEEN_TIME = 5000;//超过5000毫秒没有接收到则认为发送失败
     private static Transceiver transceiver;
+    private static Context ctx;
 
-    public Transceiver(){
+    public Transceiver(Context context){
+        ctx = context;
         transMessageBoHashMap = new HashMap<>();
         transMessageBoList = new ArrayList<>();
     }
 
-    public static void init(){
-        transceiver = new Transceiver();
+    public static void init(Context context){
+        transceiver = new Transceiver(context);
         transceiver.start();
     }
 
     public static synchronized Transceiver getInstance(){
         if(transceiver == null){
-            transceiver = new Transceiver();
+            transceiver = new Transceiver(ctx);
             transceiver.start();
         }
         return transceiver;
@@ -48,7 +51,7 @@ public class Transceiver extends Thread {
             transMessageBoHashMap.put(messageVo.getSerialNo(), transMessageBo);
             transMessageBoList.add(transMessageBo);
 
-            MinaClienter.getInstance().sendMessage(EntityUtil.getMessageDtoFromMessageVo(messageVo));
+            MinaClient.getInstance(ctx).sendMessage(EntityUtil.getMessageDtoFromMessageVo(messageVo));
             transMessageBoList.notify();
         }
     }
@@ -111,7 +114,7 @@ public class Transceiver extends Thread {
                 Log.d("guoyusenmm","重新发送");
                 transMessageBo.setSendCount(transMessageBo.getSendCount() + 1);
                 transMessageBo.reSetLastTime();
-                MinaClienter.getInstance().sendMessage(EntityUtil.getMessageDtoFromMessageVo(transMessageBo.getMessageVo()));
+                MinaClient.getInstance(ctx).sendMessage(EntityUtil.getMessageDtoFromMessageVo(transMessageBo.getMessageVo()));
             }
         }
     }

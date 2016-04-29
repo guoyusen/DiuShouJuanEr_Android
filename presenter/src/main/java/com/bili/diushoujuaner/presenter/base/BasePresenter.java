@@ -11,7 +11,7 @@ import com.bili.diushoujuaner.model.tempHelper.ChattingTemper;
 import com.bili.diushoujuaner.model.tempHelper.ContactTemper;
 import com.bili.diushoujuaner.model.tempHelper.GoodTemper;
 import com.bili.diushoujuaner.model.tempHelper.RecallTemper;
-import com.bili.diushoujuaner.presenter.messager.LocalClient;
+import com.bili.diushoujuaner.model.messagehelper.LocalClient;
 import com.bili.diushoujuaner.utils.ConstantUtil;
 import com.bili.diushoujuaner.utils.entity.po.User;
 

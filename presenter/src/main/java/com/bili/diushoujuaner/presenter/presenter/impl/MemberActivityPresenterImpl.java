@@ -26,11 +26,13 @@ public class MemberActivityPresenterImpl extends BasePresenter<IMemberView> impl
     @Override
     public void getMemberForceExit(long partyNo, long memberNo) {
         showLoading(ConstantUtil.LOADING_CENTER, "正在踢除...");
-        ContactAction.getInstance(context).getMemberForceExit(new MemberForceExitReq(partyNo, memberNo), new ActionStringCallbackListener<ActionResponse<Void>>() {
+        ContactAction.getInstance(context).getMemberForceExit(new MemberForceExitReq(partyNo, memberNo), new ActionStringCallbackListener<ActionResponse<List<MemberVo>>>() {
             @Override
-            public void onSuccess(ActionResponse<Void> result) {
+            public void onSuccess(ActionResponse<List<MemberVo>> result) {
                 hideLoading(ConstantUtil.LOADING_CENTER);
-                showMessage(result.getRetCode(), result.getMessage());
+                if(showMessage(result.getRetCode(), result.getMessage())){
+                    getBindView().showMemberList(result.getData());
+                }
             }
 
             @Override

@@ -6,13 +6,12 @@
         android:id="@+id/layoutHead"
         layout="@layout/include_head_home" />
 
-
-    <com.bili.diushoujuaner.widget.waveswipe.WaveSwipeRefreshLayout
-        android:id="@+id/waveSwipeRefreshLayout"
+    <com.bili.diushoujuaner.widget.scrollview.ReboundScrollView
+        android:id="@+id/reboundScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/layoutHead"
-        android:background="@color/COLOR_WHITE">
+        android:overScrollMode="never">
 
         <com.bili.diushoujuaner.widget.swipemenu.SwipeMenuListView
             android:id="@+id/listViewChatting"
@@ -21,6 +20,6 @@
             android:overScrollMode="never"
             android:divider="@null" />
 
-    </com.bili.diushoujuaner.widget.waveswipe.WaveSwipeRefreshLayout>
+    </com.bili.diushoujuaner.widget.scrollview.ReboundScrollView>
 
 </RelativeLayout>

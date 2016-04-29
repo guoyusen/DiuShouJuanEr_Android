@@ -6,8 +6,11 @@ import android.os.IBinder;
 import android.os.Messenger;
 import android.support.annotation.Nullable;
 
-import com.bili.diushoujuaner.presenter.messager.MessageServiceHandler;
-import com.bili.diushoujuaner.presenter.messager.Transceiver;
+import com.bili.diushoujuaner.R;
+import com.bili.diushoujuaner.activity.MainActivity;
+import com.bili.diushoujuaner.model.messagehelper.MessageServiceHandler;
+import com.bili.diushoujuaner.model.messagehelper.Transceiver;
+import com.bili.diushoujuaner.utils.NotificationUtil;
 
 /**
  * Created by BiLi on 2016/4/15.
@@ -31,8 +34,9 @@ public class MessageService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        Transceiver.init();//初始化收发器
-        serverMessager = new Messenger(new MessageServiceHandler());
+        Transceiver.init(this);//初始化收发器
+        NotificationUtil.init(this, MainActivity.class, R.mipmap.ic_launcher);
+        serverMessager = new Messenger(new MessageServiceHandler(this));
     }
 
     @Override

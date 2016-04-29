@@ -4,6 +4,7 @@ import com.bili.diushoujuaner.model.apihelper.callback.ApiFileCallbackListener;
 import com.bili.diushoujuaner.model.apihelper.callback.ApiStringCallbackListener;
 import com.bili.diushoujuaner.model.apihelper.request.AccountUpdateReq;
 import com.bili.diushoujuaner.model.apihelper.request.AutographModifyReq;
+import com.bili.diushoujuaner.model.apihelper.request.BatchMemberAddReq;
 import com.bili.diushoujuaner.model.apihelper.request.CommentAddReq;
 import com.bili.diushoujuaner.model.apihelper.request.CommentRemoveReq;
 import com.bili.diushoujuaner.model.apihelper.request.ContactAddInfoReq;
@@ -22,6 +23,7 @@ import com.bili.diushoujuaner.model.apihelper.request.PartyContactReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyHeadUpdateReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyIntroduceUpdateReq;
 import com.bili.diushoujuaner.model.apihelper.request.PartyNameUpdateReq;
+import com.bili.diushoujuaner.model.apihelper.request.PartyUnGroupReq;
 import com.bili.diushoujuaner.model.apihelper.request.RecallPublishReq;
 import com.bili.diushoujuaner.model.apihelper.request.RecallRemoveReq;
 import com.bili.diushoujuaner.model.apihelper.request.RecallSerialReq;
@@ -80,7 +82,8 @@ public interface Api {
     String getPartyApplyAgree = ConstantUtil.HOST_ADDRESS + "1.0/party/apply/agree";
     String getMemberExit = ConstantUtil.HOST_ADDRESS + "1.0/party/exit";
     String getMemberForceExit = ConstantUtil.HOST_ADDRESS + "1.0/party/exit/force";
-
+    String getMembersAddToParty = ConstantUtil.HOST_ADDRESS + "1.0/party/members/batch";
+    String getPartyUnGroup = ConstantUtil.HOST_ADDRESS + "1.0/party/ungroup";
     /**
      * 用户登录
      * @param userAccountReq
@@ -355,4 +358,18 @@ public interface Api {
      * @param apiStringCallbackListener
      */
     void getMemberForceExit(MemberForceExitReq memberForceExitReq, ApiStringCallbackListener apiStringCallbackListener);
+
+    /**
+     * 批量添加群成员
+     * @param batchMemberAddReq
+     * @param apiStringCallbackListener
+     */
+    void getMembersAddToParty(BatchMemberAddReq batchMemberAddReq, ApiStringCallbackListener apiStringCallbackListener);
+
+    /**
+     * 解散群组
+     * @param partyUnGroupReq
+     * @param apiStringCallbackListener
+     */
+    void getPartyUnGroup(PartyUnGroupReq partyUnGroupReq, ApiStringCallbackListener apiStringCallbackListener);
 }

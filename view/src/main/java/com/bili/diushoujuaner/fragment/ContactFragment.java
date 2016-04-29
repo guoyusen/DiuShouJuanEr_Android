@@ -148,7 +148,7 @@ public class ContactFragment extends BaseFragment<ContactFragmentPresenter> impl
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onUpdateContactEvent(UpdateContactEvent updateContactEvent){
-        //添加联系人
+        //群，联系人更改，需要重新获取
         getBindPresenter().getContactList();
     }
 

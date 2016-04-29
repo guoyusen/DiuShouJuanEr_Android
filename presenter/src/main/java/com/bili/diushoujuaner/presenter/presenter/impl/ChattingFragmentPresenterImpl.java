@@ -6,9 +6,10 @@ import com.bili.diushoujuaner.model.actionhelper.action.ChattingAction;
 import com.bili.diushoujuaner.model.actionhelper.respon.ActionResponse;
 import com.bili.diushoujuaner.model.callback.ActionStringCallbackListener;
 import com.bili.diushoujuaner.model.eventhelper.UpdateReadCountEvent;
+import com.bili.diushoujuaner.model.preferhelper.ConnectionPreference;
 import com.bili.diushoujuaner.model.tempHelper.ChattingTemper;
 import com.bili.diushoujuaner.presenter.base.BasePresenter;
-import com.bili.diushoujuaner.presenter.messager.MessageWatcher;
+import com.bili.diushoujuaner.presenter.watcher.MessageWatcher;
 import com.bili.diushoujuaner.presenter.presenter.ChattingFragmentPresenter;
 import com.bili.diushoujuaner.presenter.view.IChattingView;
 import com.bili.diushoujuaner.utils.ConstantUtil;
@@ -25,6 +26,11 @@ public class ChattingFragmentPresenterImpl extends BasePresenter<IChattingView> 
 
     public ChattingFragmentPresenterImpl(IChattingView baseView, Context context) {
         super(baseView, context);
+    }
+
+    @Override
+    public boolean isConnected() {
+        return (ConnectionPreference.getInstance().isConnected() && !ConnectionPreference.getInstance().isOverTime());
     }
 
     @Override
