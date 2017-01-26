@@ -14,6 +14,8 @@ import java.util.regex.Pattern;
  */
 public class StringUtil {
 
+    private StringUtil(){}
+
 	/**
 	 * 判断字符串是否为手机号码</br>
 	 * 只能判断是否为大陆的手机号码

@@ -5,12 +5,10 @@
       <GradleProjectSettings>
         <option name="distributionType" value="LOCAL" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="gradleHome" value="E:\AndroidStudio\gradle\gradle-2.10" />
-        <option name="gradleJvm" value="1.8" />
+        <option name="gradleHome" value="D:\software\AndroidStudio\gradle\gradle-2.14.1" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/crash" />
             <option value="$PROJECT_DIR$/daogenerator" />
             <option value="$PROJECT_DIR$/logger" />
             <option value="$PROJECT_DIR$/model" />
@@ -19,18 +17,7 @@
             <option value="$PROJECT_DIR$/view" />
           </set>
         </option>
-        <option name="myModules">
-          <set>
-            <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/crash" />
-            <option value="$PROJECT_DIR$/daogenerator" />
-            <option value="$PROJECT_DIR$/logger" />
-            <option value="$PROJECT_DIR$/model" />
-            <option value="$PROJECT_DIR$/presenter" />
-            <option value="$PROJECT_DIR$/utils" />
-            <option value="$PROJECT_DIR$/view" />
-          </set>
-        </option>
+        <option name="resolveModulePerSourceSet" value="false" />
       </GradleProjectSettings>
     </option>
   </component>

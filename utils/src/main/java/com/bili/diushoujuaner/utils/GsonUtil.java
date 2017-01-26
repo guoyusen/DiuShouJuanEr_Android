@@ -7,6 +7,8 @@ import com.google.gson.Gson;
  */
 public class GsonUtil {
 
+    private GsonUtil() {}
+
     private static Gson gson;
 
     public static synchronized Gson getInstance(){

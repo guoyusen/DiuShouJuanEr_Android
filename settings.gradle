@@ -1,1 +1,1 @@
-include ':view', ':presenter', ':utils', ':daogenerator', ':logger', ':model', ':crash'
+include ':view', ':presenter', ':utils', ':daogenerator', ':logger', ':model'

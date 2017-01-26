@@ -29,13 +29,7 @@ public class SplashActivity extends BaseActivity<SplashActivityPresenter> implem
     @Override
     public void setViewStatus() {
         setTintStatusColor(R.color.TRANSPARENT);
-
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                ((RevealTextView) findViewById(R.id.txtSlogon)).setAnimatedText(getResources().getString(R.string.slogon));
-            }
-        }, 800);
+        ((RevealTextView) findViewById(R.id.txtSlogon)).setAnimatedText(getResources().getString(R.string.slogon));
 
         new Handler().postDelayed(new Runnable() {
             @Override

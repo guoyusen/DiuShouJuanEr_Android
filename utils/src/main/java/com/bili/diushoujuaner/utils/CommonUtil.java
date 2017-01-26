@@ -45,6 +45,8 @@ public class CommonUtil {
     private static final String dd_album = Environment.getExternalStorageDirectory() + "/diudiu/album/";
     private static final String dd_voice = Environment.getExternalStorageDirectory() + "/diudiu/voice/";
 
+    private CommonUtil() {}
+
     public static boolean isApkDebugable(Context context){
         try {
             ApplicationInfo info= context.getApplicationInfo();

@@ -8,6 +8,8 @@ import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombi
 
 public class PinyinUtil {
 
+	private PinyinUtil() {}
+
 	/**
 	 * 将字符串转换成拼音数组
 	 * 

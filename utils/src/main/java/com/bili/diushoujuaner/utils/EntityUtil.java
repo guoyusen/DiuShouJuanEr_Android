@@ -1,6 +1,5 @@
 package com.bili.diushoujuaner.utils;
 
-import com.bili.diushoujuaner.utils.comparator.MemberVoComparator;
 import com.bili.diushoujuaner.utils.entity.dto.ContactDto;
 import com.bili.diushoujuaner.utils.entity.dto.MemberDto;
 import com.bili.diushoujuaner.utils.entity.dto.MessageDto;
@@ -16,7 +15,6 @@ import com.bili.diushoujuaner.utils.entity.vo.PartyVo;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -24,6 +22,7 @@ import java.util.List;
  */
 public class EntityUtil {
 
+    private EntityUtil () {}
 
     public static MessageVo getMessageVoFromOffMsgDto(OffMsgDto offMsgDto){
         MessageVo messageVo = new MessageVo();

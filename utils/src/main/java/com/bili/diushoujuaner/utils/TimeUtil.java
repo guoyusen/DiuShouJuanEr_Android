@@ -14,6 +14,8 @@ public class TimeUtil {
     private static SimpleDateFormat sdf_Full = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS", Locale.CHINA);
     private static SimpleDateFormat sdf_YYMMDD = new SimpleDateFormat("yyyy年MM月dd日", Locale.CHINA);
 
+    private TimeUtil(){}
+
     public static String getCurrentTimeYYMMDD_HHMMSS(){
         return sdf_YYMMDD_HHMMSS.format(new Date());
     }
